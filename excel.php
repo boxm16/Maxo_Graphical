@@ -9,46 +9,77 @@ $routes = $routeController->getRoutes();
     <head>
         <meta charset="UTF-8">
         <title></title>
+        <style>
+
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse
+            }
+
+        </style>
     </head>
     <body>
         <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a> &nbsp;&nbsp;<a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
         <?php
         foreach ($routes as $route) {
-
+            echo "<hr>მარშრუტი N: " . $route->getNumber() . "<br>";
             $days = $route->getDays();
-            echo "<hr>Route Number: " . $route->getNumber() . "<br>";
-
 
             foreach ($days as $day) {
-                echo "Date: " . $day->getDateStamp() . "<br>";
-                $exoduses = $day->getExoduses();
-                foreach ($exoduses as $exodus) {
-                    echo "Exodus Number: " . $exodus->getNumber() . "<br>";
 
+                echo $day->getDateStamp() . "<hr>";
+
+                $exoduses = $day->getExoduses();
+
+                foreach ($exoduses as $exodus) {
+                    $tableConstructor = "<table style='width:400px'><tbody>";
+
+                    $tableConstructor .= "<tr><td colspan='7' style=' text-align: center; '>გასვლა N:" . $exodus->getNumber() . "</td></tr>";
                     $tripVouchers = $exodus->getTripVouchers();
                     foreach ($tripVouchers as $tripVoucher) {
-                        echo "Voucher Number: " . $tripVoucher->getNumber();
-                        echo "/// Bus Type: " . $tripVoucher->getBusType();
-                        echo "/// Bus Number: " . $tripVoucher->getBusNumber();
-                        echo "/// Driver Number: " . $tripVoucher->getDriverNumber();
-                        echo "/// Driver Name: " . $tripVoucher->getDriverName()."<br>";
-                        echo "Notes: " . $tripVoucher->getNotes() . "<br>";
 
+
+                        $tableConstructor .= "<tr><td colspan='7'>საგზურის N:" . $tripVoucher->getNumber()
+                                . " //ავტობუსის ტიპი:" . $tripVoucher->getBusType()
+                                . " //ავტობუსის N: " . $tripVoucher->getBusNumber()
+                                . " //მძღოლისN " . $tripVoucher->getDriverNumber()
+                                . " //მძღოლი:" . $tripVoucher->getDriverName() . "</td></tr>"
+                                . "<tr ><td colspan='7'> შენიშვნები:" . $tripVoucher->getNotes() . "</td>"
+                                . "</tr>";
+                        $tableConstructor .= "<tr>"
+                                . "<th colspan='3'>გასვლის დრო</th>"
+                                . "<th></th>"
+                                . "<th colspan='3'>მისვლის დრო</th>"
+                                . "</tr>"
+                                . "<tr>"
+                                . "<th>გეგმიუირი</th>"
+                                . "<th>ფაქთიური</th>"
+                                . "<th>სხვაობა</th>"
+                                . "<th>------</th>"
+                                . "<th>გეგმიუირი</th>"
+                                . "<th>ფაქთიური</th>"
+                                . "<th>სხვაობა</th>"
+                                . "</tr>";
                         $tripPeriods = $tripVoucher->getTripPeriods();
                         foreach ($tripPeriods as $tripPeriod) {
 
-                            echo "<hr>";
-                            echo $tripPeriod->getType();
-                            echo "<br>";
+                            $tableConstructor .= "<tr>"
+                                    . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                    . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                    . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                    . "<td>" . $tripPeriod->getTypeGe() . "</td>"
+                                    . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                    . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                    . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                    . "</tr>";
                         }
                     }
-                }
-                echo "-----------------DAY end-------------";
-                echo "<hr><hr><hr>";
-            }
+                    $tableConstructor .= "</tbody></table>";
+                    echo $tableConstructor;
 
-            echo " ROUTE end ROUTE end ROUTE end ROUTE end ROUTE end";
-            echo "<hr><hr><hr><hr>";
+                    echo "<br>";
+                }
+            }
         }
         ?>
 

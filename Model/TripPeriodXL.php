@@ -24,6 +24,22 @@ class TripPeriodXL {
         return $this->type;
     }
 
+    function getTypeGe() {
+        $type = $this->type;
+        switch ($type) {
+            case "baseLeaving":
+                return "ბაზიდან გასვლა";
+            case "baseReturn":
+                return "ბაზაში დაბრუნება";
+            case "break":
+                return "შესვენება";
+            case "ab":
+                return "A_B";
+            case "ba":
+                return "B_A";
+        }
+    }
+
     function getStartTimeScheduled() {
         return $this->startTimeScheduled;
     }

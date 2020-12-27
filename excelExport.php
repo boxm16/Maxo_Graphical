@@ -35,6 +35,7 @@ function rewriteRoutesToExcelRows($routes) {
                     array_push($bigArray, $smallArray);
                     $tripPeriods = $tripVoucher->getTripPeriods();
                     foreach ($tripPeriods as $tripPeriod) {
+                        
                         $smallArray = array($tripPeriod->getStartTimeScheduled(), $tripPeriod->getStartTimeActual(), $tripPeriod->getStartTimeDifference(), $tripPeriod->getTypeGe(), $tripPeriod->getArrivalTimeScheduled(), $tripPeriod->getArrivalTimeActual(), $tripPeriod->getArrivalTimeDifference());
                         array_push($bigArray, $smallArray);
                     }

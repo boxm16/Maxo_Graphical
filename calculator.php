@@ -26,7 +26,7 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
-            <a href="index.php">საწყის გვერდზე დაბრუნება</a>&nbsp;<a href="graphical.php" target="_blank">გრაფიკული გამოსახვა</a> 
+            <a href="index.php">საწყის გვერდზე დაბრუნება</a>&nbsp;<a href="excel.php.php" target="_blank">EXCEL</a> 
           
             <div class="row">
 

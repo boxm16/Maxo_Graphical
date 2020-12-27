@@ -44,7 +44,6 @@ class RouteXLController {
                 $routes[$routeNumber] = $refilledRoute;
             }
         }
-
         return $routes;
     }
 

@@ -52,7 +52,7 @@ $routes = $routeController->getRoutes();
             <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a>
             <a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
 
-            <form action='export.php' method='POST'><input type='hidden' name='export'><input type='submit' value='ექსელში ექსპორტი' ></form>
+            <form action='excelExport.php' method='POST'><input type='hidden' name='export' value='export'><input type='submit' value='ექსელში ექსპორტი' ></form>
 
         </div>
 

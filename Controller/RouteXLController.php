@@ -2,6 +2,7 @@
 
 require_once "SimpleXLSX.php";
 require_once 'Model/RouteXL.php';
+require_once 'TimeController.php';
 
 class RouteXLController {
 
@@ -171,10 +172,13 @@ class RouteXLController {
         if ($row[14]["value"] != "" && $row[20]["value"] != "") {
             $leftSideTime = $row[14]["value"];
             $rightSideTime = $row[20]["value"];
-            //   $timeController = new TimeController();
-//            $leftSideTimeInSeconds = $timeController->getSecondsFromTimeStamp($leftSideTime);
-            //          $rightSideTimeInSeconds = $timeController->getSecondsFromTimeStamp($rightSideTime);
-            if ($leftSideTime < $rightSideTime) {
+            $timeController = new TimeController();
+
+
+            $leftSideTimeInSeconds = $timeController->getSecondsFromTimeStamp($leftSideTime);
+            $rightSideTimeInSeconds = $timeController->getSecondsFromTimeStamp($rightSideTime);
+
+            if ($leftSideTimeInSeconds < $rightSideTimeInSeconds) {
                 $tripPeriodType = "ab";
                 $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
@@ -183,11 +187,12 @@ class RouteXLController {
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 return $tripPeriodsOfRound;
             } else {
+             
                 $tripPeriodType = "ba";
-                $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
+                $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 $tripPeriodType = "ab";
-                $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
+                $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 return $tripPeriodsOfRound;
             }

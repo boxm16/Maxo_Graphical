@@ -9,6 +9,7 @@ class TripPeriodXL {
     private $arrivalTimeScheduled;
     private $arrivalTimeActual;
     private $arrivalTimeDifference;
+    private $availableDepartureTimeAtLateDeparture;
 
     function __construct($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference) {
         $this->type = $type;
@@ -78,6 +79,16 @@ class TripPeriodXL {
             case "baseReturn":
                 return "grey";
         }
+    }
+
+ 
+
+    function getAvailableDepartureTimeAtLateDeparture() {
+        return $this->availableDepartureTimeAtLateDeparture;
+    }
+
+    function setAvailableDepartureTimeAtLateDeparture($availableDepartureTimeAtLateDeparture) {
+        $this->availableDepartureTimeAtLateDeparture = $availableDepartureTimeAtLateDeparture;
     }
 
 }

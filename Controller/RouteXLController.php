@@ -120,15 +120,18 @@ class RouteXLController {
         }
         if ($tripPeriodType == "baseReturn") {
             $tripPeriod = $this->createBaseReturnPeriod($row);
+            $tripPeriod = $this->checkPeriodForCriticalDifference($tripPeriod, $tripPeriods);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "break") {
             $tripPeriod = $this->createBreakPeriod($row);
+            $tripPeriod = $this->checkPeriodForCriticalDifference($tripPeriod, $tripPeriods);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "round") {
             $tripPeriodsOfRound = $this->createTripPeridsOfRound($row);
             foreach ($tripPeriodsOfRound as $tripPeriod) {
+                $tripPeriod = $this->checkPeriodForCriticalDifference($tripPeriod, $tripPeriods);
                 array_push($tripPeriods, $tripPeriod);
             }
         }
@@ -187,7 +190,7 @@ class RouteXLController {
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 return $tripPeriodsOfRound;
             } else {
-             
+
                 $tripPeriodType = "ba";
                 $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
@@ -247,6 +250,25 @@ class RouteXLController {
         $arrivalTimeActual = $row[24]["value"];
         $arrivalTimeDifference = $row[25]["value"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        return $tripPeriod;
+    }
+
+    private function checkPeriodForCriticalDifference($tripPeriod, $tripPeriods) {
+        $tripPeriodStartTimeScheduled = $tripPeriod->getStartTimeScheduled();
+        $tripPeriodStartTimeActual = $tripPeriod->getStartTimeActual();
+        $timeController = new TimeController();
+        if ($tripPeriodStartTimeActual != "") {
+            $tripPeriodStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriodStartTimeActual);
+        } else {
+            $tripPeriodStartTimeActualInSeconds = 0;
+        }
+        $tripPeriodStartTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriodStartTimeScheduled);
+
+        if ($tripPeriodStartTimeActualInSeconds - $tripPeriodStartTimeScheduledInSeconds > 60) {
+            $previousTripPeriod = $tripPeriods[count($tripPeriods) - 1];
+            $tripPeriod->setAvailableDepartureTimeAtLateDeparture($previousTripPeriod->getArrivalTimeActual());
+        }
+
         return $tripPeriod;
     }
 

@@ -27,7 +27,7 @@ $routes = $routeController->getRoutes();
             form{
                 padding: 8px 15px;
             }
-            
+
 
             .navbar a {
                 float: left;
@@ -108,6 +108,7 @@ $routes = $routeController->getRoutes();
                                     . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                    . "<td>" . $tripPeriod->getAvailableDepartureTimeAtLateDeparture() . "</td>"
                                     . "</tr>";
                         }
                     }

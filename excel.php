@@ -16,9 +16,46 @@ $routes = $routeController->getRoutes();
                 border-collapse: collapse
             }
 
+            .navbar {
+                overflow: hidden;
+                background-color: lightgreen;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                height: 35px;
+            }
+            form{
+                padding: 8px 15px;
+            }
+            
+
+            .navbar a {
+                float: left;
+                display: block;
+                color: #f2f2f2;
+                text-align: center ;
+                color: black;
+                padding: 6px 15px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+            .navbar a:hover {
+                background: #ddd;
+                color: black;
+            }
+
         </style>
     </head>
     <body>
+        <div class="navbar">
+            <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a>
+            <a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
+
+            <form action='export.php' method='POST'><input type='hidden' name='export'><input type='submit' value='ექსელში ექსპორტი' ></form>
+
+        </div>
+
         <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a> &nbsp;&nbsp;<a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
         <?php
         foreach ($routes as $route) {

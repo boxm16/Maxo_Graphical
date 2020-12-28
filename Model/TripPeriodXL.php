@@ -140,13 +140,15 @@ class TripPeriodXL {
             $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeScheduled);
             if ($startTimeActualInSeconds - $startTimeScheduledInSeconds > 0) {
                 $actualHaltTime = $this->getActualHaltTime();
-                $actualHaltTimeInSeconds = $timeController->getSecondsFromTimeStamp($actualHaltTime);
-                if ($actualHaltTimeInSeconds == "")
+                if ($actualHaltTime == "") {
                     return "white";
-                if ($actualHaltTimeInSeconds < (5 * 60)) {
-                    return "yellow";
                 } else {
-                    return "red";
+                    $actualHaltTimeInSeconds = $timeController->getSecondsFromTimeStamp($actualHaltTime);
+                    if ($actualHaltTimeInSeconds < (5 * 60)) {
+                        return "yellow";
+                    } else {
+                        return "red";
+                    }
                 }
             } else
                 return "green";

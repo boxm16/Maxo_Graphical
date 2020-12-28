@@ -90,15 +90,18 @@ $routes = $routeController->getRoutes();
                                 . "</tr>"
                                 . "<tr>"
                                 . "<th>გეგმიუირი</th>"
-                                . "<th>ფაქთიური</th>"
+                                . "<th>ფაქტიური</th>"
                                 . "<th>სხვაობა</th>"
                                 . "<th>------</th>"
                                 . "<th>გეგმიუირი</th>"
-                                . "<th>ფაქთიური</th>"
+                                . "<th>ფაქტიური</th>"
                                 . "<th>სხვაობა</th>"
+                                . "<th>ბრუნის(წირის) ფაქტიური დრო</th>"
+                                . "<th>დგომის ფაქტიური დრო</th>"
                                 . "</tr>";
                         $tripPeriods = $tripVoucher->getTripPeriods();
                         foreach ($tripPeriods as $tripPeriod) {
+                            $trafficLightsColor = $tripPeriod->getLightsForHaltTimeAtLateDeparture();
 
                             $tableConstructor .= "<tr>"
                                     . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
@@ -108,7 +111,8 @@ $routes = $routeController->getRoutes();
                                     . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                                    . "<td>" . $tripPeriod->getAvailableDepartureTimeAtLateDeparture() . "</td>"
+                                    . "<td>" . $tripPeriod->getActualTripPeriodTime() . "</td>"
+                                    . "<td style='background-color:$trafficLightsColor'>" . $tripPeriod->getActualHaltTime() . "</td>"
                                     . "</tr>";
                         }
                     }

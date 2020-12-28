@@ -15,4 +15,8 @@ class TimeController {
         return $totalSeconds;
     }
 
+    public function getTimeStampFromSeconds($seconds) {
+        return gmdate("H:i:s", $seconds);
+    }
+
 }

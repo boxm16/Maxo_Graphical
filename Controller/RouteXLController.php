@@ -264,7 +264,7 @@ class RouteXLController {
         }
         $tripPeriodStartTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriodStartTimeScheduled);
 
-        if ($tripPeriodStartTimeActualInSeconds - $tripPeriodStartTimeScheduledInSeconds > 60) {
+        if ($tripPeriodStartTimeActualInSeconds - $tripPeriodStartTimeScheduledInSeconds > 60 || $tripPeriodStartTimeActual == "") {
             $previousTripPeriod = $tripPeriods[count($tripPeriods) - 1];
             $tripPeriod->setAvailableDepartureTimeAtLateDeparture($previousTripPeriod->getArrivalTimeActual());
         }

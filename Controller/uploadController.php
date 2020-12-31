@@ -34,7 +34,7 @@ if (isset($_POST["submit"])) {
 }
 
 function deployFile() {
-    header("Location:../excel.php");
+    header("Location:../trips.php");
 }
 
 ?>

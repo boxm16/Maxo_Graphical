@@ -21,7 +21,7 @@
     <body>
 
         <div class="container">
-            <a href="calculator.php">მანძილი/სიჩქარე/დრო</a> &nbsp;<a href="excel.php" target="_blank">EXCEL</a> 
+            <a href="calculator.php">მანძილი/სიჩქარე/დრო</a> &nbsp;<a href="trips.php" target="_blank">EXCEL</a> 
             <div class="row">
 
                 <div class="col-sm-5">

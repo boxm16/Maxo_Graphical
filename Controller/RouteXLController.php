@@ -287,8 +287,6 @@ class RouteXLController {
             foreach ($days as $day) {
                 $exoduses = $day->getExoduses();
                 $tripPeriodsOfTheDay = array();
-                $abTripPeriodsOfTheDay = array();
-                $baTripPeriodsOfTheDay = array();
                 foreach ($exoduses as $exodus) {
                     $tripVouchers = $exodus->getTripVouchers();
 
@@ -298,7 +296,6 @@ class RouteXLController {
                             $tripPeriod = $tripPeriods[$x];
 
                             $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
-
                             $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($startTimeScheduled);
 //this part is for cases when time goes over 24:00:00 and gets 00:00:01 and actually in comparison it shows less then previous time.
                             $previousTripStartTimeScheduledInSeconds;
@@ -310,20 +307,11 @@ class RouteXLController {
                             }
                             $previousTripStartTimeScheduledInSeconds = $startTimeScheduledInSeconds;
                             //end of part for overtime cases
-
-                            if ($tripPeriod->getType() == "ab") {
-                                $abTripPeriodsOfTheDay[$startTimeScheduledInSeconds] = $tripPeriod;
-                            }
-                            if ($tripPeriod->getType() == "ba") {
-                                $baTripPeriodsOfTheDay[$startTimeScheduledInSeconds] = $tripPeriod;
-                            }
+                            $tripPeriodsOfTheDay[$startTimeScheduledInSeconds] = $tripPeriod;
                         }
                     }
                 }
-                ksort($abTripPeriodsOfTheDay);
-                ksort($baTripPeriodsOfTheDay);
-                array_push($tripPeriodsOfTheDay, $abTripPeriodsOfTheDay);
-                array_push($tripPeriodsOfTheDay, $baTripPeriodsOfTheDay);
+                ksort($tripPeriodsOfTheDay);
                 array_push($tripPeriodsOfRouteByDay, $tripPeriodsOfTheDay);
             }
             array_push($tripPeriodsOfDifferentRoutes, $tripPeriodsOfRouteByDay);

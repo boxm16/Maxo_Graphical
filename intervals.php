@@ -48,17 +48,11 @@ $routes = $routeController->getScheduledIntervalsByDays();
 
         foreach ($routes as $route) {
             foreach ($route as $day) {
-
                 $d = $day;
-            
-                foreach ($d as $tripPeriodsByType) {
-                      
-                    foreach ($tripPeriodsByType as $key => $tripPeriod) {
-                     
-                        echo $key . "--";
-                        echo $tripPeriod->getStartTimeScheduled();
-                        echo "<br>";
-                    }
+                foreach ($d as $key => $tripPeriod) {
+                    echo $key."--";
+                    echo $tripPeriod->getStartTimeScheduled();
+                    echo "<br>";
                 }
                 echo "<hr>";
             }echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";

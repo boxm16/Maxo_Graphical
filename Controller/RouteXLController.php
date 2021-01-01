@@ -274,4 +274,61 @@ class RouteXLController {
         $this->routes = $routes;
     }
 
+    public function getScheduledIntervalsByDays() {
+        //return array of routes having inside days filled with arrays of tripPeriods sorted by startTimeScheduled
+        $timeController = new TimeController();
+
+        $routes = $this->getRoutes();
+
+        $tripPeriodsOfDifferentRoutes = array();
+        foreach ($routes as $route) {
+            $days = $route->getDays();
+            $tripPeriodsOfRouteByDay = array();
+            foreach ($days as $day) {
+                $exoduses = $day->getExoduses();
+                $tripPeriodsOfTheDay = array();
+                $abTripPeriodsOfTheDay = array();
+                $baTripPeriodsOfTheDay = array();
+                foreach ($exoduses as $exodus) {
+                    $tripVouchers = $exodus->getTripVouchers();
+
+                    foreach ($tripVouchers as $tripVoucher) {
+                        $tripPeriods = $tripVoucher->getTripPeriods();
+                        for ($x = 0; $x < count($tripPeriods); $x++) {
+                            $tripPeriod = $tripPeriods[$x];
+
+                            $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+
+                            $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($startTimeScheduled);
+//this part is for cases when time goes over 24:00:00 and gets 00:00:01 and actually in comparison it shows less then previous time.
+                            $previousTripStartTimeScheduledInSeconds;
+                            if ($x == 0) {
+                                $previousTripStartTimeScheduledInSeconds = $startTimeScheduledInSeconds;
+                            }
+                            if ($previousTripStartTimeScheduledInSeconds > $startTimeScheduledInSeconds) {
+                                $startTimeScheduledInSeconds = $startTimeScheduledInSeconds + (24 * 60 * 60) + (60 * 60);
+                            }
+                            $previousTripStartTimeScheduledInSeconds = $startTimeScheduledInSeconds;
+                            //end of part for overtime cases
+
+                            if ($tripPeriod->getType() == "ab") {
+                                $abTripPeriodsOfTheDay[$startTimeScheduledInSeconds] = $tripPeriod;
+                            }
+                            if ($tripPeriod->getType() == "ba") {
+                                $baTripPeriodsOfTheDay[$startTimeScheduledInSeconds] = $tripPeriod;
+                            }
+                        }
+                    }
+                }
+                ksort($abTripPeriodsOfTheDay);
+                ksort($baTripPeriodsOfTheDay);
+                array_push($tripPeriodsOfTheDay, $abTripPeriodsOfTheDay);
+                array_push($tripPeriodsOfTheDay, $baTripPeriodsOfTheDay);
+                array_push($tripPeriodsOfRouteByDay, $tripPeriodsOfTheDay);
+            }
+            array_push($tripPeriodsOfDifferentRoutes, $tripPeriodsOfRouteByDay);
+        }
+        return $tripPeriodsOfDifferentRoutes;
+    }
+
 }

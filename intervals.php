@@ -1,9 +1,10 @@
+<?php
+require_once 'Controller/RouteXLController.php';
+$routeController = new RouteXLController();
+$routes = $routeController->getScheduledIntervalsByDays();
+?>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -43,7 +44,25 @@ and open the template in the editor.
             <a href="trips.php">ბრუნები</a>
         </div>
         <?php
-        echo "intervals here";
+        echo "intervals here<br><br>";
+
+        foreach ($routes as $route) {
+            foreach ($route as $day) {
+
+                $d = $day;
+            
+                foreach ($d as $tripPeriodsByType) {
+                      
+                    foreach ($tripPeriodsByType as $key => $tripPeriod) {
+                     
+                        echo $key . "--";
+                        echo $tripPeriod->getStartTimeScheduled();
+                        echo "<br>";
+                    }
+                }
+                echo "<hr>";
+            }echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        }
         ?>
     </body>
 </html>

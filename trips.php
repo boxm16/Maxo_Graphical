@@ -78,13 +78,7 @@ $routes = $routeController->getRoutes();
                     foreach ($tripVouchers as $tripVoucher) {
 
 
-                        $tableConstructor .= "<tr><td colspan='7'>საგზურის N:" . $tripVoucher->getNumber()
-                                . " //ავტობუსის ტიპი:" . $tripVoucher->getBusType()
-                                . " //ავტობუსის N: " . $tripVoucher->getBusNumber()
-                                . " //მძღოლისN " . $tripVoucher->getDriverNumber()
-                                . " //მძღოლი:" . $tripVoucher->getDriverName() . "</td></tr>"
-                                . "<tr ><td colspan='7'> შენიშვნები:" . $tripVoucher->getNotes() . "</td>"
-                                . "</tr>";
+                     
                         $tableConstructor .= "<tr>"
                                 . "<th colspan='3'>გასვლის დრო</th>"
                                 . "<th></th>"

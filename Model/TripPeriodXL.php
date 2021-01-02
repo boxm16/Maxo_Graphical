@@ -14,7 +14,10 @@ class TripPeriodXL {
     private $availableDepartureTimeAtLateDeparture;
     private $actualTripPeriodTime;
     private $previosTripPeriodArrivalTimeActual;
+    private $scheduledIntervalFromPreviousTripPeriod;
+    private $actualIntervalFromPreviousTripPeriod;
     private $actualHaltTime;
+    private $parentExodusNumber;
 
     function __construct($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference) {
         $this->type = $type;
@@ -133,7 +136,30 @@ class TripPeriodXL {
         $this->previosTripPeriodArrivalTimeActual = $previosTripPeriodArrivalTimeActual;
     }
 
-    public function getLightsForHaltTimeAtLateDeparture() {
+    function getScheduledIntervalFromPreviousTripPeriod() {
+        return $this->scheduledIntervalFromPreviousTripPeriod;
+    }
+
+    function setScheduledIntervalFromPreviousTripPeriod($scheduledIntervalFromPreviousTripPeriod) {
+        $this->scheduledIntervalFromPreviousTripPeriod = $scheduledIntervalFromPreviousTripPeriod;
+    }
+
+    function getParentExodusNumber() {
+        return $this->parentExodusNumber;
+    }
+
+    function setParentExodusNumber($parentExodusNumber) {
+        $this->parentExodusNumber = $parentExodusNumber;
+    }
+    function getActualIntervalFromPreviousTripPeriod() {
+        return $this->actualIntervalFromPreviousTripPeriod;
+    }
+
+    function setActualIntervalFromPreviousTripPeriod($actualIntervalFromPreviousTripPeriod) {
+        $this->actualIntervalFromPreviousTripPeriod = $actualIntervalFromPreviousTripPeriod;
+    }
+
+        public function getLightsForHaltTimeAtLateDeparture() {
         if ($this->startTimeActual != "" && $this->startTimeScheduled) {
             $timeController = new TimeController();
             $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeActual);

@@ -290,6 +290,7 @@ class RouteXLController {
                 $abTripPeriodsOfTheDay = array();
                 $baTripPeriodsOfTheDay = array();
                 foreach ($exoduses as $exodus) {
+                    $exodusNumber = $exodus->getNumber();
                     $tripVouchers = $exodus->getTripVouchers();
 
                     foreach ($tripVouchers as $tripVoucher) {
@@ -310,7 +311,7 @@ class RouteXLController {
                             }
                             $previousTripStartTimeScheduledInSeconds = $startTimeScheduledInSeconds;
                             //end of part for overtime cases
-
+                            $tripPeriod->setParentExodusNumber($exodusNumber);
                             if ($tripPeriod->getType() == "ab") {
                                 $abTripPeriodsOfTheDay[$startTimeScheduledInSeconds] = $tripPeriod;
                             }
@@ -320,8 +321,11 @@ class RouteXLController {
                         }
                     }
                 }
+
                 ksort($abTripPeriodsOfTheDay);
                 ksort($baTripPeriodsOfTheDay);
+                $abTripPeriodsOfTheDay = $this->calculateScheduledIntervals($abTripPeriodsOfTheDay);
+                $baTripPeriodsOfTheDay = $this->calculateScheduledIntervals($baTripPeriodsOfTheDay);
                 array_push($tripPeriodsOfTheDay, $abTripPeriodsOfTheDay);
                 array_push($tripPeriodsOfTheDay, $baTripPeriodsOfTheDay);
                 array_push($tripPeriodsOfRouteByDay, $tripPeriodsOfTheDay);
@@ -329,6 +333,112 @@ class RouteXLController {
             array_push($tripPeriodsOfDifferentRoutes, $tripPeriodsOfRouteByDay);
         }
         return $tripPeriodsOfDifferentRoutes;
+    }
+
+    private function calculateScheduledIntervals($tripPeriods) {
+        $timeController = new TimeController();
+
+        $index = 0;
+        $previousTripStartTimeInSeconds = 0;
+        foreach ($tripPeriods as $tripPeriod) {
+            if ($index == 0) {
+                $tripPeriod->setScheduledIntervalFromPreviousTripPeriod("");
+                $previousTripStartTimeInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
+            } else {
+                $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
+                $intervalInSeconds = $startTimeScheduledInSeconds - $previousTripStartTimeInSeconds;
+                $intervalTimeStamp = $timeController->getTimeStampFromSeconds($intervalInSeconds);
+                $tripPeriod->setScheduledIntervalFromPreviousTripPeriod($intervalTimeStamp);
+                $previousTripStartTimeInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
+            }
+            $index++;
+        }
+        return $tripPeriods;
+    }
+
+    public function getActualIntervalsByDays() {
+        //return array of routes having inside days filled with arrays of tripPeriods sorted by startTimeActual
+        $timeController = new TimeController();
+
+        $routes = $this->getRoutes();
+
+        $tripPeriodsOfDifferentRoutes = array();
+        foreach ($routes as $route) {
+            $days = $route->getDays();
+            $tripPeriodsOfRouteByDay = array();
+            foreach ($days as $day) {
+                $exoduses = $day->getExoduses();
+                $tripPeriodsOfTheDay = array();
+                $abTripPeriodsOfTheDay = array();
+                $baTripPeriodsOfTheDay = array();
+                foreach ($exoduses as $exodus) {
+                    $exodusNumber = $exodus->getNumber();
+                    $tripVouchers = $exodus->getTripVouchers();
+
+                    foreach ($tripVouchers as $tripVoucher) {
+                        $tripPeriods = $tripVoucher->getTripPeriods();
+                        for ($x = 0; $x < count($tripPeriods); $x++) {
+                            $tripPeriod = $tripPeriods[$x];
+
+                            $startTimeActual = $tripPeriod->getStartTimeActual();
+                            if ($startTimeActual != "") {//this way, it may actually not work, rethink it
+                                $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($startTimeActual);
+//this part is for cases when time goes over 24:00:00 and gets 00:00:01 and actually in comparison it shows less then previous time.
+                                $previousTripStartTimeActualInSeconds;
+                                if ($x == 0) {
+                                    $previousTripStartTimeActualInSeconds = $startTimeActualInSeconds;
+                                }
+                                if ($previousTripStartTimeActualInSeconds > $startTimeActualInSeconds) {
+                                    $startTimeActualInSeconds = $startTimeActualInSeconds + (24 * 60 * 60) + (60 * 60);
+                                }
+                                $previousTripStartTimeActualInSeconds = $startTimeActualInSeconds;
+                                //end of part for overtime cases
+
+                                $tripPeriod->setParentExodusNumber($exodusNumber);
+                                if ($tripPeriod->getType() == "ab") {
+                                    $abTripPeriodsOfTheDay[$startTimeActualInSeconds] = $tripPeriod;
+                                }
+                                if ($tripPeriod->getType() == "ba") {
+                                    $baTripPeriodsOfTheDay[$startTimeActualInSeconds] = $tripPeriod;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ksort($abTripPeriodsOfTheDay);
+                ksort($baTripPeriodsOfTheDay);
+                // $abTripPeriodsOfTheDay = $this->calculateActualIntervals($abTripPeriodsOfTheDay);
+                //$baTripPeriodsOfTheDay = $this->calculateActualIntervals($baTripPeriodsOfTheDay);
+                array_push($tripPeriodsOfTheDay, $abTripPeriodsOfTheDay);
+                array_push($tripPeriodsOfTheDay, $baTripPeriodsOfTheDay);
+                array_push($tripPeriodsOfRouteByDay, $tripPeriodsOfTheDay);
+            }
+            array_push($tripPeriodsOfDifferentRoutes, $tripPeriodsOfRouteByDay);
+        }
+        return $tripPeriodsOfDifferentRoutes;
+    }
+
+    private function calculateActualIntervals($tripPeriods) {
+        $timeController = new TimeController();
+
+        $index = 0;
+        $previousTripStartTimeInSeconds = 0;
+        foreach ($tripPeriods as $tripPeriod) {
+            if ($index == 0) {
+                $tripPeriod->setActualIntervalFromPreviousTripPeriod("");
+
+                $previousTripStartTimeInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeActual());
+            } else {
+                $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeActual());
+                $intervalInSeconds = $startTimeActualInSeconds - $previousTripStartTimeInSeconds;
+                $intervalTimeStamp = $timeController->getTimeStampFromSeconds($intervalInSeconds);
+                $tripPeriod->setActualIntervalFromPreviousTripPeriod($intervalTimeStamp);
+                $previousTripStartTimeInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeActual());
+            }
+            $index++;
+        }
+        return $tripPeriods;
     }
 
 }

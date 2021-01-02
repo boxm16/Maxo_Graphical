@@ -32,7 +32,7 @@
     </head>
     <body>
         <div class="navbar">
-            <a href="index.php" target="_blank">მთავარ გვერდზე დაბრნუნება</a>
+            <a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
             <a href="trips.php">ბრუნები</a>
             <a href="intervals.php">ინტერვალები</a>
         </div>

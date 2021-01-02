@@ -73,16 +73,19 @@ $routes = $routeController->getRoutes();
                 foreach ($exoduses as $exodus) {
                     $tableConstructor = "<table style='width:400px'><tbody>";
 
-                    $tableConstructor .= "<tr><td colspan='7' style=' text-align: center; '>გასვლა N:" . $exodus->getNumber() . "</td></tr>";
+                    $tableConstructor .= "<tr>"
+                            . "<td colspan='11' style=' text-align: center; '><label><b>გასვლა N:" . $exodus->getNumber() . "</b></label></td>"
+                            . "</tr>";
                     $tripVouchers = $exodus->getTripVouchers();
                     foreach ($tripVouchers as $tripVoucher) {
 
 
-                     
+
                         $tableConstructor .= "<tr>"
                                 . "<th colspan='3'>გასვლის დრო</th>"
                                 . "<th></th>"
                                 . "<th colspan='3'>მისვლის დრო</th>"
+                                . "<th colspan='4'>გამოთვლები</th>"
                                 . "</tr>"
                                 . "<tr>"
                                 . "<th>გეგმიუირი</th>"
@@ -92,7 +95,9 @@ $routes = $routeController->getRoutes();
                                 . "<th>გეგმიუირი</th>"
                                 . "<th>ფაქტიური</th>"
                                 . "<th>სხვაობა</th>"
+                                . "<th>ბრუნის(წირის) გეგმიური დრო</th>"
                                 . "<th>ბრუნის(წირის) ფაქტიური დრო</th>"
+                                . "<th>დგომის გეგმიური დრო</th>"
                                 . "<th>დგომის ფაქტიური დრო</th>"
                                 . "</tr>";
                         $tripPeriods = $tripVoucher->getTripPeriods();
@@ -107,7 +112,9 @@ $routes = $routeController->getRoutes();
                                     . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                    . "<td>" . $tripPeriod->getScheduledTripPeriodTime() . "</td>"
                                     . "<td>" . $tripPeriod->getActualTripPeriodTime() . "</td>"
+                                    . "<td>" . $tripPeriod->getScheduledHaltTime() . "</td>"
                                     . "<td style='background-color:$trafficLightsColor'>" . $tripPeriod->getActualHaltTime() . "</td>"
                                     . "</tr>";
                         }

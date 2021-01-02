@@ -12,9 +12,8 @@ class TripPeriodXL {
     private $arrivalTimeActual;
     private $arrivalTimeDifference;
     private $availableDepartureTimeAtLateDeparture;
-    private $actualTripPeriodTime;
+    private $previosTripPeriodArrivalTimeScheduled;
     private $previosTripPeriodArrivalTimeActual;
-    private $actualHaltTime;
 
     function __construct($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference) {
         $this->type = $type;
@@ -94,7 +93,18 @@ class TripPeriodXL {
         $this->availableDepartureTimeAtLateDeparture = $availableDepartureTimeAtLateDeparture;
     }
 
-    function getActualHaltTime() {
+    public function getScheduledHaltTime() {
+        if ($this->previosTripPeriodArrivalTimeScheduled != "") {
+            $timeController = new TimeController();
+            $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeScheduled);
+            $previosTripPeriodArrivalTimeScheduled = $timeController->getSecondsFromTimeStamp($this->previosTripPeriodArrivalTimeScheduled);
+            $ScheduledHaltTimeInSeconds = $startTimeScheduledInSeconds - $previosTripPeriodArrivalTimeScheduled;
+            return $timeController->getTimeStampFromSeconds($ScheduledHaltTimeInSeconds);
+        }
+        return "";
+    }
+
+    public function getActualHaltTime() {
         if ($this->startTimeActual != "" && $this->previosTripPeriodArrivalTimeActual != "") {
             $timeController = new TimeController();
             $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeActual);
@@ -105,11 +115,15 @@ class TripPeriodXL {
         return "";
     }
 
-    function setActualHaltTime($actualHaltTime) {
-        $this->actualHaltTime = $actualHaltTime;
+    public function getScheduledTripPeriodTime() {
+        $timeController = new TimeController();
+        $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeScheduled);
+        $arrivalTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($this->arrivalTimeScheduled);
+        $scheduledTripPeriodTimeInSeconds = $arrivalTimeScheduledInSeconds - $startTimeScheduledInSeconds;
+        return $timeController->getTimeStampFromSeconds($scheduledTripPeriodTimeInSeconds);
     }
 
-    function getActualTripPeriodTime() {
+    public function getActualTripPeriodTime() {
         if ($this->startTimeActual != "" && $this->arrivalTimeActual) {
             $timeController = new TimeController();
             $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeActual);
@@ -121,8 +135,12 @@ class TripPeriodXL {
         return "";
     }
 
-    function setActualTripPeriodTime($actualTripPeriodTime) {
-        $this->actualTripPeriodTime = $actualTripPeriodTime;
+    function getPreviosTripPeriodArrivalTimeScheduled() {
+        return $this->previosTripPeriodArrivalTimeScheduled;
+    }
+
+    function setPreviosTripPeriodArrivalTimeScheduled($previosTripPeriodArrivalTimeScheduled) {
+        $this->previosTripPeriodArrivalTimeScheduled = $previosTripPeriodArrivalTimeScheduled;
     }
 
     function getPreviosTripPeriodArrivalTimeActual() {

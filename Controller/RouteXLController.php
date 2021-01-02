@@ -120,18 +120,18 @@ class RouteXLController {
         }
         if ($tripPeriodType == "baseReturn") {
             $tripPeriod = $this->createBaseReturnPeriod($row);
-            $tripPeriod = $this->addPreviosTripPeriodArrivalTimeActual($tripPeriod, $tripPeriods);
+            $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "break") {
             $tripPeriod = $this->createBreakPeriod($row);
-            $tripPeriod = $this->addPreviosTripPeriodArrivalTimeActual($tripPeriod, $tripPeriods);
+            $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "round") {
             $tripPeriodsOfRound = $this->createTripPeridsOfRound($row);
             foreach ($tripPeriodsOfRound as $tripPeriod) {
-                $tripPeriod = $this->addPreviosTripPeriodArrivalTimeActual($tripPeriod, $tripPeriods);
+                $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
                 array_push($tripPeriods, $tripPeriod);
             }
         }
@@ -253,12 +253,13 @@ class RouteXLController {
         return $tripPeriod;
     }
 
-    private function addPreviosTripPeriodArrivalTimeActual($tripPeriod, $tripPeriods) {
+    private function addPreviosTripPeriodTimes($tripPeriod, $tripPeriods) {
 
         $previousTripPeriod = $tripPeriods[count($tripPeriods) - 1];
         $previousTripPeriodArrivalTimeActual = $previousTripPeriod->getArrivalTimeActual();
+        $previousTripPeriodArrivalTimeScheduled = $previousTripPeriod->getArrivalTimeScheduled();
         $tripPeriod->setPreviosTripPeriodArrivalTimeActual($previousTripPeriodArrivalTimeActual);
-
+        $tripPeriod->setPreviosTripPeriodArrivalTimeScheduled($previousTripPeriodArrivalTimeScheduled);
         return $tripPeriod;
     }
 

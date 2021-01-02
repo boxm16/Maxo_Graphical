@@ -52,6 +52,7 @@ $routes = $routeController->getRoutes();
             <a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
             <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a>
             <a href="intervals.php">ინტერვალები</a>
+            <a href="concurrentlyHaltedBuses.php">ერთდროულად მდგომი ავტობუსები</a>
 
 
             <form action='excelExport.php' method='POST'><input type='hidden' name='export' value='export'><input type='submit' value='ექსელში ექსპორტი' ></form>

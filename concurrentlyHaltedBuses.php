@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -30,24 +35,17 @@
             }
         </style>
     </head>
+
     <body>
         <div class="navbar">
             <a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
-            <a href="trips.php">ბრუნები</a>
+            <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a>
+              <a href="trips.php">ბრუნები</a>
             <a href="intervals.php">ინტერვალები</a>
-            <a href="concurrentlyHaltedBuses.php">ერთდროულად მდგომი ავტობუსები</a>
-
         </div>
-        <br>
-        <hr>
 
-
-        <hr><br><br>
-        <form action="Controller/uploadController.php" method="post" enctype="multipart/form-data">
-            Select image to upload:
-            <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="Upload File" name="submit">
-        </form>
-
+        <?php
+        // put your code here
+        ?>
     </body>
 </html>

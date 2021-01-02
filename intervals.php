@@ -41,6 +41,8 @@ and open the template in the editor.
             <a href="index.php">მთავარ გვერძე დაბრნუნება</a>
             <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a>
             <a href="trips.php">ბრუნები</a>
+            <a href="concurrentlyHaltedBuses.php">ერთდროულად მდგომი ავტობუსები</a>
+
         </div>
         <?php
         echo "intervals here";

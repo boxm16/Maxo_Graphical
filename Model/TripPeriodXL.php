@@ -1,7 +1,7 @@
 <?php
 
 require_once './Controller/TimeController.php';
-require_once 'TripPeriodDNA.php';
+require_once 'DNA.php';
 
 class TripPeriodXL {
 
@@ -164,7 +164,7 @@ class TripPeriodXL {
     function setTripPeriodDNA($tripPeriodDNA) {
         $this->tripPeriodDNA = $tripPeriodDNA;
     }
-    
+
     function getDeparturePoint() {
         return $this->departurePoint;
     }
@@ -173,8 +173,6 @@ class TripPeriodXL {
         $this->departurePoint = $departurePoint;
     }
 
-    
-    
     public function getLightsForHaltTimeAtLateDeparture() {
         if ($this->startTimeActual != "" && $this->startTimeScheduled) {
             $timeController = new TimeController();

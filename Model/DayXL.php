@@ -1,6 +1,6 @@
 <?php
 
-include_once 'ExodusXL.php';
+require_once  'ExodusXL.php';
 
 class DayXL {
 

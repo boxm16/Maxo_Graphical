@@ -1,6 +1,6 @@
 <?php
 
-include_once 'TripVoucherXL.php';
+require_once 'TripVoucherXL.php';
 
 class ExodusXL {
 

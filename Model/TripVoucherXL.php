@@ -1,6 +1,6 @@
 <?php
 
-include_once 'TripPeriodXL.php';
+require_once  'TripPeriodXL.php';
 
 class TripVoucherXL {
 

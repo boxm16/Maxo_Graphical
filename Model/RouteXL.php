@@ -1,6 +1,6 @@
 <?php
 
-include_once 'DayXL.php';
+require_once 'DayXL.php';
 
 class RouteXL {
 

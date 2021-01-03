@@ -27,4 +27,9 @@ class DayXL {
         $this->exoduses = $exoduses;
     }
 
+    public function getConcurrentlyHaltedBuses() {
+        //return array of those perio
+        return array();
+    }
+
 }

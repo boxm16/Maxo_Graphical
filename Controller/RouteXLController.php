@@ -239,6 +239,7 @@ class RouteXLController {
         $arrivalTimeActual = $row[18]["value"];
         $arrivalTimeDifference = $row[19]["value"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        $tripPeriod->setDeparturePoint("a");
         return $tripPeriod;
     }
 
@@ -250,6 +251,7 @@ class RouteXLController {
         $arrivalTimeActual = $row[24]["value"];
         $arrivalTimeDifference = $row[25]["value"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        $tripPeriod->setDeparturePoint("b");
         return $tripPeriod;
     }
 
@@ -273,6 +275,119 @@ class RouteXLController {
 
     public function setRoutes($routes) {
         $this->routes = $routes;
+    }
+
+    public function routeCasesOfConcurrentlyHaltedBuses() {
+        //return array(cases) of arrays of concurrently halted buses
+
+        $routeArrayOfCases = array();
+        $routes = $this->getRoutes();
+        foreach ($routes as $route) {
+            $routeNumber = $route->getNumber();
+            $days = $route->getDays();
+
+            foreach ($days as $day) {
+                $sortedTripPeriodsOfTheDay = $this->getSortedTripPeriodsOfTheDay($day, $routeNumber);
+                $arrayOfDayCasesOfConcurrentlyHaltedBuses = $this->getArrayOfDayCasesOfConcurrentlyHaltedBuses($sortedTripPeriodsOfTheDay);
+                array_push($routeArrayOfCases, $arrayOfDayCasesOfConcurrentlyHaltedBuses);
+            }
+        }
+        return $routeArrayOfCases;
+    }
+
+    private function getSortedTripPeriodsOfTheDay($day, $routeNumber) {
+        $timeController = new TimeController();
+        $allTripPeriodsOfTheDay = array();
+        $dateStamp = $day->getDateStamp();
+        $exoduses = $day->getExoduses();
+        foreach ($exoduses as $exodus) {
+            $exodusNumber = $exodus->getNumber();
+            $tripVouchers = $exodus->getTripVouchers();
+            foreach ($tripVouchers as $tripVoucher) {
+                $tripVoucherNumber = $tripVoucher->getNumber();
+                // $busNumber=$tripVoucher->getBusNumber();
+                //$busType=$tripVoucher->getBusType();
+                $driverNumber = $tripVoucher->getDriverNumber();
+                $driverName = $tripVoucher->getDriverName();
+                $notes = $tripVoucher->getNotes();
+                $tripPeriods = $tripVoucher->getTripPeriods();
+                for ($index = 0; $index < count($tripPeriods); $index++) {
+                    $tripPeriod = $tripPeriods[$index];
+                    $tripPeriodType = $tripPeriod->getType();
+                    if ($tripPeriodType != "baseLeaving") {
+                        $tripPeriodDNA = new tripPeriodDNA();
+                        $tripPeriodDNA->setRouteNumber($routeNumber);
+                        $tripPeriodDNA->setDateStamp($dateStamp);
+                        $tripPeriodDNA->setExodusNumber($exodusNumber);
+                        $tripPeriodDNA->setVoucherNumber($tripVoucherNumber);
+                        $tripPeriodDNA->setDriverNumber($driverNumber);
+                        $tripPeriodDNA->setDriverName($driverName);
+                        $tripPeriodDNA->setNotes($notes);
+                        $tripPeriod->setTripPeriodDNA($tripPeriodDNA);
+                        $haltStartTimeActual = $tripPeriod->getPreviosTripPeriodArrivalTimeActual();
+                        $startTimeActual = $tripPeriod->getStartTimeActual();
+                        if ($haltStartTimeActual != "" && $startTimeActual != "") {
+                            $haltStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($haltStartTimeActual);
+                            if (array_key_exists($haltStartTimeActualInSeconds, $allTripPeriodsOfTheDay)) {
+                                $allTripPeriodsOfTheDay[$haltStartTimeActualInSeconds + 1] = $tripPeriod;
+                            } else {
+                                $allTripPeriodsOfTheDay[$haltStartTimeActualInSeconds] = $tripPeriod;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        ksort($allTripPeriodsOfTheDay);
+        return $allTripPeriodsOfTheDay;
+    }
+
+    private function getArrayOfDayCasesOfConcurrentlyHaltedBuses($sortedTripPeriodsOfTheDay) {
+        $arrayOfDayCasesOfConcurrentlyHaltedBuses = array();
+        $arrayKeys = array_keys($sortedTripPeriodsOfTheDay);
+        for ($x = 0; $x < count($arrayKeys); $x++) {
+            $tripPeriod = $this->getNthItemOfAssociativeArray($x, $sortedTripPeriodsOfTheDay);
+
+            $caseOfConcurrentlyHaltedBuses = $this->getCaseOfConcurrentlyHaltedBuses($x, $tripPeriod, $sortedTripPeriodsOfTheDay);
+            if (count($caseOfConcurrentlyHaltedBuses) > 1) {
+                array_push($arrayOfDayCasesOfConcurrentlyHaltedBuses, $caseOfConcurrentlyHaltedBuses);
+            }
+        }
+
+        return $arrayOfDayCasesOfConcurrentlyHaltedBuses;
+    }
+
+    private function getNthItemOfAssociativeArray($nth, $array) {
+        $arrayKeys = array_keys($array);
+        $index = $arrayKeys[$nth];
+        return $array[$index];
+    }
+
+    private function getCaseOfConcurrentlyHaltedBuses($x, $tripPeriod, $sortedTripPeriodsOfTheDay) {
+        $caseOfConccurentlyHaltedBuses = array();
+        $loopEndPoint = $tripPeriod->getStartTimeActual();
+        $timeController = new TimeController();
+        $loopEndPointInSeconds = $timeController->getSecondsFromTimeStamp($loopEndPoint);
+        $x = $x + 1;
+        array_push($caseOfConccurentlyHaltedBuses, $tripPeriod);
+        while ($x < count($sortedTripPeriodsOfTheDay)) {
+            $comparingTripPeriod = $this->getNthItemOfAssociativeArray($x, $sortedTripPeriodsOfTheDay);
+            $comparingTripPeriodHaltStartTimeActual = $comparingTripPeriod->getPreviosTripPeriodArrivalTimeActual();
+            $comparingTripPeriodHaltStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($comparingTripPeriodHaltStartTimeActual);
+            if ($comparingTripPeriodHaltStartTimeActualInSeconds >= $loopEndPointInSeconds) {
+                break;
+            } else {
+                $tripPeriodHaltPoint = $tripPeriod->getDeparturePoint();
+                $comparingTripPeriodHaltPoint = $comparingTripPeriod->getDeparturePoint();
+                if ($tripPeriodHaltPoint == $comparingTripPeriodHaltPoint) {
+                    array_push($caseOfConccurentlyHaltedBuses, $comparingTripPeriod);
+                }
+            }
+
+            $x++;
+        }
+
+        return $caseOfConccurentlyHaltedBuses;
     }
 
 }

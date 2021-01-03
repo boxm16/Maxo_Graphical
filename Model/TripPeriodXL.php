@@ -1,10 +1,12 @@
 <?php
 
 require_once './Controller/TimeController.php';
+require_once 'TripPeriodDNA.php';
 
 class TripPeriodXL {
 
     private $type; //baseLeaving, baseReturn, ab, ba, break
+    private $departurePoint; //a,b,d (d is a base)
     private $startTimeScheduled;
     private $startTimeActual;
     private $startTimeDifference;
@@ -14,6 +16,7 @@ class TripPeriodXL {
     private $availableDepartureTimeAtLateDeparture;
     private $previosTripPeriodArrivalTimeScheduled;
     private $previosTripPeriodArrivalTimeActual;
+    private $tripPeriodDNA;
 
     function __construct($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference) {
         $this->type = $type;
@@ -42,6 +45,8 @@ class TripPeriodXL {
                 return "A_B";
             case "ba":
                 return "B_A";
+            case "halt":
+                return "დგომა A პუნკტში";
         }
     }
 
@@ -79,9 +84,10 @@ class TripPeriodXL {
                 return "blue";
             case "ba":
                 return "green";
-
             case "baseReturn":
                 return "grey";
+            case "halt":
+                return "LightGray";
         }
     }
 
@@ -151,6 +157,24 @@ class TripPeriodXL {
         $this->previosTripPeriodArrivalTimeActual = $previosTripPeriodArrivalTimeActual;
     }
 
+    function getTripPeriodDNA() {
+        return $this->tripPeriodDNA;
+    }
+
+    function setTripPeriodDNA($tripPeriodDNA) {
+        $this->tripPeriodDNA = $tripPeriodDNA;
+    }
+    
+    function getDeparturePoint() {
+        return $this->departurePoint;
+    }
+
+    function setDeparturePoint($departurePoint) {
+        $this->departurePoint = $departurePoint;
+    }
+
+    
+    
     public function getLightsForHaltTimeAtLateDeparture() {
         if ($this->startTimeActual != "" && $this->startTimeScheduled) {
             $timeController = new TimeController();

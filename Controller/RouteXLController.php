@@ -374,9 +374,17 @@ class RouteXLController {
             $comparingTripPeriod = $this->getNthItemOfAssociativeArray($x, $sortedTripPeriodsOfTheDay);
             $comparingTripPeriodHaltStartTimeActual = $comparingTripPeriod->getPreviosTripPeriodArrivalTimeActual();
             $comparingTripPeriodHaltStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($comparingTripPeriodHaltStartTimeActual);
+            $comparingTripPeriodHaltEndTimeActual = $comparingTripPeriod->getStartTimeActual();
+            $comparingTripPeriodHaltEndTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($comparingTripPeriodHaltEndTimeActual);
+
             if ($comparingTripPeriodHaltStartTimeActualInSeconds >= $loopEndPointInSeconds) {
                 break;
             } else {
+                if ($comparingTripPeriodHaltEndTimeActualInSeconds - $comparingTripPeriodHaltStartTimeActualInSeconds == 0) {
+                    //diladi ,if a bus departs immediately after arrival, then skip
+                               $x++;
+                    continue;
+                }
                 $tripPeriodHaltPoint = $tripPeriod->getDeparturePoint();
                 $comparingTripPeriodHaltPoint = $comparingTripPeriod->getDeparturePoint();
                 if ($tripPeriodHaltPoint == $comparingTripPeriodHaltPoint) {

@@ -125,6 +125,9 @@ class TripPeriodXL {
         $timeController = new TimeController();
         $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeScheduled);
         $arrivalTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($this->arrivalTimeScheduled);
+        if ($startTimeScheduledInSeconds > $arrivalTimeScheduledInSeconds) {
+            $arrivalTimeScheduledInSeconds = $arrivalTimeScheduledInSeconds + (24 * 60 * 60);
+        }
         $scheduledTripPeriodTimeInSeconds = $arrivalTimeScheduledInSeconds - $startTimeScheduledInSeconds;
         return $timeController->getTimeStampFromSeconds($scheduledTripPeriodTimeInSeconds);
     }
@@ -134,6 +137,9 @@ class TripPeriodXL {
             $timeController = new TimeController();
             $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeActual);
             $arrivalTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($this->arrivalTimeActual);
+            if ($startTimeActualInSeconds > $arrivalTimeActualInSeconds) {
+                $arrivalTimeActualInSeconds = $arrivalTimeActualInSeconds + (24 * 60 * 60);
+            }
             $actualTripPeriodTimeInSeconds = $arrivalTimeActualInSeconds - $startTimeActualInSeconds;
             return $timeController->getTimeStampFromSeconds($actualTripPeriodTimeInSeconds);
         }

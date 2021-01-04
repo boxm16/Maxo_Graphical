@@ -75,7 +75,7 @@ $routes = $routeController->getRoutes();
                     $tableConstructor = "<table style='width:400px'><tbody>";
 
                     $tableConstructor .= "<tr>"
-                            . "<td colspan='11' style=' text-align: center; '><label><b>გასვლა N:" . $exodus->getNumber() . "</b></label></td>"
+                            . "<td colspan='13' style=' text-align: center; '><label><b>გასვლა N:" . $exodus->getNumber() . "</b></label></td>"
                             . "</tr>";
                     $tripVouchers = $exodus->getTripVouchers();
                     foreach ($tripVouchers as $tripVoucher) {
@@ -86,7 +86,8 @@ $routes = $routeController->getRoutes();
                                 . "<th colspan='3'>გასვლის დრო</th>"
                                 . "<th></th>"
                                 . "<th colspan='3'>მისვლის დრო</th>"
-                                . "<th colspan='4'>გამოთვლები</th>"
+                                . "<th style='background-color:black'></th>"
+                                . "<th colspan='5'>გამოთვლები</th>"
                                 . "</tr>"
                                 . "<tr>"
                                 . "<th>გეგმიუირი</th>"
@@ -96,16 +97,23 @@ $routes = $routeController->getRoutes();
                                 . "<th>გეგმიუირი</th>"
                                 . "<th>ფაქტიური</th>"
                                 . "<th>სხვაობა</th>"
+                                . "<th style='background-color:black'>-</th>"
                                 . "<th>ბრუნის(წირის) გეგმიური დრო</th>"
                                 . "<th>ბრუნის(წირის) ფაქტიური დრო</th>"
                                 . "<th>დგომის გეგმიური დრო</th>"
                                 . "<th>დგომის ფაქტიური დრო</th>"
+                                . "<th>'დაკარგული დრო'</th>"
                                 . "</tr>";
                         $tripPeriods = $tripVoucher->getTripPeriods();
                         foreach ($tripPeriods as $tripPeriod) {
-                            $trafficLightsColor = $tripPeriod->getLightsForHaltTimeAtLateDeparture();
-
-                            $tableConstructor .= "<tr>"
+                            $timeStamp = $tripPeriod->getLostTime();
+                            $lightsForLostTime = $tripPeriod->getLightsForTimeStamp($timeStamp);
+                            $tripPeriodType = $tripPeriod->getType();
+                            $rowColor = "white";
+                            if ($tripPeriodType == "break") {
+                                $rowColor = "LightGray";
+                            }
+                            $tableConstructor .= "<tr style='background-color:$rowColor'>"
                                     . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                     . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
                                     . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
@@ -113,10 +121,12 @@ $routes = $routeController->getRoutes();
                                     . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                     . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                    . "<td style='background-color:black'></td>"
                                     . "<td>" . $tripPeriod->getScheduledTripPeriodTime() . "</td>"
                                     . "<td>" . $tripPeriod->getActualTripPeriodTime() . "</td>"
                                     . "<td>" . $tripPeriod->getScheduledHaltTime() . "</td>"
-                                    . "<td style='background-color:$trafficLightsColor'>" . $tripPeriod->getActualHaltTime() . "</td>"
+                                    . "<td>" . $tripPeriod->getActualHaltTime() . "</td>"
+                                    . "<td style='background-color:$lightsForLostTime'>" . $tripPeriod->getLostTime() . "</td>"
                                     . "</tr>";
                         }
                     }

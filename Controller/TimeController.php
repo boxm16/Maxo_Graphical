@@ -11,12 +11,26 @@ class TimeController {
         } else {
             $seconds = 0;
         }
-        $totalSeconds = ($hours * 60 * 60) + ($minutes * 60) + ($seconds * 1);
-        return $totalSeconds;
+
+        if ($hours === "-00") {
+            return $totalSeconds = -1 * (($hours * 60 * 60) + ($minutes * 60) + ($seconds * 1));
+        }
+        if ($hours < 0) {
+            $hours=-1*$hours;
+            return $totalSeconds = -1 * (($hours * 60 * 60) + ($minutes * 60) + ($seconds * 1));
+        } else {
+            return $totalSeconds = ($hours * 60 * 60) + ($minutes * 60) + ($seconds * 1);
+        }
     }
 
     public function getTimeStampFromSeconds($seconds) {
-        return gmdate("H:i:s", $seconds);
+        if ($seconds >= 0) {
+            return gmdate("H:i:s", $seconds);
+        } else {
+            $seconds = -1 * $seconds;
+
+            return "-" . gmdate("H:i:s", $seconds);
+        }
     }
 
 }

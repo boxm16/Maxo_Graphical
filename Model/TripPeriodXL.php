@@ -196,4 +196,49 @@ class TripPeriodXL {
             return "white";
     }
 
+    public function getLostTime() {
+        if ($this->startTimeDifference != "") {
+
+            $timeController = new TimeController();
+            $lostTimeInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeDifference);
+            if ($lostTimeInSeconds <= 0) {//if a driver starts earlier than he should start
+                $lostTime = $timeController->getTimeStampFromSeconds($lostTimeInSeconds);
+
+                return $lostTime;
+            } else {
+//dialdi, if a driver starts later then he shoud start, while he could start (has enough halt time) 
+                $actualHaltTime = $this->getActualHaltTime();
+                if ($actualHaltTime == "") {
+                    return "";
+                } else {
+                    $startTimeDifferenceInSeconds = $timeController->getSecondsFromTimeStamp($this->startTimeDifference);
+                    $actualHaltTimeInSeconds = $timeController->getSecondsFromTimeStamp($actualHaltTime);
+
+                    if ($startTimeDifferenceInSeconds >= $actualHaltTimeInSeconds) {
+                        return $timeController->getTimeStampFromSeconds($actualHaltTimeInSeconds);
+                    } else {
+                        return $timeController->getTimeStampFromSeconds($startTimeDifferenceInSeconds);
+                    }
+                }
+            }
+        } else {
+            return "";
+        }
+    }
+
+    public function getLightsForTimeStamp($timeStamp) {
+        if ($timeStamp == "") {
+            return "white";
+        }
+        $timeController = new TimeController();
+        $timeInSeconds = $timeController->getSecondsFromTimeStamp($timeStamp);
+        if ($timeInSeconds < 61 && $timeInSeconds > -60) {
+            return "white";
+        }
+        if ($timeInSeconds < 301 && $timeInSeconds > -300) {
+            return "yellow";
+        }
+        return "red";
+    }
+
 }

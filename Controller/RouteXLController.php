@@ -382,7 +382,7 @@ class RouteXLController {
             } else {
                 if ($comparingTripPeriodHaltEndTimeActualInSeconds - $comparingTripPeriodHaltStartTimeActualInSeconds == 0) {
                     //diladi ,if a bus departs immediately after arrival, then skip
-                               $x++;
+                    $x++;
                     continue;
                 }
                 $tripPeriodHaltPoint = $tripPeriod->getDeparturePoint();
@@ -398,4 +398,5 @@ class RouteXLController {
         return $caseOfConccurentlyHaltedBuses;
     }
 
+  
 }

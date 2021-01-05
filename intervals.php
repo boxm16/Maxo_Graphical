@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+<?php
+require_once 'Controller/RouteXLController.php';
+$routeController = new RouteXLController();
+$routes = $routeController->getRoutes();
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -46,6 +46,38 @@ and open the template in the editor.
         </div>
         <?php
         echo "intervals here";
+        echo"<br><hr>";
+        foreach ($routes as $route) {
+            echo "მარშრუტი  # " . $route->getNumber();
+            echo "<hr>";
+            $days = $route->getDays();
+            foreach ($days as $day) {
+                $dateStamp = $day->getDateStamp();
+                $dayIntervals = $day->getIntervals();
+
+                echo $dateStamp;
+                echo "<br>";
+        
+                foreach ($dayIntervals as $scheduledIntervals) {
+
+                    foreach ($scheduledIntervals as $tripPeriod) {
+                        echo $tripPeriod->getType() . ")";
+                        echo $tripPeriod->getStartTimeScheduled();
+                        echo "--";
+                        echo $tripPeriod->getScheduledIntervalAfterPreviousBus();
+                        echo "++";
+                        echo $tripPeriod->getActualIntervalAfterPreviousBus();
+
+                        echo "<br>";
+                    }
+
+                    echo "END OF TRIP PERIOD TYPE";
+                    echo "<br>";
+                }
+                echo "---------------------------END OF DAY-----------------------------<hr>";
+            }
+            echo "<hr>++++++++++++++++END OF ROUTE++++++++++++++<hr>";
+        }
         ?>
     </body>
 </html>

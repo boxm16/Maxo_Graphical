@@ -14,7 +14,9 @@ class TripPeriodXL {
     private $arrivalTimeActual;
     private $arrivalTimeDifference;
     private $availableDepartureTimeAtLateDeparture;
-    private $previosTripPeriodArrivalTimeScheduled;
+    private $scheduledIntervalAfterPreviousBus; //this is time tha has been scheduled to pass from the time previous bus left for same trip
+    private $actualIntervalAfterPreviousBus; //this is time that  actually has passed from the time previous bus left for same trip 
+    private $previosTripPeriodArrivalTimeScheduled; //this is for the same bus, diladi, time whe tha same bus ended previous tripPeriod
     private $previosTripPeriodArrivalTimeActual;
     private $tripPeriodDNA;
 
@@ -177,6 +179,22 @@ class TripPeriodXL {
 
     function setDeparturePoint($departurePoint) {
         $this->departurePoint = $departurePoint;
+    }
+
+    function getScheduledIntervalAfterPreviousBus() {
+        return $this->scheduledIntervalAfterPreviousBus;
+    }
+
+    function setScheduledIntervalAfterPreviousBus($scheduledIntervalAfterPreviousBus) {
+        $this->scheduledIntervalAfterPreviousBus = $scheduledIntervalAfterPreviousBus;
+    }
+
+        function getActualIntervalAfterPreviousBus() {
+        return $this->actualIntervalAfterPreviousBus;
+    }
+
+    function setActualIntervalAfterPreviousBus($actualIntervalAfterPreviousBus) {
+        $this->actualIntervalAfterPreviousBus = $actualIntervalAfterPreviousBus;
     }
 
     public function getLightsForHaltTimeAtLateDeparture() {

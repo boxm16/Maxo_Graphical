@@ -9,6 +9,11 @@ $routes = $routeController->getRoutes();
         <meta charset="UTF-8">
         <title></title>
         <style>
+
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse
+            }
             .navbar {
                 overflow: hidden;
                 background-color: lightgreen;
@@ -57,23 +62,46 @@ $routes = $routeController->getRoutes();
 
                 echo $dateStamp;
                 echo "<br>";
-        
+                $aTableConstructor = "<table name='aTable'><thead><th>დაგეგმილი<br>გასვლის დრო</th><th>დაგეგმილი<br>ინტერვალი</th><th>ფაკტიური<br>ინტერვალი</th></thead>";
+                $bTableConstructor = "<table name='bTable'><thead><th>დაგეგმილი<br>გასვლის დრო</th><th>დაგეგმილი<br>ინტერვალი</th><th>ფაკტიური<br>ინტერვალი</th></thead>";
+
                 foreach ($dayIntervals as $scheduledIntervals) {
 
+
+
                     foreach ($scheduledIntervals as $tripPeriod) {
-                        echo $tripPeriod->getType() . ")";
-                        echo $tripPeriod->getStartTimeScheduled();
-                        echo "--";
-                        echo $tripPeriod->getScheduledIntervalAfterPreviousBus();
-                        echo "++";
-                        echo $tripPeriod->getActualIntervalAfterPreviousBus();
+                        if ($tripPeriod->getType() == "ab") {
+                            $aTableConstructor .= "<tr>";
+                            $aTableConstructor .= "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>";
+                            $aTableConstructor .= "<td>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
+                            $aTableConstructor .= "<td>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
+                            $aTableConstructor .= "</tr>";
+                        }
+                        if ($tripPeriod->getType() == "ba") {
+                            $bTableConstructor .= "<tr>";
+                            $bTableConstructor .= "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>";
+                            $bTableConstructor .= "<td>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
+                            $bTableConstructor .= "<td>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
 
-                        echo "<br>";
+                            $bTableConstructor .= "</tr>";
+                        }
                     }
-
-                    echo "END OF TRIP PERIOD TYPE";
-                    echo "<br>";
                 }
+                $aTableConstructor .= "</table>";
+                $bTableConstructor .= "</table>";
+
+
+                $bigTableConstructor = "<table>"
+                        . "<thead>"
+                        . "<th>A_B</th>"
+                        . "<th>B_A</th>"
+                        . "</thead>";
+                $bigTableConstructor .= "<tr>";
+                $bigTableConstructor .= "<td style='vertical-align:top'>" . $aTableConstructor . "</td>";
+                $bigTableConstructor .= "<td style='vertical-align:top'>" . $bTableConstructor . "</td>";
+                $bigTableConstructor .= "</tr>";
+                $bigTableConstructor .= "</table>";
+                echo $bigTableConstructor;
                 echo "---------------------------END OF DAY-----------------------------<hr>";
             }
             echo "<hr>++++++++++++++++END OF ROUTE++++++++++++++<hr>";

@@ -16,6 +16,8 @@ class TripPeriodXL {
     private $availableDepartureTimeAtLateDeparture;
     private $scheduledIntervalAfterPreviousBus; //this is time tha has been scheduled to pass from the time previous bus left for same trip
     private $actualIntervalAfterPreviousBus; //this is time that  actually has passed from the time previous bus left for same trip 
+    private $scheduledIntervalColor;
+    private $actualIntervalColor;
     private $previosTripPeriodArrivalTimeScheduled; //this is for the same bus, diladi, time whe tha same bus ended previous tripPeriod
     private $previosTripPeriodArrivalTimeActual;
     private $tripPeriodDNA;
@@ -189,7 +191,7 @@ class TripPeriodXL {
         $this->scheduledIntervalAfterPreviousBus = $scheduledIntervalAfterPreviousBus;
     }
 
-        function getActualIntervalAfterPreviousBus() {
+    function getActualIntervalAfterPreviousBus() {
         return $this->actualIntervalAfterPreviousBus;
     }
 
@@ -264,5 +266,22 @@ class TripPeriodXL {
         }
         return "red";
     }
+    function getScheduledIntervalColor() {
+        return $this->scheduledIntervalColor;
+    }
+
+    function getActualIntervalColor() {
+        return $this->actualIntervalColor;
+    }
+
+    function setScheduledIntervalColor($scheduledIntervalColor) {
+        $this->scheduledIntervalColor = $scheduledIntervalColor;
+    }
+
+    function setActualIntervalColor($actualIntervalColor) {
+        $this->actualIntervalColor = $actualIntervalColor;
+    }
+
+
 
 }

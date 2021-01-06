@@ -62,25 +62,28 @@ $routes = $routeController->getRoutes();
 
                 echo $dateStamp;
                 echo "<br>";
-                $aTableConstructor = "<table name='aTable'><thead><th>დაგეგმილი<br>გასვლის დრო</th><th>დაგეგმილი<br>ინტერვალი</th><th>ფაკტიური<br>ინტერვალი</th></thead>";
-                $bTableConstructor = "<table name='bTable'><thead><th>დაგეგმილი<br>გასვლის დრო</th><th>დაგეგმილი<br>ინტერვალი</th><th>ფაკტიური<br>ინტერვალი</th></thead>";
+                $aTableConstructor = "<table name='aTable'><thead><th>გასვლის<br>#</th><th>დაგეგმილი<br>გასვლის დრო</th><th>დაგეგმილი<br>ინტერვალი</th><th>ფაკტიური<br>ინტერვალი</th></thead>";
+                $bTableConstructor = "<table name='bTable'><thead><th>გასვლის<br>#</th><th>დაგეგმილი<br>გასვლის დრო</th><th>დაგეგმილი<br>ინტერვალი</th><th>ფაკტიური<br>ინტერვალი</th></thead>";
 
                 foreach ($dayIntervals as $scheduledIntervals) {
 
 
 
                     foreach ($scheduledIntervals as $tripPeriod) {
+                        $scheduledIntervalColor = $tripPeriod->getScheduledIntervalColor();
                         if ($tripPeriod->getType() == "ab") {
                             $aTableConstructor .= "<tr>";
+                            $aTableConstructor .= "<td><b>" . $tripPeriod->getTripPeriodDNA()->getExodusNumber() . "</b></td>";
                             $aTableConstructor .= "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>";
-                            $aTableConstructor .= "<td>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
+                            $aTableConstructor .= "<td style='background-color:$scheduledIntervalColor'>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
                             $aTableConstructor .= "<td>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
                             $aTableConstructor .= "</tr>";
                         }
                         if ($tripPeriod->getType() == "ba") {
                             $bTableConstructor .= "<tr>";
+                            $bTableConstructor .= "<td><b>" . $tripPeriod->getTripPeriodDNA()->getExodusNumber() . "</b></td>";
                             $bTableConstructor .= "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>";
-                            $bTableConstructor .= "<td>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
+                            $bTableConstructor .= "<td style='background-color:$scheduledIntervalColor'>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
                             $bTableConstructor .= "<td>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
 
                             $bTableConstructor .= "</tr>";

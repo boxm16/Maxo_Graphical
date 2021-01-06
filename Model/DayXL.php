@@ -7,6 +7,7 @@ class DayXL {
 
     private $dateStamp;
     private $exoduses;
+    private $standartIntervalTime;
 
     function __construct() {
         $this->exoduses = array();
@@ -36,10 +37,14 @@ class DayXL {
 
         $exoduses = $this->getExoduses();
         foreach ($exoduses as $exodus) {
+            $exodusNumber = $exodus->getNumber();
             $vouchers = $exodus->getTripVouchers();
             foreach ($vouchers as $voucher) {
                 $tripPeriods = $voucher->getTripPeriods();
                 foreach ($tripPeriods as $tripPeriod) {
+                    $tripPeriodDNA = new tripPeriodDNA();
+                    $tripPeriodDNA->setExodusNumber($exodusNumber);
+                    $tripPeriod->setTripPeriodDNA($tripPeriodDNA);
                     $tripPeriodType = $tripPeriod->getType();
                     if ($tripPeriodType == "ab") {
                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
@@ -74,12 +79,25 @@ class DayXL {
             } else {
                 $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
                 $previousTripPeriod = $this->getNthItemOfAssociativeArray($x - 1, $tripPeriods);
-                
+
                 $tripPeriodStartTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
                 $previousTripPeriodStartTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($previousTripPeriod->getStartTimeScheduled());
                 $scheduledIntervalInSeconds = $tripPeriodStartTimeScheduledInSeconds - $previousTripPeriodStartTimeScheduledInSeconds;
                 $tripPeriod->setScheduledIntervalAfterPreviousBus($timeController->getTimeStampFromSeconds($scheduledIntervalInSeconds));
 
+                //BLOCK INTERVAL_COLOR this block is to set color for standart and prolonged intervals
+                if ($x == 1) {
+                    $this->standartIntervalTime = $timeController->getTimeStampFromSeconds($scheduledIntervalInSeconds);
+                    $tripPeriod->setScheduledIntervalColor("white");
+                } else {
+                    if (abs($timeController->getSecondsFromTimeStamp($this->standartIntervalTime) - $scheduledIntervalInSeconds) < 61) {
+                        $tripPeriod->setScheduledIntervalColor("white");
+                    } else {
+                        $tripPeriod->setScheduledIntervalColor("pink");
+                    }
+                }
+
+                //END OF BLOCK INTERVAL_COLOR
                 if ($tripPeriod->getStartTimeActual() !== "" && $previousTripPeriod->getStartTimeActual() != "") {
                     $tripPeriodStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeActual());
                     $previousTripPeriodStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($previousTripPeriod->getStartTimeActual());
@@ -94,8 +112,7 @@ class DayXL {
         return $tripPeriods;
     }
 
-    private
-            function getNthItemOfAssociativeArray($nth, $array) {
+    private function getNthItemOfAssociativeArray($nth, $array) {
         $arrayKeys = array_keys($array);
         $index = $arrayKeys[$nth];
         return $array[$index];

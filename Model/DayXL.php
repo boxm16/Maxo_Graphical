@@ -2,6 +2,7 @@
 
 require_once 'ExodusXL.php';
 require_once './Controller/TimeController.php';
+require_once './Controller/ColorController.php';
 
 class DayXL {
 
@@ -146,6 +147,14 @@ class DayXL {
                     $previousTripPeriodStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($previousTripPeriod->getStartTimeActual());
                     $actualIntervalInSeconds = $tripPeriodStartTimeActualInSeconds - $previousTripPeriodStartTimeActualInSeconds;
                     $tripPeriod->setActualIntervalAfterPreviousBus($timeController->getTimeStampFromSeconds($actualIntervalInSeconds));
+                    if ($x >= 1) {
+                        $scheduledIntervalTimeInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getScheduledIntervalAfterPreviousBus());
+                        $actualIntervalDifference = abs($scheduledIntervalTimeInSeconds - $actualIntervalInSeconds);
+                        $colorController = new ColorController();
+                        $tripPeriod->setActualIntervalColor($colorController->getIntervalColor($actualIntervalDifference));
+                    } else {
+                        $tripPeriod->setActualIntervalColor("white");
+                    }
                 } else {
                     $tripPeriod->setActualIntervalAfterPreviousBus("");
                 }

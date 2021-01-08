@@ -55,61 +55,87 @@ class DayXL {
                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                         $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($startTimeScheduled);
                         $ab_intervals[$startTimeScheduledInSeconds] = $tripPeriod;
-
-                        //-----------
-                        $tripPeriod_GPS = clone $tripPeriod;
-                        $startTimeActual = $tripPeriod_GPS->getStartTimeActual();
-                        if ($startTimeActual != "") {
-                            $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($startTimeActual);
-                            if (array_key_exists($startTimeActualInSeconds, $ab_GPS_intervals)) {
-                                $startTimeActualInSeconds++;
-                                $ab_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
-                            } else {
-                                $ab_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
-                            }
-                        }
-
-                        //---end----
                     }
                     if ($tripPeriodType == "ba") {
                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                         $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($startTimeScheduled);
                         $ba_intervals[$startTimeScheduledInSeconds] = $tripPeriod;
-
-
-                        //-----------
-                        $tripPeriod_GPS = clone $tripPeriod;
-                        $startTimeActual = $tripPeriod_GPS->getStartTimeActual();
-                        if ($startTimeActual != "") {
-                            $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($startTimeActual);
-                            if (array_key_exists($startTimeActualInSeconds, $ba_GPS_intervals)) {
-                                $startTimeActualInSeconds++;
-                                $ba_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
-                            } else {
-                                $ba_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
-                            }
-                        }
-
-
-                        //---end----
                     }
                 }
             }
         }
+
+
         ksort($ab_intervals);
         $ab_intervals = $this->setIntervalsForTripPeriods($ab_intervals);
         ksort($ba_intervals);
         $ba_intervals = $this->setIntervalsForTripPeriods($ba_intervals);
+
+        $ab_GPS_intervals = $this->getGPSIntervalPeriods($ab_intervals);
+        $ba_GPS_intervals = $this->getGPSIntervalPeriods($ba_intervals);
+
         ksort($ab_GPS_intervals);
-        $ab_GPS_intervals = $this->setIntervalsForTripPeriods($ab_GPS_intervals);
+        $ab_GPS_intervals = $this->setGPSForTripPeriods($ab_GPS_intervals);
         ksort($ba_GPS_intervals);
-        $ba_GPS_intervals = $this->setIntervalsForTripPeriods($ba_GPS_intervals);
+        $ba_GPS_intervals = $this->setGPSForTripPeriods($ba_GPS_intervals);
 
         $scheduledIntervals = array($ab_intervals, $ba_intervals);
         $gpsIntervals = array($ab_GPS_intervals, $ba_GPS_intervals);
         $intervals["scheduledIntervals"] = $scheduledIntervals;
         $intervals["gpsIntervals"] = $gpsIntervals;
         return $intervals;
+    }
+
+    private function getGPSIntervalPeriods($tripPeriods) {
+        $timeController = new TimeController();
+        $resultArray = array();
+        foreach ($tripPeriods as $tripPeriod) {
+            $tripPeriod_GPS = clone $tripPeriod;
+            $startTimeActual = $tripPeriod_GPS->getStartTimeActual();
+            if ($startTimeActual != "") {
+                $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($startTimeActual);
+                if (array_key_exists($startTimeActualInSeconds, $resultArray)) {
+                    $startTimeActualInSeconds++;
+                    $resultArray [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                } else {
+                    $resultArray [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                }
+            }
+        }return $resultArray;
+    }
+
+    private function setGPSForTripPeriods($tripPeriods) {
+        $timeController = new TimeController();
+        $x = 0;
+        while ($x < count($tripPeriods)) {
+            if ($x == 0) {
+                $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
+                $tripPeriod->setScheduledIntervalAfterPreviousBus("");
+                $tripPeriod->setActualIntervalAfterPreviousBus("");
+            } else {
+                $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
+                $previousTripPeriod = $this->getNthItemOfAssociativeArray($x - 1, $tripPeriods);
+
+                if ($tripPeriod->getStartTimeActual() !== "" && $previousTripPeriod->getStartTimeActual() != "") {
+                    $tripPeriodStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getStartTimeActual());
+                    $previousTripPeriodStartTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($previousTripPeriod->getStartTimeActual());
+                    $actualIntervalInSeconds = $tripPeriodStartTimeActualInSeconds - $previousTripPeriodStartTimeActualInSeconds;
+                    $tripPeriod->setActualIntervalAfterPreviousBus($timeController->getTimeStampFromSeconds($actualIntervalInSeconds));
+                    if ($x >= 1) {
+                        $scheduledIntervalTimeInSeconds = $timeController->getSecondsFromTimeStamp($tripPeriod->getScheduledIntervalAfterPreviousBus());
+                        $actualIntervalDifference = abs($scheduledIntervalTimeInSeconds - $actualIntervalInSeconds);
+                        $colorController = new ColorController();
+                        $tripPeriod->setActualIntervalColor($colorController->getIntervalColor($actualIntervalDifference));
+                    } else {
+                        $tripPeriod->setActualIntervalColor("white");
+                    }
+                } else {
+                    $tripPeriod->setActualIntervalAfterPreviousBus("");
+                }
+            }
+            $x++;
+        }
+        return $tripPeriods;
     }
 
     private function setIntervalsForTripPeriods($tripPeriods) {

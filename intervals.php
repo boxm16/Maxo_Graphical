@@ -72,14 +72,14 @@ $routes = $routeController->getRoutes();
                 foreach ($scheduledIntervals as $tripPeriods) {
                     foreach ($tripPeriods as $tripPeriod) {
                         $scheduledIntervalColor = $tripPeriod->getScheduledIntervalColor();
-
+                        $actualIntervalColor = $tripPeriod->getActualIntervalColor();
                         $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
                         if ($tripPeriod->getType() == "ab") {
                             $aTableConstructor .= "<tr>";
                             $aTableConstructor .= "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>";
                             $aTableConstructor .= "<td>" . $tripPeriod->getStartTimeActual() . "</td>";
                             $aTableConstructor .= "<td style='background-color:$scheduledIntervalColor'>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
-                            $aTableConstructor .= "<td>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
+                            $aTableConstructor .= "<td style='background-color:$actualIntervalColor'>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
                             $aTableConstructor .= "<td><b><a href='trip.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber'  target='_blank'>" . $exodusNumber . "</a></b></td>";
 
                             $aTableConstructor .= "</tr>";
@@ -90,7 +90,7 @@ $routes = $routeController->getRoutes();
                             $bTableConstructor .= "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>";
                             $bTableConstructor .= "<td>" . $tripPeriod->getStartTimeActual() . "</td>";
                             $bTableConstructor .= "<td style='background-color:$scheduledIntervalColor'>" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
-                            $bTableConstructor .= "<td>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
+                            $bTableConstructor .= "<td style='background-color:$actualIntervalColor'>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
                             $bTableConstructor .= "<td><b><a href='trip.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber'  target='_blank'>" . $exodusNumber . "</a></b></td>";
                             $bTableConstructor .= "</tr>";
                         }
@@ -110,15 +110,13 @@ $routes = $routeController->getRoutes();
                         if ($tripPeriod->getType() == "ab") {
                             $a_gpsTableConstructor .= "<tr>";
                             $a_gpsTableConstructor .= "<td><b><a href='trip.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber'  target='_blank'>" . $exodusNumber . "</a></b></td>";
-                            $a_gpsTableConstructor .= "<td>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
+                            $a_gpsTableConstructor .= "<td style='background-color:$actualIntervalColor'>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
                             $a_gpsTableConstructor .= "</tr>";
                         }
                         if ($tripPeriod->getType() == "ba") {
                             $b_gpsTableConstructor .= "<tr>";
                             $b_gpsTableConstructor .= "<td><b><a href='trip.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber'  target='_blank'>" . $exodusNumber . "</a></b></td>";
                             $b_gpsTableConstructor .= "<td style='background-color:$actualIntervalColor'>" . $tripPeriod->getActualIntervalAfterPreviousBus() . "</td>";
-                            $b_gpsTableConstructor .= "<td >" . $tripPeriod->getScheduledIntervalAfterPreviousBus() . "</td>";
-
                             $b_gpsTableConstructor .= "</tr>";
                         }
                     }

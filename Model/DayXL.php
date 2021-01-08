@@ -31,8 +31,12 @@ class DayXL {
 
     public function getIntervals() {
         $intervals = array(); //return array of 2 arrays-one which have inside AB tripPeriods, and other with BA periods, both sorted by startTimeScheduled
+
         $ab_intervals = array();
         $ba_intervals = array();
+
+        $ab_GPS_intervals = array();
+        $ba_GPS_intervals = array();
         $timeController = new TimeController();
 
         $exoduses = $this->getExoduses();
@@ -50,21 +54,60 @@ class DayXL {
                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                         $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($startTimeScheduled);
                         $ab_intervals[$startTimeScheduledInSeconds] = $tripPeriod;
-                        ksort($ab_intervals);
-                        $ab_intervals = $this->setIntervalsForTripPeriods($ab_intervals);
+
+                        //-----------
+                        $tripPeriod_GPS = clone $tripPeriod;
+                        $startTimeActual = $tripPeriod_GPS->getStartTimeActual();
+                        if ($startTimeActual != "") {
+                            $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($startTimeActual);
+                            if (array_key_exists($startTimeActualInSeconds, $ab_GPS_intervals)) {
+                                $startTimeActualInSeconds++;
+                                $ab_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                            } else {
+                                $ab_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                            }
+                        }
+
+                        //---end----
                     }
                     if ($tripPeriodType == "ba") {
                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                         $startTimeScheduledInSeconds = $timeController->getSecondsFromTimeStamp($startTimeScheduled);
                         $ba_intervals[$startTimeScheduledInSeconds] = $tripPeriod;
-                        ksort($ba_intervals);
-                        $ba_intervals = $this->setIntervalsForTripPeriods($ba_intervals);
+
+
+                        //-----------
+                        $tripPeriod_GPS = clone $tripPeriod;
+                        $startTimeActual = $tripPeriod_GPS->getStartTimeActual();
+                        if ($startTimeActual != "") {
+                            $startTimeActualInSeconds = $timeController->getSecondsFromTimeStamp($startTimeActual);
+                            if (array_key_exists($startTimeActualInSeconds, $ba_GPS_intervals)) {
+                                $startTimeActualInSeconds++;
+                                $ba_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                            } else {
+                                $ba_GPS_intervals [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                            }
+                        }
+
+
+                        //---end----
                     }
                 }
             }
         }
-        array_push($intervals, $ab_intervals);
-        array_push($intervals, $ba_intervals);
+        ksort($ab_intervals);
+        $ab_intervals = $this->setIntervalsForTripPeriods($ab_intervals);
+        ksort($ba_intervals);
+        $ba_intervals = $this->setIntervalsForTripPeriods($ba_intervals);
+        ksort($ab_GPS_intervals);
+        $ab_GPS_intervals = $this->setIntervalsForTripPeriods($ab_GPS_intervals);
+        ksort($ba_GPS_intervals);
+        $ba_GPS_intervals = $this->setIntervalsForTripPeriods($ba_GPS_intervals);
+
+        $scheduledIntervals = array($ab_intervals, $ba_intervals);
+        $gpsIntervals = array($ab_GPS_intervals, $ba_GPS_intervals);
+        $intervals["scheduledIntervals"] = $scheduledIntervals;
+        $intervals["gpsIntervals"] = $gpsIntervals;
         return $intervals;
     }
 

@@ -4,6 +4,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $routeNumber = $_GET["routeNumber"];
     $dateStamp = $_GET["dateStamp"];
     $exodusNumber = $_GET["exodusNumber"];
+    $startTimeScheduled = $_GET["startTimeScheduled"];
     $message = "Route Number : $routeNumber <br>Date Stamp :$dateStamp <br> Exodus Number:$exodusNumber";
     $routeController = new RouteXLController();
     $routes = $routeController->getRoutes();
@@ -117,12 +118,17 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                                             . "</tr>";
                                     $tripPeriods = $tripVoucher->getTripPeriods();
                                     foreach ($tripPeriods as $tripPeriod) {
+
                                         $timeStamp = $tripPeriod->getLostTime();
                                         $lightsForLostTime = $tripPeriod->getLightsForTimeStamp($timeStamp);
                                         $tripPeriodType = $tripPeriod->getType();
                                         $rowColor = "white";
                                         if ($tripPeriodType == "break") {
                                             $rowColor = "LightGray";
+                                        }
+                                        $startTimeScheduledFromData = $tripPeriod->getStartTimeScheduled();
+                                        if ($startTimeScheduled == $startTimeScheduledFromData) {
+                                            $rowColor = "lightgreen";
                                         }
                                         $tableConstructor .= "<tr style='background-color:$rowColor'>"
                                                 . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"

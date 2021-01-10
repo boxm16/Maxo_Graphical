@@ -91,8 +91,8 @@ if (!isset($GLOBASL["routes"])) {
                         <th>ფაქტიური<br>მისვლის<br>დრო</th>
                         <th>სხვაობა</th>
                         <th></th>
-                        <th>ბრუნის(წირის)<br>გეგმიური<br>დრო</th>
-                        <th>ბრუნის(წირის)<br>ფაქტიური<br>დრო</th>
+                        <th>წირის<br>გეგმიური<br>დრო</th>
+                        <th>წირის<br>ფაქტიური<br>დრო</th>
                         <th>დგომის<br>გეგმიური<br> დრო</th>
                         <th>დგომის<br>ფაქტიური<br>დრო</th>
                         <th>'დაკარგული<br>დრო'</th>
@@ -132,7 +132,7 @@ if (!isset($GLOBASL["routes"])) {
                                         . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getTypeGe() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"

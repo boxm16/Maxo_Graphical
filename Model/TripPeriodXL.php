@@ -64,4 +64,22 @@ class TripPeriodXL {
         }
     }
 
+    function getTypeGe() {
+        $type = $this->type;
+        switch ($type) {
+            case "baseLeaving":
+                return "ბაზიდან გასვლა";
+            case "baseReturn":
+                return "ბაზაში დაბრუნება";
+            case "break":
+                return "შესვენება";
+            case "ab":
+                return "A_B";
+            case "ba":
+                return "B_A";
+            case "halt":
+                return "დგომა A პუნკტში";
+        }
+    }
+
 }

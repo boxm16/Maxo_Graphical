@@ -55,21 +55,22 @@ if (!isset($GLOBASL["routes"])) {
                        left: 50%;}
             /* end of loader styling*/
 
-            table {
-                /* Not required only for visualizing */
-                border-collapse: collapse;
-                width: 100%;
-            }
 
+            /*table styling */
             table thead tr th {
                 /* Important  for table head sticking whre it is*/
                 background-color: white;
                 position: sticky;
                 z-index: 100;
                 top: 50px;
+
+            }
+            /* other staff below */
+            table, thead, tr, th, td {
+                border: 2px solid black;
+
             }
 
-           
         </style>
     </head>
     <body>
@@ -80,184 +81,74 @@ if (!isset($GLOBASL["routes"])) {
         <div class="content">
             <table id="header-fixed">
                 <thead>
+
                     <tr>
-                        <th>Header 1</th>
-                        <th>Header 2</th>
-                        <th>Header 3</th>
+                        <th>გეგმიუირი<br>გასვლის<br>დრო</th>
+                        <th>ფაქტიური<br>გასვლის<br>დრო</th>
+                        <th>სხვაობა</th>
+                        <th>------</th>
+                        <th>გეგმიუირი<br>მისვლის<br>დრო</th>
+                        <th>ფაქტიური<br>მისვლის<br>დრო</th>
+                        <th>სხვაობა</th>
+                        <th>-</th>
+                        <th>ბრუნის(წირის)<br>გეგმიური<br>დრო</th>
+                        <th>ბრუნის(წირის)<br>ფაქტიური<br>დრო</th>
+                        <th>დგომის<br>გეგმიური<br> დრო</th>
+                        <th>დგომის<br>ფაქტიური<br>დრო</th>
+                        <th>'დაკარგული<br>დრო'</th>
                     </tr>
                 </thead>
                 <tbody>
                 <tbody>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <th>Text</th>
-                        <th>Text</th>
-                        <th>Text</th>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
-                    <tr>
-                        <td>Text</td>
-                        <td>Text</td>
-                        <td>Text</td>
-                    </tr>
+                    <?php
+                    foreach ($routes as $route) {
+
+                        $days = $route->getDays();
+                        echo "<tr><td colspan='13'><center>მარშრუტა #: " . $route->getNumber() . "</center></td></tr>";
+
+
+                        foreach ($days as $day) {
+                            echo "<tr><td colspan='13'><center>თარიღი: " . $day->getDateStamp() . "</center></td></tr>";
+                            $exoduses = $day->getExoduses();
+                            foreach ($exoduses as $exodus) {
+                                echo "<tr><td colspan='13'><center>გასვლია #: " . $exodus->getNumber() . "<center></td></tr>";
+
+                                $tripVouchers = $exodus->getTripVouchers();
+                                foreach ($tripVouchers as $tripVoucher) {
+                                    echo "<tr><td colspan='13'><center>მარშრუტა #" . $route->getNumber()
+                                    . ". თარიღი:" . $day->getDateStamp()
+                                    . ". გასვლია #" . $exodus->getNumber()
+                                    . ". საგზური #" . $tripVoucher->getNumber()
+                                    // . " Bus Type: " . $tripVoucher->getBusType()
+                                    //. " Bus Number: " . $tripVoucher->getBusNumber()
+                                    //. "/// Driver Number: " . $tripVoucher->getDriverNumber()
+                                    //. "/// Driver Name: " . $tripVoucher->getDriverName()
+                                    . "შენიშვნები: " . $tripVoucher->getNotes() . "</center></td></tr>";
+
+                                    $tripPeriods = $tripVoucher->getTripPeriods();
+                                    foreach ($tripPeriods as $tripPeriod) {
+
+                                        echo "<tr>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "</tr>";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    ?>
                 </tbody>
 
             </table>

@@ -49,13 +49,13 @@ function deployFile() {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>შეცდომა</title>
+        <title>ფაილის ატვირთვა</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
             tr {
                 height: 80px;
             }
-
+            /* navbar styling */
             ul {
                 list-style-type: none;
                 margin: 0;
@@ -86,6 +86,7 @@ function deployFile() {
             .active {
                 background-color: lightgreen;
             }
+            /* end of navbar styling */
         </style>
     </head>
     <body>
@@ -98,44 +99,44 @@ function deployFile() {
                 <div class="col">
                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
                         <center>
-                            <table ><tr>
+                            <table >
+                                <tr>
                                     <td style="color:red">
-                                <center><h2>  <?php echo $errorAlert ?></h2>  </center>
+                                <center><h2><?php echo $errorAlert; ?></h2></center>
                                 </td>
                                 </tr>
                                 <tr>
                                     <td style="color:red">
-                                <center><h2>  <?php echo $errorMessage ?></h2><center>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                        <center><h1>აირჩიე ასატვირთი ფაილი</h1></center>
+                                <center><h2>  <?php echo $errorMessage ?></h2></center>
+                                </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                <center><h1>აირჩიე ასატვირთი ფაილი</h1></center>
 
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                        <center> <input  form-control-file type="file" name="fileToUpload" id="fileToUpload"></center>
-                                        </td>
-                                        </tr> 
-                                        <tr>
-                                            <td>
-                                        <center><input class="btn btn-lg btn-primary" type="submit" value="ატვირთვა" name="submit"></center>  
-                                        </td>
-                                        </tr>
-                                        </table></center>
+                                </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                <center> <input  form-control-file type="file" name="fileToUpload" id="fileToUpload"></center>
+                                </td>
+                                </tr> 
+                                <tr>
+                                    <td>
+                                <center><input class="btn btn-lg btn-primary" type="submit" value="ატვირთვა" name="submit"></center>  
+                                </td>
+                                </tr>
+                            </table>
+                        </center>
 
-                                    <br>
-                                    <br>
 
-                                    </form>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-                                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-                                    </body>
-                                    </html>
+    </body>
+</html>

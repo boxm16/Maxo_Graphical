@@ -21,7 +21,7 @@
     <body>
 
         <div class="container">
-            <a href="calculator.php">მანძილი/სიჩქარე/დრო</a> &nbsp;<a href="graphical.php" target="_blank">გრაფიკული გამოსახვა</a> 
+            <a href="calculator.php">მანძილი/სიჩქარე/დრო</a> &nbsp;<a href="graphical.php" target="_blank">გრაფიკული გამოსახვა</a>&nbsp;<a href="routeDetails.php" target="_blank">ბრუნები დეტალურად</a> 
             <div class="row">
 
                 <div class="col-sm-5">

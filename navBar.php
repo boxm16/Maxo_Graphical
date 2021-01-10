@@ -2,7 +2,7 @@
 
 $mainPageActive = "";
 $uploadPageActive = "";
-$tripsPageActive = "";
+$routeDetailsPageActive = "";
 $intervalsActive = "";
 $concurrentPageActive = "";
 
@@ -14,21 +14,20 @@ switch ($currentPage) {
     case "uploadForm.php":
         $uploadPageActive = $activeClass;
         break;
-    case "trips.php":
-        $tripsPageActive = $activeClass;
+    case "routeDetails.php":
+        $routeDetailsPageActive = $activeClass;
         break;
     case "intervals.ophp":
         $intervalsActive = $activeClass;
         break;
-    
 }
 
 
 
 echo "<ul>
-  <li><a $mainPageActive href=\"#home\">მთავარ გვერძე დაბრნუნება</a></li>
-  <li><a $uploadPageActive href=\"#news\">ახალი ფაილის ატვირთვა</a></li>
-  <li><a $tripsPageActive href=\"#contact\">ბრუნები</a></li>
+  <li><a $mainPageActive href=\"index.php\">მთავარ გვერძე დაბრნუნება</a></li>
+  <li><a $uploadPageActive href=\"uploadForm.php\">ახალი ფაილის ატვირთვა</a></li>
+  <li><a $routeDetailsPageActive href=\"routeDetails.php\">ბრუნები</a></li>
   <li><a $intervalsActive href=\"#about\">ინტერვალები</a></li>
   <li><a $concurrentPageActive href=\"#about\">ერთდროულად მდგომი ავტობუსები</a></li>
 </ul>";

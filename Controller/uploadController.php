@@ -24,7 +24,7 @@ if (isset($_POST["submit"])) {
         echo " <hr><br><br><a href='../uploadForm.php'>ახალი ფაილის ატვირთვა</a> &nbsp;&nbsp;<a href='../index.php' target='_blank'>მთავარ გვერძე დაბრნუნება</a>";
 // if everything is ok, try to upload file
     } else {
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "../uploads/excellFile.xlsx")) {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "../uploads/routeExcellFile.xlsx")) {
             echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
             deployFile();
         } else {

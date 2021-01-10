@@ -90,7 +90,7 @@ if (!isset($GLOBASL["routes"])) {
                         <th>გეგმიუირი<br>მისვლის<br>დრო</th>
                         <th>ფაქტიური<br>მისვლის<br>დრო</th>
                         <th>სხვაობა</th>
-                        <th>-</th>
+                        <th></th>
                         <th>ბრუნის(წირის)<br>გეგმიური<br>დრო</th>
                         <th>ბრუნის(წირის)<br>ფაქტიური<br>დრო</th>
                         <th>დგომის<br>გეგმიური<br> დრო</th>
@@ -123,20 +123,20 @@ if (!isset($GLOBASL["routes"])) {
                                     //. " Bus Number: " . $tripVoucher->getBusNumber()
                                     //. "/// Driver Number: " . $tripVoucher->getDriverNumber()
                                     //. "/// Driver Name: " . $tripVoucher->getDriverName()
-                                    . "შენიშვნები: " . $tripVoucher->getNotes() . "</center></td></tr>";
+                                    . ". შენიშვნები: " . $tripVoucher->getNotes() . "</center></td></tr>";
 
                                     $tripPeriods = $tripVoucher->getTripPeriods();
                                     foreach ($tripPeriods as $tripPeriod) {
 
                                         echo "<tr>"
+                                        . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                        . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                        . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
                                         . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                        . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                        . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                        . "<td></td>"
                                         . "<td>" . $tripPeriod->getType() . "</td>"
                                         . "<td>" . $tripPeriod->getType() . "</td>"
                                         . "<td>" . $tripPeriod->getType() . "</td>"

@@ -17,6 +17,7 @@ class RouteXLController {
         if ($xlsx = SimpleXLSX::parse('uploads/routeExcellFile.xlsx')) {
             $rows = $xlsx->rowsEx();
         } else {
+            header("Location:excelFileErrorPage.php");
             echo "ფაილი არ არის ატვირთული ან დაზიანებულია(" . SimpleXLSX::parseError() . ")";
             echo "<hr>";
             return;

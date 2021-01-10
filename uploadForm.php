@@ -55,12 +55,44 @@ function deployFile() {
             tr {
                 height: 80px;
             }
+
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: green;
+                position: fixed;
+                top: 0;
+                width: 100%;
+            }
+
+            li {
+                float: left;
+            }
+
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            li a:hover {
+                background-color:white;
+            }
+
+            .active {
+                background-color: lightgreen;
+            }
         </style>
     </head>
     <body>
-        <a href="excel.php">უკან დაბრუნება</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
 
-        <hr><br><br>
+        <?php
+        include 'navBar.php';
+        ?>
         <div class="container">
             <div class="row">
                 <div class="col">

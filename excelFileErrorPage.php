@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <title>შეცდომა</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-       
+
     </head>
     <body>
         <div class="container">
@@ -15,13 +15,13 @@
                             ექსელის ფაილი არ არის ატვირთული ან დაზიანებულია
                         </h1></center>
                     <br><br>
-                    
+
                     <center><a  href="uploadForm.php" class="btn btn-primary btn-lg" style='color:white'>ატვირთე ახალი ფაილი</a></center>
                     <center><h1>ან</h1></center>
                     <center><a href="index.php" class="btn btn-success btn-lg" style='color:white'>გადადი მთავარ გვერდზე</a></center>
-          
-                    
-                    
+
+
+
                 </div>
             </div>
         </div>

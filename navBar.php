@@ -31,5 +31,5 @@ echo "<ul>
   <li><a $intervalsActive href=\"#about\">ინტერვალები</a></li>
   <li><a $concurrentPageActive href=\"#about\">ერთდროულად მდგომი ავტობუსები</a></li>
 </ul>";
-echo "<hr><hr><hr>";
+   echo "-<br><br>";
 

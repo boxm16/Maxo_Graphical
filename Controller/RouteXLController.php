@@ -11,7 +11,8 @@ class RouteXLController {
 
         $excelRows = $this->readExcelFile();
         $this->routes = $this->getRoutesFromExcelRows($excelRows); //array of routes
-        $GLOBALS["routes"]=$this->routes;
+
+        $GLOBALS["routes"] = $this->routes;
     }
 
     private function readExcelFile() {

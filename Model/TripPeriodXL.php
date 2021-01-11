@@ -14,6 +14,7 @@ class TripPeriodXL {
     private $arrivalTimeDifference;
     private $previousTripPeriodArrivalTimeScheduled;
     private $previousTripPeriodArrivalTimeActual;
+    private $tripPeriodDNA;
     private $timeCalculator;
     private $trifficLightsController;
 
@@ -165,6 +166,14 @@ class TripPeriodXL {
 
     public function getLightsForLostTime() {
         return $this->trifficLightsController->getLightsForStandartTraffic($this->getLostTime());
+    }
+
+    function getTripPeriodDNA() {
+        return $this->tripPeriodDNA;
+    }
+
+    function setTripPeriodDNA($tripPeriodDNA) {
+        $this->tripPeriodDNA = $tripPeriodDNA;
     }
 
 }

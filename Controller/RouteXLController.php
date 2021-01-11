@@ -2,6 +2,7 @@
 
 require_once "SimpleXLSX.php";
 require_once 'Model/RouteXL.php';
+require_once 'Model/TripPeriodDNA_XL.php';
 
 class RouteXLController {
 
@@ -47,6 +48,7 @@ class RouteXLController {
                 $routes[$routeNumber] = $refilledRoute;
             }
         }
+        $routes = $this->setTripPeriodDNAs($routes);
 
         return $routes;
     }
@@ -260,6 +262,45 @@ class RouteXLController {
         $tripPeriod->setPreviousTripPeriodArrivalTimeActual($previousTripPeriodArrivalTimeActual);
         $tripPeriod->setPreviousTripPeriodArrivalTimeScheduled($previousTripPeriodArrivalTimeScheduled);
         return $tripPeriod;
+    }
+
+    private function setTripPeriodDNAs($routes) {
+        foreach ($routes as $route) {
+            $routeNumber = $route->getNumber();
+            $days = $route->getDays();
+            foreach ($days as $day) {
+                $dateStamp = $day->getDateStamp();
+                $exoduses = $day->getExoduses();
+                foreach ($exoduses as $exodus) {
+                    $exodusNumber = $exodus->getNumber();
+                    $tripVouchers = $exodus->getTripVouchers();
+                    foreach ($tripVouchers as $tripVoucher) {
+                        $tripVoucherNumber = $tripVoucher->getNumber();
+                        // $busNumber=$tripVoucher->getBusNumber();
+                        //$busType=$tripVoucher->getBusType();
+                        $driverNumber = $tripVoucher->getDriverNumber();
+                        $driverName = $tripVoucher->getDriverName();
+                        $notes = $tripVoucher->getNotes();
+                        $tripPeriods = $tripVoucher->getTripPeriods();
+
+                        foreach ($tripPeriods as $tripPeriod) {
+                            $tripPeriodDNA = new tripPeriodDNA();
+                            $tripPeriodDNA->setRouteNumber($routeNumber);
+                            $tripPeriodDNA->setDateStamp($dateStamp);
+                            $tripPeriodDNA->setExodusNumber($exodusNumber);
+                            $tripPeriodDNA->setVoucherNumber($tripVoucherNumber);
+                            $tripPeriodDNA->setDriverNumber($driverNumber);
+                            $tripPeriodDNA->setDriverName($driverName);
+                            $tripPeriodDNA->setNotes($notes);
+                            $tripPeriod->setTripPeriodDNA($tripPeriodDNA);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return $routes;
     }
 
     //--------------------------------------------------

@@ -17,7 +17,7 @@ switch ($currentPage) {
     case "routeDetails.php":
         $routeDetailsPageActive = $activeClass;
         break;
-    case "intervals.ophp":
+    case "intervals.php":
         $intervalsActive = $activeClass;
         break;
 }

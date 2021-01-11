@@ -164,7 +164,22 @@ if (!isset($GLOBASL["routes"])) {
                     $(".content").fadeIn(1000);
                 });
             });
+//this code is for adding row clicking listener
+            var chosenRow = null
+            var cells = document.querySelectorAll("tr");
 
+            for (var cell of cells) {
+                cell.addEventListener('click', marker)
+            }
+
+            function marker(event) {
+                var row = event.target.parentNode;
+                if (chosenRow != null) {
+                    chosenRow.style.fontWeight = "normal";
+                }
+                row.style.fontWeight = "bold";
+                chosenRow = row;
+            }
 
         </script>
     </body>

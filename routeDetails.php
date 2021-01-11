@@ -79,7 +79,7 @@ if (!isset($GLOBASL["routes"])) {
         ?>
         <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
         <div class="content">
-            <table id="header-fixed">
+            <table  id="header-fixed" style="width:100%">
                 <thead>
 
                     <tr>

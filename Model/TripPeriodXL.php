@@ -1,5 +1,7 @@
 <?php
 
+require_once './Controller/TimeCalculator.php';
+
 class TripPeriodXL {
 
     private $type; //baseLeaving, baseReturn, ab, ba, break
@@ -9,6 +11,9 @@ class TripPeriodXL {
     private $arrivalTimeScheduled;
     private $arrivalTimeActual;
     private $arrivalTimeDifference;
+    private $haltTimeScheduled;
+    private $haltTimeActual;
+    private $timeCalculator;
 
     function __construct($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference) {
         $this->type = $type;
@@ -18,6 +23,8 @@ class TripPeriodXL {
         $this->arrivalTimeScheduled = $arrivalTimeScheduled;
         $this->arrivalTimeActual = $arrivalTimeActual;
         $this->arrivalTimeDifference = $arrivalTimeDifference;
+
+        $this->timeCalculator = new TimeCalculator();
     }
 
     function getType() {
@@ -81,5 +88,35 @@ class TripPeriodXL {
                 return "დგომა A პუნკტში";
         }
     }
+
+    public function getTripPeriodScheduledTime() {
+        return $this->timeCalculator->getTimeStampsDifference($this->arrivalTimeScheduled, $this->startTimeScheduled);
+    }
+
+    public function getTripPeriodActualTime() {
+        if ($this->startTimeActual != "" && $this->arrivalTimeActual != "") {
+            return $this->timeCalculator->getTimeStampsDifference($this->arrivalTimeActual, $this->startTimeActual);
+        } else {
+            return "";
+        }
+    }
+    
+    function getHaltTimeScheduled() {
+        return $this->haltTimeScheduled;
+    }
+
+    function getHaltTimeActual() {
+        return $this->haltTimeActual;
+    }
+
+    function setHaltTimeScheduled($haltTimeScheduled) {
+        $this->haltTimeScheduled = $haltTimeScheduled;
+    }
+
+    function setHaltTimeActual($haltTimeActual) {
+        $this->haltTimeActual = $haltTimeActual;
+    }
+
+
 
 }

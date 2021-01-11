@@ -12,45 +12,79 @@ $routes = $routeController->getRoutes();
     </head>
     <body>
         <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a> &nbsp;&nbsp;<a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
-        <?php
-        foreach ($routes as $route) {
+        <table id="header-fixed">
+            <thead>
 
-            $days = $route->getDays();
-            echo "<hr>Route Number: " . $route->getNumber() . "<br>";
+                <tr>
+                    <th>გეგმიუირი<br>გასვლის<br>დრო</th>
+                    <th>ფაქტიური<br>გასვლის<br>დრო</th>
+                    <th>სხვაობა</th>
+                    <th>------</th>
+                    <th>გეგმიუირი<br>მისვლის<br>დრო</th>
+                    <th>ფაქტიური<br>მისვლის<br>დრო</th>
+                    <th>სხვაობა</th>
+                    <th></th>
+                    <th>წირის<br>გეგმიური<br>დრო</th>
+                    <th>წირის<br>ფაქტიური<br>დრო</th>
+                    <th>დგომის<br>გეგმიური<br> დრო</th>
+                    <th>დგომის<br>ფაქტიური<br>დრო</th>
+                    <th>'დაკარგული<br>დრო'</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tbody>
+                <?php
+                foreach ($routes as $route) {
+
+                    $days = $route->getDays();
+                    echo "<tr><td colspan='13'><center>მარშრუტა #: " . $route->getNumber() . "</center></td></tr>";
 
 
-            foreach ($days as $day) {
-                echo "Date: " . $day->getDateStamp() . "<br>";
-                $exoduses = $day->getExoduses();
-                foreach ($exoduses as $exodus) {
-                    echo "Exodus Number: " . $exodus->getNumber() . "<br>";
+                    foreach ($days as $day) {
+                        echo "<tr><td colspan='13'><center>თარიღი: " . $day->getDateStamp() . "</center></td></tr>";
+                        $exoduses = $day->getExoduses();
+                        foreach ($exoduses as $exodus) {
+                            echo "<tr><td colspan='13'><center>გასვლია #: " . $exodus->getNumber() . "<center></td></tr>";
 
-                    $tripVouchers = $exodus->getTripVouchers();
-                    foreach ($tripVouchers as $tripVoucher) {
-                        echo "Voucher Number: " . $tripVoucher->getNumber();
-                        echo "/// Bus Type: " . $tripVoucher->getBusType();
-                        echo "/// Bus Number: " . $tripVoucher->getBusNumber();
-                        echo "/// Driver Number: " . $tripVoucher->getDriverNumber();
-                        echo "/// Driver Name: " . $tripVoucher->getDriverName()."<br>";
-                        echo "Notes: " . $tripVoucher->getNotes() . "<br>";
+                            $tripVouchers = $exodus->getTripVouchers();
+                            foreach ($tripVouchers as $tripVoucher) {
+                                echo "<tr><td colspan='13'><center>მარშრუტა #" . $route->getNumber()
+                                . ". თარიღი:" . $day->getDateStamp()
+                                . ". გასვლია #" . $exodus->getNumber()
+                                . ". საგზური #" . $tripVoucher->getNumber()
+                                // . " Bus Type: " . $tripVoucher->getBusType()
+                                //. " Bus Number: " . $tripVoucher->getBusNumber()
+                                //. "/// Driver Number: " . $tripVoucher->getDriverNumber()
+                                //. "/// Driver Name: " . $tripVoucher->getDriverName()
+                                . ". შენიშვნები: " . $tripVoucher->getNotes() . "</center></td></tr>";
 
-                        $tripPeriods = $tripVoucher->getTripPeriods();
-                        foreach ($tripPeriods as $tripPeriod) {
+                                $tripPeriods = $tripVoucher->getTripPeriods();
+                                foreach ($tripPeriods as $tripPeriod) {
 
-                            echo "<hr>";
-                            echo $tripPeriod->getType();
-                            echo "<br>";
+                                    echo "<tr>"
+                                    . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                    . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                    . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                    . "<td>" . $tripPeriod->getTypeGe() . "</td>"
+                                    . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                    . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                    . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                    . "<td></td>"
+                                    . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                                    . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                    . "<td>" . $tripPeriod->getType() . "</td>"
+                                    . "<td>" . $tripPeriod->getType() . "</td>"
+                                    . "<td>" . $tripPeriod->getType() . "</td>"
+                                    . "</tr>";
+                                }
+                            }
                         }
                     }
                 }
-                echo "-----------------DAY end-------------";
-                echo "<hr><hr><hr>";
-            }
+                ?>
+            </tbody>
 
-            echo " ROUTE end ROUTE end ROUTE end ROUTE end ROUTE end";
-            echo "<hr><hr><hr><hr>";
-        }
-        ?>
+        </table>
 
     </body>
 </html>

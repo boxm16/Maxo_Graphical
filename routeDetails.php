@@ -137,10 +137,10 @@ if (!isset($GLOBASL["routes"])) {
                                         . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
                                         . "<td></td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                                        . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                        . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
+                                        . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
                                         . "<td>" . $tripPeriod->getType() . "</td>"
                                         . "</tr>";
                                     }

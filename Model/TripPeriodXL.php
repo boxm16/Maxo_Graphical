@@ -1,6 +1,7 @@
 <?php
 
 require_once './Controller/TimeCalculator.php';
+require_once './Controller/TrafficLightsController.php';
 
 class TripPeriodXL {
 
@@ -11,11 +12,10 @@ class TripPeriodXL {
     private $arrivalTimeScheduled;
     private $arrivalTimeActual;
     private $arrivalTimeDifference;
-    private $haltTimeScheduled;
-    private $haltTimeActual;
     private $previousTripPeriodArrivalTimeScheduled;
     private $previousTripPeriodArrivalTimeActual;
     private $timeCalculator;
+    private $trifficLightsController;
 
     function __construct($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference) {
         $this->type = $type;
@@ -27,6 +27,7 @@ class TripPeriodXL {
         $this->arrivalTimeDifference = $arrivalTimeDifference;
 
         $this->timeCalculator = new TimeCalculator();
+        $this->trifficLightsController = new TrafficLightsController();
     }
 
     function getType() {
@@ -133,6 +134,37 @@ class TripPeriodXL {
 
     function setPreviousTripPeriodArrivalTimeActual($previousTripPeriodArrivalTimeActual) {
         $this->previousTripPeriodArrivalTimeActual = $previousTripPeriodArrivalTimeActual;
+    }
+
+    public function getLostTime() {
+        if ($this->startTimeDifference != "") {
+
+            $lostTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->startTimeDifference);
+            if ($lostTimeInSeconds <= 0) {//if a driver starts earlier than he should start
+                // $lostTime = $timeController->getTimeStampFromSeconds($lostTimeInSeconds);
+                return $this->startTimeDifference;
+            } else {
+//dialdi, if a driver starts later then he shoud start, while he could start (has enough halt time) 
+                if ($this->getHaltTimeActual() == "") {
+                    return "";
+                } else {
+                    $startTimeDifferenceInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->startTimeDifference);
+                    $actualHaltTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->getHaltTimeActual());
+
+                    if ($startTimeDifferenceInSeconds >= $actualHaltTimeInSeconds) {
+                        return $this->timeCalculator->getTimeStampFromSeconds($actualHaltTimeInSeconds);
+                    } else {
+                        return $this->timeCalculator->getTimeStampFromSeconds($startTimeDifferenceInSeconds);
+                    }
+                }
+            }
+        } else {
+            return "";
+        }
+    }
+
+    public function getLightsForLostTime() {
+        return $this->trifficLightsController->getLightsForStandartTraffic($this->getLostTime());
     }
 
 }

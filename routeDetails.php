@@ -127,7 +127,7 @@ if (!isset($GLOBASL["routes"])) {
 
                                     $tripPeriods = $tripVoucher->getTripPeriods();
                                     foreach ($tripPeriods as $tripPeriod) {
-
+                                        $lostTimeLights = $tripPeriod->getLightsForLostTime();
                                         echo "<tr>"
                                         . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
@@ -141,7 +141,7 @@ if (!isset($GLOBASL["routes"])) {
                                         . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
                                         . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
-                                        . "<td>" . $tripPeriod->getType() . "</td>"
+                                        . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
                                         . "</tr>";
                                     }
                                 }

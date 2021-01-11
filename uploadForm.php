@@ -22,7 +22,7 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
         $uploadOk = 0;
     }
     if ($_FILES['fileToUpload']['size'] == 0) {
-        $errorMessage = "ფაილი არ აგირჩევია";
+        $errorMessage = "არცერთი ფაილი არ იყო არჩეული";
         $uploadOk = 0;
     }
 
@@ -90,7 +90,7 @@ function deployFile() {
         </style>
     </head>
     <body>
-        
+
         <?php
         include 'navBar.php';
         ?>

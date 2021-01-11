@@ -13,6 +13,8 @@ class TripPeriodXL {
     private $arrivalTimeDifference;
     private $haltTimeScheduled;
     private $haltTimeActual;
+    private $previousTripPeriodArrivalTimeScheduled;
+    private $previousTripPeriodArrivalTimeActual;
     private $timeCalculator;
 
     function __construct($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference) {
@@ -100,23 +102,37 @@ class TripPeriodXL {
             return "";
         }
     }
-    
+
     function getHaltTimeScheduled() {
-        return $this->haltTimeScheduled;
+        if ($this->previousTripPeriodArrivalTimeScheduled != "") {
+            return $this->timeCalculator->getTimeStampsDifference($this->startTimeScheduled, $this->previousTripPeriodArrivalTimeScheduled);
+        } else {
+            return "";
+        }
     }
 
     function getHaltTimeActual() {
-        return $this->haltTimeActual;
+        if ($this->previousTripPeriodArrivalTimeActual != "" && $this->startTimeActual != "") {
+            return $this->timeCalculator->getTimeStampsDifference($this->startTimeActual, $this->previousTripPeriodArrivalTimeActual);
+        } else {
+            return "";
+        }
     }
 
-    function setHaltTimeScheduled($haltTimeScheduled) {
-        $this->haltTimeScheduled = $haltTimeScheduled;
+    function getPreviousTripPeriodArrivalTimeScheduled() {
+        return $this->previousTripPeriodArrivalTimeScheduled;
     }
 
-    function setHaltTimeActual($haltTimeActual) {
-        $this->haltTimeActual = $haltTimeActual;
+    function getPreviousTripPeriodArrivalTimeActual() {
+        return $this->previousTripPeriodArrivalTimeActual;
     }
 
+    function setPreviousTripPeriodArrivalTimeScheduled($previousTripPeriodArrivalTimeScheduled) {
+        $this->previousTripPeriodArrivalTimeScheduled = $previousTripPeriodArrivalTimeScheduled;
+    }
 
+    function setPreviousTripPeriodArrivalTimeActual($previousTripPeriodArrivalTimeActual) {
+        $this->previousTripPeriodArrivalTimeActual = $previousTripPeriodArrivalTimeActual;
+    }
 
 }

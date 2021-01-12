@@ -135,99 +135,110 @@ $size = count($routes);
                 <tbody>
                     <?php
                     foreach ($routes as $route) {
+                        $routeNumber = $route->getNumber();
                         $days = $route->getDays();
+                        echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:blue; color:white\">მარშრუტი # $routeNumber</td></tr>";
                         foreach ($days as $day) {
                             $dateStamp = $day->getDateStamp();
-                            echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue\">$dateStamp</td></tr>";
-                            $tripPeriods = $day->getVoucherScheduledTimeTableTripPeriods();
-                            $abVTableBuilder = "";
-                            foreach ($tripPeriods as $tripPeriod) {
-                                $sts = $tripPeriod->getStartTimeScheduled();
-                                $sta = $tripPeriod->getStartTimeActual();
-                                $stt = $tripPeriod->getType();
-                                $abVTableBuilder .= "<tr>"
-                                        . "<td>$sts</td>"
-                                        . "<td>$sta</td>"
-                                        . "<td>$stt</td>"
-                                        . "<td>$stt</td>"
-                                        . "<td>$stt</td>"
-                                        . "</tr>";
+                            echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue;\">$dateStamp</td></tr>";
+
+                            //first voutcher time table --------
+                            $directionsArray = $day->getVoucherScheduledTimeTableTripPeriods();
+                            $abVoucherTableBuilder = "";
+                            $baVoucherTableBuilder = "";
+                            foreach ($directionsArray as $tripPeriods) {
+
+
+                                foreach ($tripPeriods as $tripPeriod) {
+                                    if ($tripPeriod->getType() == "ab") {
+                                        $sts = $tripPeriod->getStartTimeScheduled();
+                                        $sta = $tripPeriod->getStartTimeActual();
+                                        $stt = $tripPeriod->getType();
+                                        $abVoucherTableBuilder .= "<tr>"
+                                                . "<td>$sts</td>"
+                                                . "<td>$sta</td>"
+                                                . "<td>$stt</td>"
+                                                . "<td>$stt</td>"
+                                                . "<td>$stt</td>"
+                                                . "</tr>";
+                                    }
+                                    if ($tripPeriod->getType() == "ba") {
+                                        $sts = $tripPeriod->getStartTimeScheduled();
+                                        $sta = $tripPeriod->getStartTimeActual();
+                                        $stt = $tripPeriod->getType();
+                                        $baVoucherTableBuilder .= "<tr>"
+                                                . "<td>$sts</td>"
+                                                . "<td>$sta</td>"
+                                                . "<td>$stt</td>"
+                                                . "<td>$stt</td>"
+                                                . "<td>$stt</td>"
+                                                . "</tr>";
+                                    }
+                                }
                             }
-                            $GPSTable = "";
-                            foreach ($tripPeriods as $tripPeriod) {
-                                $sts = $tripPeriod->getStartTimeScheduled();
-                                $sta = $tripPeriod->getStartTimeActual();
-                                $stt = $tripPeriod->getType();
-                                $GPSTable .= "<tr>"
-                                        . "<td>$sts</td>"
-                                        . "<td>$sta</td>"
-                                        . "</tr>";
+                            //end of voutcher time table --------
+                            //now GPS time table --------
+                            $gpsDirectionsArray = $day->getGPSTimeTableTripPeriods();
+                            $ab_GpsTableBuilder = "";
+                            $ba_GpsTableBuilder = "";
+                            foreach ($gpsDirectionsArray as $tripPeriods) {
+
+
+                                foreach ($tripPeriods as $tripPeriod) {
+                                    if ($tripPeriod->getType() == "ab") {
+                                        $sts = $tripPeriod->getStartTimeScheduled();
+                                        $sta = $tripPeriod->getStartTimeActual();
+                                        $stt = $tripPeriod->getType();
+                                        $ab_GpsTableBuilder .= "<tr>"
+                                                . "<td>$sts</td>"
+                                                . "<td>$sta</td>"
+                                                . "</tr>";
+                                    }
+                                    if ($tripPeriod->getType() == "ba") {
+                                        $sts = $tripPeriod->getStartTimeScheduled();
+                                        $sta = $tripPeriod->getStartTimeActual();
+                                        $stt = $tripPeriod->getType();
+                                        $ba_GpsTableBuilder .= "<tr>"
+                                                . "<td>$sts</td>"
+                                                . "<td>$sta</td>"
+                                                . "</tr>";
+                                    }
+                                }
                             }
+                            //end of GPS time table --------
+
+                            $voucher_header = ""
+                                    . "<tr><th colspan=\"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
+                                    . "<tr>"
+                                    . "<th>გეგმიუირი<br>გასვლის<br>დრო</th>"
+                                    . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
+                                    . "<th>გეგმიუირი<br>ინტერვალი</th>"
+                                    . "<th>ფაქტიური<br>ინტერვალი</th>"
+                                    . "<th>.<br>გასვლის<br>#</th>"
+                                    . "</tr>"
+                                    . "";
+
+
+                            $gps_header = ""
+                                    . "<tr><th colspan=\"2\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
+                                    . "<tr>"
+                                    . "<th>.<br>გასვლის<br>#</th>"
+                                    . "<th>GPS<br>ინტერვალი</th>"
+                                    . "</tr>";
+
+
+
+
 
                             echo "<tr>"
-                            . "<td colspan=\"5\" style=\"width:50%\">"
-                            . "<table style=\"width:100%\">"
-                            . "<thead>"
-                            . "<tr>"
-                            . "<th colspan=\"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th>"
-                            . "</tr>"
-                            . "<tr>"
-                            . "<th>დაგეგმილი<br>გასვლის<br>დრო</th>"
-                            . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
-                            . "<th>დაგეგმილი<br>ინტერვალი</th>"
-                            . "<th>ფაქტიური<br>ინტერვალი</th>"
-                            . "<th>.<br>გასვლის<br>#</th>"
-                            . "</tr>"
-                            . "</thead>"
-                            . "<tbody>$abVTableBuilder</tbody>"
-                            . "</table>"
-                            . "</td>"
-                            . "<td colspan=\"2\">"
-                            . "<table>"
-                            . "<thead>"
-                            . "<tr><th colspan=\"2\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
-                            . "<tr>"
-                            . "<th>.<br>გასვლის<br>#</th>"
-                            . "<th>GPS<br>ინტერვალი</th>"
-                            . "</tr>"
-                            . "</thead>"
-                            . "<tbody>$GPSTable</tbody>"
-                            . "</table>"
-                            . "</td>"
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$abVoucherTableBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ab_GpsTableBuilder</tbody></table></td>"
                             . ""
-                            . "<td colspan=\"5\" style=\"width:50%\">"
-                            . "<table style=\"width:100%\">"
-                            . "<thead>"
-                            . "<tr>"
-                            . "<th colspan=\"5\"  style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th>"
-                            . "</tr>"
-                            . "<tr>"
-                            . "<th>დაგეგმილი<br>გასვლის<br>დრო</th>"
-                            . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
-                            . "<th>დაგეგმილი<br>ინტერვალი</th>"
-                            . "<th>ფაქტიური<br>ინტერვალი</th>"
-                            . "<th>.<br>გასვლის<br>#</th>"
-                            . "</tr>"
-                            . "</thead>"
-                            . "<tbody>$abVTableBuilder</tbody>"
-                            . "</table>"
-                            . "</td>"
-                            . "<td colspan=\"2\">"
-                            . "<table>"
-                            . "<thead>"
-                            . "<tr><th colspan=\"2\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
-                            . "<tr>"
-                            . "<th>.<br>გასვლის<br>#</th>"
-                            . "<th>GPS<br>ინტერვალი</th>"
-                            . "</tr>"
-                            . "</thead>"
-                            . "<tbody>$GPSTable</tbody>"
-                            . "</table>"
-                            . "</td>"
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$baVoucherTableBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ba_GpsTableBuilder</tbody></table></td>"
                             . "</tr>";
                         }
                     }
                     ?>
+
                 </tbody>
             </table>
         </div>

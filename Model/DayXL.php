@@ -27,4 +27,19 @@ class DayXL {
         $this->exoduses = $exoduses;
     }
 
+    public function getVoucherScheduledTimeTableTripPeriods() {
+        $voucherScheduledTimeTableTripPeriods = array();
+        foreach ($this->exoduses as $exodus) {
+            $tripVouchers = $exodus->getTripVouchers();
+            foreach ($tripVouchers as $tripVoucher) {
+                $tripPeriods = $tripVoucher->getTripPeriods();
+                foreach ($tripPeriods as $tripPeriod) {
+                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                    $voucherScheduledTimeTableTripPeriods[$startTimeScheduled] = $tripPeriod;
+                }
+            }
+        }
+        return $voucherScheduledTimeTableTripPeriods;
+    }
+
 }

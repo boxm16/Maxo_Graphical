@@ -1,3 +1,14 @@
+<?php
+require_once 'Controller/RouteXLController.php';
+if (!isset($GLOBASL["routes"])) {
+    $routeController = new RouteXLController();
+} else {
+    $routes = $GLOBASL["routes"];
+}
+//starting building tables
+$tableBodyBuilder = "";
+$size = count($routes);
+?>
 <!DOCTYPE html>
 
 <html>
@@ -49,24 +60,90 @@
             /* end of loader styling*/
 
 
-            /*table styling */
-            table thead tr th {
-                /* Important  for table head sticking whre it is*/
-                background-color: white;
-                position: sticky;
-                z-index: 100;
-                top: 50px;
-
-            }
-            /* other staff below */
             table, thead, tr, th, td {
-                border: 2px solid black;
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
 
+
+            /* for stickign */
+
+            /* Standard Tables */
+
+            table {
+                margin: 1em 0;
+                border-collapse: collapse;
+                border: 0.1em solid #d6d6d6;
             }
-            /* this for black line between A_B and B_A*/
-            .blackLine {
-                background-color:black;
+
+
+
+
+
+            th {
+                vertical-align: bottom;
+                background-color: #666;
+                color: #fff;
             }
+
+            tr:nth-child(even) th[scope=row] {
+                background-color: #f2f2f2;
+            }
+
+            tr:nth-child(odd) th[scope=row] {
+                background-color: #fff;
+            }
+
+            tr:nth-child(even) {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+
+            tr:nth-child(odd) {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+
+
+
+            /* Fixed Headers */
+
+            th {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 45px;
+                z-index: 2;
+            }
+
+            th[scope=row] {
+                position: -webkit-sticky;
+                position: sticky;
+                left: 0;
+                z-index: 1;
+            }
+
+            th[scope=row] {
+                vertical-align: top;
+                color: inherit;
+                background-color: inherit;
+                background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
+            }
+
+            table:nth-of-type(2) th:not([scope=row]):first-child {
+                left: 0;
+                z-index: 3;
+                background: linear-gradient(90deg, #666 0%, #666 calc(100% - .05em), #ccc calc(100% - .05em), #ccc 100%);
+            }
+
+            /* Strictly for making the scrolling happen. */
+
+            th[scope=row] + td {
+                min-width: 24em;
+            }
+
+            th[scope=row] {
+                min-width: 20em;
+            }
+
+
 
         </style>
     </head>
@@ -76,128 +153,115 @@
         ?>
         <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
         <div class="content">
-            <table  id="header-fixed" style="width:100%">
+
+
+
+            <table style="width:100%">
                 <thead>
                     <tr>
-                        <th style='text-align: center'>A_B</th>
-                        <th style='text-align: center'>B_A</th>
+                        <th colspan="7" style="text-align: center">A_B</th>
+                        <th colspan="7" style="text-align: center">B_A</th>
                     </tr>
+                    
                 </thead>
+
+
                 <tbody>
-                    <tr>
-                        <td>
-                            <table>
-                                <thead>
-                                <th style='text-align: center'>საგზურზე დაყრდნობით გამოთვლები</th>
-                                <th style='text-align: center'>GPS გამოთვლები</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th style='text-align: center'>გეგმიუირი<br>გასვლა</th> 
-                                                        <th style='text-align: center'>ფაქტიური<br>გასვლა</th> 
-                                                        <th style='text-align: center'>გეგმიუირი<br>ინტერვალი</th> 
-                                                        <th style='text-align: center'>ფაქტიური<br>ინტერვალი</th>
-                                                        <th style='text-align: center'>გასვლის<br>#</th> 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    for ($x = 0; $x < 30; $x++) {
-                                                        echo "<tr>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "</tr>";
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td style="vertical-align: top">
-                                            <table>
-                                                <thead>
-                                                <th style='text-align: center'>გასვლის<br>#</th> 
-                                                <th style='text-align: center'>GPS<br>ინტერვალი</th>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    for ($x = 0; $x < 20; $x++) {
-                                                        echo "<tr>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "</tr>";
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                <thead>
-                                <th style='text-align: center'>საგზურზე დაყრდნობით გამოთვლები</th>
-                                <th style='text-align: center'>GPS გამოთვლები</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th style='text-align: center'>გეგმიუირი<br>გასვლა</th> 
-                                                        <th style='text-align: center'>ფაქტიური<br>გასვლა</th> 
-                                                        <th style='text-align: center'>გეგმიუირი<br>ინტერვალი</th> 
-                                                        <th style='text-align: center'>ფაქტიური<br>ინტერვალი</th>
-                                                        <th style='text-align: center'>გასვლის<br>#</th> 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    for ($x = 0; $x < 30; $x++) {
-                                                        echo "<tr>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "</tr>";
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td style="vertical-align: top">
-                                            <table>
-                                                <thead>
-                                                <th style='text-align: center'>გასვლის<br>#</th> 
-                                                <th style='text-align: center'>GPS<br>ინტერვალი</th>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    for ($x = 0; $x < 20; $x++) {
-                                                        echo "<tr>"
-                                                        . "<td>TEXT</td>"
-                                                        . "<td>TEXT</td>"
-                                                        . "</tr>";
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+                    <?php
+                    foreach ($routes as $route) {
+                        $days = $route->getDays();
+                        foreach ($days as $day) {
+                            $dateStamp = $day->getDateStamp();
+                            echo "<tr><td colspan=\"14\"  style=\"text-align: center\">$dateStamp</td></tr>";
+                            $tripPeriods = $day->getVoucherScheduledTimeTableTripPeriods();
+                            $abVTableBuilder = "";
+                            foreach ($tripPeriods as $tripPeriod) {
+                                $sts = $tripPeriod->getStartTimeScheduled();
+                                $sta = $tripPeriod->getStartTimeActual();
+                                $stt = $tripPeriod->getType();
+                                $abVTableBuilder .= "<tr>"
+                                        . "<td>$sts</td>"
+                                        . "<td>$sta</td>"
+                                        . "<td>$stt</td>"
+                                        . "<td>$stt</td>"
+                                        . "<td>$stt</td>"
+                                        . "</tr>";
+                            }
+                            $GPSTable = "";
+                            foreach ($tripPeriods as $tripPeriod) {
+                                $sts = $tripPeriod->getStartTimeScheduled();
+                                $sta = $tripPeriod->getStartTimeActual();
+                                $stt = $tripPeriod->getType();
+                                $GPSTable .= "<tr>"
+                                        . "<td>$sts</td>"
+                                        . "<td>$sta</td>"
+                                        . "</tr>";
+                            }
+
+                            echo "<tr>"
+                            . "<td colspan=\"5\" style=\"width:50%\">"
+                            . "<table style=\"width:100%\">"
+                            . "<thead>"
+                            . "<tr>"
+                            . "<th colspan=\"5\">საგზურზე დაყრდნობით გამოთვლები</th>"
+                            . "</tr>"
+                            . "<tr>"
+                            . "<th>დაგეგმილი<br>გასვლის<br>დრო</th>"
+                            . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
+                            . "<th>დაგეგმილი<br>ინტერვალი</th>"
+                            . "<th>ფაქტიური<br>ინტერვალი</th>"
+                            . "<th>.<br>გასვლის<br>#</th>"
+                            . "</tr>"
+                            . "</thead>"
+                            . "<tbody>$abVTableBuilder</tbody>"
+                            . "</table>"
+                            . "</td>"
+                            . "<td colspan=\"2\">"
+                            . "<table>"
+                            . "<thead>"
+                            . "<tr><th colspan=\"2\">GPS გამოთვლები</th></tr>"
+                            . "<tr>"
+                            . "<th>.<br>გასვლის<br>#</th>"
+                            . "<th>GPS<br>ინტერვალი</th>"
+                            . "</tr>"
+                            . "</thead>"
+                            . "<tbody>$GPSTable</tbody>"
+                            . "</table>"
+                            . "</td>"
+                            . ""
+                            . "<td colspan=\"5\" style=\"width:50%\">"
+                            . "<table style=\"width:100%\">"
+                            . "<thead>"
+                            . "<tr>"
+                            . "<th colspan=\"5\">საგზურზე დაყრდნობით გამოთვლები</th>"
+                            . "</tr>"
+                            . "<tr>"
+                            . "<th>დაგეგმილი<br>გასვლის<br>დრო</th>"
+                            . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
+                            . "<th>დაგეგმილი<br>ინტერვალი</th>"
+                            . "<th>ფაქტიური<br>ინტერვალი</th>"
+                            . "<th>.<br>გასვლის<br>#</th>"
+                            . "</tr>"
+                            . "</thead>"
+                            . "<tbody>$abVTableBuilder</tbody>"
+                            . "</table>"
+                            . "</td>"
+                            . "<td colspan=\"2\">"
+                            . "<table>"
+                            . "<thead>"
+                            . "<tr><th colspan=\"2\">GPS გამოთვლები</th></tr>"
+                            . "<tr>"
+                            . "<th>.<br>გასვლის<br>#</th>"
+                            . "<th>GPS<br>ინტერვალი</th>"
+                            . "</tr>"
+                            . "</thead>"
+                            . "<tbody>$GPSTable</tbody>"
+                            . "</table>"
+                            . "</td>"
+                            . "</tr>";
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

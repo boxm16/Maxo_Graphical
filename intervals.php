@@ -28,6 +28,7 @@ $size = count($routes);
                 position: fixed;
                 top: 0;
                 width: 2500px;
+                z-index: 3;
             }
 
             li {
@@ -50,6 +51,7 @@ $size = count($routes);
                 background-color: lightgreen;
             }
             /* end of navbar styling */
+
             /* loader styling */
             .content {display:none;}
             .preload { width:100px;
@@ -71,38 +73,16 @@ $size = count($routes);
             /* Standard Tables */
 
             table {
-                margin: 1em 0;
+
                 border-collapse: collapse;
                 border: 0.1em solid #d6d6d6;
             }
-
-
-
-
 
             th {
                 vertical-align: bottom;
                 background-color: #666;
                 color: #fff;
             }
-
-            tr:nth-child(even) th[scope=row] {
-                background-color: #f2f2f2;
-            }
-
-            tr:nth-child(odd) th[scope=row] {
-                background-color: #fff;
-            }
-
-            tr:nth-child(even) {
-                background-color: rgba(0, 0, 0, 0.05);
-            }
-
-            tr:nth-child(odd) {
-                background-color: rgba(255, 255, 255, 0.05);
-            }
-
-
 
             /* Fixed Headers */
 
@@ -127,22 +107,6 @@ $size = count($routes);
                 background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
             }
 
-            table:nth-of-type(2) th:not([scope=row]):first-child {
-                left: 0;
-                z-index: 3;
-                background: linear-gradient(90deg, #666 0%, #666 calc(100% - .05em), #ccc calc(100% - .05em), #ccc 100%);
-            }
-
-            /* Strictly for making the scrolling happen. */
-
-            th[scope=row] + td {
-                min-width: 24em;
-            }
-
-            th[scope=row] {
-                min-width: 20em;
-            }
-
 
 
         </style>
@@ -162,7 +126,7 @@ $size = count($routes);
                         <th colspan="7" style="text-align: center">A_B</th>
                         <th colspan="7" style="text-align: center">B_A</th>
                     </tr>
-                    
+
                 </thead>
 
 

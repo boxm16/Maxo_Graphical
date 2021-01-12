@@ -1,14 +1,17 @@
 <?php
 
 include_once 'ExodusXL.php';
+require_once './Controller/TimeCalculator.php';
 
 class DayXL {
 
     private $dateStamp;
     private $exoduses;
+    private $timeCalculator;
 
     function __construct() {
         $this->exoduses = array();
+        $this->timeCalculator = new TimeCalculator();
     }
 
     function getDateStamp() {
@@ -38,16 +41,19 @@ class DayXL {
                 $tripPeriods = $tripVoucher->getTripPeriods();
                 foreach ($tripPeriods as $tripPeriod) {
                     $tripPeriodType = $tripPeriod->getType();
-                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+
+                    $startTimeScheduled_Seconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
                     if ($tripPeriodType == "ab") {
-                        $a_bArray[$startTimeScheduled] = $tripPeriod;
+                        $a_bArray[$startTimeScheduled_Seconds] = $tripPeriod;
                     }
                     if ($tripPeriodType == "ba") {
-                        $b_aArray[$startTimeScheduled] = $tripPeriod;
+                        $b_aArray[$startTimeScheduled_Seconds] = $tripPeriod;
                     }
                 }
             }
         }
+        ksort($a_aArray);
+        ksort($b_aArray);
         array_push($voucherScheduledTimeTableTripPeriods, $a_bArray);
         array_push($voucherScheduledTimeTableTripPeriods, $b_aArray);
         return $voucherScheduledTimeTableTripPeriods;

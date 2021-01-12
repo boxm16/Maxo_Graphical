@@ -84,6 +84,7 @@ $size = count($routes);
                 color: #fff;
             }
 
+
             /* Fixed Headers */
 
             th {
@@ -91,6 +92,7 @@ $size = count($routes);
                 position: sticky;
                 top: 45px;
                 z-index: 2;
+
             }
 
             th[scope=row] {
@@ -136,7 +138,7 @@ $size = count($routes);
                         $days = $route->getDays();
                         foreach ($days as $day) {
                             $dateStamp = $day->getDateStamp();
-                            echo "<tr><td colspan=\"14\"  style=\"text-align: center\">$dateStamp</td></tr>";
+                            echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue\">$dateStamp</td></tr>";
                             $tripPeriods = $day->getVoucherScheduledTimeTableTripPeriods();
                             $abVTableBuilder = "";
                             foreach ($tripPeriods as $tripPeriod) {
@@ -167,7 +169,7 @@ $size = count($routes);
                             . "<table style=\"width:100%\">"
                             . "<thead>"
                             . "<tr>"
-                            . "<th colspan=\"5\">საგზურზე დაყრდნობით გამოთვლები</th>"
+                            . "<th colspan=\"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th>"
                             . "</tr>"
                             . "<tr>"
                             . "<th>დაგეგმილი<br>გასვლის<br>დრო</th>"
@@ -183,7 +185,7 @@ $size = count($routes);
                             . "<td colspan=\"2\">"
                             . "<table>"
                             . "<thead>"
-                            . "<tr><th colspan=\"2\">GPS გამოთვლები</th></tr>"
+                            . "<tr><th colspan=\"2\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
                             . "<tr>"
                             . "<th>.<br>გასვლის<br>#</th>"
                             . "<th>GPS<br>ინტერვალი</th>"
@@ -197,7 +199,7 @@ $size = count($routes);
                             . "<table style=\"width:100%\">"
                             . "<thead>"
                             . "<tr>"
-                            . "<th colspan=\"5\">საგზურზე დაყრდნობით გამოთვლები</th>"
+                            . "<th colspan=\"5\"  style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th>"
                             . "</tr>"
                             . "<tr>"
                             . "<th>დაგეგმილი<br>გასვლის<br>დრო</th>"
@@ -213,7 +215,7 @@ $size = count($routes);
                             . "<td colspan=\"2\">"
                             . "<table>"
                             . "<thead>"
-                            . "<tr><th colspan=\"2\">GPS გამოთვლები</th></tr>"
+                            . "<tr><th colspan=\"2\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
                             . "<tr>"
                             . "<th>.<br>გასვლის<br>#</th>"
                             . "<th>GPS<br>ინტერვალი</th>"

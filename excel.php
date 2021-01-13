@@ -28,6 +28,7 @@ $size = count($routes);
                 position: fixed;
                 top: 0;
                 width: 2500px;
+                z-index: 3;
             }
 
             li {
@@ -50,6 +51,7 @@ $size = count($routes);
                 background-color: lightgreen;
             }
             /* end of navbar styling */
+
             /* loader styling */
             .content {display:none;}
             .preload { width:100px;
@@ -60,25 +62,54 @@ $size = count($routes);
             /* end of loader styling*/
 
 
-            /*table styling */
-            table thead tr th {
-                /* Important  for table head sticking whre it is*/
-                background-color: white;
-                position: sticky;
-                z-index: 100;
-                top: 50px;
-
-            }
-            /* other staff below */
             table, thead, tr, th, td {
-                border: 2px solid black;
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+
+
+            /* for stickign */
+
+            /* Standard Tables */
+
+            table {
+
+                border-collapse: collapse;
+                border: 0.1em solid #d6d6d6;
+            }
+
+            th {
+                vertical-align: bottom;
+                background-color: #666;
+                color: #fff;
+            }
+
+
+            /* Fixed Headers */
+
+            th {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 45px;
+                z-index: 2;
 
             }
-            /* this for black line between A_B and B_A*/
-            .blackLine {
-                background-color:black;
 
+            th[scope=row] {
+                position: -webkit-sticky;
+                position: sticky;
+                left: 0;
+                z-index: 1;
             }
+
+            th[scope=row] {
+                vertical-align: top;
+                color: inherit;
+                background-color: inherit;
+                background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
+            }
+
+
 
         </style>
     </head>
@@ -86,55 +117,126 @@ $size = count($routes);
         <?php
         include 'navBar.php';
         ?>
-        
-            <table  id="header-fixed" style="width:100%">
+        <div class="preloa1d"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="conten1t">
+
+
+
+            <table style="width:100%">
                 <thead>
                     <tr>
                         <th colspan="7" style="text-align: center">A_B</th>
                         <th colspan="7" style="text-align: center">B_A</th>
                     </tr>
-                    <tr>
-                        <th colspan="5">საგზურზე დაყრდნობით გამოთვლები</th>
-                        <th colspan="2">GPS გამოთვლები</th>
-                        <th colspan="5">საგზურზე დაყრდნობით გამოთვლები</th>
-                        <th colspan="2">GPS გამოთვლები</th>
-                    </tr>
-                    <tr>
-                        <th>დაგეგმილი<br>გასვლის<br>დრო</th>
-                        <th>ფაქტიური<br>გასვლის<br>დრო</th>
-                        <th>დაგეგმილი<br>ინტერვალი</th>
-                        <th>ფაქტიური<br>ინტერვალი</th>
-                        <th>გასვლის<br>#</th>
-                        <th>გასვლის<br>#</th>
-                        <th>GPS<br>ინტერვალი</th>
 
-                        <th>დაგეგმილი<br>გასვლის<br>დრო</th>
-                        <th>ფაქტიური<br>გასვლის<br>დრო</th>
-                        <th>დაგეგმილი<br>ინტერვალი</th>
-                        <th>ფაქტიური<br>ინტერვალი</th>
-                        <th>გასვლის<br>#</th>
-                        <th>გასვლის<br>#</th>
-                        <th>GPS<br>ინტერვალი</th>
-                    </tr>
                 </thead>
+
+
                 <tbody>
                     <?php
                     foreach ($routes as $route) {
+                        $routeNumber = $route->getNumber();
                         $days = $route->getDays();
+                        echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:blue; color:white\">მარშრუტი # $routeNumber</td></tr>";
                         foreach ($days as $day) {
                             $dateStamp = $day->getDateStamp();
-                            echo "<tr><td colspan=\"14\"  style=\"text-align: center\">$dateStamp</td></tr>";
-                            $tripPeriods = $day->getTripPeriods();
-                            $abVTableBuilder = "";
-                           
+                            echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue;\">$dateStamp</td></tr>";
 
-                            echo "<tr><td colspan=\"5\">Table here</td><td colspan=\"2\">GPS TABLE HERE</td><td colspan=\"7\">table here</td></tr>";
+                            //first voutcher time table --------
+                            $directionsArray = $day->getVoucherScheduledTimeTableTripPeriods();
+                            $abVoucherTableBuilder = "";
+                            $baVoucherTableBuilder = "";
+                            foreach ($directionsArray as $tripPeriods) {
+
+
+                                foreach ($tripPeriods as $tripPeriod) {
+                                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                    $startTimeActual = $tripPeriod->getStartTimeActual();
+                                    $scheduledInterval = $tripPeriod->getScheduledInterval();
+                                    $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
+
+                                    $row = "<tr>"
+                                            . "<td>$startTimeScheduled</td>"
+                                            . "<td>$startTimeActual</td>"
+                                            . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
+                                            . "<td></td>"
+                                            . "<td></td>"
+                                            . "</tr>";
+
+                                    if ($tripPeriod->getType() == "ab") {
+                                        $abVoucherTableBuilder .= $row;
+                                    }
+                                    if ($tripPeriod->getType() == "ba") {
+                                        $baVoucherTableBuilder .= $row;
+                                    }
+                                }
+                            }
+                            //end of voutcher time table --------
+                            //now GPS time table --------
+                            $gpsDirectionsArray = $day->getGPSTimeTableTripPeriods();
+                            $ab_GpsTableBuilder = "";
+                            $ba_GpsTableBuilder = "";
+                            foreach ($gpsDirectionsArray as $tripPeriods) {
+
+
+                                foreach ($tripPeriods as $tripPeriod) {
+                                    if ($tripPeriod->getType() == "ab") {
+                                        $sts = $tripPeriod->getStartTimeScheduled();
+                                        $sta = $tripPeriod->getStartTimeActual();
+                                        $stt = $tripPeriod->getType();
+                                        $ab_GpsTableBuilder .= "<tr>"
+                                                . "<td>$sts</td>"
+                                                . "<td>$sta</td>"
+                                                . "</tr>";
+                                    }
+                                    if ($tripPeriod->getType() == "ba") {
+                                        $sts = $tripPeriod->getStartTimeScheduled();
+                                        $sta = $tripPeriod->getStartTimeActual();
+                                        $stt = $tripPeriod->getType();
+                                        $ba_GpsTableBuilder .= "<tr>"
+                                                . "<td>$sts</td>"
+                                                . "<td>$sta</td>"
+                                                . "</tr>";
+                                    }
+                                }
+                            }
+                            //end of GPS time table --------
+
+                            $voucher_header = ""
+                                    . "<tr><th colspan = \"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
+                                    . "<tr>"
+                                    . "<th>გეგმიუირი<br>გასვლის<br>დრო</th>"
+                                    . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
+                                    . "<th>გეგმიუირი<br>ინტერვალი</th>"
+                                    . "<th>ფაქტიური<br>ინტერვალი</th>"
+                                    . "<th>.<br>გასვლის<br>#</th>"
+                                    . "</tr>"
+                                    . "";
+
+
+                            $gps_header = ""
+                                    . "<tr><th colspan=\"2\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
+                                    . "<tr>"
+                                    . "<th>.<br>გასვლის<br>#</th>"
+                                    . "<th>GPS<br>ინტერვალი</th>"
+                                    . "</tr>";
+
+
+
+
+
+                            echo "<tr>"
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$abVoucherTableBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ab_GpsTableBuilder</tbody></table></td>"
+                            . ""
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$baVoucherTableBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ba_GpsTableBuilder</tbody></table></td>"
+                            . "</tr>";
                         }
                     }
                     ?>
+
                 </tbody>
             </table>
-
+        </div>
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

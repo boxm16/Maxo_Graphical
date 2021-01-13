@@ -12,8 +12,12 @@ class TripPeriodXL {
     private $arrivalTimeScheduled;
     private $arrivalTimeActual;
     private $arrivalTimeDifference;
-    private $previousTripPeriodArrivalTimeScheduled;
-    private $previousTripPeriodArrivalTimeActual;
+    private $previousTripPeriodArrivalTimeScheduled; //this is for the same bus, diladi, time whe tha same bus ended previous tripPeriod
+    private $previousTripPeriodArrivalTimeActual; //this is for the same bus, diladi, time whe tha same bus ended previous tripPeriod
+    private $scheduledInterval; //this is time tha has been scheduled to pass from the time previous bus left for same trip
+    private $actualInterval; //this is time that  actually has passed from the time previous bus left for same trip 
+    private $scheduledIntervalColor;
+    private $actualIntervalColor;
     private $tripPeriodDNA;
     private $timeCalculator;
     private $trifficLightsController;
@@ -168,6 +172,19 @@ class TripPeriodXL {
         return $this->trifficLightsController->getLightsForStandartTraffic($this->getLostTime());
     }
 
+    public function getActualIntervalColor() {
+        if ($this->scheduledInterval != "" && $this->actualInterval != "") {
+            $standartIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->scheduledInterval);
+            $actualIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->actualInterval);
+            $intervalDifference = abs($standartIntervalInSeconds - $actualIntervalInSeconds);
+            $intervalDifferenceTimeStamp = $this->timeCalculator->getTimeStampFromSeconds($intervalDifference);
+
+            return $this->trifficLightsController->getLightsForStandartTraffic($intervalDifferenceTimeStamp);
+        } else {
+            return "white";
+        }
+    }
+
     function getTripPeriodDNA() {
         return $this->tripPeriodDNA;
     }
@@ -175,5 +192,31 @@ class TripPeriodXL {
     function setTripPeriodDNA($tripPeriodDNA) {
         $this->tripPeriodDNA = $tripPeriodDNA;
     }
+
+    function getScheduledInterval() {
+        return $this->scheduledInterval;
+    }
+
+    function getActualInterval() {
+        return $this->actualInterval;
+    }
+
+    function setScheduledInterval($scheduledInterval) {
+        $this->scheduledInterval = $scheduledInterval;
+    }
+
+    function setActualInterval($actualInterval) {
+        $this->actualInterval = $actualInterval;
+    }
+
+    function getScheduledIntervalColor() {
+        return $this->scheduledIntervalColor;
+    }
+
+    function setScheduledIntervalColor($scheduledIntervalColor) {
+        $this->scheduledIntervalColor = $scheduledIntervalColor;
+    }
+
+  
 
 }

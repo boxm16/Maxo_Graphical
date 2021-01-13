@@ -44,19 +44,63 @@ class DayXL {
 
                     $startTimeScheduled_Seconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
                     if ($tripPeriodType == "ab") {
-                        $a_bArray[$startTimeScheduled_Seconds] = $tripPeriod;
+                        $ab_intervals[$startTimeScheduled_Seconds] = $tripPeriod;
                     }
                     if ($tripPeriodType == "ba") {
-                        $b_aArray[$startTimeScheduled_Seconds] = $tripPeriod;
+                        $ba_intervals[$startTimeScheduled_Seconds] = $tripPeriod;
                     }
                 }
             }
         }
-        ksort($a_aArray);
-        ksort($b_aArray);
-        array_push($voucherScheduledTimeTableTripPeriods, $a_bArray);
-        array_push($voucherScheduledTimeTableTripPeriods, $b_aArray);
+        ksort($ab_intervals);
+        ksort($ba_intervals);
+        $ab_intervals = $this->setIntervalsForTripPeriods($ab_intervals);
+        $ba_intervals = $this->setIntervalsForTripPeriods($ba_intervals);
+        array_push($voucherScheduledTimeTableTripPeriods, $ab_intervals);
+        array_push($voucherScheduledTimeTableTripPeriods, $ba_intervals);
         return $voucherScheduledTimeTableTripPeriods;
+    }
+
+    private function setIntervalsForTripPeriods($tripPeriods) {
+
+        $x = 0;
+        while ($x < count($tripPeriods)) {
+            if ($x == 0) {
+                $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
+                $tripPeriod->setScheduledInterval("");
+                $tripPeriod->setActualInterval("");
+            } else {
+                $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
+                $previousTripPeriod = $this->getNthItemOfAssociativeArray($x - 1, $tripPeriods);
+
+                $scheduledInterval = $this->timeCalculator->getTimeStampsDifference($tripPeriod->getStartTimeScheduled(), $previousTripPeriod->getStartTimeScheduled());
+
+                $tripPeriod->setScheduledInterval($scheduledInterval);
+
+                //BLOCK INTERVAL_COLOR this block is to set color for standart and prolonged intervals
+                if ($x == 1) {
+                    $this->standartIntervalTime = $scheduledInterval;
+                    $tripPeriod->setScheduledIntervalColor("white");
+                } else {
+                    if (abs($this->timeCalculator->getSecondsFromTimeStamp($this->standartIntervalTime) - $this->timeCalculator->getSecondsFromTimeStamp($scheduledInterval)) < 61) {
+                        $tripPeriod->setScheduledIntervalColor("white");
+                    } else {
+                        $tripPeriod->setScheduledIntervalColor("pink");
+                    }
+                }
+
+                //END OF BLOCK INTERVAL_COLOR
+
+                if ($tripPeriod->getStartTimeActual() !== "" && $previousTripPeriod->getStartTimeActual() != "") {
+                
+                    $tripPeriod->setActualInterval($this->timeCalculator->getTimeStampsDifference($tripPeriod->getStartTimeActual(), $previousTripPeriod->getStartTimeActual()));
+                } else {
+                    $tripPeriod->setActualInterval("");
+                }
+            }
+            $x++;
+        }
+        return $tripPeriods;
     }
 
     public function getGPSTimeTableTripPeriods() {
@@ -85,6 +129,12 @@ class DayXL {
         array_push($gpsTimeTableTripPeriods, $a_bArray);
         array_push($gpsTimeTableTripPeriods, $b_aArray);
         return $gpsTimeTableTripPeriods;
+    }
+
+    private function getNthItemOfAssociativeArray($nth, $array) {
+        $arrayKeys = array_keys($array);
+        $index = $arrayKeys[$nth];
+        return $array[$index];
     }
 
 }

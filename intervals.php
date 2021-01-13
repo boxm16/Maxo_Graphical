@@ -117,8 +117,8 @@ $size = count($routes);
         <?php
         include 'navBar.php';
         ?>
-        <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
-        <div class="content">
+        <div class="preload1"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="content1">
 
 
 
@@ -150,29 +150,27 @@ $size = count($routes);
 
 
                                 foreach ($tripPeriods as $tripPeriod) {
+                                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                    $startTimeActual = $tripPeriod->getStartTimeActual();
+                                    $scheduledInterval = $tripPeriod->getScheduledInterval();
+                                    $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
+                                    $actualInterval = $tripPeriod->getActualInterval();
+                                    $actualIntervalColor = $tripPeriod->getActualIntervalColor();
+                                    $t=$tripPeriod->getTripPeriodDNA()->getExodusNumber();
+
+                                    $row = "<tr>"
+                                            . "<td>$startTimeScheduled</td>"
+                                            . "<td>$startTimeActual</td>"
+                                            . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
+                                            . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
+                                            . "<td> $t</td>"
+                                            . "</tr>";
+
                                     if ($tripPeriod->getType() == "ab") {
-                                        $sts = $tripPeriod->getStartTimeScheduled();
-                                        $sta = $tripPeriod->getStartTimeActual();
-                                        $stt = $tripPeriod->getType();
-                                        $abVoucherTableBuilder .= "<tr>"
-                                                . "<td>$sts</td>"
-                                                . "<td>$sta</td>"
-                                                . "<td>$stt</td>"
-                                                . "<td>$stt</td>"
-                                                . "<td>$stt</td>"
-                                                . "</tr>";
+                                        $abVoucherTableBuilder .= $row;
                                     }
                                     if ($tripPeriod->getType() == "ba") {
-                                        $sts = $tripPeriod->getStartTimeScheduled();
-                                        $sta = $tripPeriod->getStartTimeActual();
-                                        $stt = $tripPeriod->getType();
-                                        $baVoucherTableBuilder .= "<tr>"
-                                                . "<td>$sts</td>"
-                                                . "<td>$sta</td>"
-                                                . "<td>$stt</td>"
-                                                . "<td>$stt</td>"
-                                                . "<td>$stt</td>"
-                                                . "</tr>";
+                                        $baVoucherTableBuilder .= $row;
                                     }
                                 }
                             }
@@ -208,7 +206,7 @@ $size = count($routes);
                             //end of GPS time table --------
 
                             $voucher_header = ""
-                                    . "<tr><th colspan=\"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
+                                    . "<tr><th colspan = \"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
                                     . "<tr>"
                                     . "<th>გეგმიუირი<br>გასვლის<br>დრო</th>"
                                     . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"

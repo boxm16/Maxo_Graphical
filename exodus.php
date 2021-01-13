@@ -46,6 +46,10 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                                     if ($tripPeriod->getType() == "break") {
                                         $rowColor = "lightgrey";
                                     }
+                                    $startTimeScheduledFromData = $tripPeriod->getStartTimeScheduled();
+                                    if ($startTimeScheduled == $startTimeScheduledFromData) {
+                                        $rowColor = "lightgreen";
+                                    }
                                     $tripPeriodRow = "<tr style=\"background-color:$rowColor;\">"
                                             . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                             . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"

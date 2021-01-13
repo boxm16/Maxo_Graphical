@@ -2,8 +2,9 @@
 require_once 'Controller/RouteXLController.php';
 if (!isset($GLOBASL["routes"])) {
     $routeController = new RouteXLController();
+    $routes = $GLOBALS["routes"];
 } else {
-    $routes = $GLOBASL["routes"];
+    $routes = $GLOBALS["routes"];
 }
 ?>
 <!DOCTYPE html>
@@ -128,7 +129,11 @@ if (!isset($GLOBASL["routes"])) {
                                     $tripPeriods = $tripVoucher->getTripPeriods();
                                     foreach ($tripPeriods as $tripPeriod) {
                                         $lostTimeLights = $tripPeriod->getLightsForLostTime();
-                                        echo "<tr>"
+                                        $rowColor = "white";
+                                        if ($tripPeriod->getType() == "break") {
+                                            $rowColor = "lightgrey";
+                                        }
+                                        echo "<tr style=\"background-color:$rowColor;\">"
                                         . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"

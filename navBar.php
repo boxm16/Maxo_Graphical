@@ -29,7 +29,6 @@ echo "<ul>
   <li><a $uploadPageActive href=\"uploadForm.php\">ახალი ფაილის ატვირთვა</a></li>
   <li><a $routeDetailsPageActive href=\"routeDetails.php\">ბრუნები</a></li>
   <li><a $intervalsActive href=\"intervals.php\">ინტერვალები</a></li>
-  <li><a $concurrentPageActive href=\"#about\">ერთდროულად მდგომი ავტობუსები</a></li>
 </ul>";
    echo "-<br><br>";
 

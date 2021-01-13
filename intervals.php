@@ -2,12 +2,10 @@
 require_once 'Controller/RouteXLController.php';
 if (!isset($GLOBASL["routes"])) {
     $routeController = new RouteXLController();
+    $routes = $GLOBALS["routes"];
 } else {
-    $routes = $GLOBASL["routes"];
+    $routes = $GLOBALS["routes"];
 }
-//starting building tables
-$tableBodyBuilder = "";
-$size = count($routes);
 ?>
 <!DOCTYPE html>
 
@@ -185,7 +183,7 @@ $size = count($routes);
                                             . "<td>$startTimeActual</td>"
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
-                                            . "<td>$exodusNumber</td>"
+                                            . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "</tr>";
 
                                     if ($tripPeriod->getType() == "ab") {
@@ -203,12 +201,13 @@ $size = count($routes);
 
                             foreach ($gpsIntervals as $direction) {
                                 foreach ($direction as $tripPeriod) {
+                                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                     $actualInterval = $tripPeriod->getActualInterval();
                                     $actualIntervalColor = $tripPeriod->getActualIntervalColor();
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
                                     $row = "<tr>"
-                                            . "<td>$exodusNumber</td>"
+                                            . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
                                             . "</tr>";
 

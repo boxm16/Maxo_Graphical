@@ -1,6 +1,7 @@
 <?php
 require_once './Controller/RouteXLController.php';
-if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exodusNumber"])) {
+$bodyBuilder = "";
+if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exodusNumber"]) && isset($_GET["startTimeScheduled"])) {
     $routeNumber = $_GET["routeNumber"];
     $dateStamp = $_GET["dateStamp"];
     $exodusNumber = $_GET["exodusNumber"];
@@ -8,32 +9,70 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $exodusDetails = "$dateStamp,  მარშრუტი # $routeNumber, გასვლა #$exodusNumber";
     $routeController = new RouteXLController();
     $routes = $routeController->getRoutes();
-} else {
-    $message = "AQ RM MOGIYVANA SHE DALOCVILO?";
-}
-if (!isset($GLOBASL["routes"])) {
-    $routeController = new RouteXLController();
-    $routes = $GLOBALS["routes"];
-} else {
-    $routes = $GLOBALS["routes"];
-}
-foreach ($routes as $route) {
+    if (!isset($GLOBASL["routes"])) {
+        $routeController = new RouteXLController();
+        $routes = $GLOBALS["routes"];
+    } else {
+        $routes = $GLOBALS["routes"];
+    }
+    $found = false;
 
-    $days = $route->getDays();
+    foreach ($routes as $route) {
+        $routeNumberFromData = $route->getNumber();
+        if ($routeNumber == $routeNumberFromData) {
+            $days = $route->getDays();
 
-    foreach ($days as $day) {
-        $exoduses = $day->getExoduses();
-        foreach ($exoduses as $exodus) {
+            foreach ($days as $day) {
+                $dateStampFromData = $day->getDateStamp();
+                if ($dateStamp == $dateStampFromData) {
+                    $exoduses = $day->getExoduses();
+                    foreach ($exoduses as $exodus) {
+                        $exodusNumberFromData = $exodus->getNumber();
+                        if ($exodusNumber == $exodusNumberFromData) {
+                            $tripVouchers = $exodus->getTripVouchers();
+                            $bodyBuilder = "";
+                            foreach ($tripVouchers as $tripVoucher) {
+                                $tripVoucherNumber = $tripVoucher->getNumber();
+                                $voucherRow = "<tr><td>$tripVoucherNumber</td></tr>";
+                                $bodyBuilder .= $voucherRow;
+                                $tripPeriods = $tripVoucher->getTripPeriods();
 
-            $tripVouchers = $exodus->getTripVouchers();
-            foreach ($tripVouchers as $tripVoucher) {
+                                foreach ($tripPeriods as $tripPeriod) {
+                                    $found = true;
 
-                foreach ($tripPeriods as $tripPeriod) {
-                    
+
+                                    $lostTimeLights = $tripPeriod->getLightsForLostTime();
+                                    $rowColor = "white";
+                                    if ($tripPeriod->getType() == "break") {
+                                        $rowColor = "lightgrey";
+                                    }
+                                    $tripPeriodRow = "<tr style=\"background-color:$rowColor;\">"
+                                            . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                            . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                            . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                            . "<td>" . $tripPeriod->getTypeGe() . "</td>"
+                                            . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                            . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                            . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                            . "<td></td>"
+                                            . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                                            . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                            . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
+                                            . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
+                                            . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
+                                            . "</tr>";
+
+                                    $bodyBuilder .= $tripPeriodRow;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+} else {
+    $exodusDetails = "რაღაც შეცდომა მოხდა, სცადე თავიდან";
 }
 ?>
 <!DOCTYPE html>
@@ -112,20 +151,13 @@ foreach ($routes as $route) {
                     <th>'დაკარგული<br>დრო'</th>
                 </tr>
             </thead>
-            <tbody>              
-                <tr><td>Bali</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td></td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td></tr>
-
+            <tbody> 
                 <?php
-                for ($x = 0; $x < 40; $x++) {
-                    echo "                <tr><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td></td><td>akako</td><td>akako</td><td>akako</td><td>akako</td><td>akako</td></tr>
-   ";
-                }
-                ?>         </tbody>
+                echo $bodyBuilder;
+                ?>
+            </tbody>
         </table>
-        <?php
-        echo "<br><br><br>";
-        echo $exodusDetails;
-        ?>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

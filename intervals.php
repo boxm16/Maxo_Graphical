@@ -142,69 +142,6 @@ $size = count($routes);
                             $dateStamp = $day->getDateStamp();
                             echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue;\">$dateStamp</td></tr>";
 
-                            //first voutcher time table --------
-                            $directionsArray = $day->getVoucherScheduledTimeTableTripPeriods();
-                            $abVoucherTableBuilder = "";
-                            $baVoucherTableBuilder = "";
-                            foreach ($directionsArray as $tripPeriods) {
-
-
-                                foreach ($tripPeriods as $tripPeriod) {
-                                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
-                                    $startTimeActual = $tripPeriod->getStartTimeActual();
-                                    $scheduledInterval = $tripPeriod->getScheduledInterval();
-                                    $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
-                                    $actualInterval = $tripPeriod->getActualInterval();
-                                    $actualIntervalColor = $tripPeriod->getActualIntervalColor();
-                                    $t=$tripPeriod->getTripPeriodDNA()->getExodusNumber();
-
-                                    $row = "<tr>"
-                                            . "<td>$startTimeScheduled</td>"
-                                            . "<td>$startTimeActual</td>"
-                                            . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
-                                            . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
-                                            . "<td> $t</td>"
-                                            . "</tr>";
-
-                                    if ($tripPeriod->getType() == "ab") {
-                                        $abVoucherTableBuilder .= $row;
-                                    }
-                                    if ($tripPeriod->getType() == "ba") {
-                                        $baVoucherTableBuilder .= $row;
-                                    }
-                                }
-                            }
-                            //end of voutcher time table --------
-                            //now GPS time table --------
-                            $gpsDirectionsArray = $day->getGPSTimeTableTripPeriods();
-                            $ab_GpsTableBuilder = "";
-                            $ba_GpsTableBuilder = "";
-                            foreach ($gpsDirectionsArray as $tripPeriods) {
-
-
-                                foreach ($tripPeriods as $tripPeriod) {
-                                    if ($tripPeriod->getType() == "ab") {
-                                        $sts = $tripPeriod->getStartTimeScheduled();
-                                        $sta = $tripPeriod->getStartTimeActual();
-                                        $stt = $tripPeriod->getType();
-                                        $ab_GpsTableBuilder .= "<tr>"
-                                                . "<td>$sts</td>"
-                                                . "<td>$sta</td>"
-                                                . "</tr>";
-                                    }
-                                    if ($tripPeriod->getType() == "ba") {
-                                        $sts = $tripPeriod->getStartTimeScheduled();
-                                        $sta = $tripPeriod->getStartTimeActual();
-                                        $stt = $tripPeriod->getType();
-                                        $ba_GpsTableBuilder .= "<tr>"
-                                                . "<td>$sts</td>"
-                                                . "<td>$sta</td>"
-                                                . "</tr>";
-                                    }
-                                }
-                            }
-                            //end of GPS time table --------
-
                             $voucher_header = ""
                                     . "<tr><th colspan = \"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
                                     . "<tr>"
@@ -225,13 +162,68 @@ $size = count($routes);
                                     . "</tr>";
 
 
+                            $intervals = $day->getIntervals();
+                            $scheduledIntervals = $intervals["scheduledIntervals"];
+                            $gpsIntervals = $intervals["gpsIntervals"];
 
+                            $abVoucherTableBodyBuilder = "";
+                            $baVoucherTableBodyBuilder = "";
 
+//first voucher table body builder
+                            foreach ($scheduledIntervals as $direction) {
+                                foreach ($direction as $tripPeriod) {
+                                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                    $startTimeActual = $tripPeriod->getStartTimeActual();
+                                    $scheduledInterval = $tripPeriod->getScheduledInterval();
+                                    $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
+                                    $actualInterval = $tripPeriod->getActualInterval();
+                                    $actualIntervalColor = $tripPeriod->getActualIntervalColor();
+                                    $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
+                                    $row = "<tr>"
+                                            . "<td>$startTimeScheduled</td>"
+                                            . "<td>$startTimeActual</td>"
+                                            . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
+                                            . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
+                                            . "<td>$exodusNumber</td>"
+                                            . "</tr>";
+
+                                    if ($tripPeriod->getType() == "ab") {
+                                        $abVoucherTableBodyBuilder .= $row;
+                                    }
+                                    if ($tripPeriod->getType() == "ba") {
+                                        $baVoucherTableBodyBuilder .= $row;
+                                    }
+                                }
+                            }
+
+                            //now gps table body builder
+                            $ab_GpsTableBuilder = "";
+                            $ba_GpsTableBuilder = "";
+
+                            foreach ($gpsIntervals as $direction) {
+                                foreach ($direction as $tripPeriod) {
+                                    $actualInterval = $tripPeriod->getActualInterval();
+                                    $actualIntervalColor = $tripPeriod->getActualIntervalColor();
+                                    $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+
+                                    $row = "<tr>"
+                                            . "<td>$exodusNumber</td>"
+                                            . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
+                                            . "</tr>";
+
+                                    if ($tripPeriod->getType() == "ab") {
+                                        $ab_GpsTableBuilder .= $row;
+                                    }
+                                    if ($tripPeriod->getType() == "ba") {
+                                        $ba_GpsTableBuilder .= $row;
+                                    }
+                                }
+                            }
                             echo "<tr>"
-                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$abVoucherTableBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ab_GpsTableBuilder</tbody></table></td>"
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$abVoucherTableBodyBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ab_GpsTableBuilder</tbody></table></td>"
                             . ""
-                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$baVoucherTableBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ba_GpsTableBuilder</tbody></table></td>"
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$baVoucherTableBodyBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ba_GpsTableBuilder</tbody></table></td>"
                             . "</tr>";
                         }
                     }

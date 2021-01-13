@@ -30,9 +30,8 @@ class DayXL {
         $this->exoduses = $exoduses;
     }
 
-    public function getVoucherScheduledTimeTableTripPeriods() {
-        //returns array of two array of tripPeriods sorted by vaoucher start time scheduled, onew for A_B, and another for B_A 
-        $voucherScheduledTimeTableTripPeriods = array();
+    public function getIntervals() {
+
         $a_bArray = array();
         $b_aArray = array();
         foreach ($this->exoduses as $exodus) {
@@ -56,9 +55,23 @@ class DayXL {
         ksort($ba_intervals);
         $ab_intervals = $this->setIntervalsForTripPeriods($ab_intervals);
         $ba_intervals = $this->setIntervalsForTripPeriods($ba_intervals);
-        array_push($voucherScheduledTimeTableTripPeriods, $ab_intervals);
-        array_push($voucherScheduledTimeTableTripPeriods, $ba_intervals);
-        return $voucherScheduledTimeTableTripPeriods;
+        $scheduledIntervals = array($ab_intervals, $ba_intervals);
+
+
+        $ab_GPS_intervals = $this->getGPSIntervalPeriods($ab_intervals);
+        $ba_GPS_intervals = $this->getGPSIntervalPeriods($ba_intervals);
+
+        ksort($ab_GPS_intervals);
+        ksort($ba_GPS_intervals);
+
+        $ab_GPS_intervals = $this->setGPSForTripPeriods($ab_GPS_intervals);
+        $ba_GPS_intervals = $this->setGPSForTripPeriods($ba_GPS_intervals);
+
+
+        $gpsIntervals = array($ab_GPS_intervals, $ba_GPS_intervals);
+        $intervals["scheduledIntervals"] = $scheduledIntervals;
+        $intervals["gpsIntervals"] = $gpsIntervals;
+        return $intervals;
     }
 
     private function setIntervalsForTripPeriods($tripPeriods) {
@@ -92,7 +105,7 @@ class DayXL {
                 //END OF BLOCK INTERVAL_COLOR
 
                 if ($tripPeriod->getStartTimeActual() !== "" && $previousTripPeriod->getStartTimeActual() != "") {
-                
+
                     $tripPeriod->setActualInterval($this->timeCalculator->getTimeStampsDifference($tripPeriod->getStartTimeActual(), $previousTripPeriod->getStartTimeActual()));
                 } else {
                     $tripPeriod->setActualInterval("");
@@ -103,32 +116,47 @@ class DayXL {
         return $tripPeriods;
     }
 
-    public function getGPSTimeTableTripPeriods() {
-        //returns array of two array of tripPeriods sorted by GPS start time scheduled, one for A_B, and another for B_A 
-        $gpsTimeTableTripPeriods = array();
-        $a_bArray = array();
-        $b_aArray = array();
-        foreach ($this->exoduses as $exodus) {
-            $tripVouchers = $exodus->getTripVouchers();
-            foreach ($tripVouchers as $tripVoucher) {
-                $tripPeriods = $tripVoucher->getTripPeriods();
-                foreach ($tripPeriods as $tripPeriod) {
-                    $tripPeriodType = $tripPeriod->getType();
-                    $startTimeActual = $tripPeriod->getStartTimeActual();
-                    if ($startTimeActual != "") {
-                        if ($tripPeriodType == "ab") {
-                            $a_bArray[$startTimeActual] = $tripPeriod;
-                        }
-                        if ($tripPeriodType == "ba") {
-                            $b_aArray[$startTimeActual] = $tripPeriod;
-                        }
-                    }
+    private function getGPSIntervalPeriods($tripPeriods) {
+
+        $resultArray = array();
+        foreach ($tripPeriods as $tripPeriod) {
+            $tripPeriod_GPS = clone $tripPeriod;
+            $startTimeActual = $tripPeriod_GPS->getStartTimeActual();
+            if ($startTimeActual != "") {
+                $startTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($startTimeActual);
+                if (array_key_exists($startTimeActualInSeconds, $resultArray)) {
+                    $startTimeActualInSeconds++;
+                    $resultArray [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                } else {
+                    $resultArray [$startTimeActualInSeconds] = $tripPeriod_GPS;
                 }
             }
+        }return $resultArray;
+    }
+
+    private function setGPSForTripPeriods($tripPeriods) {
+        $x = 0;
+        while ($x < count($tripPeriods)) {
+            if ($x == 0) {
+                $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
+               
+                $tripPeriod->setActualInterval("");
+            } else {
+                $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
+                $previousTripPeriod = $this->getNthItemOfAssociativeArray($x - 1, $tripPeriods);
+
+
+
+                if ($tripPeriod->getStartTimeActual() !== "" && $previousTripPeriod->getStartTimeActual() != "") {
+
+                    $tripPeriod->setActualInterval($this->timeCalculator->getTimeStampsDifference($tripPeriod->getStartTimeActual(), $previousTripPeriod->getStartTimeActual()));
+                } else {
+                    $tripPeriod->setActualInterval("");
+                }
+            }
+            $x++;
         }
-        array_push($gpsTimeTableTripPeriods, $a_bArray);
-        array_push($gpsTimeTableTripPeriods, $b_aArray);
-        return $gpsTimeTableTripPeriods;
+        return $tripPeriods;
     }
 
     private function getNthItemOfAssociativeArray($nth, $array) {

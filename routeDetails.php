@@ -197,197 +197,200 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table style="width:100%;"  height="100px">
-                            <thead>
-                                <tr>
-                                    <th>გეგმიუირი<br>გასვლის<br>დრო</th>
-                                    <th>ფაქტიური<br>გასვლის<br>დრო</th>
-                                    <th>სხვაობა</th>
-                                    <th>------</th>
-                                    <th>გეგმიუირი<br>მისვლის<br>დრო</th>
-                                    <th>ფაქტიური<br>მისვლის<br>დრო</th>
-                                    <th>სხვაობა</th>
-                                    <th></th>
-                                    <th>წირის<br>გეგმიური<br>დრო</th>
-                                    <th>წირის<br>ფაქტიური<br>დრო</th>
-                                    <th>დგომის<br>გეგმიური<br> დრო</th>
-                                    <th>დგომის<br>ფაქტიური<br>დრო</th>
-                                    <th>'დაკარგული<br>დრო'</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
+                        <form action="deletion.php" method="POST">
+                            <table style="width:100%;"  height="100px">
+                                <thead>
+                                    <tr>
+                                        <th>გეგმიუირი<br>გასვლის<br>დრო</th>
+                                        <th>ფაქტიური<br>გასვლის<br>დრო</th>
+                                        <th>სხვაობა</th>
+                                        <th>------</th>
+                                        <th>გეგმიუირი<br>მისვლის<br>დრო</th>
+                                        <th>ფაქტიური<br>მისვლის<br>დრო</th>
+                                        <th>სხვაობა</th>
+                                        <th></th>
+                                        <th>წირის<br>გეგმიური<br>დრო</th>
+                                        <th>წირის<br>ფაქტიური<br>დრო</th>
+                                        <th>დგომის<br>გეგმიური<br> დრო</th>
+                                        <th>დგომის<br>ფაქტიური<br>დრო</th>
+                                        <th>'დაკარგული<br>დრო'</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
 
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
 
-                                    <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
 
-                                    <td></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
+                                        <td></td>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox"></td>
 
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($startTimeScheduledPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($startTimeActualPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($startTimeDifferencePackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td> 
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($tripPeriodTypePackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($arrivalTimeScheduledPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($arrivalTimeActualPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($arrivalTimeDifferencePackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($tripPeriodScheduledPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($tripPeriodActualPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($haltTimeScheduledPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($haltTimeActualPackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x</td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table width="100%">
-                                            <thead stlyle="display:block;" ></thead>
-                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                <?php
-                                                foreach ($lostTimePackage as $x => $x_value) {
-                                                    echo "<tr><td><input type=\"checkbox\" checked=\"$x_value\"></td><td>$x </td></tr>";
-                                                }
-                                                ?> 
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($startTimeScheduledPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"startTimeScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($startTimeActualPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"startTimeActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($startTimeDifferencePackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"startTimeScheduledDifferencePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td> 
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($tripPeriodTypePackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"tripPeriodTypePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($arrivalTimeScheduledPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"arrivalTimeScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($arrivalTimeActualPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"arrivalTimeActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($arrivalTimeDifferencePackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"arrivalTimeDifferencePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($tripPeriodScheduledPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"tripPeriodScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($tripPeriodActualPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"tripPeriodActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($haltTimeScheduledPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"haltTimeScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($haltTimeActualPackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"haltTimeActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table width="100%">
+                                                <thead stlyle="display:block;" ></thead>
+                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                    <?php
+                                                    foreach ($lostTimePackage as $x => $x_value) {
+                                                        echo "<tr><td><input name=\"lostTimePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x </td></tr>";
+                                                    }
+                                                    ?> 
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">გაფილტრვა</button>
-                        </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="filterPackage" value="sent">
+                                <button type="submit" class="btn btn-primary">გაფილტრვა</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

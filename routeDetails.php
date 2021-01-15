@@ -96,7 +96,6 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
             }
 
 
-
         </style>
     </head>
     <body>

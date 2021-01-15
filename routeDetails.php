@@ -114,6 +114,7 @@ if (!isset($GLOBASL["routes"])) {
                             foreach ($exoduses as $exodus) {
                                 echo "<tr><td colspan='13'><center>გასვლა #: " . $exodus->getNumber() . "<center></td></tr>";
 
+                                
                                 $tripVouchers = $exodus->getTripVouchers();
                                 foreach ($tripVouchers as $tripVoucher) {
                                     echo "<tr><td colspan='13'><center>მარშრუტი #" . $route->getNumber()

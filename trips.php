@@ -63,7 +63,6 @@ $routes = $routeController->getRoutes();
             <form action='excelExport.php' method='POST'><input type='hidden' name='export' value='export'><input type='submit' value='ექსელში ექსპორტი' ></form>
 
         </div>
-
         <a href="uploadForm.php">ახალი ფაილის ატვირთვა</a> &nbsp;&nbsp;<a href="index.php" target="_blank">მთავარ გვერძე დაბრნუნება</a>
         <div style="padding-left: 10px">
             <?php
@@ -209,7 +208,7 @@ $routes = $routeController->getRoutes();
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
             function copyData(event) {
-                tableBody.innerHTML="";
+                tableBody.innerHTML = "";
                 var trElements = event.target.parentElement.parentElement;
                 var clone = trElements.cloneNode(true); // copy children too
                 clone.removeChild(clone.childNodes[13]);

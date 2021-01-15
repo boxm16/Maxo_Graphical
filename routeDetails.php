@@ -38,6 +38,13 @@ if (!isset($GLOBASL["routes"])) {
                 padding: 14px 16px;
                 text-decoration: none;
             }
+             li button {
+
+                color: white;
+                text-align: center;
+                padding: 11px ;
+                text-decoration: none;
+            }
 
             li a:hover {
                 background-color:white;

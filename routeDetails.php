@@ -1,10 +1,10 @@
 <?php
 require_once 'Controller/RouteXLController.php';
 if (!isset($GLOBASL["routes"])) {
-    $routeController = new RouteXLController();
-    $routes = $GLOBALS["routes"];
+$routeController = new RouteXLController();
+$routes = $GLOBALS["routes"];
 } else {
-    $routes = $GLOBALS["routes"];
+$routes = $GLOBALS["routes"];
 }
 ?>
 <!DOCTYPE html>
@@ -38,7 +38,7 @@ if (!isset($GLOBASL["routes"])) {
                 padding: 14px 16px;
                 text-decoration: none;
             }
-             li button {
+            li button {
 
                 color: white;
                 text-align: center;
@@ -78,6 +78,10 @@ if (!isset($GLOBASL["routes"])) {
                 border: 2px solid black;
 
             }
+            .modal-dialog {
+                max-width: 100%;
+                margin: 2rem auto;
+            }
 
         </style>
     </head>
@@ -111,61 +115,123 @@ if (!isset($GLOBASL["routes"])) {
                     <?php
                     foreach ($routes as $route) {
 
-                        $days = $route->getDays();
-                        echo "<tr><td colspan='13'><center>მარშრუტა #: " . $route->getNumber() . "</center></td></tr>";
+                    $days = $route->getDays();
+                    echo "<tr><td colspan='13'><center>მარშრუტა #: " . $route->getNumber() . "</center></td></tr>";
 
 
-                        foreach ($days as $day) {
-                            echo "<tr><td colspan='13'><center>თარიღი: " . $day->getDateStamp() . "</center></td></tr>";
-                            $exoduses = $day->getExoduses();
-                            foreach ($exoduses as $exodus) {
-                                echo "<tr><td colspan='13'><center>გასვლა #: " . $exodus->getNumber() . "<center></td></tr>";
+                    foreach ($days as $day) {
+                    echo "<tr><td colspan='13'><center>თარიღი: " . $day->getDateStamp() . "</center></td></tr>";
+                    $exoduses = $day->getExoduses();
+                    foreach ($exoduses as $exodus) {
+                    echo "<tr><td colspan='13'><center>გასვლა #: " . $exodus->getNumber() . "<center></td></tr>";
 
-                                
-                                $tripVouchers = $exodus->getTripVouchers();
-                                foreach ($tripVouchers as $tripVoucher) {
-                                    echo "<tr><td colspan='13'><center>მარშრუტი #" . $route->getNumber()
-                                    . ". თარიღი:" . $day->getDateStamp()
-                                    . ". გასვლია #" . $exodus->getNumber()
-                                    . ". საგზური #" . $tripVoucher->getNumber()
-                                    // . " Bus Type: " . $tripVoucher->getBusType()
-                                    //. " Bus Number: " . $tripVoucher->getBusNumber()
-                                    //. "/// Driver Number: " . $tripVoucher->getDriverNumber()
-                                    //. "/// Driver Name: " . $tripVoucher->getDriverName()
-                                    . ". შენიშვნები: " . $tripVoucher->getNotes() . "</center></td></tr>";
 
-                                    $tripPeriods = $tripVoucher->getTripPeriods();
-                                    foreach ($tripPeriods as $tripPeriod) {
-                                        $lostTimeLights = $tripPeriod->getLightsForLostTime();
-                                        $rowColor = "white";
-                                        if ($tripPeriod->getType() == "break") {
-                                            $rowColor = "lightgrey";
-                                        }
-                                        echo "<tr style=\"background-color:$rowColor;\">"
-                                        . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
-                                        . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
-                                        . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
-                                        . "<td>" . $tripPeriod->getTypeGe() . "</td>"
-                                        . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
-                                        . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
-                                        . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                                        . "<td></td>"
-                                        . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
-                                        . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
-                                        . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
-                                        . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
-                                        . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
-                                        . "</tr>";
-                                    }
-                                }
-                            }
-                        }
+                    $tripVouchers = $exodus->getTripVouchers();
+                    foreach ($tripVouchers as $tripVoucher) {
+                    echo "<tr><td colspan='13'><center>მარშრუტი #" . $route->getNumber()
+                    . ". თარიღი:" . $day->getDateStamp()
+                    . ". გასვლია #" . $exodus->getNumber()
+                    . ". საგზური #" . $tripVoucher->getNumber()
+                    // . " Bus Type: " . $tripVoucher->getBusType()
+                    //. " Bus Number: " . $tripVoucher->getBusNumber()
+                    //. "/// Driver Number: " . $tripVoucher->getDriverNumber()
+                    //. "/// Driver Name: " . $tripVoucher->getDriverName()
+                    . ". შენიშვნები: " . $tripVoucher->getNotes() . "</center></td></tr>";
+
+                    $tripPeriods = $tripVoucher->getTripPeriods();
+                    foreach ($tripPeriods as $tripPeriod) {
+                    $lostTimeLights = $tripPeriod->getLightsForLostTime();
+                    $rowColor = "white";
+                    if ($tripPeriod->getType() == "break") {
+                    $rowColor = "lightgrey";
+                    }
+                    echo "<tr style=\"background-color:$rowColor;\">"
+                    . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                    . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
+                    . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
+                    . "<td>" . $tripPeriod->getTypeGe() . "</td>"
+                    . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                    . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                    . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                    . "<td></td>"
+                    . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                    . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                    . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
+                    . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
+                    . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
+                    . "</tr>";
+                    }
+                    }
+                    }
+                    }
                     }
                     ?>
                 </tbody>
 
             </table>
         </div>
+
+        <!--MODAL WINODW start -->
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table  id="header-fixed" style="width:100%">
+                            <thead>
+
+                                <tr>
+                                    <th>გეგმიუირი<br>გასვლის<br>დრო</th>
+                                    <th>ფაქტიური<br>გასვლის<br>დრო</th>
+                                    <th>სხვაობა</th>
+                                    <th>------</th>
+                                    <th>გეგმიუირი<br>მისვლის<br>დრო</th>
+                                    <th>ფაქტიური<br>მისვლის<br>დრო</th>
+                                    <th>სხვაობა</th>
+                                    <th></th>
+                                    <th>წირის<br>გეგმიური<br>დრო</th>
+                                    <th>წირის<br>ფაქტიური<br>დრო</th>
+                                    <th>დგომის<br>გეგმიური<br> დრო</th>
+                                    <th>დგომის<br>ფაქტიური<br>დრო</th>
+                                    <th>'დაკარგული<br>დრო'</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                echo "<tr style=\"background-color:$rowColor;\">"
+                                . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                . "<td>" . $tripPeriod->getTypeGe() . "</td>"
+                                . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                . "<td></td>"
+                                . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                                . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
+                                . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
+                                . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
+                                . "</tr>";
+                                
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--MODAL WINODW end -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

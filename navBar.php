@@ -16,7 +16,7 @@ switch ($currentPage) {
         break;
     case "routeDetails.php":
         $routeDetailsPageActive = $activeClass;
-        $filterButton = "<li style=\"padding-left:100px\"><button style=\"background-color:blue\">ფილტრები</button></li>";
+        $filterButton = "<li style=\"padding-left:100px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#myModal\">ფილტრები</button></li>";
         break;
     case "intervals.php":
         $intervalsActive = $activeClass;

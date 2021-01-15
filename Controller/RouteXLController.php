@@ -10,11 +10,12 @@ class RouteXLController {
     private $routes; //this is array of routes
 
     function __construct() {
+        if (!isset($GLOBALS["routes"])) {
+            $excelRows = $this->readExcelFile();
+            $this->routes = $this->getRoutesFromExcelRows($excelRows); //array of routes
 
-        $excelRows = $this->readExcelFile();
-        $this->routes = $this->getRoutesFromExcelRows($excelRows); //array of routes
-
-        $GLOBALS["routes"] = $this->routes;
+            $GLOBALS["routes"] = $this->routes;
+        }
     }
 
     private function readExcelFile() {
@@ -315,6 +316,75 @@ class RouteXLController {
 
     public function setRoutes($routes) {
         $this->routes = $routes;
+    }
+
+    public function getRoutesDelailedPackage() {
+        $routes = $this->routes;
+        $startTimeScheduledPackage = array();
+        $startTimeActualPackage = array();
+        $startTimeDifferencePackage = array();
+        $tripPeriodTypePackage = array();
+        $arrivalTimeScheduledPackage = array();
+        $arrivalTimeActualPackage = array();
+        $arrivalTimeDifferencePackage = array();
+        $tripPeriodScheduledPackage = array();
+        $tripPeriodActualPackage = array();
+        $haltTimeScheduledPackage = array();
+        $haltTimeActualPackage = array();
+        $lostTimePackage = array();
+
+        foreach ($routes as $route) {
+            $days = $route->getDays();
+            foreach ($days as $day) {
+                $exoduses = $day->getExoduses();
+                foreach ($exoduses as $exodus) {
+                    $tripVouchers = $exodus->getTripVouchers();
+                    foreach ($tripVouchers as $tripVoucher) {
+                        $tripPeriods = $tripVoucher->getTripPeriods();
+                        foreach ($tripPeriods as $tripPeriod) {
+                            $startTimeScheduledPackage[$tripPeriod->getStartTimeScheduled()] = true;
+                            $startTimeActualPackage[$tripPeriod->getStartTimeActual()] = true;
+                            $startTimeDifferencePackage[$tripPeriod->getStartTimeDifference()] = true;
+                            $tripPeriodTypePackage[$tripPeriod->getTypeGe()] = true;
+                            $arrivalTimeScheduledPackage[$tripPeriod->getArrivalTimeScheduled()] = true;
+                            $arrivalTimeActualPackage[$tripPeriod->getArrivalTimeActual()] = true;
+                            $arrivalTimeDifferencePackage[$tripPeriod->getArrivalTimeDifference()] = true;
+                            $tripPeriodScheduledPackage[$tripPeriod->getTripPeriodScheduledTime()] = true;
+                            $tripPeriodActualPackage[$tripPeriod->getTripPeriodActualTime()] = true;
+                            $haltTimeScheduledPackage[$tripPeriod->getHaltTimeScheduled()] = true;
+                            $haltTimeActualPackage[$tripPeriod->getHaltTimeActual()] = true;
+                            $lostTimePackage[$tripPeriod->getLostTime()] = true;
+                        }
+                    }
+                }
+            }
+        }
+        ksort($startTimeScheduledPackage);
+        ksort($startTimeActualPackage);
+        ksort($startTimeDifferencePackage);
+        ksort($tripPeriodTypePackage);
+        ksort($arrivalTimeScheduledPackage);
+        ksort($arrivalTimeActualPackage);
+        ksort($arrivalTimeDifferencePackage);
+        ksort($tripPeriodScheduledPackage);
+        ksort($tripPeriodActualPackage);
+        ksort($haltTimeScheduledPackage);
+        ksort($haltTimeActualPackage);
+        ksort($lostTimePackage);
+        $routesDetailedPackage["routes"] = $this->routes;
+        $routesDetailedPackage["startTimeActualPackage"] = $startTimeActualPackage;
+        $routesDetailedPackage["startTimeScheduledPackage"] = $startTimeScheduledPackage;
+        $routesDetailedPackage["startTimeDifferencePackage"] = $startTimeDifferencePackage;
+        $routesDetailedPackage["tripPeriodTypePackage"] = $tripPeriodTypePackage;
+        $routesDetailedPackage["arrivalTimeScheduledPackage"] = $arrivalTimeScheduledPackage;
+        $routesDetailedPackage["arrivalTimeActualPackage"] = $arrivalTimeActualPackage;
+        $routesDetailedPackage["arrivalTimeDifferencePackage"] = $arrivalTimeDifferencePackage;
+        $routesDetailedPackage["tripPeriodScheduledPackage"] = $tripPeriodScheduledPackage;
+        $routesDetailedPackage["tripPeriodActualPackage"] = $tripPeriodActualPackage;
+        $routesDetailedPackage["haltTimeScheduledPackage"] = $haltTimeScheduledPackage;
+        $routesDetailedPackage["haltTimeActualPackage"] = $haltTimeActualPackage;
+        $routesDetailedPackage["lostTimePackage"] = $lostTimePackage;
+        return $routesDetailedPackage;
     }
 
 }

@@ -112,11 +112,11 @@ if (!isset($GLOBASL["routes"])) {
                             echo "<tr><td colspan='13'><center>თარიღი: " . $day->getDateStamp() . "</center></td></tr>";
                             $exoduses = $day->getExoduses();
                             foreach ($exoduses as $exodus) {
-                                echo "<tr><td colspan='13'><center>გასვლია #: " . $exodus->getNumber() . "<center></td></tr>";
+                                echo "<tr><td colspan='13'><center>გასვლა #: " . $exodus->getNumber() . "<center></td></tr>";
 
                                 $tripVouchers = $exodus->getTripVouchers();
                                 foreach ($tripVouchers as $tripVoucher) {
-                                    echo "<tr><td colspan='13'><center>მარშრუტა #" . $route->getNumber()
+                                    echo "<tr><td colspan='13'><center>მარშრუტი #" . $route->getNumber()
                                     . ". თარიღი:" . $day->getDateStamp()
                                     . ". გასვლია #" . $exodus->getNumber()
                                     . ". საგზური #" . $tripVoucher->getNumber()

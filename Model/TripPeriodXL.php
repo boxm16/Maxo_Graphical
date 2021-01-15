@@ -98,15 +98,28 @@ class TripPeriodXL {
     }
 
     public function getTripPeriodScheduledTime() {
-        return $this->timeCalculator->getTimeStampsDifference($this->arrivalTimeScheduled, $this->startTimeScheduled);
+
+        $startTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->startTimeScheduled);
+        $arrivalTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->arrivalTimeScheduled);
+        if ($startTimeScheduledInSeconds > $arrivalTimeScheduledInSeconds) {
+            $arrivalTimeScheduledInSeconds = $arrivalTimeScheduledInSeconds + (24 * 60 * 60);
+        }
+        $scheduledTripPeriodTimeInSeconds = $arrivalTimeScheduledInSeconds - $startTimeScheduledInSeconds;
+        return $this->timeCalculator->getTimeStampFromSeconds($scheduledTripPeriodTimeInSeconds);
     }
 
     public function getTripPeriodActualTime() {
-        if ($this->startTimeActual != "" && $this->arrivalTimeActual != "") {
-            return $this->timeCalculator->getTimeStampsDifference($this->arrivalTimeActual, $this->startTimeActual);
-        } else {
-            return "";
+        if ($this->startTimeActual != "" && $this->arrivalTimeActual) {
+            $startTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->startTimeActual);
+            $arrivalTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->arrivalTimeActual);
+            if ($startTimeActualInSeconds > $arrivalTimeActualInSeconds) {
+                $arrivalTimeActualInSeconds = $arrivalTimeActualInSeconds + (24 * 60 * 60);
+            }
+            $actualTripPeriodTimeInSeconds = $arrivalTimeActualInSeconds - $startTimeActualInSeconds;
+            return $this->timeCalculator->getTimeStampFromSeconds($actualTripPeriodTimeInSeconds);
         }
+
+        return "";
     }
 
     function getHaltTimeScheduled() {
@@ -216,7 +229,5 @@ class TripPeriodXL {
     function setScheduledIntervalColor($scheduledIntervalColor) {
         $this->scheduledIntervalColor = $scheduledIntervalColor;
     }
-
-  
 
 }

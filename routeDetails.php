@@ -74,27 +74,50 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
             /* end of loader styling*/
 
 
-            /*table styling */
-            table thead tr th {
-                /* Important  for table head sticking whre it is*/
-                background-color: white;
-                position: sticky;
-                z-index: 100;
-                top: 50px;
 
-            }
-            /* other staff below */
-            table, thead, tr, th, td {
-                border: 2px solid black;
-
-            }
             /* modal window */
 
             .modal-dialog {
                 max-width: 100%;
                 margin: 2rem auto;
+            } /* Standard Tables */
+
+            table, thead, tr, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
             }
 
+            th {
+                vertical-align: bottom;
+                background-color: #666;
+                color: #fff;
+            }
+
+
+
+            /* Fixed Headers */
+
+            th {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 45px;
+                z-index: 2;
+
+            }
+
+            th[scope=row] {
+                position: -webkit-sticky;
+                position: sticky;
+                left: 0;
+                z-index: 1;
+            }
+
+            th[scope=row] {
+                vertical-align: top;
+                color: inherit;
+                background-color: inherit;
+                background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
+            }
 
         </style>
     </head>

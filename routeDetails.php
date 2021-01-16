@@ -257,6 +257,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     <td><input type="checkbox" onclick="check(event, 9)" checked="true"> ყველა</td>
                                     <td><input type="checkbox" onclick="check(event, 10)" checked="true"> ყველა</td>
                                     <td><input type="checkbox" onclick="check(event, 11)" checked="true"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 12)" checked="true"> ყველა</td>
 
                                 </tr>
                                 <tr>

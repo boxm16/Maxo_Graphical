@@ -104,7 +104,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
         ?>
         <div class="preload1"><img src="http://i.imgur.com/KUJoe.gif"></div>
         <div class="content1">
-            <table  id="header-fixed" style="width:100%">
+            <table  id="mainTable" style="width:100%">
                 <thead>
 
                     <tr>
@@ -123,8 +123,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         <th>'დაკარგული<br>დრო'</th>
                     </tr>
                 </thead>
-                <tbody>
-                <tbody>
+
+                <tbody id="mainTableBody">
                     <?php
                     foreach ($routes as $route) {
 
@@ -196,200 +196,198 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="deletion.php" method="POST">
-                            <table style="width:100%;"  height="100px">
-                                <thead>
-                                    <tr>
-                                        <th>გეგმიუირი<br>გასვლის<br>დრო</th>
-                                        <th>ფაქტიური<br>გასვლის<br>დრო</th>
-                                        <th>სხვაობა</th>
-                                        <th>------</th>
-                                        <th>გეგმიუირი<br>მისვლის<br>დრო</th>
-                                        <th>ფაქტიური<br>მისვლის<br>დრო</th>
-                                        <th>სხვაობა</th>
-                                        <th></th>
-                                        <th>წირის<br>გეგმიური<br>დრო</th>
-                                        <th>წირის<br>ფაქტიური<br>დრო</th>
-                                        <th>დგომის<br>გეგმიური<br> დრო</th>
-                                        <th>დგომის<br>ფაქტიური<br>დრო</th>
-                                        <th>'დაკარგული<br>დრო'</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
+                        <table style="width:100%;"  height="100px">
+                            <thead>
+                                <tr>
+                                    <th>გეგმიუირი<br>გასვლის<br>დრო</th>
+                                    <th>ფაქტიური<br>გასვლის<br>დრო</th>
+                                    <th>სხვაობა</th>
+                                    <th>------</th>
+                                    <th>გეგმიუირი<br>მისვლის<br>დრო</th>
+                                    <th>ფაქტიური<br>მისვლის<br>დრო</th>
+                                    <th>სხვაობა</th>
+                                    <th></th>
+                                    <th>წირის<br>გეგმიური<br>დრო</th>
+                                    <th>წირის<br>ფაქტიური<br>დრო</th>
+                                    <th>დგომის<br>გეგმიური<br> დრო</th>
+                                    <th>დგომის<br>ფაქტიური<br>დრო</th>
+                                    <th>'დაკარგული<br>დრო'</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
 
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
 
-                                        <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
 
-                                        <td></td>
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
-                                        <td><input type="checkbox"></td>
+                                    <td></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
 
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($startTimeScheduledPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"startTimeScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($startTimeActualPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"startTimeActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($startTimeDifferencePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"startTimeScheduledDifferencePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td> 
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($tripPeriodTypePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"tripPeriodTypePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($arrivalTimeScheduledPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"arrivalTimeScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($arrivalTimeActualPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"arrivalTimeActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($arrivalTimeDifferencePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"arrivalTimeDifferencePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($tripPeriodScheduledPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"tripPeriodScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($tripPeriodActualPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"tripPeriodActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($haltTimeScheduledPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"haltTimeScheduledPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($haltTimeActualPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"haltTimeActualPackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table width="100%">
-                                                <thead stlyle="display:block;" ></thead>
-                                                <tbody style="height:300px; overflow-y:scroll; display:block;">
-                                                    <?php
-                                                    foreach ($lostTimePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"lostTimePackage[]\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x </td></tr>";
-                                                    }
-                                                    ?> 
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($startTimeScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"startTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($startTimeActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"startTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($startTimeDifferencePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"startTimeDifferencePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td> 
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($tripPeriodTypePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"tripPeriodTypePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($arrivalTimeScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"arrivalTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($arrivalTimeActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"arrivalTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($arrivalTimeDifferencePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"arrivalTimeDifferencePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($tripPeriodScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"tripPeriodScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($tripPeriodActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"tripPeriodActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($haltTimeScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"haltTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($haltTimeActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"haltTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($lostTimePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"lostTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x </td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                            <div class="modal-footer">
-                                <input type="hidden" name="filterPackage" value="sent">
-                                <button type="submit" class="btn btn-primary">გაფილტრვა</button>
-                            </div>
-                        </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="filter()">გაფილტრვა</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -399,28 +397,125 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
             <script>
-                //this founction is for loader spinner. alsow first scrip srs is for this spinner, whout older does not work
-                $(function () {
-                    $(".preload").fadeOut(2000, function () {
-                        $(".content").fadeIn(1000);
-                    });
-                });
-                //this code is for adding row clicking listener
-                var chosenRow = null
-                var cells = document.querySelectorAll("tr");
+                                //this founction is for loader spinner. alsow first scrip srs is for this spinner, whout older does not work
+                                $(function () {
+                                    $(".preload").fadeOut(2000, function () {
+                                        $(".content").fadeIn(1000);
+                                    });
+                                });
+                                //this code is for adding row clicking listener
+                                var chosenRow = null
+                                var cells = document.querySelectorAll("tr");
+                                for (var cell of cells) {
+                                    cell.addEventListener('click', marker)
+                                }
 
-                for (var cell of cells) {
-                    cell.addEventListener('click', marker)
-                }
+                                function marker(event) {
+                                    var row = event.target.parentNode;
+                                    if (chosenRow != null) {
+                                        chosenRow.style.fontWeight = "normal";
+                                    }
+                                    row.style.fontWeight = "bold";
+                                    chosenRow = row;
+                                }
 
-                function marker(event) {
-                    var row = event.target.parentNode;
-                    if (chosenRow != null) {
-                        chosenRow.style.fontWeight = "normal";
-                    }
-                    row.style.fontWeight = "bold";
-                    chosenRow = row;
-                }
+//this is for filtering--------------------
+                                var rows = document.getElementById("mainTable").rows;
+                                var cloneRows = new Array();
+                                for (y = 0; y < rows.length; y++) {
+                                    var cloneRow = rows[y];
+                                    cloneRows.push(cloneRow);
+                                }
+
+                                function filter() {
+
+                                    var startTimeScheduledCheckboxes = document.querySelectorAll('input[name=startTimeScheduledPackage]:checked');
+                                    var startTimeActualCheckboxes = document.querySelectorAll('input[name=startTimeActualPackage]:checked');
+                                    var startTimeDifferenceCheckboxes = document.querySelectorAll('input[name=startTimeDifferencePackage]:checked');
+                                    var tripPeriodTypeCheckboxes = document.querySelectorAll('input[name=tripPeriodTypePackage]:checked');
+                                    var arrivalTimeScheduledCheckboxes = document.querySelectorAll('input[name=arrivalTimeScheduledPackage]:checked');
+                                    var arrivalTimeActualCheckboxes = document.querySelectorAll('input[name=arrivalTimeActualPackage]:checked');
+                                    var arrivalTimeDifferenceCheckboxes = document.querySelectorAll('input[name=arrivalTimeDifferencePackage]:checked');
+                                    var tripPeriodScheduledCheckboxes = document.querySelectorAll('input[name=tripPeriodScheduledPackage]:checked');
+                                    var tripPeriodActualCheckboxes = document.querySelectorAll('input[name=tripPeriodActualPackage]:checked');
+                                    var haltTimeScheduledCheckboxes = document.querySelectorAll('input[name=haltTimeScheduledPackage]:checked');
+                                    var haltTimeActualCheckboxes = document.querySelectorAll('input[name=haltTimeActualPackage]:checked');
+                                    var lostTimeCheckboxes = document.querySelectorAll('input[name=lostTimePackage]:checked');
+                                    var startTimeScheduledArray = new Array();
+                                    var startTimeActualArray = new Array();
+                                    var startTimeDifferenceArray = new Array();
+                                    var tripPeriodTypeArray = new Array();
+                                    var arrivalTimeScheduledArray = new Array();
+                                    var arrivalTimeActualArray = new Array();
+                                    var arrivalTimeDifferenceArray = new Array();
+                                    var tripPeriodScheduledArray = new Array();
+                                    var tripPeriodActualArray = new Array();
+                                    var haltTimeScheduledArray = new Array();
+                                    var haltTimeActualArray = new Array();
+                                    var lostTimeArray = new Array();
+                                    for (x = 0; x < startTimeScheduledCheckboxes.length; x++) {
+                                        startTimeScheduledArray.push(startTimeScheduledCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < startTimeActualCheckboxes.length; x++) {
+                                        startTimeActualArray.push(startTimeActualCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < startTimeDifferenceCheckboxes.length; x++) {
+                                        startTimeDifferenceArray.push(startTimeDifferenceCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < tripPeriodTypeCheckboxes.length; x++) {
+                                        tripPeriodTypeArray.push(tripPeriodTypeCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < arrivalTimeScheduledCheckboxes.length; x++) {
+                                        arrivalTimeScheduledArray.push(arrivalTimeScheduledCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < arrivalTimeActualCheckboxes.length; x++) {
+                                        arrivalTimeActualArray.push(arrivalTimeActualCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < arrivalTimeDifferenceCheckboxes.length; x++) {
+                                        arrivalTimeDifferenceArray.push(arrivalTimeDifferenceCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < tripPeriodScheduledCheckboxes.length; x++) {
+                                        tripPeriodScheduledArray.push(tripPeriodScheduledCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < tripPeriodActualCheckboxes.length; x++) {
+                                        tripPeriodActualArray.push(tripPeriodActualCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < haltTimeScheduledCheckboxes.length; x++) {
+                                        haltTimeScheduledArray.push(haltTimeScheduledCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < haltTimeActualCheckboxes.length; x++) {
+                                        haltTimeActualArray.push(haltTimeActualCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < lostTimeCheckboxes.length; x++) {
+                                        lostTimeArray.push(lostTimeCheckboxes[x].value)
+                                    }
+
+
+
+                                    mainTableBody.innerHTML = "";
+                                    for (x = 0; x < cloneRows.length; x++) {
+                                        var cells = cloneRows[x].getElementsByTagName("td");
+                                        if (cells.length <= 1) {
+                                            mainTableBody.appendChild(cloneRows[x]);
+                                        } else {
+                                            if (startTimeScheduledArray.includes(cells[0].innerHTML)
+                                                    && startTimeActualArray.includes(cells[1].innerHTML)
+                                                    && startTimeDifferenceArray.includes(cells[2].innerHTML)
+                                                    && tripPeriodTypeArray.includes(cells[3].innerHTML)
+                                                    && arrivalTimeScheduledArray.includes(cells[4].innerHTML)
+                                                    && arrivalTimeActualArray.includes(cells[5].innerHTML)
+                                                    && arrivalTimeDifferenceArray.includes(cells[6].innerHTML)
+                                                    && tripPeriodScheduledArray.includes(cells[8].innerHTML)
+                                                    && tripPeriodActualArray.includes(cells[9].innerHTML)
+                                                    && haltTimeScheduledArray.includes(cells[10].innerHTML)
+                                                    && haltTimeActualArray.includes(cells[11].innerHTML)
+                                                    && lostTimeArray.includes(cells[12].innerHTML)) {
+
+                                                mainTableBody.appendChild(cloneRows[x]);
+                                            }
+                                        }
+                                    }
+                                }
 
             </script>
     </body>

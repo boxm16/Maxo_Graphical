@@ -209,9 +209,9 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
             </table>
         </div>
 
-        <!--MODAL WINODW start -->
+        <!-- FILTER MODAL WINODW start -->
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -416,12 +416,204 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                     </div>
                 </div>
             </div>
-            <!--MODAL WINODW end -->
+        </div>
+        <!--FILTER MODAL WINODW end -->
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-            <script>
+        <!--MARKER MODAL WINODW start -->
+        <!-- Modal -->
+        <div class="modal fade" id="markerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">მარკერები</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table id="modalTable" style="width:100%;"  height="100px">
+                            <thead>
+                                <tr>
+                                    <th>გეგმიუირი<br>გასვლის<br>დრო</th>
+                                    <th>ფაქტიური<br>გასვლის<br>დრო</th>
+                                    <th>სხვაობა</th>
+                                    <th>------</th>
+                                    <th>გეგმიუირი<br>მისვლის<br>დრო</th>
+                                    <th>ფაქტიური<br>მისვლის<br>დრო</th>
+                                    <th>სხვაობა</th>
+                                    <th></th>
+                                    <th>წირის<br>გეგმიური<br>დრო</th>
+                                    <th>წირის<br>ფაქტიური<br>დრო</th>
+                                    <th>დგომის<br>გეგმიური<br> დრო</th>
+                                    <th>დგომის<br>ფაქტიური<br>დრო</th>
+                                    <th>'დაკარგული<br>დრო'</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($startTimeScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"startTimeScheduledMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($startTimeActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"startTimeActualMarker\" type=\"checkbox\"  value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($startTimeDifferencePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"startTimeDifferenceMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td> 
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($tripPeriodTypePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"tripPeriodTypeMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($arrivalTimeScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"arrivalTimeScheduledMarker\" type=\"checkbox\"  value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($arrivalTimeActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"arrivalTimeActualMarker\" type=\"checkbox\"  value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($arrivalTimeDifferencePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"arrivalTimeDifferenceMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($tripPeriodScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"tripPeriodScheduledMarker\" type=\"checkbox\"  value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($tripPeriodActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"tripPeriodActualMarker\" type=\"checkbox\"  value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($haltTimeScheduledPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"haltTimeScheduledMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($haltTimeActualPackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"haltTimeActualMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x</td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table width="100%">
+                                            <thead stlyle="display:block;" ></thead>
+                                            <tbody style="height:300px; overflow-y:scroll; display:block;">
+                                                <?php
+                                                foreach ($lostTimePackage as $x => $x_value) {
+                                                    echo "<tr><td><input name=\"lostTimeMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x </td></tr>";
+                                                }
+                                                ?> 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="mark()">მონიშვნა</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--MARKER MODAL WINODW end -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script>
                                 //this founction is for loader spinner. alsow first scrip srs is for this spinner, whout older does not work
                                 $(function () {
                                     $(".preload").fadeOut(2000, function () {
@@ -542,6 +734,146 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     }
                                 }
 
-            </script>
+                                function mark() {
+                                    var startTimeScheduledMarkerCheckboxes = document.querySelectorAll('input[name=startTimeScheduledMarker]:checked');
+                                    var startTimeActualMarkerCheckboxes = document.querySelectorAll('input[name=startTimeActualMarker]:checked');
+                                    var startTimeDifferenceMarkerCheckboxes = document.querySelectorAll('input[name=startTimeDifferenceMarker]:checked');
+                                    var tripPeriodTypeMarkerCheckboxes = document.querySelectorAll('input[name=tripPeriodTypeMarker]:checked');
+                                    var arrivalTimeScheduledMarkerCheckboxes = document.querySelectorAll('input[name=arrivalTimeScheduledMarker]:checked');
+                                    var arrivalTimeActualMarkerCheckboxes = document.querySelectorAll('input[name=arrivalTimeActualMarker]:checked');
+                                    var arrivalTimeDifferenceMarkerCheckboxes = document.querySelectorAll('input[name=arrivalTimeDifferenceMarker]:checked');
+                                    var tripPeriodScheduledMarkerCheckboxes = document.querySelectorAll('input[name=tripPeriodScheduledMarker]:checked');
+                                    var tripPeriodActualMarkerCheckboxes = document.querySelectorAll('input[name=tripPeriodActualMarker]:checked');
+                                    var haltTimeScheduledMarkerCheckboxes = document.querySelectorAll('input[name=haltTimeScheduledMarker]:checked');
+                                    var haltTimeActualMarkerCheckboxes = document.querySelectorAll('input[name=haltTimeActualMarker]:checked');
+                                    var lostTimeMarkerCheckboxes = document.querySelectorAll('input[name=lostTimeMarker]:checked');
+                                    var startTimeScheduledMarkerArray = new Array();
+                                    var startTimeActualMarkerArray = new Array();
+                                    var startTimeDifferenceMarkerArray = new Array();
+                                    var tripPeriodTypeMarkerArray = new Array();
+                                    var arrivalTimeScheduledMarkerArray = new Array();
+                                    var arrivalTimeActualMarkerArray = new Array();
+                                    var arrivalTimeDifferenceMarkerArray = new Array();
+                                    var tripPeriodScheduledMarkerArray = new Array();
+                                    var tripPeriodActualMarkerArray = new Array();
+                                    var haltTimeScheduledMarkerArray = new Array();
+                                    var haltTimeActualMarkerArray = new Array();
+                                    var lostTimeMarkerArray = new Array();
+                                    for (x = 0; x < startTimeScheduledMarkerCheckboxes.length; x++) {
+                                        startTimeScheduledMarkerArray.push(startTimeScheduledMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < startTimeActualMarkerCheckboxes.length; x++) {
+                                        startTimeActualMarkerArray.push(startTimeActualMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < startTimeDifferenceMarkerCheckboxes.length; x++) {
+                                        startTimeDifferenceMarkerArray.push(startTimeDifferenceMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < tripPeriodTypeMarkerCheckboxes.length; x++) {
+                                        tripPeriodTypeMarkerArray.push(tripPeriodTypeMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < arrivalTimeScheduledMarkerCheckboxes.length; x++) {
+                                        arrivalTimeScheduledMarkerArray.push(arrivalTimeScheduledMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < arrivalTimeActualMarkerCheckboxes.length; x++) {
+                                        arrivalTimeActualMarkerArray.push(arrivalTimeActualMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < arrivalTimeDifferenceMarkerCheckboxes.length; x++) {
+                                        arrivalTimeDifferenceMarkerArray.push(arrivalTimeDifferenceMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < tripPeriodScheduledMarkerCheckboxes.length; x++) {
+                                        tripPeriodScheduledMarkerArray.push(tripPeriodScheduledMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < tripPeriodActualMarkerCheckboxes.length; x++) {
+                                        tripPeriodActualMarkerArray.push(tripPeriodActualMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < haltTimeScheduledMarkerCheckboxes.length; x++) {
+                                        haltTimeScheduledMarkerArray.push(haltTimeScheduledMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < haltTimeActualMarkerCheckboxes.length; x++) {
+                                        haltTimeActualMarkerArray.push(haltTimeActualMarkerCheckboxes[x].value)
+                                    }
+                                    for (x = 0; x < lostTimeMarkerCheckboxes.length; x++) {
+                                        lostTimeMarkerArray.push(lostTimeMarkerCheckboxes[x].value)
+                                    }
+
+
+                                    var markRows = document.getElementById("mainTable").rows;
+                                    for (a = 0; a < markRows.length; a++) {
+
+                                        var cells = markRows[a].getElementsByTagName("td");
+                                        if (cells.length > 1) {
+
+                                            if (startTimeScheduledMarkerArray.includes(cells[0].innerHTML)) {
+                                                cells[0].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[0].style.backgroundColor = "white";
+                                            }
+
+                                            if (startTimeActualMarkerArray.includes(cells[1].innerHTML)) {
+                                                cells[1].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[1].style.backgroundColor = "white";
+                                            }
+                                            if (startTimeDifferenceMarkerArray.includes(cells[2].innerHTML)) {
+                                                cells[2].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[2].style.backgroundColor = "white";
+                                            }
+                                            if (tripPeriodTypeMarkerArray.includes(cells[3].innerHTML)) {
+                                                cells[3].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[3].style.backgroundColor = "white";
+                                            }
+                                            if (arrivalTimeScheduledMarkerArray.includes(cells[4].innerHTML)) {
+                                                cells[4].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[4].style.backgroundColor = "white";
+                                            }
+                                            if (arrivalTimeActualMarkerArray.includes(cells[5].innerHTML)) {
+                                                cells[5].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[5].style.backgroundColor = "white";
+                                            }
+                                            if (arrivalTimeDifferenceMarkerArray.includes(cells[6].innerHTML)) {
+                                                cells[6].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[6].style.backgroundColor = "white";
+                                            }
+                                            if (tripPeriodScheduledMarkerArray.includes(cells[8].innerHTML)) {
+                                                cells[8].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[8].style.backgroundColor = "white";
+                                            }
+                                            if (tripPeriodActualMarkerArray.includes(cells[9].innerHTML)) {
+                                                cells[9].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[9].style.backgroundColor = "white";
+                                            }
+                                            if (haltTimeScheduledMarkerArray.includes(cells[10].innerHTML)) {
+                                                cells[10].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[10].style.backgroundColor = "white";
+                                            }
+                                            if (haltTimeActualMarkerArray.includes(cells[11].innerHTML)) {
+                                                cells[11].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[11].style.backgroundColor = "white";
+                                            }
+                                            if (lostTimeMarkerArray.includes(cells[12].innerHTML)) {
+                                                cells[12].style.backgroundColor = "lightgreen";
+                                            } else {
+                                                cells[12].style.backgroundColor = "white";
+                                            }
+
+
+
+                                        }
+
+                                    }
+
+
+                                }
+
+        </script>
     </body>
 </html>

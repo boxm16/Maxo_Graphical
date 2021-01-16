@@ -64,6 +64,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                 background-color: lightgreen;
             }
             /* end of navbar styling */
+
             /* loader styling */
             .content {display:none;}
             .preload { width:100px;
@@ -80,7 +81,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
             .modal-dialog {
                 max-width: 100%;
                 margin: 2rem auto;
-            } /* Standard Tables */
+            }
+            /* Standard Tables */
 
             table, thead, tr, th, td {
                 border: 1px solid black;
@@ -89,7 +91,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
 
             th {
                 vertical-align: bottom;
-                background-color: #666;
+                background-color: blue;
                 color: #fff;
             }
 
@@ -166,7 +168,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                 foreach ($tripVouchers as $tripVoucher) {
                                     echo "<tr><td colspan='13'><center>მარშრუტი #" . $route->getNumber()
                                     . ". თარიღი:" . $day->getDateStamp()
-                                    . ". გასვლია #" . $exodus->getNumber()
+                                    . ". გასვლა #" . $exodus->getNumber()
                                     . ". საგზური #" . $tripVoucher->getNumber()
                                     // . " Bus Type: " . $tripVoucher->getBusType()
                                     //. " Bus Number: " . $tripVoucher->getBusNumber()
@@ -219,7 +221,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table style="width:100%;"  height="100px">
+                        <table id="modalTable" style="width:100%;"  height="100px">
                             <thead>
                                 <tr>
                                     <th>გეგმიუირი<br>გასვლის<br>დრო</th>
@@ -239,22 +241,22 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox"> ყველა</td>
 
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox"> ყველა</td>
 
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"> ყველა</td>
 
                                     <td></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"> ყველა</td>
+
+                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox"> ყველა</td>
 
                                 </tr>
                                 <tr>
@@ -428,7 +430,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                 });
                                 //this code is for adding row clicking listener
                                 var chosenRow = null
-                                var cells = document.querySelectorAll("tr");
+                                var cells = document.getElementById("mainTable").querySelectorAll("tr");
                                 for (var cell of cells) {
                                     cell.addEventListener('click', marker)
                                 }

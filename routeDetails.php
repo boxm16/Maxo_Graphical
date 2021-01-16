@@ -241,22 +241,22 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="checkbox"> ყველა</td>
-                                    <td><input type="checkbox"> ყველა</td>
-                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 0)" checked="true"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 1)" checked="true"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 2)" checked="true"> ყველა</td>
 
-                                    <td><input type="checkbox"> ყველა</td>
-                                    <td><input type="checkbox"> ყველა</td>
-                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 3)" checked="true"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 4)" checked="true"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 5)" checked="true"> ყველა</td>
 
-                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 6)" checked="true"> ყველა</td>
 
                                     <td></td>
-                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 8)" checked="true"> ყველა</td>
 
-                                    <td><input type="checkbox"> ყველა</td>
-                                    <td><input type="checkbox"> ყველა</td>
-                                    <td><input type="checkbox"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 9)" checked="true"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 10)" checked="true"> ყველა</td>
+                                    <td><input type="checkbox" onclick="check(event, 11)" checked="true"> ყველა</td>
 
                                 </tr>
                                 <tr>
@@ -872,6 +872,57 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     }
 
 
+                                }
+
+                                //  end for marker --------
+
+                                //now for checking all checkboxes of a column
+
+                                function check(event, rowNumber) {//too complicated, you can make it much more elegant
+                                    var checkboxes;
+                                    switch (rowNumber)
+                                    {
+                                        case 0:
+                                            checkboxes = document.querySelectorAll('input[name=startTimeScheduledPackage]');
+                                            break;
+                                        case 1:
+                                            checkboxes = document.querySelectorAll('input[name=startTimeActualPackage]');
+                                            break;
+                                        case 2:
+                                            checkboxes = document.querySelectorAll('input[name=startTimeDifferencePackage]');
+                                            break;
+                                        case 3:
+                                            checkboxes = document.querySelectorAll('input[name=tripPeriodTypePackage]');
+                                            break;
+                                        case 4:
+                                            checkboxes = document.querySelectorAll('input[name=arrivalTimeScheduledPackage]');
+                                            break;
+                                        case 5:
+                                            checkboxes = document.querySelectorAll('input[name=arrivalTimeActualPackage]');
+                                            break;
+                                        case 6:
+                                            checkboxes = document.querySelectorAll('input[name=arrivalTimeDifferencePackage]');
+                                            break;
+                                        case 8:
+                                            checkboxes = document.querySelectorAll('input[name=tripPeriodScheduledPackage]');
+                                            break;
+                                        case 9:
+                                            checkboxes = document.querySelectorAll('input[name=tripPeriodActualPackage]');
+                                            break;
+                                        case 10:
+                                            checkboxes = document.querySelectorAll('input[name=haltTimeScheduledPackage]');
+                                            break;
+                                        case 11:
+                                            checkboxes = document.querySelectorAll('input[name=haltTimeActualPackage]');
+                                            break;
+                                        case 12:
+                                            checkboxes = document.querySelectorAll('input[name=lostTimePackage]');
+                                            break;
+                                    }
+                                    console.log(event.target.checked);
+                                    for (x = 0; x < checkboxes.length; x++) {
+                                        checkboxes[x].checked = event.target.checked;
+                                    }
                                 }
 
         </script>

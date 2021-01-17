@@ -140,7 +140,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         <th>გეგმიუირი<br>მისვლის<br>დრო</th>
                         <th>ფაქტიური<br>მისვლის<br>დრო</th>
                         <th>სხვაობა</th>
-                        <th></th>
+                        <th>link</th>
                         <th>წირის<br>გეგმიური<br>დრო</th>
                         <th>წირის<br>ფაქტიური<br>დრო</th>
                         <th>დგომის<br>გეგმიური<br> დრო</th>
@@ -152,16 +152,18 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                 <tbody id="mainTableBody">
                     <?php
                     foreach ($routes as $route) {
-
+                        $routeNumber = $route->getNumber();
                         $days = $route->getDays();
-                        echo "<tr><td colspan='13'><center>მარშრუტა #: " . $route->getNumber() . "</center></td></tr>";
+                        echo "<tr><td colspan='13'><center>მარშრუტა #: " . $routeNumber . "</center></td></tr>";
 
 
                         foreach ($days as $day) {
-                            echo "<tr><td colspan='13'><center>თარიღი: " . $day->getDateStamp() . "</center></td></tr>";
+                            $dateStamp = $day->getDateStamp();
+                            echo "<tr><td colspan='13'><center>თარიღი: " . $dateStamp . "</center></td></tr>";
                             $exoduses = $day->getExoduses();
                             foreach ($exoduses as $exodus) {
-                                echo "<tr><td colspan='13'><center>გასვლა #: " . $exodus->getNumber() . "<center></td></tr>";
+                                $exodusNumber = $exodus->getNumber();
+                                echo "<tr><td colspan='13'><center>გასვლა #: " . $exodusNumber . "<center></td></tr>";
 
 
                                 $tripVouchers = $exodus->getTripVouchers();
@@ -183,6 +185,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         if ($tripPeriod->getType() == "break") {
                                             $rowColor = "lightgrey";
                                         }
+                                        $startTimeScheduled=$tripPeriod->getStartTimeScheduled();
                                         echo "<tr style=\"background-color:$rowColor;\">"
                                         . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
@@ -191,7 +194,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                                        . "<td></td>"
+                                        . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>დეტალები</a></b></td>"
                                         . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
                                         . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
                                         . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"

@@ -127,8 +127,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
         <?php
         include 'navBar.php';
         ?>
-        <div class="preload1"><img src="http://i.imgur.com/KUJoe.gif"></div>
-        <div class="content1">
+        <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="content">
             <table  id="mainTable" style="width:100%">
                 <thead>
 
@@ -185,7 +185,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         if ($tripPeriod->getType() == "break") {
                                             $rowColor = "lightgrey";
                                         }
-                                        $startTimeScheduled=$tripPeriod->getStartTimeScheduled();
+                                        $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                         echo "<tr style=\"background-color:$rowColor;\">"
                                         . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
@@ -194,7 +194,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                                        . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>დეტალები</a></b></td>"
+                                        . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
                                         . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
                                         . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
                                         . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
@@ -414,6 +414,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         </table>
 
                         <div class="modal-footer">
+                            <input name="captures" id="captures" type="checkbox" checked="true"  align="center"> სათაურები
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="filter()">გაფილტრვა</button>
                         </div>
 
@@ -662,6 +664,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     var haltTimeScheduledCheckboxes = document.querySelectorAll('input[name=haltTimeScheduledPackage]:checked');
                                     var haltTimeActualCheckboxes = document.querySelectorAll('input[name=haltTimeActualPackage]:checked');
                                     var lostTimeCheckboxes = document.querySelectorAll('input[name=lostTimePackage]:checked');
+                                    var captures = document.getElementById("captures");
                                     var startTimeScheduledArray = new Array();
                                     var startTimeActualArray = new Array();
                                     var startTimeDifferenceArray = new Array();
@@ -716,8 +719,13 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     mainTableBody.innerHTML = "";
                                     for (x = 0; x < cloneRows.length; x++) {
                                         var cells = cloneRows[x].getElementsByTagName("td");
+                                        if (x == 0) {
+                                            mainTableBody.appendChild(cloneRows[x]);//table headers
+                                        }
                                         if (cells.length <= 1) {
-                                            mainTableBody.appendChild(cloneRows[x]);
+                                            if (captures.checked) {
+                                                mainTableBody.appendChild(cloneRows[x]);
+                                            }
                                         } else {
                                             if (startTimeScheduledArray.includes(cells[0].innerHTML)
                                                     && startTimeActualArray.includes(cells[1].innerHTML)
@@ -866,7 +874,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                             if (lostTimeMarkerArray.includes(cells[12].innerHTML)) {
                                                 cells[12].style.backgroundColor = "lightgreen";
                                             } else {
-                                                cells[12].style.backgroundColor = "white";
+                                                // cells[12].style.backgroundColor = "white";
                                             }
 
 
@@ -920,7 +928,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                             checkboxes = document.querySelectorAll('input[name=haltTimeActualPackage]');
                                             break;
                                         case 12:
-                                            //  checkboxes = document.querySelectorAll('input[name=lostTimePackage]');
+                                            checkboxes = document.querySelectorAll('input[name=lostTimePackage]');
                                             break;
                                     }
                                     console.log(event.target.checked);

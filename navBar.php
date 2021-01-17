@@ -20,7 +20,7 @@ switch ($currentPage) {
         $routeDetailsPageActive = $activeClass;
         $filterButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button></li>";
         $markerButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#markerModal\">მარკერები</button></li>";
-        $excelExportButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-warning btn-lg\" onclick=\"copytable('mainTable')\">ცხრილი კოპირება</button></li>";
+        $excelExportButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-warning btn-lg\" onclick=\"copytable('mainTable')\">ცხრილის კოპირება</button></li>";
 
         break;
     case "intervals.php":

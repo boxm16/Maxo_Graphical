@@ -591,7 +591,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                             <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                 <?php
                                                 foreach ($lostTimePackage as $x => $x_value) {
-                                                    echo "<tr><td><input name=\"lostTimeMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x </td></tr>";
+                                                  //  echo "<tr><td><input name=\"lostTimeMarker\" type=\"checkbox\" value=\"$x\"></td><td>$x </td></tr>";
                                                 }
                                                 ?> 
                                             </tbody>
@@ -917,7 +917,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                             checkboxes = document.querySelectorAll('input[name=haltTimeActualPackage]');
                                             break;
                                         case 12:
-                                            checkboxes = document.querySelectorAll('input[name=lostTimePackage]');
+                                          //  checkboxes = document.querySelectorAll('input[name=lostTimePackage]');
                                             break;
                                     }
                                     console.log(event.target.checked);

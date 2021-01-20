@@ -12,9 +12,7 @@ and open the template in the editor.
     <body>
      
         <?php
-        if (isset($_POST["filterPackage"])) {
-            echo $_POST["filterPackage"];
-        }
+        var_dump($_POST);
         ?>
     </body>
 </html>

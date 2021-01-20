@@ -31,7 +31,7 @@ switch ($currentPage) {
 
 
 echo "<ul>
-  <li><a $mainPageActive href=\"index.php\">მთავარ გვერძე დაბრნუნება</a></li>
+  <li><a $mainPageActive href=\"index.php\">საწყისი გვერდი</a></li>
   <li><a $uploadPageActive href=\"uploadForm.php\">ახალი ფაილის ატვირთვა</a></li>
   <li><a $routeDetailsPageActive href=\"routeDetails.php\">ბრუნები</a></li>
   <li><a $intervalsActive href=\"intervals.php\">ინტერვალები</a></li>

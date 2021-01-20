@@ -42,7 +42,7 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
 }
 
 function deployFile() {
-    header("Location:routeDetails.php");
+    header("Location:index.php");
 }
 ?>
 <!DOCTYPE html>

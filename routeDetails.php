@@ -1,11 +1,17 @@
 <?php
 require_once 'Controller/RouteXLController.php';
 session_start();
-if (isset($_POST["routeNumber"]) && isset($_POST["dates"])) {
+if (isset($_POST["routeNumber"])) {
     $_SESSION["routeNumber"] = $_POST["routeNumber"];
-    $_SESSION["dates"] = $_POST["dates"];
     $selectedRouteNumber = $_POST["routeNumber"];
-    $selectedDates = $_POST["dates"];
+    if (isset($_POST["dates"])) {
+        $_SESSION["dates"] = $_POST["dates"];
+        $selectedDates = $_POST["dates"];
+    } else {
+        $emptyDates = array();
+        $_SESSION["dates"] = $emptyDates;
+        $selectedDates = $emptyDates;
+    }
 } else {
     if (isset($_SESSION["routeNumber"]) && isset($_SESSION["dates"])) {
 

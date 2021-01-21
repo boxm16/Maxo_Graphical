@@ -8,13 +8,8 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $startTimeScheduled = $_GET["startTimeScheduled"];
     $exodusDetails = "$dateStamp,  მარშრუტი # $routeNumber, გასვლა #$exodusNumber";
     $routeController = new RouteXLController();
-    $routes = $routeController->getRoutes();
-    if (!isset($GLOBASL["routes"])) {
-        $routeController = new RouteXLController();
-        $routes = $GLOBALS["routes"];
-    } else {
-        $routes = $GLOBALS["routes"];
-    }
+    $routes = $routeController->getFullRoutes();
+    
     $found = false;
 
     foreach ($routes as $route) {

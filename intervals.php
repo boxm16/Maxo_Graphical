@@ -1,11 +1,24 @@
 <?php
 require_once 'Controller/RouteXLController.php';
-if (!isset($GLOBASL["routes"])) {
-    $routeController = new RouteXLController();
-    $routes = $GLOBALS["routes"];
+session_start();
+if (isset($_POST["routeNumber"]) && isset($_POST["dates"])) {
+    $_SESSION["routeNumber"] = $_POST["routeNumber"];
+    $_SESSION["dates"] = $_POST["dates"];
+    $selectedRouteNumber = $_POST["routeNumber"];
+    $selectedDates = $_POST["dates"];
 } else {
-    $routes = $GLOBALS["routes"];
+    if (isset($_SESSION["routeNumber"]) && isset($_SESSION["dates"])) {
+
+        $selectedRouteNumber = $_SESSION["routeNumber"];
+        $selectedDates = $_SESSION["dates"];
+    } else {
+        header("Location:errorPage.php");
+        exit;
+    }
 }
+
+$routeController = new RouteXLController();
+$routes = $routeController->getFullRoutes();
 ?>
 <!DOCTYPE html>
 

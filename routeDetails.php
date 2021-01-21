@@ -1,8 +1,24 @@
 <?php
 require_once 'Controller/RouteXLController.php';
+session_start();
+if (isset($_POST["routeNumber"]) && isset($_POST["dates"])) {
+    $_SESSION["routeNumber"] = $_POST["routeNumber"];
+    $_SESSION["dates"] = $_POST["dates"];
+    $selectedRouteNumber = $_POST["routeNumber"];
+    $selectedDates = $_POST["dates"];
+} else {
+    if (isset($_SESSION["routeNumber"]) && isset($_SESSION["dates"])) {
+
+        $selectedRouteNumber = $_SESSION["routeNumber"];
+        $selectedDates = $_SESSION["dates"];
+    } else {
+        header("Location:errorPage.php");
+        exit;
+    }
+}
 
 $routeController = new RouteXLController();
-$routesDetailedPackage = $routeController->getRoutesDelailedPackage();
+$routesDetailedPackage = $routeController->getRoutesDelailedPackage($selectedRouteNumber, $selectedDates);
 $routes = $routesDetailedPackage["routes"];
 $startTimeActualPackage = $routesDetailedPackage["startTimeActualPackage"];
 $startTimeScheduledPackage = $routesDetailedPackage["startTimeScheduledPackage"];
@@ -127,8 +143,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
         <?php
         include 'navBar.php';
         ?>
-        <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
-        <div class="content">
+        <div class="preload1"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="content1">
             <table  id="mainTable" style="width:100%">
                 <thead>
 

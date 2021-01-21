@@ -9,13 +9,10 @@ class RouteXLController {
 
     private $routes; //this is array of routes
 
-    function __construct() {
-        if (!isset($GLOBALS["routes"])) {
-            $excelRows = $this->readExcelFile();
-            $this->routes = $this->getRoutesFromExcelRows($excelRows); //array of routes
-
-            $GLOBALS["routes"] = $this->routes;
-        }
+    public function getFullRoutes() {
+        $excelRows = $this->readExcelFile();
+        $fullRoutes = $this->getRoutesFromExcelRows($excelRows); //array of routes
+        return $fullRoutes;
     }
 
     private function readExcelFile() {
@@ -318,8 +315,35 @@ class RouteXLController {
         $this->routes = $routes;
     }
 
-    public function getRoutesDelailedPackage() {
-        $routes = $this->routes;
+    public function getSiftedRoutes($requestedRouteNumber, $requestedDates) {
+        $fullRoutes = $this->getFullRoutes();
+        $returnArray = array();
+        foreach ($fullRoutes as $route) {
+            $routeNumber = $route->getNumber();
+            if ($requestedRouteNumber == $routeNumber) {
+
+
+                $days = $route->getDays();
+                $cloneRouteDays = array();
+                foreach ($days as $day) {
+                    $dateStamp = $day->getDateStamp();
+                    if (in_array($dateStamp, $requestedDates)) {
+                        array_push($cloneRouteDays, $day);
+                    }
+                }
+                $cloneRoute = new RouteXL();
+                $cloneRoute->setNumber($routeNumber);
+                $cloneRoute->setDays($cloneRouteDays);
+                array_push($returnArray, $cloneRoute);
+            }
+        }
+        return $returnArray;
+    }
+
+    public function getRoutesDelailedPackage($requestedRouteNumber, $requestedDates) {
+
+        $routes = $this->getSiftedRoutes($requestedRouteNumber, $requestedDates);
+
         $startTimeScheduledPackage = array();
         $startTimeActualPackage = array();
         $startTimeDifferencePackage = array();
@@ -334,6 +358,7 @@ class RouteXLController {
         $lostTimePackage = array();
 
         foreach ($routes as $route) {
+
             $days = $route->getDays();
             foreach ($days as $day) {
                 $exoduses = $day->getExoduses();
@@ -371,7 +396,7 @@ class RouteXLController {
         ksort($haltTimeScheduledPackage);
         ksort($haltTimeActualPackage);
         ksort($lostTimePackage);
-        $routesDetailedPackage["routes"] = $this->routes;
+        $routesDetailedPackage["routes"] = $routes;
         $routesDetailedPackage["startTimeActualPackage"] = $startTimeActualPackage;
         $routesDetailedPackage["startTimeScheduledPackage"] = $startTimeScheduledPackage;
         $routesDetailedPackage["startTimeDifferencePackage"] = $startTimeDifferencePackage;

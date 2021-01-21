@@ -1,7 +1,7 @@
 <?php
 require_once 'Controller/RouteXLController.php';
 $routesController = new RouteXLController();
-$routes = $routesController->getRoutes();
+$routes = $routesController->getFullRoutes();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +31,8 @@ $routes = $routesController->getRoutes();
 
                     <hr>
                     <?php
-                    if (count($routes) >1) {
-                       echo "<center><h2>აირჩიე მარშრუტი</h2></center>";
+                    if (count($routes) > 1) {
+                        echo "<center><h2>აირჩიე მარშრუტი</h2></center>";
                     }
                     $bigTableRowBuilder = "";
                     foreach ($routes as $route) {
@@ -52,9 +52,9 @@ $routes = $routesController->getRoutes();
 
 
                         $hiddenInputRouteNumber = "<input name=\"routeNumber\" type=\"hidden\" value=\"$routeNumber\">";
-                        $routeTable = "<table><thead><tr><th colspan = \"2\"  style=\"text-align:center; font-size:25px\">$hiddenInputRouteNumber მარშრუტი #$routeNumber</th></tr><tr><th>$routeDetailsButton</th><th>$intervalsButton</th></tr></thead><tbody>$bodyBuilder</tbody></table>";
+                        $routeTable = "<table><thead><tr><th colspan = \"2\"  style=\"text-align:center; font-size:25px\">$hiddenInputRouteNumber მარშრუტი #$routeNumber</th></tr><tr><th>$routeDetailsButton</th><th>$intervalsButton</th></tr><tr><th><input type=\"checkbox\" checked onclick=\"selectAllDates(event)\"></th><th>ყველა დღე</th></tr></thead><tbody>$bodyBuilder</tbody></table>";
 
-                        $form = "<form action=\"deletion.php\" method=\"POST\">$routeTable</form>";
+                        $form = "<form action=\"\" method=\"POST\">$routeTable</form>";
 
                         $bigTableRowBuilder .= "<td style=\"  vertical-align: top;\">$form</td>";
                     }
@@ -75,6 +75,18 @@ $routes = $routesController->getRoutes();
                 var form = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
                 form.action = requestTarget;
                 console.log(form.action);
+            }
+
+            function selectAllDates(event) {
+                var checkbox = event.target;
+                var table = event.target.parentNode.parentNode.parentNode.parentNode;
+                var targetCheckBoxes = table.querySelectorAll("input[type=\"checkbox\"]");
+                console.log(targetCheckBoxes.length);
+                for (x = 0; x < targetCheckBoxes.length; x++) {
+                    targetCheckBoxes[x].checked = checkbox.checked;
+                    console.log(targetCheckBoxes[x].checked);
+                }
+
             }
         </script>
     </body>

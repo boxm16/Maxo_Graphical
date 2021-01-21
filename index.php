@@ -6,125 +6,76 @@ $routes = $routesController->getRoutes();
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>მახო</title>
+        <title></title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
-            th {
-                text-align: center;
+
+            input[type="checkbox"]{
+                width: 20px; /*Desired width*/
+                height: 20px; /*Desired height*/
             }
 
-
+            tr {
+                border:solid black 1px;
+            }
         </style>
     </head>
     <body>
-
         <div class="container">
-            <div class="row">
+            <div class=""row>
+                <div class="col">
+                    <hr>
+                    <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
 
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>
-                                <form action="deletion.php" method="POST">
-                                    <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="collectInputs('routeDetailsInput')">ბრუნების ნახვა</button>
-                                    <input type="hidden" name="routeNumber" id="routeDetailsInput_RouteNumber">
-                                    <input type="hidden" name="days" id="routeDetailsInput_Days">
-                                </form>
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>
-                                <form action="deletion.php" method="POST">
-                                    <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="collectInputs('intervalsInput')">ინტერვალების ნახვა</button>
-                                    <input type="hidden" name="routeNumber" id="intervalsInput_RouteNumber" value=""> 
-                                    <input type="hidden"  name="days" id="intervalsInput_Days" value=""> 
-                                </form>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr>
-                <table class="table">
-
+                    <hr>
                     <?php
-                    $tableBuilder = "";
-                    $headBuilder = "";
-                    $bodyBuilder = "";
-                    $thColspan = count($routes);
+                    if (count($routes) >1) {
+                       echo "<center><h2>აირჩიე მარშრუტი</h2></center>";
+                    }
+                    $bigTableRowBuilder = "";
                     foreach ($routes as $route) {
-                        $routeNumber = $route->getNumber();
-                        if (count($routes) == 1) {
-                            $headBuilder .= "<th><input type=\"radio\" name=\"routeNumber\" value=\"$routeNumber\" checked > # $routeNumber</th>";
-                            $disabled = "";
-                        } else {
-                            $headBuilder .= "<th><input type=\"radio\" name=\"routeNumber\" value=\"$routeNumber\" onclick=\"go($routeNumber)\"> $routeNumber</th>";
-                            $disabled = "disabled";
-                        }
                         $days = $route->getDays();
-                        $insideBodyBuilder = "";
+                        $routeNumber = $route->getNumber();
+                        $bodyBuilder = "";
                         foreach ($days as $day) {
                             $dateStamp = $day->getDateStamp();
-                            $insideBodyBuilder .= "<tr><td><input  type=\"checkbox\" name=\"$routeNumber\" checked $disabled value=\"$dateStamp\"> $dateStamp </td></tr>";
+                            $checkboxInput = "<input name=\"dates[]\" type=\"checkbox\" value=\"$dateStamp\" checked>";
+                            $bodyBuilder .= "<tr><td>$checkboxInput</td><td style=\"font-size:20px\">$dateStamp</td></tr>";
                         }
-                        $bodyBuilder .= "<td><table  class=\"table\"><thead></thead><tbody>$insideBodyBuilder</tbody></table></td>";
-                    }
-                    $headBuilder = "<thead><tr><th colspan=\"$thColspan\"><h3>აირჩიე მარშრუტი</h3></th></tr><tr>$headBuilder</tr></thead>";
-                    $tableBuilder .= $headBuilder . "<tbody><tr>$bodyBuilder</tr></tbody>";
-                    echo $tableBuilder;
-                    ?>
-                </table>
 
+                        $routeDetailsButton = " <button type=\"submit\" class=\"btn btn-success\" style=\"font-size: 20px\" onclick=\"requestRouter(event, 'routeDetails.php')\">ბრუნების ნახვა</button>";
+
+
+                        $intervalsButton = " <button type=\"submit\" class=\"btn btn-warning\" style=\"font-size: 20px\" onclick=\"requestRouter(event, 'intervals.php')\">ინტერვალების ნახვა</button>";
+
+
+                        $hiddenInputRouteNumber = "<input name=\"routeNumber\" type=\"hidden\" value=\"$routeNumber\">";
+                        $routeTable = "<table><thead><tr><th colspan = \"2\"  style=\"text-align:center; font-size:25px\">$hiddenInputRouteNumber მარშრუტი #$routeNumber</th></tr><tr><th>$routeDetailsButton</th><th>$intervalsButton</th></tr></thead><tbody>$bodyBuilder</tbody></table>";
+
+                        $form = "<form action=\"deletion.php\" method=\"POST\">$routeTable</form>";
+
+                        $bigTableRowBuilder .= "<td style=\"  vertical-align: top;\">$form</td>";
+                    }
+                    $bigTable = "<table id=\"bigTable\"><tr>$bigTableRowBuilder</tr></table>";
+                    echo $bigTable;
+                    ?>
+
+                </div>
 
             </div>
         </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
-            function go(routeNumber) {
-                checkboxes = document.querySelectorAll("input[name='" + routeNumber + "']");
-                allCheckBoxes = document.querySelectorAll("input[type=checkbox]");
-                for (x = 0; x < allCheckBoxes.length; x++) {
-                    allCheckBoxes[x].disabled = true;
-                }
-                for (x = 0; x < checkboxes.length; x++) {
-                    checkboxes[x].disabled = false;
-                }
+            function requestRouter(event, requestTarget) {
+                var form = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+                form.action = requestTarget;
+                console.log(form.action);
             }
-
-            function collectInputs(inputs) {
-                var selectedDays = document.querySelectorAll("input[type=checkbox]:checked:not(:disabled)");
-                var daysInputBuilder = "";
-                for (x = 0; x < selectedDays.length; x++) {
-                    daysInputBuilder += selectedDays[x].value;
-                    if (x < selectedDays.length - 1) {
-                        daysInputBuilder += ",";
-                    }
-                }
-                var selectedRouteNumber = document.querySelector("input[type=radio]:checked");
-
-                var selectedRouteNumber = selectedRouteNumber.value;
-
-
-                if (inputs == "routeDetailsInput") {
-                    routeDetailsInput_RouteNumber.value = selectedRouteNumber;
-                    routeDetailsInput_Days.value = daysInputBuilder;
-
-                }
-                if (inputs == "intervalsInput") {
-                    intervalsInput_RouteNumber.value = selectedRouteNumber;
-                    intervalsInput_Days.value = daysInputBuilder;
-                }
-
-            }
-
         </script>
     </body>
 </html>

@@ -17,9 +17,7 @@
                     <br><br>
 
                     <center><a  href="uploadForm.php" class="btn btn-primary btn-lg" style='color:white'>ატვირთე ახალი ფაილი</a></center>
-                    <center><h1>ან</h1></center>
-                    <center><a href="index.php" class="btn btn-success btn-lg" style='color:white'>გადადი მთავარ გვერდზე</a></center>
-
+                   
 
 
                 </div>

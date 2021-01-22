@@ -9,7 +9,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $exodusDetails = "$dateStamp,  მარშრუტი # $routeNumber, გასვლა #$exodusNumber";
     $routeController = new RouteXLController();
     $routes = $routeController->getFullRoutes();
-    
+
     $found = false;
 
     foreach ($routes as $route) {
@@ -28,7 +28,8 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                             $bodyBuilder = "";
                             foreach ($tripVouchers as $tripVoucher) {
                                 $tripVoucherNumber = $tripVoucher->getNumber();
-                                $voucherRow = "<tr><td>$tripVoucherNumber</td></tr>";
+                                $notes = $tripVoucher->getNotes();
+                                $voucherRow = "<tr><td colspan=\"13\">საგზური#: $tripVoucherNumber. შენიშვნები:$notes</td></tr>";
                                 $bodyBuilder .= $voucherRow;
                                 $tripPeriods = $tripVoucher->getTripPeriods();
 

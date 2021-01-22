@@ -124,7 +124,15 @@ class TripPeriodXL {
 
     function getHaltTimeScheduled() {
         if ($this->previousTripPeriodArrivalTimeScheduled != "") {
-            return $this->timeCalculator->getTimeStampsDifference($this->startTimeScheduled, $this->previousTripPeriodArrivalTimeScheduled);
+            $previousTripPeriodArrivalTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->previousTripPeriodArrivalTimeScheduled);
+            $startTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->startTimeScheduled);
+            if ($startTimeScheduledInSeconds < $previousTripPeriodArrivalTimeScheduledInSeconds) {
+                $startTimeScheduledInSeconds = $startTimeScheduledInSeconds + (24 * 60 * 60);
+                $haltTimeScheduledInSeconds = $startTimeScheduledInSeconds - $previousTripPeriodArrivalTimeScheduledInSeconds;
+                return $this->timeCalculator->getTimeStampFromSeconds($haltTimeScheduledInSeconds);
+            } else {
+                return $this->timeCalculator->getTimeStampsDifference($this->startTimeScheduled, $this->previousTripPeriodArrivalTimeScheduled);
+            }
         } else {
             return "";
         }
@@ -132,7 +140,16 @@ class TripPeriodXL {
 
     function getHaltTimeActual() {
         if ($this->previousTripPeriodArrivalTimeActual != "" && $this->startTimeActual != "") {
-            return $this->timeCalculator->getTimeStampsDifference($this->startTimeActual, $this->previousTripPeriodArrivalTimeActual);
+            $previousTripPeriodArrivalTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->previousTripPeriodArrivalTimeActual);
+            $startTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->startTimeActual);
+            if ($startTimeActualInSeconds < $previousTripPeriodArrivalTimeActualInSeconds) {
+                $startTimeActualInSeconds = $startTimeActualInSeconds + (24 * 60 * 60);
+                $haltTimeActualInSeconds = $startTimeActualInSeconds - $previousTripPeriodArrivalTimeActualInSeconds;
+                return $this->timeCalculator->getTimeStampFromSeconds($haltTimeActualInSeconds);
+            } else {
+
+                return $this->timeCalculator->getTimeStampsDifference($this->startTimeActual, $this->previousTripPeriodArrivalTimeActual);
+            }
         } else {
             return "";
         }

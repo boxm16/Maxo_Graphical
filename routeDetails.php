@@ -217,18 +217,18 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         }
                                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                         echo "<tr style=\"background-color:$rowColor;\">"
-                                        . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
-                                        . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
-                                        . "<td style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                        . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                        . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                        . "<td name='startTimeDifference' style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
                                         . "<td>" . $tripPeriod->getTypeGe() . "</td>"
-                                        . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
-                                        . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
-                                        . "<td style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                        . "<td name='arrivalTimeScheduled'>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                        . "<td name='arrivalTimeActual'>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                        . "<td name='startTimeDifference' style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
                                         . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
-                                        . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
-                                        . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
-                                        . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
-                                        . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
+                                        . "<td name='tripPeriodScheduledTime'>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                                        . "<td name='tripPeriodActualTime'>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                        . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
+                                        . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
                                         . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
                                         . "</tr>";
                                     }
@@ -660,10 +660,91 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                 var chosenRow = null
                                 var cells = document.getElementById("mainTable").querySelectorAll("tr");
                                 for (var cell of cells) {
-                                    cell.addEventListener('click', marker)
+                                    cell.addEventListener('click', markRow);
+                                    cell.addEventListener('dblclick', markCells);
+
+                                }
+//-------------------------------------------------------------------
+                                var previousCells = new Array();
+                                function markCells(event) {
+                                    if (previousCells.length > 0) {
+                                        for (let x = 0; x < previousCells.length; x++) {
+                                            var loc = previousCells[x];
+                                            var el = loc.element;
+                                            el.style.backgroundColor = loc.originalColor;
+                                        }
+                                    }
+                                    var targetCell = event.target;
+                                    var cellName = targetCell.getAttribute('name');
+                                    if (cellName == "tripPeriodScheduledTime") {
+                                        var targetRow = event.target.parentNode;
+                                        var cellOne = targetRow.querySelector("td[name=startTimeScheduled]");
+                                        var cellTwo = targetRow.querySelector("td[name=arrivalTimeScheduled");
+
+                                        saveElementColor(targetCell, cellOne, cellTwo);
+
+                                        targetCell.style.backgroundColor = "violet";
+                                        cellOne.style.backgroundColor = "violet";
+                                        cellTwo.style.backgroundColor = "violet";
+
+
+                                    }
+                                    if (cellName == "tripPeriodActualTime") {
+                                        var targetRow = event.target.parentNode;
+                                        var cellOne = targetRow.querySelector("td[name=startTimeActual]");
+                                        var cellTwo = targetRow.querySelector("td[name=arrivalTimeActual");
+
+                                        saveElementColor(targetCell, cellOne, cellTwo);
+
+                                        targetCell.style.backgroundColor = "violet";
+                                        cellOne.style.backgroundColor = "violet";
+                                        cellTwo.style.backgroundColor = "violet";
+                                    }
+                                    if (cellName == "haltTimeScheduled") {
+
+                                        var targetRow = event.target.parentNode;
+                                        var previousRow = targetRow.previousSibling;
+                                        var cellOne = targetRow.querySelector("td[name=startTimeScheduled]");
+                                        var cellTwo = previousRow.querySelector("td[name=arrivalTimeScheduled");
+                                        if (cellTwo != null) {
+
+                                            saveElementColor(targetCell, cellOne, cellTwo);
+
+                                            targetCell.style.backgroundColor = "violet";
+                                            cellOne.style.backgroundColor = "violet";
+                                            cellTwo.style.backgroundColor = "violet";
+                                        }
+                                    }
+                                    if (cellName == "haltTimeActual") {
+                                        var targetRow = event.target.parentNode;
+                                        var previousRow = targetRow.previousSibling;
+                                        var cellOne = targetRow.querySelector("td[name=startTimeActual]");
+                                        var cellTwo = previousRow.querySelector("td[name=arrivalTimeActual");
+                                        if (cellTwo != null) {
+
+                                            saveElementColor(targetCell, cellOne, cellTwo);
+
+                                            targetCell.style.backgroundColor = "violet";
+                                            cellOne.style.backgroundColor = "violet";
+                                            cellTwo.style.backgroundColor = "violet";
+                                        }
+                                    }
                                 }
 
-                                function marker(event) {
+
+                                function saveElementColor(targetCell, cellOne, cellTwo) {
+                                    var loc_0 = {element: targetCell, originalColor: targetCell.style.backgroundColor};
+                                    var loc_1 = {element: cellOne, originalColor: cellOne.style.backgroundColor};
+                                    var loc_2 = {element: cellTwo, originalColor: cellTwo.style.backgroundColor};
+
+
+                                    previousCells.push(loc_0);
+                                    previousCells.push(loc_1);
+                                    previousCells.push(loc_2);
+                                }
+                                //------------------------------------------------------
+
+                                function markRow(event) {
                                     var row = event.target.parentNode;
                                     if (chosenRow != null) {
                                         chosenRow.style.fontWeight = "normal";

@@ -203,19 +203,27 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     $tripPeriods = $tripVoucher->getTripPeriods();
                                     foreach ($tripPeriods as $tripPeriod) {
                                         $lostTimeLights = $tripPeriod->getLightsForLostTime();
+                                        $startTimeDifferenceLights = $tripPeriod->getStartTimeDifferenceColor();
+                                        $arrivalTimeDifferenceLights = $tripPeriod->getArrivalTimeDifferenceColor();
                                         $rowColor = "white";
                                         if ($tripPeriod->getType() == "break") {
                                             $rowColor = "lightgrey";
+                                            if ($startTimeDifferenceLights == "white") {
+                                                $startTimeDifferenceLights = "lightgrey";
+                                            }
+                                            if ($arrivalTimeDifferenceLights == "white") {
+                                                $arrivalTimeDifferenceLights = "lightgrey";
+                                            }
                                         }
                                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                         echo "<tr style=\"background-color:$rowColor;\">"
                                         . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
-                                        . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                        . "<td style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
                                         . "<td>" . $tripPeriod->getTypeGe() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                         . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
-                                        . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                        . "<td style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
                                         . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
                                         . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
                                         . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"

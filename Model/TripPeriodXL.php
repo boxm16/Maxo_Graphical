@@ -247,4 +247,12 @@ class TripPeriodXL {
         $this->scheduledIntervalColor = $scheduledIntervalColor;
     }
 
+    public function getStartTimeDifferenceColor() {
+        return $this->trifficLightsController->getLightsForRedWhiteTraffic($this->startTimeDifference);
+    }
+
+    public function getArrivalTimeDifferenceColor() {
+        return $this->trifficLightsController->getLightsForRedWhiteTraffic($this->arrivalTimeDifference);
+    }
+
 }

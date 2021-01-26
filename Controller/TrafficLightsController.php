@@ -25,4 +25,17 @@ class TrafficLightsController {
         return "red";
     }
 
+    public function getLightsForRedWhiteTraffic($timeStamp) {
+        if ($timeStamp == "") {
+            return "white";
+        }
+
+        $timeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($timeStamp);
+
+        if ($timeInSeconds < 601 && $timeInSeconds > -600) {
+            return "white";
+        }
+        return "red";
+    }
+
 }

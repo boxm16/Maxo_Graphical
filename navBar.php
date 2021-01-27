@@ -21,7 +21,11 @@ switch ($currentPage) {
         $filterButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button></li>";
         $markerButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#markerModal\">მარკერები</button></li>";
         $excelExportButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-warning btn-lg\" onclick=\"copytable('mainTable')\">ცხრილის კოპირება</button></li>";
-
+        $excelExportButton = " <li style=\"padding-left:50px\">
+            <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
+            <input type=\"hidden\" name=\"file_content\" id=\"file_content\" />
+            <button type=\"button\" name=\"convert\" id=\"convert\" class=\"btn btn-primary\">Convert</button>
+          </form></li>";
         break;
     case "intervals.php":
         $intervalsActive = $activeClass;

@@ -7,6 +7,7 @@ $intervalsActive = "";
 $concurrentPageActive = "";
 $filterButton = "";
 $markerButton = "";
+$tableCopyButton = "";
 $excelExportButton = "";
 $activeClass = "class=\"active\"";
 $currentPage = basename($_SERVER["SCRIPT_FILENAME"]);
@@ -20,6 +21,8 @@ switch ($currentPage) {
         $routeDetailsPageActive = $activeClass;
         $filterButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button></li>";
         $markerButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#markerModal\">მარკერები</button></li>";
+        $tableCopyButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-warning btn-lg\" onclick=\"copytable('mainTable')\">ცხრილის კოპირება</button></li>";
+
         $excelExportButton = " <li style=\"padding-left:50px\">
             <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
             <input type=\"hidden\" name=\"file_content\" id=\"file_content\" />
@@ -40,6 +43,7 @@ echo "<ul>
   <li><a $intervalsActive href=\"intervals.php\">ინტერვალები</a></li>
   $filterButton
   $markerButton
+  $tableCopyButton
   $excelExportButton
       
 </ul>";

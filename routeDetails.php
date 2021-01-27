@@ -1057,6 +1057,16 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     document.execCommand('copy')
                                 }
 
+
+                                //this function for copng table in clipboard
+                                function copytable(el) {
+                                    var urlField = document.getElementById(el)
+                                    var range = document.createRange()
+                                    range.selectNode(urlField)
+                                    window.getSelection().addRange(range)
+                                    document.execCommand('copy')
+                                }
+
                                 //this is for phpsperadsheet 
                                 $(document).ready(function () {
                                     $('#convert').click(function () {

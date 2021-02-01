@@ -7,10 +7,12 @@ class DayXL {
 
     private $dateStamp;
     private $exoduses;
+    private $breaksTimeTable;
     private $timeCalculator;
 
     function __construct() {
         $this->exoduses = array();
+        $this->breaksTimeTable = array();
         $this->timeCalculator = new TimeCalculator();
     }
 
@@ -47,6 +49,10 @@ class DayXL {
                     }
                     if ($tripPeriodType == "ba") {
                         $ba_intervals[$startTimeScheduled_Seconds] = $tripPeriod;
+                    }
+                    if ($tripPeriodType == "break") {
+                        $exodusNumber = $exodus->getNumber();
+                        $this->breaksTimeTable[$exodusNumber] = $tripPeriod;
                     }
                 }
             }
@@ -91,14 +97,18 @@ class DayXL {
                 $tripPeriod->setScheduledInterval($scheduledInterval);
 
                 //BLOCK INTERVAL_COLOR this block is to set color for standart and prolonged intervals
-                if ($x == 1) {
+                if ($x == 1) {//here i set standartIntervalTime
                     $this->standartIntervalTime = $scheduledInterval;
                     $tripPeriod->setScheduledIntervalColor("white");
                 } else {
                     if (abs($this->timeCalculator->getSecondsFromTimeStamp($this->standartIntervalTime) - $this->timeCalculator->getSecondsFromTimeStamp($scheduledInterval)) < 61) {
                         $tripPeriod->setScheduledIntervalColor("white");
                     } else {
-                        $tripPeriod->setScheduledIntervalColor("pink");
+                        if ($this->previousExodusOnBreak($tripPeriod)) {
+                            $tripPeriod->setScheduledIntervalColor("pink");
+                        } else {
+                            $tripPeriod->setScheduledIntervalColor("IndianRed");
+                        }
                     }
                 }
 
@@ -139,7 +149,7 @@ class DayXL {
         while ($x < count($tripPeriods)) {
             if ($x == 0) {
                 $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
-               
+
                 $tripPeriod->setActualInterval("");
             } else {
                 $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
@@ -157,6 +167,49 @@ class DayXL {
             $x++;
         }
         return $tripPeriods;
+    }
+
+    private function previousExodusOnBreak($tripPeriod) {
+        $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+        $previousExodusNumber = $exodusNumber - 1;
+        if ($previousExodusNumber == 0) {
+            $previousExodusNumber = count($this->exoduses);
+        }
+
+        if (array_key_exists($previousExodusNumber, $this->breaksTimeTable)) {
+            $breakPeriod = $this->breaksTimeTable[$previousExodusNumber];
+            $breakStartTime = $this->timeCalculator->getSecondsFromTimeStamp($breakPeriod->getStartTimeScheduled());
+            $breakEndTime = $this->timeCalculator->getSecondsFromTimeStamp($breakPeriod->getArrivalTimeScheduled());
+
+            $tripPeriodStartTime = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
+
+            if ($tripPeriodStartTime > $breakStartTime && $tripPeriodStartTime < $breakEndTime) {
+              
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    //this function is not used yet
+    private function periodsCollideInSchedule($tripPeriodOne, $tripPeriodTwo) {
+        $periodOneStartTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodOne->getStartTimeScheduled());
+        $periodOneArrivalTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodOne->getArrivalTimeScheduled());
+
+        $periodTwoStartTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodTwo->getStartTimeScheduled());
+        $periodTwoArrivalTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodTwo->getArrivalTimeScheduled());
+
+        if (($periodTwoStartTimeInSeconds > $periodOneStartTimeInSeconds && $periodTwoStartTimeInSeconds < $periodOneArrivalTimeInSeconds) ||
+                ($periodTwoArrivalTimeInSeconds > $periodOneStartTimeInSeconds && $periodTwoArrivalTimeInSeconds < $periodOneArrivalTimeInSeconds)) {
+            return true;
+        }
+        if ($periodOneStartTimeInSeconds == $periodTwoStartTimeInSeconds && $periodOneArrivalTimeInSeconds == $periodTwoArrivalTimeInSeconds) {
+            return true;
+        }
+        return false;
     }
 
     private function getNthItemOfAssociativeArray($nth, $array) {

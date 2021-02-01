@@ -134,8 +134,8 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
         <?php
         include 'navBar.php';
         ?>
-        <div class="preload1"><img src="http://i.imgur.com/KUJoe.gif"></div>
-        <div class="content1">
+        <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="content">
 
 
 

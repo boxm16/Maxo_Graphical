@@ -16,8 +16,8 @@ class TripPeriodXL {
     private $previousTripPeriodArrivalTimeActual; //this is for the same bus, diladi, time whe tha same bus ended previous tripPeriod
     private $scheduledInterval; //this is time tha has been scheduled to pass from the time previous bus left for same trip
     private $actualInterval; //this is time that  actually has passed from the time previous bus left for same trip 
+    private $gpsBasedActualInterval;
     private $scheduledIntervalColor;
-    private $actualIntervalColor;
     private $tripPeriodDNA;
     private $timeCalculator;
     private $trifficLightsController;
@@ -241,6 +241,29 @@ class TripPeriodXL {
 
     function getScheduledIntervalColor() {
         return $this->scheduledIntervalColor;
+    }
+
+    function getGpsBasedActualInterval() {
+        return $this->gpsBasedActualInterval;
+    }
+    
+    
+    function setGpsBasedActualInterval($gpsBasedActualInterval) {
+        $this->gpsBasedActualInterval = $gpsBasedActualInterval;
+    }
+    
+    
+      public function getGpsBasedActualIntervalColor() {
+        if ($this->scheduledInterval != "" &&  $this->gpsBasedActualInterval != "") {
+            $standartIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->scheduledInterval);
+            $gpsBasedActualIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->gpsBasedActualInterval);
+            $intervalDifference = abs($standartIntervalInSeconds - $gpsBasedActualIntervalInSeconds);
+            $intervalDifferenceTimeStamp = $this->timeCalculator->getTimeStampFromSeconds($intervalDifference);
+
+            return $this->trifficLightsController->getLightsForStandartTraffic($intervalDifferenceTimeStamp);
+        } else {
+            return "white";
+        }
     }
 
     function setScheduledIntervalColor($scheduledIntervalColor) {

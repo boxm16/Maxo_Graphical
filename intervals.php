@@ -221,13 +221,13 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                             foreach ($gpsIntervals as $direction) {
                                 foreach ($direction as $tripPeriod) {
                                     $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
-                                    $actualInterval = $tripPeriod->getActualInterval();
-                                    $actualIntervalColor = $tripPeriod->getActualIntervalColor();
+                                    $gpsBasedActualInterval = $tripPeriod->getGpsBasedActualInterval();
+                                    $gpsBasedActualIntervalColor = $tripPeriod->getGpsBasedActualIntervalColor();
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
                                     $row = "<tr>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
-                                            . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
+                                            . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
                                             . "</tr>";
 
                                     if ($tripPeriod->getType() == "ab") {

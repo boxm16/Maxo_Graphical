@@ -64,14 +64,14 @@ class DayXL {
         $scheduledIntervals = array($ab_intervals, $ba_intervals);
 
 
-        $ab_GPS_intervals = $this->getGPSIntervalPeriods($ab_intervals);
-        $ba_GPS_intervals = $this->getGPSIntervalPeriods($ba_intervals);
+        $ab_GPS_intervals = $this->getGPSBasedIntervalPeriods($ab_intervals);
+        $ba_GPS_intervals = $this->getGPSBasedIntervalPeriods($ba_intervals);
 
         ksort($ab_GPS_intervals);
         ksort($ba_GPS_intervals);
 
-        $ab_GPS_intervals = $this->setGPSForTripPeriods($ab_GPS_intervals);
-        $ba_GPS_intervals = $this->setGPSForTripPeriods($ba_GPS_intervals);
+        $ab_GPS_intervals = $this->setGPSBasedIntervalsForTripPeriods($ab_GPS_intervals);
+        $ba_GPS_intervals = $this->setGPSBasedIntervalsForTripPeriods($ba_GPS_intervals);
 
 
         $gpsIntervals = array($ab_GPS_intervals, $ba_GPS_intervals);
@@ -126,25 +126,25 @@ class DayXL {
         return $tripPeriods;
     }
 
-    private function getGPSIntervalPeriods($tripPeriods) {
+    private function getGPSBasedIntervalPeriods($tripPeriods) {
 
         $resultArray = array();
         foreach ($tripPeriods as $tripPeriod) {
-            $tripPeriod_GPS = clone $tripPeriod;
-            $startTimeActual = $tripPeriod_GPS->getStartTimeActual();
+           // $tripPeriod_GPS = clone $tripPeriod;//mybe i dont need to clone here
+            $startTimeActual = $tripPeriod->getStartTimeActual();
             if ($startTimeActual != "") {
                 $startTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($startTimeActual);
                 if (array_key_exists($startTimeActualInSeconds, $resultArray)) {
                     $startTimeActualInSeconds++;
-                    $resultArray [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                    $resultArray [$startTimeActualInSeconds] = $tripPeriod;
                 } else {
-                    $resultArray [$startTimeActualInSeconds] = $tripPeriod_GPS;
+                    $resultArray [$startTimeActualInSeconds] = $tripPeriod;
                 }
             }
         }return $resultArray;
     }
 
-    private function setGPSForTripPeriods($tripPeriods) {
+    private function setGPSBasedIntervalsForTripPeriods($tripPeriods) {
         $x = 0;
         while ($x < count($tripPeriods)) {
             if ($x == 0) {
@@ -159,9 +159,9 @@ class DayXL {
 
                 if ($tripPeriod->getStartTimeActual() !== "" && $previousTripPeriod->getStartTimeActual() != "") {
 
-                    $tripPeriod->setActualInterval($this->timeCalculator->getTimeStampsDifference($tripPeriod->getStartTimeActual(), $previousTripPeriod->getStartTimeActual()));
+                    $tripPeriod->setGpsBasedActualInterval($this->timeCalculator->getTimeStampsDifference($tripPeriod->getStartTimeActual(), $previousTripPeriod->getStartTimeActual()));
                 } else {
-                    $tripPeriod->setActualInterval("");
+                    $tripPeriod->setGpsBasedActualInterval("");
                 }
             }
             $x++;
@@ -184,7 +184,7 @@ class DayXL {
             $tripPeriodStartTime = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
 
             if ($tripPeriodStartTime > $breakStartTime && $tripPeriodStartTime < $breakEndTime) {
-              
+
                 return true;
             } else {
                 return false;

@@ -162,9 +162,9 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                             $voucher_header = ""
                                     . "<tr><th colspan = \"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
                                     . "<tr>"
-                                    . "<th>გეგმიუირი<br>გასვლის<br>დრო</th>"
-                                    . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
-                                    . "<th>გეგმიუირი<br>ინტერვალი</th>"
+                                    . "<th>გეგმ.<br>გას.<br>დრო</th>"
+                                    . "<th>ფაქტ.<br>გას.<br>დრო</th>"
+                                    . "<th>გეგმ.<br>ინტ.</th>"
                                     . "<th>ფაქტ.<br>ინტ.</th>"
                                     . "<th>.<br>გას.<br>#</th>"
                                     . "</tr>"
@@ -172,11 +172,12 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
 
 
                             $gps_header = ""
-                                    . "<tr><th colspan=\"4\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
+                                    . "<tr><th colspan=\"5\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
                                     . "<tr>"
                                     . "<th>.<br>გას.<br>#</th>"
-                                    . "<th>გეგმიუირი<br>გასვლის<br>დრო</th>"
-                                    . "<th>ფაქტ.<br>გასვლის<br>დრო</th>"
+                                    . "<th>გეგმ.<br>გას.<br>დრო</th>"
+                                    . "<th>გეგმ.<br>ინტ.</th>"
+                                    . "<th>ფაქტ.<br>გას.<br>დრო</th>"
                                     . "<th>GPS<br>ინტ.</th>"
                                     . "</tr>";
 
@@ -224,6 +225,10 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                 foreach ($direction as $tripPeriod) {
                                     $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                     $startTimeActual = $tripPeriod->getStartTimeActual();
+
+                                    $scheduledInterval = $tripPeriod->getScheduledInterval();
+                                    $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
+
                                     $gpsBasedActualInterval = $tripPeriod->getGpsBasedActualInterval();
                                     $gpsBasedActualIntervalColor = $tripPeriod->getGpsBasedActualIntervalColor();
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
@@ -232,6 +237,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "<td>$startTimeScheduled</td>"
                                             . "<td>$startTimeActual</td>"
+                                            . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
                                             . "</tr>";
 
@@ -244,9 +250,31 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                 }
                             }
                             echo "<tr>"
-                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$abVoucherTableBodyBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ab_GpsTableBuilder</tbody></table></td>"
-                            . ""
-                            . "<td colspan=\"5\" style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$voucher_header</thead><tbody>$baVoucherTableBodyBuilder</tbody></table></td><td colspan=\"2\"  style=\" vertical-align: top;\"><table style=\"width:100%\"><thead>$gps_header</thead><tbody>$ba_GpsTableBuilder</tbody></table></td>"
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\">"
+                            . "<table style=\"width:100%\">"
+                            . "<thead>$voucher_header</thead>"
+                            . "<tbody>$abVoucherTableBodyBuilder</tbody>"
+                            . "</table>"
+                            . "</td>"
+                            . "<td colspan=\"2\"  style=\" vertical-align: top;\">"
+                            . "<table style=\"width:100%\">"
+                            . "<thead>$gps_header</thead>"
+                            . "<tbody>$ab_GpsTableBuilder</tbody>"
+                            . "</table>"
+                            . "</td>"
+                            . "<td style=\"border: 2px solid green;\">.</td>"
+                            . "<td colspan=\"5\" style=\" vertical-align: top;\">"
+                            . "<table style=\"width:100%\">"
+                            . "<thead>$voucher_header</thead>"
+                            . "<tbody>$baVoucherTableBodyBuilder</tbody>"
+                            . "</table>"
+                            . "</td>"
+                            . "<td colspan=\"2\"  style=\" vertical-align: top;\">"
+                            . "<table style=\"width:100%\">"
+                            . "<thead>$gps_header</thead>"
+                            . "<tbody>$ba_GpsTableBuilder</tbody>"
+                            . "</table>"
+                            . "</td>"
                             . "</tr>";
                         }
                     }

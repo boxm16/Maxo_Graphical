@@ -220,6 +220,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                             }
                                         }
                                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                        $tripPeriodType = $tripPeriod->getType();
                                         echo "<tr style=\"background-color:$rowColor;\">"
                                         . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
@@ -234,7 +235,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
                                         . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
                                         . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
-                                        . "<td style='background-color:white'>" . $tripPeriod->getGpsBasedActualInterval() . "</td>"
+                                        . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
                                         . "</tr>";
                                     }
                                 }

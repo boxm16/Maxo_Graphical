@@ -149,8 +149,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
         <?php
         include 'navBar.php';
         ?>
-        <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
-        <div class="content">
+        <div class="preload1"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="content1s">
             <table  id="mainTable" style="width:100%">
                 <thead>
 
@@ -168,6 +168,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         <th>დგომის<br>გეგმიური<br> დრო</th>
                         <th>დგომის<br>ფაქტიური<br>დრო</th>
                         <th>'დაკარგული<br>დრო'</th>
+                        <th>GPSBasedInterval</th>
                     </tr>
                 </thead>
 
@@ -181,6 +182,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
 
                         foreach ($days as $day) {
                             $dateStamp = $day->getDateStamp();
+                            $day->getIntervals(); //here I actially set Intervals
                             echo "<tr><td colspan='13'><center>თარიღი: " . $dateStamp . "</center></td></tr>";
                             $exoduses = $day->getExoduses();
                             foreach ($exoduses as $exodus) {
@@ -203,6 +205,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     $tripPeriods = $tripVoucher->getTripPeriods();
                                     foreach ($tripPeriods as $tripPeriod) {
                                         $lostTimeLights = $tripPeriod->getLightsForLostTime();
+
+
                                         $startTimeDifferenceLights = $tripPeriod->getStartTimeDifferenceColor();
                                         $arrivalTimeDifferenceLights = $tripPeriod->getArrivalTimeDifferenceColor();
                                         $rowColor = "white";
@@ -230,6 +234,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
                                         . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
                                         . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
+                                        . "<td style='background-color:white'>" . $tripPeriod->getGpsBasedActualInterval() . "</td>"
                                         . "</tr>";
                                     }
                                 }

@@ -165,17 +165,19 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     . "<th>გეგმიუირი<br>გასვლის<br>დრო</th>"
                                     . "<th>ფაქტიური<br>გასვლის<br>დრო</th>"
                                     . "<th>გეგმიუირი<br>ინტერვალი</th>"
-                                    . "<th>ფაქტიური<br>ინტერვალი</th>"
-                                    . "<th>.<br>გასვლის<br>#</th>"
+                                    . "<th>ფაქტ.<br>ინტ.</th>"
+                                    . "<th>.<br>გას.<br>#</th>"
                                     . "</tr>"
                                     . "";
 
 
                             $gps_header = ""
-                                    . "<tr><th colspan=\"2\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
+                                    . "<tr><th colspan=\"4\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
                                     . "<tr>"
-                                    . "<th>.<br>გასვლის<br>#</th>"
-                                    . "<th>GPS<br>ინტერვალი</th>"
+                                    . "<th>.<br>გას.<br>#</th>"
+                                    . "<th>გეგმიუირი<br>გასვლის<br>დრო</th>"
+                                    . "<th>ფაქტ.<br>გასვლის<br>დრო</th>"
+                                    . "<th>GPS<br>ინტ.</th>"
                                     . "</tr>";
 
 
@@ -221,12 +223,15 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                             foreach ($gpsIntervals as $direction) {
                                 foreach ($direction as $tripPeriod) {
                                     $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                    $startTimeActual = $tripPeriod->getStartTimeActual();
                                     $gpsBasedActualInterval = $tripPeriod->getGpsBasedActualInterval();
                                     $gpsBasedActualIntervalColor = $tripPeriod->getGpsBasedActualIntervalColor();
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
                                     $row = "<tr>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
+                                            . "<td>$startTimeScheduled</td>"
+                                            . "<td>$startTimeActual</td>"
                                             . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
                                             . "</tr>";
 

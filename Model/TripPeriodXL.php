@@ -122,6 +122,19 @@ class TripPeriodXL {
         return "";
     }
 
+    public function getTripPeriodDifferenceTime() {
+
+        if ($this->getTripPeriodActualTime() != "" && $this->getTripPeriodScheduledTime()) {
+            return $this->timeCalculator->getTimeStampsDifference($this->getTripPeriodActualTime(), $this->getTripPeriodScheduledTime());
+        } else {
+            return "";
+        }
+    }
+
+    public function getTripPeriodDifferenceTimeColor() {
+        return $this->trifficLightsController->getLightsForStandartTraffic($this->getTripPeriodDifferenceTime());
+    }
+
     function getHaltTimeScheduled() {
         if ($this->previousTripPeriodArrivalTimeScheduled != "") {
             $previousTripPeriodArrivalTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->previousTripPeriodArrivalTimeScheduled);
@@ -246,15 +259,13 @@ class TripPeriodXL {
     function getGpsBasedActualInterval() {
         return $this->gpsBasedActualInterval;
     }
-    
-    
+
     function setGpsBasedActualInterval($gpsBasedActualInterval) {
         $this->gpsBasedActualInterval = $gpsBasedActualInterval;
     }
-    
-    
-      public function getGpsBasedActualIntervalColor() {
-        if ($this->scheduledInterval != "" &&  $this->gpsBasedActualInterval != "") {
+
+    public function getGpsBasedActualIntervalColor() {
+        if ($this->scheduledInterval != "" && $this->gpsBasedActualInterval != "") {
             $standartIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->scheduledInterval);
             $gpsBasedActualIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->gpsBasedActualInterval);
             $intervalDifference = abs($standartIntervalInSeconds - $gpsBasedActualIntervalInSeconds);

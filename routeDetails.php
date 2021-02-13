@@ -165,6 +165,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         <th>link</th>
                         <th>წირის<br>გეგმიური<br>დრო</th>
                         <th>წირის<br>ფაქტიური<br>დრო</th>
+                        <th>სხვაობა</th>
                         <th>დგომის<br>გეგმიური<br> დრო</th>
                         <th>დგომის<br>ფაქტიური<br>დრო</th>
                         <th>'დაკარგული<br>დრო'</th>
@@ -221,6 +222,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         }
                                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                         $tripPeriodType = $tripPeriod->getType();
+                                        $tripPeriodDifferenceTimeLights = $tripPeriod->getTripPeriodDifferenceTimeColor();
                                         echo "<tr style=\"background-color:$rowColor;\">"
                                         . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
                                         . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
@@ -232,6 +234,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
                                         . "<td name='tripPeriodScheduledTime'>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
                                         . "<td name='tripPeriodActualTime'>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                        . "<td name='tripPeriodDifferenceTime' style=\"background-color:$tripPeriodDifferenceTimeLights;\" >" . $tripPeriod->getTripPeriodDifferenceTime() . "</td>"
                                         . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
                                         . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
                                         . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
@@ -706,6 +709,19 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         cellOne.style.backgroundColor = "violet";
                                         cellTwo.style.backgroundColor = "violet";
                                     }
+                                    if (cellName == "tripPeriodDifferenceTime") {
+                                        var targetRow = event.target.parentNode;
+                                        var cellOne = targetRow.querySelector("td[name=tripPeriodScheduledTime]");
+                                        var cellTwo = targetRow.querySelector("td[name=tripPeriodActualTime");
+
+                                        saveElementColor(targetCell, cellOne, cellTwo);
+
+                                        targetCell.style.backgroundColor = "violet";
+                                        cellOne.style.backgroundColor = "violet";
+                                        cellTwo.style.backgroundColor = "violet";
+                                    }
+
+
                                     if (cellName == "haltTimeScheduled") {
 
                                         var targetRow = event.target.parentNode;

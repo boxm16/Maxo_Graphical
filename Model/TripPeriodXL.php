@@ -125,7 +125,7 @@ class TripPeriodXL {
     public function getTripPeriodDifferenceTime() {
 
         if ($this->getTripPeriodActualTime() != "" && $this->getTripPeriodScheduledTime()) {
-            return $this->timeCalculator->getTimeStampsDifference($this->getTripPeriodActualTime(), $this->getTripPeriodScheduledTime());
+            return $this->timeCalculator->getTimeStampsDifference($this->getTripPeriodScheduledTime(), $this->getTripPeriodActualTime());
         } else {
             return "";
         }

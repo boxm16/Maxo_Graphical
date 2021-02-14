@@ -19,8 +19,8 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
 
             foreach ($days as $day) {
                 $dateStampFromData = $day->getDateStamp();
-                 $day->getIntervals(); //here I actially set Intervals
-                           
+                $day->getIntervals(); //here I actially set Intervals
+
                 if ($dateStamp == $dateStampFromData) {
                     $exoduses = $day->getExoduses();
                     foreach ($exoduses as $exodus) {
@@ -58,24 +58,24 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                                         $rowColor = "lightgreen";
                                     }
                                     $tripPeriodDifferenceTimeLights = $tripPeriod->getTripPeriodDifferenceTimeColor();
-     $tripPeriodType = $tripPeriod->getType();
+                                    $tripPeriodType = $tripPeriod->getType();
                                     $tripPeriodRow = "<tr style=\"background-color:$rowColor;\">"
-                                        . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
-                                        . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
-                                        . "<td name='startTimeDifference' style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
-                                        . "<td>" . $tripPeriod->getTypeGe() . "</td>"
-                                        . "<td name='arrivalTimeScheduled'>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
-                                        . "<td name='arrivalTimeActual'>" . $tripPeriod->getArrivalTimeActual() . "</td>"
-                                        . "<td name='startTimeDifference' style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                                        . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
-                                        . "<td name='tripPeriodScheduledTime'>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
-                                        . "<td name='tripPeriodActualTime'>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
-                                        . "<td name='tripPeriodDifferenceTime' style=\"background-color:$tripPeriodDifferenceTimeLights;\" >" . $tripPeriod->getTripPeriodDifferenceTime() . "</td>"
-                                        . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
-                                        . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
-                                        . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
-                                        . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
-                                        . "</tr>";
+                                            . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                            . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                            . "<td name='startTimeDifference' style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                            . "<td>" . $tripPeriod->getTypeGe() . "</td>"
+                                            . "<td name='arrivalTimeScheduled'>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                            . "<td name='arrivalTimeActual'>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                            . "<td name='startTimeDifference' style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                            . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
+                                            . "<td name='tripPeriodScheduledTime'>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                                            . "<td name='tripPeriodActualTime'>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                            . "<td name='tripPeriodDifferenceTime' style=\"background-color:$tripPeriodDifferenceTimeLights;\" >" . $tripPeriod->getTripPeriodDifferenceTime() . "</td>"
+                                            . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
+                                            . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
+                                            . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
+                                            . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
+                                            . "</tr>";
 
                                     $bodyBuilder .= $tripPeriodRow;
                                 }
@@ -161,11 +161,11 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                     <th></th>
                     <th>წირის<br>გეგმიური<br>დრო</th>
                     <th>წირის<br>ფაქტიური<br>დრო</th>
+                    <th>სხვაობა</th>
                     <th>დგომის<br>გეგმიური<br> დრო</th>
                     <th>დგომის<br>ფაქტიური<br>დრო</th>
-                            <th>სხვაობა</th>
                     <th>'დაკარგული<br>დრო'</th>
-                     <th>GPSBasedInterval</th>
+                    <th>GPSBasedInterval</th>
                 </tr>
             </thead>
             <tbody> 
@@ -184,7 +184,8 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
             var cells = document.querySelectorAll("tr");
 
             for (var cell of cells) {
-                cell.addEventListener('click', marker)
+                cell.addEventListener('click', marker);
+                cell.addEventListener('dblclick', markCells);
             }
 
             function marker(event) {
@@ -194,6 +195,110 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                 }
                 row.style.fontWeight = "bold";
                 chosenRow = row;
-            }</script>
+            }
+
+            //-------------------
+            var previousCells = new Array();
+            function markCells(event) {
+                if (previousCells.length > 0) {
+                    for (let x = 0; x < previousCells.length; x++) {
+                        var loc = previousCells[x];
+                        var el = loc.element;
+                        el.style.backgroundColor = loc.originalColor;
+                    }
+                }
+                var targetCell = event.target;
+                var cellName = targetCell.getAttribute('name');
+                if (cellName == "tripPeriodScheduledTime") {
+                    var targetRow = event.target.parentNode;
+                    var cellOne = targetRow.querySelector("td[name=startTimeScheduled]");
+                    var cellTwo = targetRow.querySelector("td[name=arrivalTimeScheduled");
+
+                    saveElementColor(targetCell, cellOne, cellTwo);
+
+                    targetCell.style.backgroundColor = "violet";
+                    cellOne.style.backgroundColor = "violet";
+                    cellTwo.style.backgroundColor = "violet";
+
+
+                }
+                if (cellName == "tripPeriodActualTime") {
+                    var targetRow = event.target.parentNode;
+                    var cellOne = targetRow.querySelector("td[name=startTimeActual]");
+                    var cellTwo = targetRow.querySelector("td[name=arrivalTimeActual");
+
+                    saveElementColor(targetCell, cellOne, cellTwo);
+
+                    targetCell.style.backgroundColor = "violet";
+                    cellOne.style.backgroundColor = "violet";
+                    cellTwo.style.backgroundColor = "violet";
+                }
+                if (cellName == "tripPeriodDifferenceTime") {
+                    var targetRow = event.target.parentNode;
+                    var cellOne = targetRow.querySelector("td[name=tripPeriodScheduledTime]");
+                    var cellTwo = targetRow.querySelector("td[name=tripPeriodActualTime");
+
+                    saveElementColor(targetCell, cellOne, cellTwo);
+
+                    targetCell.style.backgroundColor = "violet";
+                    cellOne.style.backgroundColor = "violet";
+                    cellTwo.style.backgroundColor = "violet";
+                }
+
+
+                if (cellName == "haltTimeScheduled") {
+
+                    var targetRow = event.target.parentNode;
+                    var previousRow = targetRow.previousSibling;
+                    var cellOne = targetRow.querySelector("td[name=startTimeScheduled]");
+                    var cellTwo = previousRow.querySelector("td[name=arrivalTimeScheduled");
+                    if (cellTwo != null) {
+
+                        saveElementColor(targetCell, cellOne, cellTwo);
+
+                        targetCell.style.backgroundColor = "violet";
+                        cellOne.style.backgroundColor = "violet";
+                        cellTwo.style.backgroundColor = "violet";
+                    }
+                }
+                if (cellName == "haltTimeActual") {
+                    var targetRow = event.target.parentNode;
+                    var previousRow = targetRow.previousSibling;
+                    var cellOne = targetRow.querySelector("td[name=startTimeActual]");
+                    var cellTwo = previousRow.querySelector("td[name=arrivalTimeActual");
+                    if (cellTwo != null) {
+
+                        saveElementColor(targetCell, cellOne, cellTwo);
+
+                        targetCell.style.backgroundColor = "violet";
+                        cellOne.style.backgroundColor = "violet";
+                        cellTwo.style.backgroundColor = "violet";
+                    }
+                }
+            }
+
+
+            function saveElementColor(targetCell, cellOne, cellTwo) {
+                var loc_0 = {element: targetCell, originalColor: targetCell.style.backgroundColor};
+                var loc_1 = {element: cellOne, originalColor: cellOne.style.backgroundColor};
+                var loc_2 = {element: cellTwo, originalColor: cellTwo.style.backgroundColor};
+
+
+                previousCells.push(loc_0);
+                previousCells.push(loc_1);
+                previousCells.push(loc_2);
+            }
+            //------------------------------------------------------
+
+            function markRow(event) {
+                var row = event.target.parentNode;
+                if (chosenRow != null) {
+                    chosenRow.style.fontWeight = "normal";
+                }
+                row.style.fontWeight = "bold";
+                chosenRow = row;
+            }
+
+        </script>
     </body>
 </html>

@@ -19,6 +19,8 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
 
             foreach ($days as $day) {
                 $dateStampFromData = $day->getDateStamp();
+                 $day->getIntervals(); //here I actially set Intervals
+                           
                 if ($dateStamp == $dateStampFromData) {
                     $exoduses = $day->getExoduses();
                     foreach ($exoduses as $exodus) {
@@ -38,29 +40,42 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
 
 
                                     $lostTimeLights = $tripPeriod->getLightsForLostTime();
+                                    $startTimeDifferenceLights = $tripPeriod->getStartTimeDifferenceColor();
+                                    $arrivalTimeDifferenceLights = $tripPeriod->getArrivalTimeDifferenceColor();
+
                                     $rowColor = "white";
                                     if ($tripPeriod->getType() == "break") {
                                         $rowColor = "lightgrey";
+                                        if ($startTimeDifferenceLights == "white") {
+                                            $startTimeDifferenceLights = "lightgrey";
+                                        }
+                                        if ($arrivalTimeDifferenceLights == "white") {
+                                            $arrivalTimeDifferenceLights = "lightgrey";
+                                        }
                                     }
                                     $startTimeScheduledFromData = $tripPeriod->getStartTimeScheduled();
                                     if ($startTimeScheduled == $startTimeScheduledFromData) {
                                         $rowColor = "lightgreen";
                                     }
+                                    $tripPeriodDifferenceTimeLights = $tripPeriod->getTripPeriodDifferenceTimeColor();
+     $tripPeriodType = $tripPeriod->getType();
                                     $tripPeriodRow = "<tr style=\"background-color:$rowColor;\">"
-                                            . "<td>" . $tripPeriod->getStartTimeScheduled() . "</td>"
-                                            . "<td>" . $tripPeriod->getStartTimeActual() . "</td>"
-                                            . "<td>" . $tripPeriod->getStartTimeDifference() . "</td>"
-                                            . "<td>" . $tripPeriod->getTypeGe() . "</td>"
-                                            . "<td>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
-                                            . "<td>" . $tripPeriod->getArrivalTimeActual() . "</td>"
-                                            . "<td>" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                                            . "<td></td>"
-                                            . "<td>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
-                                            . "<td>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
-                                            . "<td>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
-                                            . "<td>" . $tripPeriod->getHaltTimeActual() . "</td>"
-                                            . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
-                                            . "</tr>";
+                                        . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                        . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
+                                        . "<td name='startTimeDifference' style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
+                                        . "<td>" . $tripPeriod->getTypeGe() . "</td>"
+                                        . "<td name='arrivalTimeScheduled'>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
+                                        . "<td name='arrivalTimeActual'>" . $tripPeriod->getArrivalTimeActual() . "</td>"
+                                        . "<td name='startTimeDifference' style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
+                                        . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
+                                        . "<td name='tripPeriodScheduledTime'>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
+                                        . "<td name='tripPeriodActualTime'>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
+                                        . "<td name='tripPeriodDifferenceTime' style=\"background-color:$tripPeriodDifferenceTimeLights;\" >" . $tripPeriod->getTripPeriodDifferenceTime() . "</td>"
+                                        . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
+                                        . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
+                                        . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
+                                        . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
+                                        . "</tr>";
 
                                     $bodyBuilder .= $tripPeriodRow;
                                 }
@@ -148,7 +163,9 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                     <th>წირის<br>ფაქტიური<br>დრო</th>
                     <th>დგომის<br>გეგმიური<br> დრო</th>
                     <th>დგომის<br>ფაქტიური<br>დრო</th>
+                            <th>სხვაობა</th>
                     <th>'დაკარგული<br>დრო'</th>
+                     <th>GPSBasedInterval</th>
                 </tr>
             </thead>
             <tbody> 

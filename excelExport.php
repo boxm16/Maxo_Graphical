@@ -109,10 +109,10 @@ foreach ($routes as $route) {
                     $tripPeriodDifferenceTime = $tripPeriod->getTripPeriodDifferenceTime();
                     $tripPeriodDifferenceTimeColor = $tripPeriod->getTripPeriodDifferenceTimeColor();
                     if ($tripPeriodDifferenceTimeColor == "white") {
-                        $tripPeriodDifferenceTimeColor = "  FF0000";
+                        $tripPeriodDifferenceTimeColor = "FFFFFF";
                     }
                     if ($tripPeriodDifferenceTimeColor == "red") {
-                        $tripPeriodDifferenceTimeColor = "FFFFFF";
+                        $tripPeriodDifferenceTimeColor = "FF0000";
                     }
                     if ($tripPeriodDifferenceTimeColor == "yellow") {
                         $tripPeriodDifferenceTimeColor = "FFFF00";

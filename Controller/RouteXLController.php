@@ -276,8 +276,8 @@ class RouteXLController {
                     $tripVouchers = $exodus->getTripVouchers();
                     foreach ($tripVouchers as $tripVoucher) {
                         $tripVoucherNumber = $tripVoucher->getNumber();
-                        // $busNumber=$tripVoucher->getBusNumber();
-                        //$busType=$tripVoucher->getBusType();
+                        $busNumber = $tripVoucher->getBusNumber();
+                        $busType = $tripVoucher->getBusType();
                         $driverNumber = $tripVoucher->getDriverNumber();
                         $driverName = $tripVoucher->getDriverName();
                         $notes = $tripVoucher->getNotes();
@@ -288,6 +288,8 @@ class RouteXLController {
                             $tripPeriodDNA->setRouteNumber($routeNumber);
                             $tripPeriodDNA->setDateStamp($dateStamp);
                             $tripPeriodDNA->setExodusNumber($exodusNumber);
+                            $tripPeriodDNA->setBusNumber($busNumber);
+                            $tripPeriodDNA->setBusType($busType);
                             $tripPeriodDNA->setVoucherNumber($tripVoucherNumber);
                             $tripPeriodDNA->setDriverNumber($driverNumber);
                             $tripPeriodDNA->setDriverName($driverName);

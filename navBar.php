@@ -4,6 +4,7 @@ $mainPageActive = "";
 $uploadPageActive = "";
 $routeDetailsPageActive = "";
 $intervalsActive = "";
+$excelFormActive = "";
 $concurrentPageActive = "";
 $filterButton = "";
 $markerButton = "";
@@ -31,6 +32,9 @@ switch ($currentPage) {
     case "intervals.php":
         $intervalsActive = $activeClass;
         break;
+    case "excelForm.php":
+        $excelFormActive = $activeClass;
+        break;
 }
 
 
@@ -40,6 +44,7 @@ echo "<ul>
   <li><a $uploadPageActive href=\"uploadForm.php\">ახალი ფაილის ატვირთვა</a></li>
   <li><a $routeDetailsPageActive href=\"routeDetails.php\">ბრუნები</a></li>
   <li><a $intervalsActive href=\"intervals.php\">ინტერვალები</a></li>
+  <li><a $excelFormActive href=\"excelForm.php\">ექსელის ფორმა</a></li>
   $filterButton
   $markerButton
   $tableCopyButton

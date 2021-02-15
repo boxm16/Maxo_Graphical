@@ -50,9 +50,10 @@ $routes = $routesController->getFullRoutes();
 
                         $intervalsButton = " <button type=\"submit\" class=\"btn btn-warning\" style=\"font-size: 20px\" onclick=\"requestRouter(event, 'intervals.php')\">ინტერვალების ნახვა</button>";
 
+                        $excelFormButton = " <button type=\"submit\" class=\"btn btn-secondery\" style=\"font-size: 20px; width:100%\" onclick=\"requestRouter(event, 'excelForm.php')\">ექსელის ფორმა</button>";
 
                         $hiddenInputRouteNumber = "<input name=\"routeNumber\" type=\"hidden\" value=\"$routeNumber\">";
-                        $routeTable = "<table><thead><tr><th colspan = \"2\"  style=\"text-align:center; font-size:25px\">$hiddenInputRouteNumber მარშრუტი #$routeNumber</th></tr><tr><th>$routeDetailsButton</th><th>$intervalsButton</th></tr><tr><th><input type=\"checkbox\" checked onclick=\"selectAllDates(event)\"></th><th>ყველა დღე</th></tr></thead><tbody>$bodyBuilder</tbody></table>";
+                        $routeTable = "<table><thead><tr><th colspan = \"2\"  style=\"text-align:center; font-size:25px\">$hiddenInputRouteNumber მარშრუტი #$routeNumber</th></tr><tr><th>$routeDetailsButton</th><th>$intervalsButton</th></tr><tr><th colspan=\"2\">$excelFormButton</th></tr><tr><th><input type=\"checkbox\" checked onclick=\"selectAllDates(event)\"></th><th>ყველა დღე</th></tr></thead><tbody>$bodyBuilder</tbody></table>";
 
                         $form = "<form action=\"\" method=\"POST\">$routeTable</form>";
 

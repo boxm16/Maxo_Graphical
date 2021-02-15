@@ -1,39 +1,169 @@
 <?php
 
-//export.php
+require_once 'Controller/RouteXLController.php';
+session_start();
+if (isset($_POST["routeNumber"])) {
+    $_SESSION["routeNumber"] = $_POST["routeNumber"];
+    $selectedRouteNumber = $_POST["routeNumber"];
+    if (isset($_POST["dates"])) {
+        $_SESSION["dates"] = $_POST["dates"];
+        $selectedDates = $_POST["dates"];
+    } else {
+        $emptyDates = array();
+        $_SESSION["dates"] = $emptyDates;
+        $selectedDates = $emptyDates;
+    }
+} else {
+    if (isset($_SESSION["routeNumber"]) && isset($_SESSION["dates"])) {
 
-include 'vendor/autoload.php';
-use PhpOffice\PhpSpreadsheet\IOFactory;
+        $selectedRouteNumber = $_SESSION["routeNumber"];
+        $selectedDates = $_SESSION["dates"];
+    } else {
+        header("Location:errorPage.php");
+        exit;
+    }
+}
+$routeController = new RouteXLController();
+$routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates);
 
-if(isset($_POST["file_content"]))
-{
- $temporary_html_file = 'tmps/' . time() . '.html';
 
- file_put_contents($temporary_html_file, $_POST["file_content"]);
+require 'vendor/autoload.php';
 
- $reader = IOFactory::createReader('Html');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
- $spreadsheet = $reader->load($temporary_html_file);
+$spreadsheet = new Spreadsheet();
+$spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(13);
 
- $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+$spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
 
- $filename = 'tmps/' . time() . '.xlsx';
+$spreadsheet->getActiveSheet()->getStyle("A1:J1")->getFont()->setSize(14);
+$spreadsheet->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffc0cb');
 
- $writer->save($filename);
+$spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('F1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('H1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('I1')->getAlignment()->setWrapText(true);
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setCellValue('A1', 'თარიღი');
+$sheet->setCellValue('B1', 'ავტობუსის #');
+$sheet->setCellValue('C1', 'გასვლის #');
+$sheet->setCellValue('D1', 'მძღოლი ');
+$sheet->setCellValue('E1', 'მიმართულება');
+$sheet->setCellValue('F1', 'გასვლის ფაქტიური დრო');
+$sheet->setCellValue('G1', 'მისვლის ფაქტიური დრო');
+$sheet->setCellValue('H1', 'წირის გეგმიური დრო');
+$sheet->setCellValue('I1', 'წირის ფაქტიური დრო');
+$sheet->setCellValue('J1', 'სხვაობა');
 
- header('Content-Type: application/x-www-form-urlencoded');
+$styleArray = [
+    'borders' => [
+        'outline' => [
+            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            'color' => ['argb' => '#000000'],
+        ],
+    ],
+];
 
- header('Content-Transfer-Encoding: Binary');
+$spreadsheet->getActiveSheet()->getStyle("A1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("B1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("C1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("D1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("E1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("F1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("G1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("H1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("I1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("J1")->applyFromArray($styleArray);
 
- header("Content-disposition: attachment; filename=\"".$filename."\"");
+//endof header
+//now body
 
- readfile($filename);
+$row = 2;
+foreach ($routes as $route) {
+    $days = $route->getDays();
+    foreach ($days as $day) {
+        $exoduses = $day->getExoduses();
+        foreach ($exoduses as $exodus) {
+            $tripVouchers = $exodus->getTripVouchers();
+            foreach ($tripVouchers as $tripVoucher) {
+                $tripPeriods = $tripVoucher->getTripPeriods();
+                foreach ($tripPeriods as $tripPeriod) {
+                    $dateStamp = $tripPeriod->getTripPeriodDNA()->getDateStamp();
+                    $busNumber = $tripPeriod->getTripPeriodDNA()->getBusNumber();
+                    $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+                    $driverName = $tripPeriod->getTripPeriodDNA()->getDriverName();
+                    $tripPeriodType = $tripPeriod->getTypeGe();
+                    $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                    $startTimeActual = $tripPeriod->getStartTimeActual();
+                    $tripPeriodScheduledTime = $tripPeriod->getTripPeriodScheduledTime();
+                    $tripPeriodActualTime = $tripPeriod->getTripPeriodActualTime();
+                    $tripPeriodDifferenceTime = $tripPeriod->getTripPeriodDifferenceTime();
+                    $tripPeriodDifferenceTimeColor = $tripPeriod->getTripPeriodDifferenceTimeColor();
+                    if ($tripPeriodDifferenceTimeColor == "white") {
+                        $tripPeriodDifferenceTimeColor = "  FF0000";
+                    }
+                    if ($tripPeriodDifferenceTimeColor == "red") {
+                        $tripPeriodDifferenceTimeColor = "FFFFFF";
+                    }
+                    if ($tripPeriodDifferenceTimeColor == "yellow") {
+                        $tripPeriodDifferenceTimeColor = "FFFF00";
+                    }
+                    $sheet->setCellValue("A$row", $dateStamp);
+                    $sheet->setCellValue("B$row", $busNumber);
+                    $sheet->setCellValue("C$row", $exodusNumber);
+                    $sheet->setCellValue("D$row", $driverName);
+                    $sheet->setCellValue("E$row", $tripPeriodType);
+                    $sheet->setCellValue("F$row", $startTimeScheduled);
+                    $sheet->setCellValue("G$row", $startTimeActual);
+                    $sheet->setCellValue("H$row", $tripPeriodScheduledTime);
+                    $sheet->setCellValue("I$row", $tripPeriodActualTime);
+                    $sheet->setCellValue("J$row", $tripPeriodDifferenceTime);
 
- unlink($temporary_html_file);
+                    $spreadsheet->getActiveSheet()->getStyle("A$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("B$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("C$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("D$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("E$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("F$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("G$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("H$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("I$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("J$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("J$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeColor);
 
- unlink($filename);
-
- exit;
+//   . "<td style=\"width:100px;background-color:$tripPeriodDifferenceTimeColor\">$tripPeriodDifferenceTime</td>"
+                    $row++;
+                }
+            }
+        }
+    }
 }
 
-?>
+
+
+
+
+
+$filename = 'tmps/' . time() . '.xlsx';
+$writer = new Xlsx($spreadsheet);
+$writer->save($filename);
+
+
+header('Content-Type: application/x-www-form-urlencoded');
+
+header('Content-Transfer-Encoding: Binary');
+
+header("Content-disposition: attachment; filename=\"" . $filename . "\"");
+
+readfile($filename);
+
+unlink($filename);

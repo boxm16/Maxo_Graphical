@@ -149,7 +149,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
         <?php
         include 'navBar.php';
         ?>
-          <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
         <div class="content">
             <table  id="mainTable" style="width:100%">
                 <thead>
@@ -1079,26 +1079,6 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     document.execCommand('copy')
                                 }
 
-
-                                //this function for copng table in clipboard
-                                function copytable(el) {
-                                    var urlField = document.getElementById(el)
-                                    var range = document.createRange()
-                                    range.selectNode(urlField)
-                                    window.getSelection().addRange(range)
-                                    document.execCommand('copy')
-                                }
-
-                                //this is for phpsperadsheet 
-                                $(document).ready(function () {
-                                    $('#convert').click(function () {
-                                        var table_content = '<table>';
-                                        table_content += $('#mainTable').html();
-                                        table_content += '</table>';
-                                        $('#file_content').val(table_content);
-                                        $('#convert_form').submit();
-                                    });
-                                });
 
         </script>
     </body>

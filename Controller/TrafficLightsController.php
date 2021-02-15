@@ -16,10 +16,10 @@ class TrafficLightsController {
         }
 
         $timeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($timeStamp);
-        if ($timeInSeconds < 61 && $timeInSeconds > -60) {
+        if ($timeInSeconds < 61 && $timeInSeconds > -61) {
             return "white";
         }
-        if ($timeInSeconds < 301 && $timeInSeconds > -300) {
+        if ($timeInSeconds < 301 && $timeInSeconds > -301) {
             return "yellow";
         }
         return "red";

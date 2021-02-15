@@ -224,6 +224,17 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                 chosenRow = row;
             }
 
+            //this is for phpsperadsheet 
+            $(document).ready(function () {
+                $('#convert').click(function () {
+                    var table_content = '<table>';
+                    table_content += $('#mainTable').html();
+                    table_content += '</table>';
+                    $('#file_content').val(table_content);
+                    $('#convert_form').submit();
+                });
+            });
+
         </script>
     </body>
 </html>

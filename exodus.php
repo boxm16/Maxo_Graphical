@@ -154,7 +154,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                     <th>გეგმიუირი<br>გასვლის<br>დრო</th>
                     <th>ფაქტიური<br>გასვლის<br>დრო</th>
                     <th>სხვაობა</th>
-                    <th>------</th>
+                    <th>მიმართულება</th>
                     <th>გეგმიუირი<br>მისვლის<br>დრო</th>
                     <th>ფაქტიური<br>მისვლის<br>დრო</th>
                     <th>სხვაობა</th>
@@ -165,7 +165,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                     <th>დგომის<br>გეგმიური<br> დრო</th>
                     <th>დგომის<br>ფაქტიური<br>დრო</th>
                     <th>'დაკარგული<br>დრო'</th>
-                    <th>GPSBasedInterval</th>
+                    <th>GPS ინტერვალი</th>
                 </tr>
             </thead>
             <tbody> 

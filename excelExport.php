@@ -117,6 +117,11 @@ foreach ($routes as $route) {
                     if ($tripPeriodDifferenceTimeColor == "yellow") {
                         $tripPeriodDifferenceTimeColor = "FFFF00";
                     }
+                    //this line makes time to be seen in excel when i need to calculate average fo selected cells. but its not working for timestamp with "-" sign
+                    
+                    \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
+
+                    
                     $sheet->setCellValue("A$row", $dateStamp);
                     $sheet->setCellValue("B$row", $busNumber);
                     $sheet->setCellValue("C$row", $exodusNumber);

@@ -144,12 +144,12 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                         <th style="text-align: center">გასვლის #</th>
                         <th style="text-align: center">მძღოლი</th>
                         <th style="text-align: center">მიმართულება</th>
-                        <th style="text-align: center">გასვლის გეგმიური დრო</th>
-                        <th style="text-align: center">გასვლის ფაქტიური დრო</th>
-                        <th style="text-align: center">მისვლის გეგმიური დრო</th>
-                        <th style="text-align: center">მისვლის ფაქტიური დრო</th>
-                        <th style="text-align: center">წირის გეგმიური დრო</th>
-                        <th style="text-align: center">წირის ფაქტიური დრო</th>
+                        <th style="text-align: center">გასვლის<br>გეგმიური<br>დრო</th>
+                        <th style="text-align: center">გასვლის<br>ფაქტიური<br>დრო</th>
+                        <th style="text-align: center">მისვლის<br>გეგმიური<br>დრო</th>
+                        <th style="text-align: center">მისვლის<br>ფაქტიური<br>დრო</th>
+                        <th style="text-align: center">წირის<br>გეგმიური<br>დრო</th>
+                        <th style="text-align: center">წირის<br>ფაქტიური<br>დრო</th>
                         <th style="text-align: center">სხვაობა</th>
                     </tr>
 

@@ -144,7 +144,9 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                         <th style="text-align: center">გასვლის #</th>
                         <th style="text-align: center">მძღოლი</th>
                         <th style="text-align: center">მიმართულება</th>
+                        <th style="text-align: center">გასვლის გეგმიური დრო</th>
                         <th style="text-align: center">გასვლის ფაქტიური დრო</th>
+                        <th style="text-align: center">მისვლის გეგმიური დრო</th>
                         <th style="text-align: center">მისვლის ფაქტიური დრო</th>
                         <th style="text-align: center">წირის გეგმიური დრო</th>
                         <th style="text-align: center">წირის ფაქტიური დრო</th>
@@ -170,6 +172,8 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                         $tripPeriodType = $tripPeriod->getTypeGe();
                                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                         $startTimeActual = $tripPeriod->getStartTimeActual();
+                                        $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
+                                        $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
                                         $tripPeriodScheduledTime = $tripPeriod->getTripPeriodScheduledTime();
                                         $tripPeriodActualTime = $tripPeriod->getTripPeriodActualTime();
                                         $tripPeriodDifferenceTime = $tripPeriod->getTripPeriodDifferenceTime();
@@ -182,6 +186,8 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                         . "<td>$tripPeriodType</td>"
                                         . "<td>$startTimeScheduled</td>"
                                         . "<td>$startTimeActual</td>"
+                                        . "<td>$arrivalTimeScheduled</td>"
+                                        . "<td>$arrivalTimeActual</td>"
                                         . "<td>$tripPeriodScheduledTime</td>"
                                         . "<td>$tripPeriodActualTime</td>"
                                         . "<td style=\"width:100px;background-color:$tripPeriodDifferenceTimeColor\">$tripPeriodDifferenceTime</td>"

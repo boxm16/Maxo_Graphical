@@ -52,17 +52,21 @@ $spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setWrapText(true
 $spreadsheet->getActiveSheet()->getStyle('F1')->getAlignment()->setWrapText(true);
 $spreadsheet->getActiveSheet()->getStyle('H1')->getAlignment()->setWrapText(true);
 $spreadsheet->getActiveSheet()->getStyle('I1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('J1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('K1')->getAlignment()->setWrapText(true);
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setCellValue('A1', 'თარიღი');
 $sheet->setCellValue('B1', 'ავტობუსის #');
 $sheet->setCellValue('C1', 'გასვლის #');
 $sheet->setCellValue('D1', 'მძღოლი ');
 $sheet->setCellValue('E1', 'მიმართულება');
-$sheet->setCellValue('F1', 'გასვლის ფაქტიური დრო');
-$sheet->setCellValue('G1', 'მისვლის ფაქტიური დრო');
-$sheet->setCellValue('H1', 'წირის გეგმიური დრო');
-$sheet->setCellValue('I1', 'წირის ფაქტიური დრო');
-$sheet->setCellValue('J1', 'სხვაობა');
+$sheet->setCellValue('F1', 'გასვლის გეგმიური დრო');
+$sheet->setCellValue('G1', 'გასვლის ფაქტიური დრო');
+$sheet->setCellValue('H1', 'მისვლის გეგმიური დრო');
+$sheet->setCellValue('I1', 'მისვლის ფაქტიური დრო');
+$sheet->setCellValue('J1', 'წირის გეგმიური დრო');
+$sheet->setCellValue('K1', 'წირის ფაქტიური დრო');
+$sheet->setCellValue('L1', 'სხვაობა');
 
 $styleArray = [
     'borders' => [
@@ -83,6 +87,8 @@ $spreadsheet->getActiveSheet()->getStyle("G1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("H1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("I1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("J1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("K1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("L1")->applyFromArray($styleArray);
 
 //endof header
 //now body
@@ -104,6 +110,9 @@ foreach ($routes as $route) {
                     $tripPeriodType = $tripPeriod->getTypeGe();
                     $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                     $startTimeActual = $tripPeriod->getStartTimeActual();
+                    $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
+                    $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
+
                     $tripPeriodScheduledTime = $tripPeriod->getTripPeriodScheduledTime();
                     $tripPeriodActualTime = $tripPeriod->getTripPeriodActualTime();
                     $tripPeriodDifferenceTime = $tripPeriod->getTripPeriodDifferenceTime();
@@ -118,10 +127,10 @@ foreach ($routes as $route) {
                         $tripPeriodDifferenceTimeColor = "FFFF00";
                     }
                     //this line makes time to be seen in excel when i need to calculate average fo selected cells. but its not working for timestamp with "-" sign
-                    
+
                     \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
 
-                    
+
                     $sheet->setCellValue("A$row", $dateStamp);
                     $sheet->setCellValue("B$row", $busNumber);
                     $sheet->setCellValue("C$row", $exodusNumber);
@@ -129,9 +138,11 @@ foreach ($routes as $route) {
                     $sheet->setCellValue("E$row", $tripPeriodType);
                     $sheet->setCellValue("F$row", $startTimeScheduled);
                     $sheet->setCellValue("G$row", $startTimeActual);
-                    $sheet->setCellValue("H$row", $tripPeriodScheduledTime);
-                    $sheet->setCellValue("I$row", $tripPeriodActualTime);
-                    $sheet->setCellValue("J$row", $tripPeriodDifferenceTime);
+                    $sheet->setCellValue("H$row", $arrivalTimeScheduled);
+                    $sheet->setCellValue("I$row", $arrivalTimeActual);
+                    $sheet->setCellValue("J$row", $tripPeriodScheduledTime);
+                    $sheet->setCellValue("K$row", $tripPeriodActualTime);
+                    $sheet->setCellValue("L$row", $tripPeriodDifferenceTime);
 
                     $spreadsheet->getActiveSheet()->getStyle("A$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("B$row")->applyFromArray($styleArray);
@@ -143,7 +154,9 @@ foreach ($routes as $route) {
                     $spreadsheet->getActiveSheet()->getStyle("H$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("I$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("J$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("J$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeColor);
+                    $spreadsheet->getActiveSheet()->getStyle("K$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("L$row")->applyFromArray($styleArray);
+                    $spreadsheet->getActiveSheet()->getStyle("L$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeColor);
 
 //   . "<td style=\"width:100px;background-color:$tripPeriodDifferenceTimeColor\">$tripPeriodDifferenceTime</td>"
                     $row++;

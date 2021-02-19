@@ -38,15 +38,17 @@ $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
 $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
 $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
 $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-$spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(13);
 $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(13);
 $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(13);
+$spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
 
-$spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-
-$spreadsheet->getActiveSheet()->getStyle("A1:J1")->getFont()->setSize(14);
-$spreadsheet->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffc0cb');
+$spreadsheet->getActiveSheet()->getStyle("A1:M1")->getFont()->setSize(14);
+$spreadsheet->getActiveSheet()->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffc0cb');
 
 $spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setWrapText(true);
 $spreadsheet->getActiveSheet()->getStyle('F1')->getAlignment()->setWrapText(true);
@@ -54,19 +56,22 @@ $spreadsheet->getActiveSheet()->getStyle('H1')->getAlignment()->setWrapText(true
 $spreadsheet->getActiveSheet()->getStyle('I1')->getAlignment()->setWrapText(true);
 $spreadsheet->getActiveSheet()->getStyle('J1')->getAlignment()->setWrapText(true);
 $spreadsheet->getActiveSheet()->getStyle('K1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('L1')->getAlignment()->setWrapText(true);
+
 $sheet = $spreadsheet->getActiveSheet();
-$sheet->setCellValue('A1', 'თარიღი');
-$sheet->setCellValue('B1', 'ავტობუსის #');
-$sheet->setCellValue('C1', 'გასვლის #');
-$sheet->setCellValue('D1', 'მძღოლი ');
-$sheet->setCellValue('E1', 'მიმართულება');
-$sheet->setCellValue('F1', 'გასვლის გეგმიური დრო');
-$sheet->setCellValue('G1', 'გასვლის ფაქტიური დრო');
-$sheet->setCellValue('H1', 'მისვლის გეგმიური დრო');
-$sheet->setCellValue('I1', 'მისვლის ფაქტიური დრო');
-$sheet->setCellValue('J1', 'წირის გეგმიური დრო');
-$sheet->setCellValue('K1', 'წირის ფაქტიური დრო');
-$sheet->setCellValue('L1', 'სხვაობა');
+$sheet->setCellValue('A1', 'მარშრუტის #');
+$sheet->setCellValue('B1', 'თარიღი');
+$sheet->setCellValue('C1', 'ავტობუსის #');
+$sheet->setCellValue('D1', 'გასვლის #');
+$sheet->setCellValue('E1', 'მძღოლი ');
+$sheet->setCellValue('F1', 'მიმართულება');
+$sheet->setCellValue('G1', 'გასვლის გეგმიური დრო');
+$sheet->setCellValue('H1', 'გასვლის ფაქტიური დრო');
+$sheet->setCellValue('I1', 'მისვლის გეგმიური დრო');
+$sheet->setCellValue('J1', 'მისვლის ფაქტიური დრო');
+$sheet->setCellValue('K1', 'წირის გეგმიური დრო');
+$sheet->setCellValue('L1', 'წირის ფაქტიური დრო');
+$sheet->setCellValue('M1', 'სხვაობა');
 
 $styleArray = [
     'borders' => [
@@ -89,6 +94,7 @@ $spreadsheet->getActiveSheet()->getStyle("I1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("J1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("K1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("L1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("M1")->applyFromArray($styleArray);
 
 //endof header
 //now body
@@ -103,6 +109,7 @@ foreach ($routes as $route) {
             foreach ($tripVouchers as $tripVoucher) {
                 $tripPeriods = $tripVoucher->getTripPeriods();
                 foreach ($tripPeriods as $tripPeriod) {
+                    $routeNumber = $tripPeriod->getTripPeriodDNA()->getRouteNumber();
                     $dateStamp = $tripPeriod->getTripPeriodDNA()->getDateStamp();
                     $busNumber = $tripPeriod->getTripPeriodDNA()->getBusNumber();
                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
@@ -130,19 +137,19 @@ foreach ($routes as $route) {
 
                     \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
 
-
-                    $sheet->setCellValue("A$row", $dateStamp);
-                    $sheet->setCellValue("B$row", $busNumber);
-                    $sheet->setCellValue("C$row", $exodusNumber);
-                    $sheet->setCellValue("D$row", $driverName);
-                    $sheet->setCellValue("E$row", $tripPeriodType);
-                    $sheet->setCellValue("F$row", $startTimeScheduled);
-                    $sheet->setCellValue("G$row", $startTimeActual);
-                    $sheet->setCellValue("H$row", $arrivalTimeScheduled);
-                    $sheet->setCellValue("I$row", $arrivalTimeActual);
-                    $sheet->setCellValue("J$row", $tripPeriodScheduledTime);
-                    $sheet->setCellValue("K$row", $tripPeriodActualTime);
-                    $sheet->setCellValue("L$row", $tripPeriodDifferenceTime);
+                    $sheet->setCellValue("A$row", $routeNumber);
+                    $sheet->setCellValue("B$row", $dateStamp);
+                    $sheet->setCellValue("C$row", $busNumber);
+                    $sheet->setCellValue("D$row", $exodusNumber);
+                    $sheet->setCellValue("E$row", $driverName);
+                    $sheet->setCellValue("F$row", $tripPeriodType);
+                    $sheet->setCellValue("G$row", $startTimeScheduled);
+                    $sheet->setCellValue("H$row", $startTimeActual);
+                    $sheet->setCellValue("I$row", $arrivalTimeScheduled);
+                    $sheet->setCellValue("J$row", $arrivalTimeActual);
+                    $sheet->setCellValue("K$row", $tripPeriodScheduledTime);
+                    $sheet->setCellValue("L$row", $tripPeriodActualTime);
+                    $sheet->setCellValue("M$row", $tripPeriodDifferenceTime);
 
                     $spreadsheet->getActiveSheet()->getStyle("A$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("B$row")->applyFromArray($styleArray);
@@ -156,7 +163,9 @@ foreach ($routes as $route) {
                     $spreadsheet->getActiveSheet()->getStyle("J$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("K$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("L$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("L$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeColor);
+                    $spreadsheet->getActiveSheet()->getStyle("M$row")->applyFromArray($styleArray);
+
+                    $spreadsheet->getActiveSheet()->getStyle("M$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeColor);
 
 //   . "<td style=\"width:100px;background-color:$tripPeriodDifferenceTimeColor\">$tripPeriodDifferenceTime</td>"
                     $row++;

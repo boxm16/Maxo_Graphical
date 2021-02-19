@@ -139,6 +139,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
             <table style="width:100%">
                 <thead>
                     <tr>
+                        <th style="text-align: center">მარშრუტის #</th>
                         <th style="text-align: center">თარიღი</th>
                         <th style="text-align: center">ავტობუსის #</th>
                         <th style="text-align: center">გასვლის #</th>
@@ -158,6 +159,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                     <?php
                     foreach ($routes as $route) {
                         $days = $route->getDays();
+
                         foreach ($days as $day) {
                             $exoduses = $day->getExoduses();
                             foreach ($exoduses as $exodus) {
@@ -165,6 +167,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                 foreach ($tripVouchers as $tripVoucher) {
                                     $tripPeriods = $tripVoucher->getTripPeriods();
                                     foreach ($tripPeriods as $tripPeriod) {
+                                        $routeNumber = $tripPeriod->getTripPeriodDNA()->getRouteNumber();
                                         $dateStamp = $tripPeriod->getTripPeriodDNA()->getDateStamp();
                                         $busNumber = $tripPeriod->getTripPeriodDNA()->getBusNumber();
                                         $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
@@ -179,6 +182,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                         $tripPeriodDifferenceTime = $tripPeriod->getTripPeriodDifferenceTime();
                                         $tripPeriodDifferenceTimeColor = $tripPeriod->getTripPeriodDifferenceTimeColor();
                                         echo "<tr> "
+                                        . "<td>$routeNumber</td>"
                                         . "<td>$dateStamp</td>"
                                         . "<td>$busNumber</td>"
                                         . "<td>$exodusNumber</td>"

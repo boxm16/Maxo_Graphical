@@ -132,8 +132,8 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
         <?php
         include 'navBar.php';
         ?>
-        <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
-        <div class="content"> 
+        <div class="preload1"><img src="http://i.imgur.com/KUJoe.gif"></div>
+        <div class="content1"> 
 
 
             <table style="width:100%">
@@ -166,6 +166,8 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                 $tripVouchers = $exodus->getTripVouchers();
                                 foreach ($tripVouchers as $tripVoucher) {
                                     $tripPeriods = $tripVoucher->getTripPeriods();
+                                    $firstTripPeriodStartPoint = $tripVoucher->getFirstTripPeriodStartPoint();
+                                    $lastTripPeriodEndPoint = $tripVoucher->getLastTripPeriodEndPoint();
                                     foreach ($tripPeriods as $tripPeriod) {
                                         $routeNumber = $tripPeriod->getTripPeriodDNA()->getRouteNumber();
                                         $dateStamp = $tripPeriod->getTripPeriodDNA()->getDateStamp();
@@ -173,6 +175,13 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                         $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
                                         $driverName = $tripPeriod->getTripPeriodDNA()->getDriverName();
                                         $tripPeriodType = $tripPeriod->getTypeGe();
+                                        if ($tripPeriodType == "ბაზიდან გასვლა") {
+                                            $tripPeriodType .= "-" . $firstTripPeriodStartPoint;
+                                        }
+                                        if ($tripPeriodType == "ბაზაში დაბრუნება") {
+                                            $tripPeriodType = "$lastTripPeriodEndPoint-ბაზაში დაბრუნება";
+                                        }
+
                                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                         $startTimeActual = $tripPeriod->getStartTimeActual();
                                         $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();

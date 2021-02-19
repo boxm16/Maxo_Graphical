@@ -72,5 +72,28 @@ class TripVoucherXL {
         $this->notes = $notes;
     }
 
+    public function getFirstTripPeriodStartPoint() {
+        $firstTrip = $this->tripPeriods[1];
+
+        if ($firstTrip->getType() == "ab") {
+            return "A";
+        }
+        if ($firstTrip->getType() == "ba") {
+            return "B";
+        }
+        return "";
+    }
+
+    public function getLastTripPeriodEndPoint() {
+        $firstTrip = $this->tripPeriods[1];
+
+        if ($firstTrip->getType() == "ab") {
+            return "B";
+        }
+        if ($firstTrip->getType() == "ba") {
+            return "A";
+        }
+        return "";
+    }
 
 }

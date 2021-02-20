@@ -73,7 +73,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                                             . "<td name='tripPeriodDifferenceTime' style=\"background-color:$tripPeriodDifferenceTimeLights;\" >" . $tripPeriod->getTripPeriodDifferenceTime() . "</td>"
                                             . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
                                             . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
-                                            . "<td style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
+                                            . "<td name='lostTime' style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
                                             . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
                                             . "</tr>";
 
@@ -273,6 +273,26 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                         targetCell.style.backgroundColor = "violet";
                         cellOne.style.backgroundColor = "violet";
                         cellTwo.style.backgroundColor = "violet";
+                    }
+                }
+
+                if (cellName == "lostTime") {
+                    var targetRow = event.target.parentNode;
+
+                    var cellOne = targetRow.querySelector("td[name=startTimeDifference]");
+                    var cellTwo = targetRow.querySelector("td[name=haltTimeActual");
+                    if (cellTwo != null) {
+
+                        saveElementColor(targetCell, cellOne, cellTwo);
+
+                        if (targetCell.innerText == cellOne.innerText) {
+                            cellOne.style.backgroundColor = "violet";
+                        }
+                        if (targetCell.innerText == cellTwo.innerText) {
+                            cellTwo.style.backgroundColor = "violet";
+                        }
+                        targetCell.style.backgroundColor = "violet";
+
                     }
                 }
             }

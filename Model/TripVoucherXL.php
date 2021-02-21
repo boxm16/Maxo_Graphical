@@ -85,7 +85,8 @@ class TripVoucherXL {
     }
 
     public function getLastTripPeriodEndPoint() {
-        $firstTrip = $this->tripPeriods[1];
+        $lastTripIndex=count($this->tripPeriods)-2;
+        $firstTrip = $this->tripPeriods[$lastTripIndex];
 
         if ($firstTrip->getType() == "ab") {
             return "B";

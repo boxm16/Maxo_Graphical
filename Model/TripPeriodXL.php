@@ -282,11 +282,32 @@ class TripPeriodXL {
     }
 
     public function getStartTimeDifferenceColor() {
-        return $this->trifficLightsController->getLightsForRedWhiteTraffic($this->startTimeDifference);
+        return $this->trifficLightsController->getLightsForStandartTraffic($this->startTimeDifference);
     }
 
     public function getArrivalTimeDifferenceColor() {
-        return $this->trifficLightsController->getLightsForRedWhiteTraffic($this->arrivalTimeDifference);
+        return $this->trifficLightsController->getLightsForStandartTraffic($this->arrivalTimeDifference);
+    }
+
+    public function getBlackSpot() {
+        if ($this->scheduledInterval != "" && $this->actualInterval != "" && $this->getLostTime() != "") {
+            $standartIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->scheduledInterval);
+            $actualIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->actualInterval);
+            $intervalDifference = $actualIntervalInSeconds-$standartIntervalInSeconds;
+
+            $lostTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->getLostTime());
+
+            if (($intervalDifference < -301 && $lostTimeInSeconds < -301) || ($intervalDifference > 300 && $lostTimeInSeconds > 300)) {
+                return "black";
+            } else {
+                return "white";
+            }
+
+//  $intervalDifferenceTimeStamp = $this->timeCalculator->getTimeStampFromSeconds($intervalDifference);
+            //return $this->trifficLightsController->getLightsForStandartTraffic($intervalDifferenceTimeStamp);
+        } else {
+            return "white";
+        }
     }
 
 }

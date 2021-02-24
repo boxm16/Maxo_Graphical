@@ -160,25 +160,31 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                             echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue;\">$dateStamp</td></tr>";
 
                             $voucher_header = ""
-                                    . "<tr><th colspan = \"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
+                                    . "<tr><th colspan = \"8\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
                                     . "<tr>"
                                     . "<th>გეგმ.<br>გას.<br>დრო</th>"
                                     . "<th>ფაქტ.<br>გას.<br>დრო</th>"
+                                    . "<th>სხვ.</th>"
+                                    . "<th>დაკ.<br> დრო</th>"
                                     . "<th>გეგმ.<br>ინტ.</th>"
                                     . "<th>ფაქტ.<br>ინტ.</th>"
+                                    . "<th>SOS</th>"
                                     . "<th>.<br>გას.<br>#</th>"
                                     . "</tr>"
                                     . "";
 
 
                             $gps_header = ""
-                                    . "<tr><th colspan=\"5\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
+                                    . "<tr><th colspan=\"8\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
                                     . "<tr>"
                                     . "<th>.<br>გას.<br>#</th>"
                                     . "<th>გეგმ.<br>გას.<br>დრო</th>"
                                     . "<th>ფაქტ.<br>გას.<br>დრო</th>"
+                                    . "<th>სხვ.</th>"
+                                    . "<th>დაკ.<br> დრო</th>"
                                     . "<th>გეგმ.<br>ინტ.</th>"
                                     . "<th>GPS<br>ინტ.</th>"
+                                    . "<th>SOS</th>"
                                     . "</tr>";
 
 
@@ -194,17 +200,30 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                 foreach ($direction as $tripPeriod) {
                                     $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                     $startTimeActual = $tripPeriod->getStartTimeActual();
+                                    $startTimeDifference = $tripPeriod->getStartTimeDifference();
+                                    $startTimeDifferenceColor = $tripPeriod->getStartTimeDifferenceColor();
+
+                                    $lostTime = $tripPeriod->getLostTime();
+                                    $lostTimeColor = $tripPeriod->getLightsForLostTime();
+
                                     $scheduledInterval = $tripPeriod->getScheduledInterval();
                                     $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
                                     $actualInterval = $tripPeriod->getActualInterval();
                                     $actualIntervalColor = $tripPeriod->getActualIntervalColor();
+
+                                    $blackSpot = $tripPeriod->getBlackSpot();
+
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+
 
                                     $row = "<tr>"
                                             . "<td>$startTimeScheduled</td>"
                                             . "<td>$startTimeActual</td>"
+                                            . "<td style=\"background-color:$startTimeDifferenceColor\">$startTimeDifference</td>"
+                                            . "<td style=\"background-color:$lostTimeColor\">$lostTime</td>"
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
+                                            . "<td style=\"background-color:$blackSpot; color: white; \">X</td>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "</tr>";
 
@@ -225,6 +244,11 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                 foreach ($direction as $tripPeriod) {
                                     $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                     $startTimeActual = $tripPeriod->getStartTimeActual();
+                                    $startTimeDifference = $tripPeriod->getStartTimeDifference();
+                                    $startTimeDifferenceColor = $tripPeriod->getStartTimeDifferenceColor();
+
+                                    $lostTime = $tripPeriod->getLostTime();
+                                    $lostTimeColor = $tripPeriod->getLightsForLostTime();
 
                                     $scheduledInterval = $tripPeriod->getScheduledInterval();
                                     $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
@@ -233,12 +257,17 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     $gpsBasedActualIntervalColor = $tripPeriod->getGpsBasedActualIntervalColor();
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
+                                    $blackSpot = $tripPeriod->getBlackSpot();
+
                                     $row = "<tr>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "<td>$startTimeScheduled</td>"
                                             . "<td>$startTimeActual</td>"
+                                            . "<td style=\"background-color:$startTimeDifferenceColor\">$startTimeDifference</td>"
+                                            . "<td style=\"background-color:$lostTimeColor\">$lostTime</td>"
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
+                                            . "<td style=\"background-color:$blackSpot; color: white;\">X</td>"
                                             . "</tr>";
 
                                     if ($tripPeriod->getType() == "ab") {

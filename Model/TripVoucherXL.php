@@ -73,28 +73,36 @@ class TripVoucherXL {
     }
 
     public function getFirstTripPeriodStartPoint() {
-        $firstTrip = $this->tripPeriods[1];
+        if (count($this->tripPeriods) >= 2) {
+            $firstTrip = $this->tripPeriods[1];
 
-        if ($firstTrip->getType() == "ab") {
-            return "A";
+            if ($firstTrip->getType() == "ab") {
+                return "A";
+            }
+            if ($firstTrip->getType() == "ba") {
+                return "B";
+            }
+            return "";
+        } else {
+            return "";
         }
-        if ($firstTrip->getType() == "ba") {
-            return "B";
-        }
-        return "";
     }
 
     public function getLastTripPeriodEndPoint() {
-        $lastTripIndex=count($this->tripPeriods)-2;
-        $firstTrip = $this->tripPeriods[$lastTripIndex];
+        if (count($this->tripPeriods) >= 2) {
+            $lastTripIndex = count($this->tripPeriods) - 2;
+            $firstTrip = $this->tripPeriods[$lastTripIndex];
 
-        if ($firstTrip->getType() == "ab") {
-            return "B";
+            if ($firstTrip->getType() == "ab") {
+                return "B";
+            }
+            if ($firstTrip->getType() == "ba") {
+                return "A";
+            }
+            return "";
+        } else {
+            return "";
         }
-        if ($firstTrip->getType() == "ba") {
-            return "A";
-        }
-        return "";
     }
 
 }

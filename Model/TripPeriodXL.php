@@ -301,10 +301,29 @@ class TripPeriodXL {
                 return "-";
             } else if ($intervalDifference > 300 && $lostTimeInSeconds > 300) {
                 return "+";
+            } else {
+                return "";
             }
+        } else {
+            return "";
+        }
+    }
 
-//  $intervalDifferenceTimeStamp = $this->timeCalculator->getTimeStampFromSeconds($intervalDifference);
-            //return $this->trifficLightsController->getLightsForStandartTraffic($intervalDifferenceTimeStamp);
+    public function getGPSBlackSpot() {
+        if ($this->scheduledInterval != "" && $this->gpsBasedActualInterval != "" && $this->getLostTime() != "") {
+            $standartIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->scheduledInterval);
+            $gpsBasedActualIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->gpsBasedActualInterval);
+            $intervalDifference = $gpsBasedActualIntervalInSeconds - $standartIntervalInSeconds;
+
+            $lostTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->getLostTime());
+
+            if ($intervalDifference < -301 && $lostTimeInSeconds < -301) {
+                return "-";
+            } else if ($intervalDifference > 300 && $lostTimeInSeconds > 300) {
+                return "+";
+            } else {
+                return "";
+            }
         } else {
             return "";
         }

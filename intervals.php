@@ -263,7 +263,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
 
-                                    $blackSpot = $tripPeriod->getBlackSpot();
+                                    $blackSpot = $tripPeriod->getGPSBlackSpot();
                                     $blackSpotColor = "white";
                                     if ($blackSpot != "") {
                                         $blackSpotColor = "black";

@@ -293,20 +293,20 @@ class TripPeriodXL {
         if ($this->scheduledInterval != "" && $this->actualInterval != "" && $this->getLostTime() != "") {
             $standartIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->scheduledInterval);
             $actualIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->actualInterval);
-            $intervalDifference = $actualIntervalInSeconds-$standartIntervalInSeconds;
+            $intervalDifference = $actualIntervalInSeconds - $standartIntervalInSeconds;
 
             $lostTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->getLostTime());
 
-            if (($intervalDifference < -301 && $lostTimeInSeconds < -301) || ($intervalDifference > 300 && $lostTimeInSeconds > 300)) {
-                return "black";
-            } else {
-                return "white";
+            if ($intervalDifference < -301 && $lostTimeInSeconds < -301) {
+                return "-";
+            } else if ($intervalDifference > 300 && $lostTimeInSeconds > 300) {
+                return "+";
             }
 
 //  $intervalDifferenceTimeStamp = $this->timeCalculator->getTimeStampFromSeconds($intervalDifference);
             //return $this->trifficLightsController->getLightsForStandartTraffic($intervalDifferenceTimeStamp);
         } else {
-            return "white";
+            return "";
         }
     }
 

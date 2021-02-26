@@ -212,6 +212,11 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     $actualIntervalColor = $tripPeriod->getActualIntervalColor();
 
                                     $blackSpot = $tripPeriod->getBlackSpot();
+                                    $blackSpotColor = "white";
+                                    if ($blackSpot != "") {
+                                        $blackSpotColor = "black";
+                                    }
+
 
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
@@ -223,7 +228,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                             . "<td style=\"background-color:$lostTimeColor\">$lostTime</td>"
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
-                                            . "<td style=\"background-color:$blackSpot; color: white; \">X</td>"
+                                            . "<td style=\"background-color:$blackSpotColor; color: white; \">$blackSpot</td>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "</tr>";
 
@@ -257,7 +262,12 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     $gpsBasedActualIntervalColor = $tripPeriod->getGpsBasedActualIntervalColor();
                                     $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
 
+
                                     $blackSpot = $tripPeriod->getBlackSpot();
+                                    $blackSpotColor = "white";
+                                    if ($blackSpot != "") {
+                                        $blackSpotColor = "black";
+                                    }
 
                                     $row = "<tr>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
@@ -267,7 +277,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                             . "<td style=\"background-color:$lostTimeColor\">$lostTime</td>"
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
-                                            . "<td style=\"background-color:$blackSpot; color: white;\">X</td>"
+                                            . "<td style=\"background-color:$blackSpotColor; color: white;\">$blackSpot</td>"
                                             . "</tr>";
 
                                     if ($tripPeriod->getType() == "ab") {

@@ -175,7 +175,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
 
 
                             $gps_header = ""
-                                    . "<tr><th colspan=\"8\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
+                                    . "<tr><th colspan=\"9\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
                                     . "<tr>"
                                     . "<th>.<br>გას.<br>#</th>"
                                     . "<th>გეგმ.<br>გას.<br>დრო</th>"
@@ -185,6 +185,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     . "<th>გეგმ.<br>ინტ.</th>"
                                     . "<th>GPS<br>ინტ.</th>"
                                     . "<th>SOS</th>"
+                                    . "<th>G</th>"
                                     . "</tr>";
 
 
@@ -269,6 +270,12 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                         $blackSpotColor = "black";
                                     }
 
+                                    $gSpot = $tripPeriod->getGSpot();
+                                    $gSpotColor = "white";
+                                    if ($gSpot != "") {
+                                        $gSpotColor = "black";
+                                    }
+
                                     $row = "<tr>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "<td>$startTimeScheduled</td>"
@@ -278,6 +285,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
                                             . "<td style=\"background-color:$blackSpotColor; color: white;\">$blackSpot</td>"
+                                            . "<td style=\"background-color:$gSpotColor; color: white;\">$gSpot</td>"
                                             . "</tr>";
 
                                     if ($tripPeriod->getType() == "ab") {

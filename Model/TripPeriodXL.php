@@ -18,6 +18,7 @@ class TripPeriodXL {
     private $actualInterval; //this is time that  actually has passed from the time previous bus left for same trip 
     private $gpsBasedActualInterval;
     private $scheduledIntervalColor;
+    private $gSpot;
     private $tripPeriodDNA;
     private $timeCalculator;
     private $trifficLightsController;
@@ -30,6 +31,7 @@ class TripPeriodXL {
         $this->arrivalTimeScheduled = $arrivalTimeScheduled;
         $this->arrivalTimeActual = $arrivalTimeActual;
         $this->arrivalTimeDifference = $arrivalTimeDifference;
+        $this->gSpot = "";
 
         $this->timeCalculator = new TimeCalculator();
         $this->trifficLightsController = new TrafficLightsController();
@@ -328,5 +330,16 @@ class TripPeriodXL {
             return "";
         }
     }
+    
+    
+    function getGSpot() {
+        return $this->gSpot;
+    }
+
+    function setGSpot($gSpot) {
+        $this->gSpot .= $gSpot;
+    }
+
+
 
 }

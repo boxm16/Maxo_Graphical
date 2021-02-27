@@ -130,7 +130,7 @@ class DayXL {
 
         $resultArray = array();
         foreach ($tripPeriods as $tripPeriod) {
-           // $tripPeriod_GPS = clone $tripPeriod;//mybe i dont need to clone here
+            // $tripPeriod_GPS = clone $tripPeriod;//mybe i dont need to clone here
             $startTimeActual = $tripPeriod->getStartTimeActual();
             if ($startTimeActual != "") {
                 $startTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($startTimeActual);
@@ -155,13 +155,20 @@ class DayXL {
                 $tripPeriod = $this->getNthItemOfAssociativeArray($x, $tripPeriods);
                 $previousTripPeriod = $this->getNthItemOfAssociativeArray($x - 1, $tripPeriods);
 
-
-
                 if ($tripPeriod->getStartTimeActual() !== "" && $previousTripPeriod->getStartTimeActual() != "") {
 
                     $tripPeriod->setGpsBasedActualInterval($this->timeCalculator->getTimeStampsDifference($tripPeriod->getStartTimeActual(), $previousTripPeriod->getStartTimeActual()));
                 } else {
                     $tripPeriod->setGpsBasedActualInterval("");
+                }
+                //hera i check if buses run in scheduled graphic and dont overrun each other
+                //vamocmeb ro ertmanets arascrebdnen, da tavis rigis mixedvit midian
+
+                $startTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriod->getStartTimeScheduled());
+                $previousTripStartTimeScheduled = $this->timeCalculator->getSecondsFromTimeStamp($previousTripPeriod->getStartTimeScheduled());
+                if (($startTimeScheduledInSeconds - $previousTripStartTimeScheduled) < 0) {
+                    $tripPeriod->setGSpot("^");
+                    $previousTripPeriod->setGSpot("V");
                 }
             }
             $x++;

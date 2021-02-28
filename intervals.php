@@ -168,7 +168,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     . "<th>დაკ.<br> დრო</th>"
                                     . "<th>გეგმ.<br>ინტ.</th>"
                                     . "<th>ფაქტ.<br>ინტ.</th>"
-                                    . "<th>SOS</th>"
+                                    . "<th>ხრვზ</th>"
                                     . "<th>.<br>გას.<br>#</th>"
                                     . "</tr>"
                                     . "";
@@ -184,8 +184,8 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     . "<th>დაკ.<br> დრო</th>"
                                     . "<th>გეგმ.<br>ინტ.</th>"
                                     . "<th>GPS<br>ინტ.</th>"
-                                    . "<th>SOS</th>"
-                                    . "<th>G</th>"
+                                    . "<th>ხრვზ.</th>"
+                                    . "<th>გად.</th>"
                                     . "</tr>";
 
 
@@ -215,7 +215,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     $blackSpot = $tripPeriod->getBlackSpot();
                                     $blackSpotColor = "white";
                                     if ($blackSpot != "") {
-                                        $blackSpotColor = "black";
+                                        $blackSpotColor = "green";
                                     }
 
 
@@ -229,7 +229,7 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                             . "<td style=\"background-color:$lostTimeColor\">$lostTime</td>"
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
-                                            . "<td style=\"background-color:$blackSpotColor; color: white; \">$blackSpot</td>"
+                                            . "<td style=\"background-color:$blackSpotColor; \">$blackSpot</td>"
                                             . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
                                             . "</tr>";
 
@@ -267,13 +267,13 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                     $blackSpot = $tripPeriod->getGPSBlackSpot();
                                     $blackSpotColor = "white";
                                     if ($blackSpot != "") {
-                                        $blackSpotColor = "black";
+                                        $blackSpotColor = "green";
                                     }
 
                                     $gSpot = $tripPeriod->getGSpot();
                                     $gSpotColor = "white";
                                     if ($gSpot != "") {
-                                        $gSpotColor = "black";
+                                        $gSpotColor = "green";
                                     }
 
                                     $row = "<tr>"
@@ -284,8 +284,8 @@ $routes = $routeController->getSiftedRoutes($selectedRouteNumber, $selectedDates
                                             . "<td style=\"background-color:$lostTimeColor\">$lostTime</td>"
                                             . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
                                             . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
-                                            . "<td style=\"background-color:$blackSpotColor; color: white;\">$blackSpot</td>"
-                                            . "<td style=\"background-color:$gSpotColor; color: white;\">$gSpot</td>"
+                                            . "<td style=\"background-color:$blackSpotColor;\">$blackSpot</td>"
+                                            . "<td style=\"background-color:$gSpotColor; \">$gSpot</td>"
                                             . "</tr>";
 
                                     if ($tripPeriod->getType() == "ab") {

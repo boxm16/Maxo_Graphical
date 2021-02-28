@@ -27,12 +27,16 @@ switch ($currentPage) {
         break;
     case "intervals.php":
         $intervalsActive = $activeClass;
+        $excelExportButton = " <li style=\"padding-left:50px\">
+            <form id=\"convert_form\" action=\"intervalsExcelExport.php\" method=\"POST\">
+            <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
+          </form></li>";
         break;
     case "excelForm.php":
         $excelFormActive = $activeClass;
         $excelExportButton = " <li style=\"padding-left:50px\">
             <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
-            <button type=\"submit\"class=\"btn btn-warning \">ექსელში ეკსპორტი</button>
+            <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
           </form></li>";
         break;
 }

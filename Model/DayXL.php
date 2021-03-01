@@ -34,8 +34,8 @@ class DayXL {
 
     public function getIntervals() {
 
-        $a_bArray = array();
-        $b_aArray = array();
+        $ab_intervals = array();
+        $ba_intervals = array();
         foreach ($this->exoduses as $exodus) {
             $tripVouchers = $exodus->getTripVouchers();
             foreach ($tripVouchers as $tripVoucher) {

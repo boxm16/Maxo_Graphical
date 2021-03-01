@@ -33,65 +33,114 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 $spreadsheet = new Spreadsheet();
-$spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+//--A-B
+$spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('C1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('E1')->getAlignment()->setTextRotation(90);
+$spreadsheet->getActiveSheet()->getStyle('F1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('I1')->getAlignment()->setTextRotation(90);
+$spreadsheet->getActiveSheet()->getStyle('J1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('M1')->getAlignment()->setTextRotation(90);
+$spreadsheet->getActiveSheet()->getStyle('N1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(3);
 $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
 $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
 $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-$spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-$spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(13);
-$spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(13);
-$spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(13);
-$spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(13);
-$spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(13);
-$spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(13);
-$spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(3);
+$spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(3);
+$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(3);
+$spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(3);
+
+$spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('H1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('K1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('L1')->getAlignment()->setWrapText(true);
+//---------B-A
+
+$spreadsheet->getActiveSheet()->getStyle('P1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('R1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('T1')->getAlignment()->setTextRotation(90);
+$spreadsheet->getActiveSheet()->getStyle('U1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('X1')->getAlignment()->setTextRotation(90);
+$spreadsheet->getActiveSheet()->getStyle('Y1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getStyle('AB1')->getAlignment()->setTextRotation(90);
+$spreadsheet->getActiveSheet()->getStyle('AC1')->getAlignment()->setTextRotation(90);
+
+$spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(3);
+$spreadsheet->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('T')->setWidth(3);
+$spreadsheet->getActiveSheet()->getColumnDimension('U')->setWidth(3);
+$spreadsheet->getActiveSheet()->getColumnDimension('V')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('W')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('X')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('Y')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('Z')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('AA')->setWidth(10);
+$spreadsheet->getActiveSheet()->getColumnDimension('AB')->setWidth(3);
+$spreadsheet->getActiveSheet()->getColumnDimension('AC')->setWidth(3);
+
+$spreadsheet->getActiveSheet()->getStyle('V1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('W1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('Z1')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AA1')->getAlignment()->setWrapText(true);
+
+
+//-------both--
 
 $spreadsheet->getActiveSheet()->getStyle("A1:N1")->getFont()->setSize(14);
 $spreadsheet->getActiveSheet()->getStyle('A1:N1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ff696969');
 
-$spreadsheet->getActiveSheet()->getStyle("P1:AD1")->getFont()->setSize(14);
-$spreadsheet->getActiveSheet()->getStyle('P1:AD1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ff696969');
+$spreadsheet->getActiveSheet()->getStyle("P1:AC1")->getFont()->setSize(14);
+$spreadsheet->getActiveSheet()->getStyle('P1:AC1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ff696969');
 
-
-$spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setWrapText(true);
-$spreadsheet->getActiveSheet()->getStyle('F1')->getAlignment()->setWrapText(true);
-$spreadsheet->getActiveSheet()->getStyle('H1')->getAlignment()->setWrapText(true);
-$spreadsheet->getActiveSheet()->getStyle('I1')->getAlignment()->setWrapText(true);
-$spreadsheet->getActiveSheet()->getStyle('J1')->getAlignment()->setWrapText(true);
-$spreadsheet->getActiveSheet()->getStyle('K1')->getAlignment()->setWrapText(true);
-$spreadsheet->getActiveSheet()->getStyle('L1')->getAlignment()->setWrapText(true);
 
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setCellValue('A1', 'მარშრუტის #');
 $sheet->setCellValue('B1', 'თარიღი');
 $sheet->setCellValue('C1', 'ავტობუსის #');
-$sheet->setCellValue('D1', 'მძღოლი ');
-$sheet->setCellValue('E1', 'გასვლის #gegmiuri');
-$sheet->setCellValue('F1', 'გასვლის #GPS');
+$sheet->setCellValue('D1', 'მძღოლი');
+$sheet->setCellValue('E1', 'გასვლის #(საგზ)');
+$sheet->setCellValue('F1', 'გასვლის #(GPS)');
 $sheet->setCellValue('G1', 'გასვლის გეგმიური დრო');
 $sheet->setCellValue('H1', 'გასვლის ფაქტიური დრო');
-$sheet->setCellValue('I1', 'sxvaoba');
-$sheet->setCellValue('J1', 'dakarguli dro');
-$sheet->setCellValue('K1', 'გეგმიური intervali');
-$sheet->setCellValue('L1', 'GPS intervali');
-$sheet->setCellValue('M1', 'xarvezi');
-$sheet->setCellValue('N1', 'gadascrea');
+$sheet->setCellValue('I1', 'სხვაობა');
+$sheet->setCellValue('J1', 'დაკარგული დრო');
+$sheet->setCellValue('K1', 'გეგმიური ინტერვალი');
+$sheet->setCellValue('L1', 'GPS ინტერვალი');
+$sheet->setCellValue('M1', 'ხარცეზი');
+$sheet->setCellValue('N1', 'გადასწრება');
 // B_A
 $sheet->setCellValue('P1', 'მარშრუტის #');
 $sheet->setCellValue('Q1', 'თარიღი');
 $sheet->setCellValue('R1', 'ავტობუსის #');
-$sheet->setCellValue('S1', 'მძღოლი ');
-$sheet->setCellValue('T1', 'გასვლის #gegmiuri');
-$sheet->setCellValue('U1', 'გასვლის #GPS');
+$sheet->setCellValue('S1', 'მძღოლი');
+$sheet->setCellValue('T1', 'გასვლის #საგზ)');
+$sheet->setCellValue('U1', 'გასვლის #(GPS)');
 $sheet->setCellValue('V1', 'გასვლის გეგმიური დრო');
 $sheet->setCellValue('W1', 'გასვლის ფაქტიური დრო');
-$sheet->setCellValue('X1', 'sxvaoba');
-$sheet->setCellValue('Y1', 'dakarguli dro');
-$sheet->setCellValue('Z1', 'გეგმიური intervali');
-$sheet->setCellValue('AA1', 'GPS intervali');
-$sheet->setCellValue('AB1', 'xarvezi');
-$sheet->setCellValue('AC1', 'gadascrea');
+$sheet->setCellValue('X1', 'სხვაობა');
+$sheet->setCellValue('Y1', 'დაკარგული დრო');
+$sheet->setCellValue('Z1', 'გეგმიური ინტერვალი');
+$sheet->setCellValue('AA1', 'GPS ინტერვალი');
+$sheet->setCellValue('AB1', 'ხარცეზი');
+$sheet->setCellValue('AC1', 'გადასწრება');
 
 
 $styleArray = [
@@ -162,7 +211,7 @@ foreach ($routes as $route) {
             $row++;
         }
         while ($row < $dayEndIndex) {
-            $sheet->setCellValue("E$row", "");
+            $sheet->setCellValue("E$row", ".");
             $row++;
         }
 
@@ -238,24 +287,24 @@ foreach ($routes as $route) {
             $row++;
         }
         while ($row < $dayEndIndex) {
-            $sheet->setCellValue("A$row", "");
-            $sheet->setCellValue("B$row", "");
-            $sheet->setCellValue("C$row", "");
-            $sheet->setCellValue("D$row", "");
+            $sheet->setCellValue("A$row", ".");
+            $sheet->setCellValue("B$row", ".");
+            $sheet->setCellValue("C$row", ".");
+            $sheet->setCellValue("D$row", ".");
 
-            $sheet->setCellValue("F$row", "");
-            $sheet->setCellValue("G$row", "");
-            $sheet->setCellValue("H$row", "");
-            $sheet->setCellValue("I$row", "");
+            $sheet->setCellValue("F$row", ".");
+            $sheet->setCellValue("G$row", ".");
+            $sheet->setCellValue("H$row", ".");
+            $sheet->setCellValue("I$row", ".");
 
-            $sheet->setCellValue("J$row", "");
+            $sheet->setCellValue("J$row", ".");
 
-            $sheet->setCellValue("K$row", "");
-            $sheet->setCellValue("L$row", "");
+            $sheet->setCellValue("K$row", ".");
+            $sheet->setCellValue("L$row", ".");
 
-            $sheet->setCellValue("M$row", "");
+            $sheet->setCellValue("M$row", ".");
 
-            $sheet->setCellValue("N$row", "");
+            $sheet->setCellValue("N$row", ".");
 
             $row++;
         }
@@ -269,7 +318,7 @@ foreach ($routes as $route) {
             $row++;
         }
         while ($row < $dayEndIndex) {
-            $sheet->setCellValue("T$row", "");
+            $sheet->setCellValue("T$row", ".");
             $row++;
         }
 
@@ -346,24 +395,24 @@ foreach ($routes as $route) {
             $row++;
         }
         while ($row < $dayEndIndex) {
-            $sheet->setCellValue("P$row", "");
-            $sheet->setCellValue("Q$row", "");
-            $sheet->setCellValue("R$row", "");
-            $sheet->setCellValue("S$row", "");
+            $sheet->setCellValue("P$row", ".");
+            $sheet->setCellValue("Q$row", ".");
+            $sheet->setCellValue("R$row", ".");
+            $sheet->setCellValue("S$row", ".");
 
-            $sheet->setCellValue("U$row", "");
-            $sheet->setCellValue("V$row", "");
-            $sheet->setCellValue("W$row", "");
-            $sheet->setCellValue("X$row", "");
+            $sheet->setCellValue("U$row", ".");
+            $sheet->setCellValue("V$row", ".");
+            $sheet->setCellValue("W$row", ".");
+            $sheet->setCellValue("X$row", ".");
 
-            $sheet->setCellValue("Y$row", "");
+            $sheet->setCellValue("Y$row", ".");
 
-            $sheet->setCellValue("Z$row", "");
-            $sheet->setCellValue("AA$row", "");
+            $sheet->setCellValue("Z$row", ".");
+            $sheet->setCellValue("AA$row", ".");
 
-            $sheet->setCellValue("AB$row", "");
+            $sheet->setCellValue("AB$row", ".");
 
-            $sheet->setCellValue("AC$row", "");
+            $sheet->setCellValue("AC$row", ".");
 
             $row++;
         }

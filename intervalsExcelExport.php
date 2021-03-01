@@ -203,8 +203,16 @@ foreach ($routes as $route) {
 
         //here i find out which of those arrays are th longes
         $dayEndIndex = $dayStartIndex + findLongesArray($abDirectionScheduled, $abDirectionGPS, $baDirectionScheduled, $baDirectionGPS);
-        //----A-B shceduled
 
+//--center
+        while ($row < $dayEndIndex) {
+            $sheet->setCellValue("O$row", ".");
+            $row++;
+        }
+
+
+//----A-B shceduled
+        $row = $dayStartIndex;
         foreach ($abDirectionScheduled as $tripPeriod) {
             $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
             $sheet->setCellValue("E$row", $exodusNumber);
@@ -248,12 +256,14 @@ foreach ($routes as $route) {
             $blackSpot = $tripPeriod->getGPSBlackSpot();
             $blackSpotColor = convertColor("white");
             if ($blackSpot != "") {
+                markProblemPointInCenter($spreadsheet, $row);
                 $blackSpotColor = convertColor("green");
             }
 
             $gSpot = $tripPeriod->getGSpot();
             $gSpotColor = convertColor("white");
             if ($gSpot != "") {
+                markProblemPointInCenter($spreadsheet, $row);
                 $gSpotColor = convertColor("green");
             }
 
@@ -356,12 +366,14 @@ foreach ($routes as $route) {
             $blackSpot = $tripPeriod->getGPSBlackSpot();
             $blackSpotColor = convertColor("white");
             if ($blackSpot != "") {
+                markProblemPointInCenter($spreadsheet, $row);
                 $blackSpotColor = convertColor("green");
             }
 
             $gSpot = $tripPeriod->getGSpot();
             $gSpotColor = convertColor("white");
             if ($gSpot != "") {
+                markProblemPointInCenter($spreadsheet, $row);
                 $gSpotColor = convertColor("green");
             }
 
@@ -469,8 +481,16 @@ function convertColor($colorPlainText) {
     if ($colorPlainText == "green") {
         return "008000";
     }
+    if ($colorPlainText == "blue") {
+        return "0000FF";
+    }
 }
 
 function findLongesArray($arr_1, $arr_2, $arr_3, $arr_4) {
     return max(count($arr_1), count($arr_2), count($arr_3), count($arr_4));
+}
+
+function markProblemPointInCenter($spreadsheet, $row) {
+    $problemPointColor = convertColor("blue");
+    $spreadsheet->getActiveSheet()->getStyle("O$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($problemPointColor);
 }

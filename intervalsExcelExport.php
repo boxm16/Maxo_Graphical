@@ -137,7 +137,7 @@ $spreadsheet->getActiveSheet()->getStyle("AC1")->applyFromArray($styleArray);
 //now body
 
 $dayStartIndex = 2;
-$dayEndIndex = 2;
+
 
 foreach ($routes as $route) {
 
@@ -147,17 +147,27 @@ foreach ($routes as $route) {
         $intervals = $day->getIntervals();
         $scheduledIntervals = $intervals["scheduledIntervals"];
         $gpsIntervals = $intervals["gpsIntervals"];
-        //----A-B shceduled
         $abDirectionScheduled = $scheduledIntervals[0];
+        $abDirectionGPS = $gpsIntervals[0];
+        $baDirectionScheduled = $scheduledIntervals[1];
+        $baDirectionGPS = $gpsIntervals[1];
+
+        //here i find out which of those arrays are th longes
+        $dayEndIndex = $dayStartIndex + findLongesArray($abDirectionScheduled, $abDirectionGPS, $baDirectionScheduled, $baDirectionGPS);
+        //----A-B shceduled
+
         foreach ($abDirectionScheduled as $tripPeriod) {
             $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
             $sheet->setCellValue("E$row", $exodusNumber);
             $row++;
         }
-        $dayEndIndex = $row;
+        while ($row < $dayEndIndex) {
+            $sheet->setCellValue("E$row", "");
+            $row++;
+        }
 
         //-----------A-B intervals
-        $abDirectionGPS = $gpsIntervals[0];
+
         $row = $dayStartIndex;
         foreach ($abDirectionGPS as $tripPeriod) {
             $routeNumber = $tripPeriod->getTripPeriodDNA()->getRouteNumber();
@@ -227,25 +237,45 @@ foreach ($routes as $route) {
 
             $row++;
         }
-        if ($dayEndIndex < $row) {
-            $dayEndIndex = $row;
+        while ($row < $dayEndIndex) {
+            $sheet->setCellValue("A$row", "");
+            $sheet->setCellValue("B$row", "");
+            $sheet->setCellValue("C$row", "");
+            $sheet->setCellValue("D$row", "");
+
+            $sheet->setCellValue("F$row", "");
+            $sheet->setCellValue("G$row", "");
+            $sheet->setCellValue("H$row", "");
+            $sheet->setCellValue("I$row", "");
+
+            $sheet->setCellValue("J$row", "");
+
+            $sheet->setCellValue("K$row", "");
+            $sheet->setCellValue("L$row", "");
+
+            $sheet->setCellValue("M$row", "");
+
+            $sheet->setCellValue("N$row", "");
+
+            $row++;
         }
 
         //----B-A shceduled
-        $baDirectionScheduled = $scheduledIntervals[1];
+
         $row = $dayStartIndex;
         foreach ($baDirectionScheduled as $tripPeriod) {
             $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
             $sheet->setCellValue("T$row", $exodusNumber);
             $row++;
         }
-        if ($dayEndIndex < $row) {
-            $dayEndIndex = $row;
+        while ($row < $dayEndIndex) {
+            $sheet->setCellValue("T$row", "");
+            $row++;
         }
 
 
         //-----------B-A intervals
-        $baDirectionGPS = $gpsIntervals[1];
+
         $row = $dayStartIndex;
         foreach ($baDirectionGPS as $tripPeriod) {
             $routeNumber = $tripPeriod->getTripPeriodDNA()->getRouteNumber();
@@ -315,8 +345,27 @@ foreach ($routes as $route) {
 
             $row++;
         }
-        if ($dayEndIndex < $row) {
-            $dayEndIndex = $row;
+        while ($row < $dayEndIndex) {
+            $sheet->setCellValue("P$row", "");
+            $sheet->setCellValue("Q$row", "");
+            $sheet->setCellValue("R$row", "");
+            $sheet->setCellValue("S$row", "");
+
+            $sheet->setCellValue("U$row", "");
+            $sheet->setCellValue("V$row", "");
+            $sheet->setCellValue("W$row", "");
+            $sheet->setCellValue("X$row", "");
+
+            $sheet->setCellValue("Y$row", "");
+
+            $sheet->setCellValue("Z$row", "");
+            $sheet->setCellValue("AA$row", "");
+
+            $sheet->setCellValue("AB$row", "");
+
+            $sheet->setCellValue("AC$row", "");
+
+            $row++;
         }
 
         //drowing day_ending line
@@ -371,4 +420,8 @@ function convertColor($colorPlainText) {
     if ($colorPlainText == "green") {
         return "008000";
     }
+}
+
+function findLongesArray($arr_1, $arr_2, $arr_3, $arr_4) {
+    return max(count($arr_1), count($arr_2), count($arr_3), count($arr_4));
 }

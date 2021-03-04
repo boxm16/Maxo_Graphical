@@ -317,13 +317,16 @@ class RouteXLController {
         $this->routes = $routes;
     }
 
-    public function getSiftedRoutes($requestedRouteNumber, $requestedDates) {
+    public function getSiftedRoutes($requestedRoutesAndDates) {
+
+        $requestedRoutesAndDatesSeparated = $this->separetRoutesAndDates($requestedRoutesAndDates);
+
         $fullRoutes = $this->getFullRoutes();
         $returnArray = array();
         foreach ($fullRoutes as $route) {
             $routeNumber = $route->getNumber();
-            if ($requestedRouteNumber == $routeNumber) {
-
+            if (array_key_exists($routeNumber, $requestedRoutesAndDatesSeparated)) {
+                $requestedDates = $requestedRoutesAndDatesSeparated[$routeNumber];
 
                 $days = $route->getDays();
                 $cloneRouteDays = array();
@@ -342,9 +345,30 @@ class RouteXLController {
         return $returnArray;
     }
 
-    public function getRoutesDelailedPackage($requestedRouteNumber, $requestedDates) {
+    private function separetRoutesAndDates($requestedRoutesAndDates) {
+        $arrayOfDates = explode(",", $requestedRoutesAndDates);
+        $routesAndDates = array();
+        foreach ($arrayOfDates as $item) {
+            if ($item != "") {//last $item is epmty, until i fix it, i leave this as is its
+                $routeAndDate = explode(":", $item);
+                $routeNumber = $routeAndDate[0];
+                $date = $routeAndDate[1];
+                if (array_key_exists("$routeNumber", $routesAndDates)) {
+                    $dates = $routesAndDates["$routeNumber"];
+                    array_push($dates, $date);
+                    $routesAndDates["$routeNumber"] = $dates;
+                } else {
+                    $dates = array($date);
+                    $routesAndDates["$routeNumber"] = $dates;
+                }
+            }
+        }
+        return $routesAndDates;
+    }
 
-        $routes = $this->getSiftedRoutes($requestedRouteNumber, $requestedDates);
+    public function getRoutesDelailedPackage($requestedRoutesAndDates) {
+
+        $routes = $this->getSiftedRoutes($requestedRoutesAndDates);
 
         $startTimeScheduledPackage = array();
         $startTimeActualPackage = array();

@@ -17,7 +17,7 @@ $routes = $routesController->getFullRoutes();
                 height: 20px; /*Desired height*/
             }
 
-            tr {
+            tr  {
                 border:solid black 1px;
             }
         </style>
@@ -29,39 +29,81 @@ $routes = $routesController->getFullRoutes();
                     <hr>
                     <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
 
+
                     <hr>
+
+
+                    <form id="form" action="deletion.php" method="POST">
+                        <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('routeDetails.php')">ბრუნების ნახვა</button>
+                        <button type="submit" class="btn btn-warning" style="font-size: 20px" onclick="requestRouter('intervals.php')">ინტერვალების ნახვა</button>
+                        <button type="submit" class="btn btn-secondery" style="font-size: 20px" onclick="requestRouter('excelForm.php')">ექსელის ფორმა</button>
+
+                        <input hidden type="text" id="routes_dates" name="routes:dates">
+
+                    </form>
+                    <hr>
+
+
                     <?php
                     if (count($routes) > 1) {
                         echo "<center><h2>აირჩიე მარშრუტი</h2></center>";
                     }
                     $bigTableRowBuilder = "";
                     foreach ($routes as $route) {
-                        $days = $route->getDays();
                         $routeNumber = $route->getNumber();
-                        $bodyBuilder = "";
-                        foreach ($days as $day) {
-                            $dateStamp = $day->getDateStamp();
-                            $checkboxInput = "<input name=\"dates[]\" type=\"checkbox\" value=\"$dateStamp\" checked>";
-                            $bodyBuilder .= "<tr><td>$checkboxInput</td><td style=\"font-size:20px\">$dateStamp</td></tr>";
-                        }
+                        ?><table style="text-align:center; font-size:25px">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" style="width:28px;height:28px" onclick="selectRouteAllDates(event, '<?php echo $routeNumber; ?>')" checked="true">
+                                    </th>
+                                    <th>
+                                        &nbsp&nbsp   მარშრუტი # <?php echo $routeNumber; ?>   &nbsp&nbsp   &nbsp&nbsp 
+                                    </th>
+                                    <th>
+                                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#<?php echo $routeNumber; ?>" aria-expanded="false" aria-controls="<?php echo $routeNumber; ?>">
+                                            +
+                                        </button>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
 
-                        $routeDetailsButton = " <button type=\"submit\" class=\"btn btn-success\" style=\"font-size: 20px\" onclick=\"requestRouter(event, 'routeDetails.php')\">ბრუნების ნახვა</button>";
+
+                        <div class="collapse" id="<?php echo $routeNumber; ?>">
+
+                            <table style="text-align:center; font-size:20px" id="daysOfRoute<?php echo $routeNumber; ?>">
+                                <tbody>
+                                    <?php
+                                    $days = $route->getDays();
+                                    foreach ($days as $day) {
+                                        $dateStamp = $day->getDateStamp();
+                                        echo "<tr>"
+                                        . "<td>"
+                                        . "&nbsp&nbsp&nbsp"
+                                        . "</td>"
+                                        . "<td>"
+                                        . "<input type=\"checkbox\" class=\"dates\" checked=\"true\" value=\"$routeNumber:$dateStamp\"> "
+                                        . "</td>"
+                                        . "<td colspan=\"2\">"
+                                        . "&nbsp&nbsp$dateStamp"
+                                        . "</td>"
+                                        . "</tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
 
 
-                        $intervalsButton = " <button type=\"submit\" class=\"btn btn-warning\" style=\"font-size: 20px\" onclick=\"requestRouter(event, 'intervals.php')\">ინტერვალების ნახვა</button>";
+                        </div> 
 
-                        $excelFormButton = " <button type=\"submit\" class=\"btn btn-secondery\" style=\"font-size: 20px; width:100%\" onclick=\"requestRouter(event, 'excelForm.php')\">ექსელის ფორმა</button>";
 
-                        $hiddenInputRouteNumber = "<input name=\"routeNumber\" type=\"hidden\" value=\"$routeNumber\">";
-                        $routeTable = "<table><thead><tr><th colspan = \"2\"  style=\"text-align:center; font-size:25px\">$hiddenInputRouteNumber მარშრუტი #$routeNumber</th></tr><tr><th>$routeDetailsButton</th><th>$intervalsButton</th></tr><tr><th colspan=\"2\">$excelFormButton</th></tr><tr><th><input type=\"checkbox\" checked onclick=\"selectAllDates(event)\"></th><th>ყველა დღე</th></tr></thead><tbody>$bodyBuilder</tbody></table>";
-
-                        $form = "<form action=\"\" method=\"POST\">$routeTable</form>";
-
-                        $bigTableRowBuilder .= "<td style=\"  vertical-align: top;\">$form</td>";
+                        </table><?php
                     }
-                    $bigTable = "<table id=\"bigTable\"><tr>$bigTableRowBuilder</tr></table>";
-                    echo $bigTable;
                     ?>
+
+
+                    <hr><hr>
 
                 </div>
 
@@ -72,23 +114,34 @@ $routes = $routesController->getFullRoutes();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
-            function requestRouter(event, requestTarget) {
-                var form = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-                form.action = requestTarget;
-                console.log(form.action);
-            }
+                                        function requestRouter(requestTarget) {
+                                            form.action = requestTarget;
+                                            routes_dates.value = collectSellectedCheckBoxes();
+                                            console.log(form.action);
+                                        }
 
-            function selectAllDates(event) {
-                var checkbox = event.target;
-                var table = event.target.parentNode.parentNode.parentNode.parentNode;
-                var targetCheckBoxes = table.querySelectorAll("input[type=\"checkbox\"]");
-                console.log(targetCheckBoxes.length);
-                for (x = 0; x < targetCheckBoxes.length; x++) {
-                    targetCheckBoxes[x].checked = checkbox.checked;
-                    console.log(targetCheckBoxes[x].checked);
-                }
+                                        function selectRouteAllDates(event, routeNumber) {
+                                            console.log(routeNumber);
+                                            var checkbox = event.target;
+                                            var table = document.getElementById("daysOfRoute" + routeNumber);
+                                            var targetCheckBoxes = table.querySelectorAll("input[type=\"checkbox\"]");
 
-            }
+                                            for (x = 0; x < targetCheckBoxes.length; x++) {
+                                                targetCheckBoxes[x].checked = checkbox.checked;
+
+                                            }
+
+                                        }
+//this function collects all checked checkbox values, concatinates them in one string and returns that string to send it after by POST method to server
+                                        function collectSellectedCheckBoxes() {
+                                            var returnValue = "";
+                                            var targetCheckBoxes = document.querySelectorAll(".dates");
+                                            for (x = 0; x < targetCheckBoxes.length; x++) {
+                                                if (targetCheckBoxes[x].checked)
+                                                    returnValue += targetCheckBoxes[x].value + ",";
+                                            }
+                                            return returnValue;
+                                        }
         </script>
     </body>
 </html>

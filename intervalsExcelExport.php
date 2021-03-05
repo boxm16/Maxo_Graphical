@@ -19,7 +19,13 @@ if (isset($_POST["routes:dates"])) {
 $routeController = new RouteXLController();
 $routes = $routeController->getSiftedRoutes($requestedRoutesAndDates);
 
-$server_name=$_SERVER['PHP_SELF'];
+//this thing-context, i need to write hyperlinks
+$context = "http://berishvili.eu5.org";
+$server = $_SERVER['SERVER_NAME'];
+if ($server == "localhost") {
+    $context = "http://localhost/Maxo_Graphical";
+}
+
 
 require 'vendor/autoload.php';
 
@@ -208,7 +214,11 @@ foreach ($routes as $route) {
 //----A-B shceduled
         $row = $dayStartIndex;
         foreach ($abDirectionScheduled as $tripPeriod) {
+            $routeNumber = $tripPeriod->getTripPeriodDNA()->getRouteNumber();
+            $dateStamp = $tripPeriod->getTripPeriodDNA()->getDateStamp();
             $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+            $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+            $sheet->getCell("E$row")->getHyperlink()->setUrl("$context/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
             $sheet->setCellValue("E$row", $exodusNumber);
             $row++;
         }
@@ -268,9 +278,7 @@ foreach ($routes as $route) {
             $sheet->setCellValue("C$row", $busNumber);
             $sheet->setCellValue("D$row", $driverName);
 
-
-            $sheet->getCell("F$row")->getHyperlink()->setUrl("$server_name/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
-
+            $sheet->getCell("F$row")->getHyperlink()->setUrl("$context/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
             $sheet->setCellValue("F$row", $exodusNumber);
             $sheet->setCellValue("G$row", $startTimeScheduled);
             $sheet->setCellValue("H$row", $startTimeActual);
@@ -320,7 +328,13 @@ foreach ($routes as $route) {
 
         $row = $dayStartIndex;
         foreach ($baDirectionScheduled as $tripPeriod) {
+            $routeNumber = $tripPeriod->getTripPeriodDNA()->getRouteNumber();
+            $dateStamp = $tripPeriod->getTripPeriodDNA()->getDateStamp();
             $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+            $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+
+            $sheet->getCell("T$row")->getHyperlink()->setUrl("$context/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
+
             $sheet->setCellValue("T$row", $exodusNumber);
             $row++;
         }
@@ -381,6 +395,7 @@ foreach ($routes as $route) {
             $sheet->setCellValue("R$row", $busNumber);
             $sheet->setCellValue("S$row", $driverName);
 
+            $sheet->getCell("U$row")->getHyperlink()->setUrl("$context/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
             $sheet->setCellValue("U$row", $exodusNumber);
             $sheet->setCellValue("V$row", $startTimeScheduled);
             $sheet->setCellValue("W$row", $startTimeActual);

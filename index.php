@@ -26,28 +26,44 @@ $routes = $routesController->getFullRoutes();
         <div class="container">
             <div class=""row>
                 <div class="col">
+                    <nav class="navbar fixed-top navbar-light bg-light">
+                        <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
+                        <table>
+                            <thead>
+                            <th>
+                                <input type="checkbox" id="mainCheckBox" style="width:28px;height:28px"  checked="true" onclick="selectRouteAll(event)">
+                            </th>
+                            <th style="width:200px">
+                                ყველა
+                            </th>
+                            <th>
+                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#<?php echo $routeNumber; ?>" aria-expanded="false" aria-controls="<?php echo $routeNumber; ?>">
+                                    +
+                                </button>
+                            </th>
+                            </thead>
+                        </table>
+                        <form id="form" action="deletion.php" method="POST">
+                            <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('routeDetails.php')">ბრუნების ნახვა</button>
+                            <button type="submit" class="btn btn-warning" style="font-size: 20px" onclick="requestRouter('intervals.php')">ინტერვალების ნახვა</button>
+                            <button type="submit" class="btn btn-secondery" style="font-size: 20px" onclick="requestRouter('excelForm.php')">ექსელის ფორმა</button>
+
+                            <input hidden type="text" id="routes_dates" name="routes:dates">
+
+                        </form>
+                    </nav>
                     <hr>
-                    <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
-
-
-                    <hr>
-
-
-                    <form id="form" action="deletion.php" method="POST">
-                        <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('routeDetails.php')">ბრუნების ნახვა</button>
-                        <button type="submit" class="btn btn-warning" style="font-size: 20px" onclick="requestRouter('intervals.php')">ინტერვალების ნახვა</button>
-                        <button type="submit" class="btn btn-secondery" style="font-size: 20px" onclick="requestRouter('excelForm.php')">ექსელის ფორმა</button>
-
-                        <input hidden type="text" id="routes_dates" name="routes:dates">
-
-                    </form>
-                    <hr>
+                    &nbsp<hr>
 
 
                     <?php
                     if (count($routes) > 1) {
                         echo "<center><h2>აირჩიე მარშრუტი</h2></center>";
                     }
+                    ?>
+
+                    <hr>
+                    <?php
                     $bigTableRowBuilder = "";
                     foreach ($routes as $route) {
                         $routeNumber = $route->getNumber();
@@ -55,9 +71,9 @@ $routes = $routesController->getFullRoutes();
                             <thead>
                                 <tr>
                                     <th>
-                                        <input type="checkbox" style="width:28px;height:28px" onclick="selectRouteAllDates(event, '<?php echo $routeNumber; ?>')" checked="true">
+                                        <input type="checkbox" class="routes" id="routeCheckBox:<?php echo $routeNumber; ?>" style="width:28px;height:28px" onclick="selectRouteAllDates(event, '<?php echo $routeNumber; ?>')" checked="true">
                                     </th>
-                                    <th>
+                                    <th style="width:500px">
                                         &nbsp&nbsp   მარშრუტი # <?php echo $routeNumber; ?>   &nbsp&nbsp   &nbsp&nbsp 
                                     </th>
                                     <th>
@@ -72,7 +88,7 @@ $routes = $routesController->getFullRoutes();
 
                         <div class="collapse" id="<?php echo $routeNumber; ?>">
 
-                            <table style="text-align:center; font-size:20px" id="daysOfRoute<?php echo $routeNumber; ?>">
+                            <table style="text-align:center; font-size:20px" id="daysOfRoute:<?php echo $routeNumber; ?>">
                                 <tbody>
                                     <?php
                                     $days = $route->getDays();
@@ -83,7 +99,7 @@ $routes = $routesController->getFullRoutes();
                                         . "&nbsp&nbsp&nbsp"
                                         . "</td>"
                                         . "<td>"
-                                        . "<input type=\"checkbox\" class=\"dates\" checked=\"true\" value=\"$routeNumber:$dateStamp\"> "
+                                        . "<input type=\"checkbox\" class=\"dates\" checked=\"true\" value=\"$routeNumber:$dateStamp\" onclick=\"checkDayCheckBoxes(event)\"> "
                                         . "</td>"
                                         . "<td colspan=\"2\">"
                                         . "&nbsp&nbsp$dateStamp"
@@ -123,14 +139,58 @@ $routes = $routesController->getFullRoutes();
                                         function selectRouteAllDates(event, routeNumber) {
                                             console.log(routeNumber);
                                             var checkbox = event.target;
-                                            var table = document.getElementById("daysOfRoute" + routeNumber);
+                                            var table = document.getElementById("daysOfRoute:" + routeNumber);
                                             var targetCheckBoxes = table.querySelectorAll("input[type=\"checkbox\"]");
 
                                             for (x = 0; x < targetCheckBoxes.length; x++) {
                                                 targetCheckBoxes[x].checked = checkbox.checked;
-
                                             }
+                                            checkRouteCheckBoxes();
 
+                                        }
+
+                                        function selectRouteAll(event) {
+
+                                            var bigCheckBox = event.target;
+                                            var allCheckBoxes = document.querySelectorAll("input[type=\"checkbox\"]");
+                                            for (x = 0; x < allCheckBoxes.length; x++) {
+                                                allCheckBoxes[x].checked = bigCheckBox.checked;
+                                            }
+                                        }
+
+                                        function checkDayCheckBoxes(event) {
+                                            var targetTable = event.target.parentNode.parentNode.parentNode.parentNode;
+                                            var targetTableFullId = targetTable.id;
+                                            var targetTableIdArray = targetTableFullId.split(":");
+                                            var routeNumber = targetTableIdArray[1];
+                                            var routeCheckBox = document.getElementById("routeCheckBox:" + routeNumber);
+                                            var routeDatesCheckBoxes = targetTable.querySelectorAll(".dates");
+
+                                            for (x = 0; x < routeDatesCheckBoxes.length; x++) {
+                                                if (routeDatesCheckBoxes[x].checked) {
+                                                    //do nothing
+                                                } else {
+                                                    routeCheckBox.checked = false;
+                                                    checkRouteCheckBoxes();
+                                                    return;
+                                                }
+                                            }
+                                            routeCheckBox.checked = true;
+                                            checkRouteCheckBoxes();
+
+                                        }
+
+                                        function checkRouteCheckBoxes() {
+                                            var targetCheckBoxes = document.querySelectorAll(".routes");
+                                            for (x = 0; x < targetCheckBoxes.length; x++) {
+                                                if (targetCheckBoxes[x].checked) {
+                                                    //do nothing
+                                                } else {
+                                                    mainCheckBox.checked = false;
+                                                    return;
+                                                }
+                                            }
+                                            mainCheckBox.checked = true;
                                         }
 //this function collects all checked checkbox values, concatinates them in one string and returns that string to send it after by POST method to server
                                         function collectSellectedCheckBoxes() {

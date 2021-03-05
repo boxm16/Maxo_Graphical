@@ -19,6 +19,7 @@ if (isset($_POST["routes:dates"])) {
 $routeController = new RouteXLController();
 $routes = $routeController->getSiftedRoutes($requestedRoutesAndDates);
 
+$server_name=$_SERVER['PHP_SELF'];
 
 require 'vendor/autoload.php';
 
@@ -266,6 +267,9 @@ foreach ($routes as $route) {
             $sheet->setCellValue("B$row", $dateStamp);
             $sheet->setCellValue("C$row", $busNumber);
             $sheet->setCellValue("D$row", $driverName);
+
+
+            $sheet->getCell("F$row")->getHyperlink()->setUrl("$server_name/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
 
             $sheet->setCellValue("F$row", $exodusNumber);
             $sheet->setCellValue("G$row", $startTimeScheduled);

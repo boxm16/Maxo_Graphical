@@ -351,6 +351,7 @@ class RouteXLController {
         foreach ($arrayOfDates as $item) {
             if ($item != "") {//last $item is epmty, until i fix it, i leave this as is its
                 $routeAndDate = explode(":", $item);
+
                 $routeNumber = $routeAndDate[0];
                 $date = $routeAndDate[1];
                 if (array_key_exists("$routeNumber", $routesAndDates)) {

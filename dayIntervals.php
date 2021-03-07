@@ -8,7 +8,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["tri
     $dayIntervalsDetails = "$dateStamp,  მარშრუტი # $routeNumber";
     $routeController = new RouteXLController();
     $requestedDates = array($dateStamp);
-    $routes = $routeController->getSiftedRoutes($routeNumber, $requestedDates);
+    $routes = $routeController->getFullRoutes();
 } else {
     $dayIntervalsDetails = "რაღაც შეცდომა მოხდა, სცადე თავიდან";
 }
@@ -85,136 +85,140 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["tri
             <tbody>
                 <?php
                 foreach ($routes as $route) {
-                    $routeNumber = $route->getNumber();
-                    $days = $route->getDays();
-                    echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:blue; color:white\">მარშრუტი # $routeNumber</td></tr>";
-                    foreach ($days as $day) {
-                        $dateStamp = $day->getDateStamp();
-                        echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue;\">$dateStamp</td></tr>";
+                    $routeNumberFromData = $route->getNumber();
+                    if ($routeNumber == $routeNumberFromData) {
+                        $days = $route->getDays();
+                        echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:blue; color:white\">მარშრუტი # $routeNumber</td></tr>";
+                        foreach ($days as $day) {
+                            $dateStampFromData = $day->getDateStamp();
+                            if ($dateStamp == $dateStampFromData) {
+                                echo "<tr><td colspan=\"14\"  style=\"text-align: center; background-color:lightblue;\">$dateStamp</td></tr>";
 
-                        $voucher_header = ""
-                                . "<tr><th colspan = \"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
-                                . "<tr>"
-                                . "<th>გეგმ.<br>გას.<br>დრო</th>"
-                                . "<th>ფაქტ.<br>გას.<br>დრო</th>"
-                                . "<th>გეგმ.<br>ინტ.</th>"
-                                . "<th>ფაქტ.<br>ინტ.</th>"
-                                . "<th>.<br>გას.<br>#</th>"
-                                . "</tr>"
-                                . "";
-
-
-                        $gps_header = ""
-                                . "<tr><th colspan=\"5\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
-                                . "<tr>"
-                                . "<th>.<br>გას.<br>#</th>"
-                                . "<th>გეგმ.<br>გას.<br>დრო</th>"
-                                . "<th>გეგმ.<br>ინტ.</th>"
-                                . "<th>ფაქტ.<br>გას.<br>დრო</th>"
-                                . "<th>GPS<br>ინტ.</th>"
-                                . "</tr>";
+                                $voucher_header = ""
+                                        . "<tr><th colspan = \"5\" style=\"text-align: center\">საგზურზე დაყრდნობით გამოთვლები</th></tr>"
+                                        . "<tr>"
+                                        . "<th>გეგმ.<br>გას.<br>დრო</th>"
+                                        . "<th>ფაქტ.<br>გას.<br>დრო</th>"
+                                        . "<th>გეგმ.<br>ინტ.</th>"
+                                        . "<th>ფაქტ.<br>ინტ.</th>"
+                                        . "<th>.<br>გას.<br>#</th>"
+                                        . "</tr>"
+                                        . "";
 
 
-                        $intervals = $day->getIntervals();
-                        $scheduledIntervals = $intervals["scheduledIntervals"];
-                        $gpsIntervals = $intervals["gpsIntervals"];
+                                $gps_header = ""
+                                        . "<tr><th colspan=\"5\"  style=\"text-align: center\">GPS გამოთვლები</th></tr>"
+                                        . "<tr>"
+                                        . "<th>.<br>გას.<br>#</th>"
+                                        . "<th>გეგმ.<br>გას.<br>დრო</th>"
+                                        . "<th>გეგმ.<br>ინტ.</th>"
+                                        . "<th>ფაქტ.<br>გას.<br>დრო</th>"
+                                        . "<th>GPS<br>ინტ.</th>"
+                                        . "</tr>";
 
-                        $abVoucherTableBodyBuilder = "";
-                        $baVoucherTableBodyBuilder = "";
+
+                                $intervals = $day->getIntervals();
+                                $scheduledIntervals = $intervals["scheduledIntervals"];
+                                $gpsIntervals = $intervals["gpsIntervals"];
+
+                                $abVoucherTableBodyBuilder = "";
+                                $baVoucherTableBodyBuilder = "";
 
 //first voucher table body builder
-                        foreach ($scheduledIntervals as $direction) {
-                            foreach ($direction as $tripPeriod) {
-                                $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
-                                $startTimeActual = $tripPeriod->getStartTimeActual();
-                                $scheduledInterval = $tripPeriod->getScheduledInterval();
-                                $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
-                                $actualInterval = $tripPeriod->getActualInterval();
-                                $actualIntervalColor = $tripPeriod->getActualIntervalColor();
-                                $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
-                                $rowColor = "white";
-                                if ($tripPeriodTypeFomRequest == $tripPeriod->getType() && $startTimeScheduledFomRequest == $tripPeriod->getStartTimeScheduled()) {
-                                    $rowColor = "lightgreen";
-                                }
-                                $row = "<tr>"
-                                        . "<td style=\"background-color:$rowColor\">$startTimeScheduled</td>"
-                                        . "<td>$startTimeActual</td>"
-                                        . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
-                                        . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
-                                        . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
-                                        . "</tr>";
+                                foreach ($scheduledIntervals as $direction) {
+                                    foreach ($direction as $tripPeriod) {
+                                        $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                        $startTimeActual = $tripPeriod->getStartTimeActual();
+                                        $scheduledInterval = $tripPeriod->getScheduledInterval();
+                                        $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
+                                        $actualInterval = $tripPeriod->getActualInterval();
+                                        $actualIntervalColor = $tripPeriod->getActualIntervalColor();
+                                        $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+                                        $rowColor = "white";
+                                        if ($tripPeriodTypeFomRequest == $tripPeriod->getType() && $startTimeScheduledFomRequest == $tripPeriod->getStartTimeScheduled()) {
+                                            $rowColor = "lightgreen";
+                                        }
+                                        $row = "<tr>"
+                                                . "<td style=\"background-color:$rowColor\">$startTimeScheduled</td>"
+                                                . "<td>$startTimeActual</td>"
+                                                . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
+                                                . "<td style=\"background-color:$actualIntervalColor\">$actualInterval</td>"
+                                                . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
+                                                . "</tr>";
 
-                                if ($tripPeriod->getType() == "ab") {
-                                    $abVoucherTableBodyBuilder .= $row;
+                                        if ($tripPeriod->getType() == "ab") {
+                                            $abVoucherTableBodyBuilder .= $row;
+                                        }
+                                        if ($tripPeriod->getType() == "ba") {
+                                            $baVoucherTableBodyBuilder .= $row;
+                                        }
+                                    }
                                 }
-                                if ($tripPeriod->getType() == "ba") {
-                                    $baVoucherTableBodyBuilder .= $row;
+
+                                //now gps table body builder
+                                $ab_GpsTableBuilder = "";
+                                $ba_GpsTableBuilder = "";
+
+                                foreach ($gpsIntervals as $direction) {
+                                    foreach ($direction as $tripPeriod) {
+                                        $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                        $startTimeActual = $tripPeriod->getStartTimeActual();
+
+                                        $scheduledInterval = $tripPeriod->getScheduledInterval();
+                                        $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
+
+                                        $gpsBasedActualInterval = $tripPeriod->getGpsBasedActualInterval();
+                                        $gpsBasedActualIntervalColor = $tripPeriod->getGpsBasedActualIntervalColor();
+                                        $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
+                                        $rowColor = "white";
+                                        if ($tripPeriodTypeFomRequest == $tripPeriod->getType() && $startTimeScheduledFomRequest == $tripPeriod->getStartTimeScheduled()) {
+                                            $rowColor = "lightgreen";
+                                        }
+                                        $row = "<tr>"
+                                                . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
+                                                . "<td style=\"background-color:$rowColor\">$startTimeScheduled</td>"
+                                                . "<td>$startTimeActual</td>"
+                                                . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
+                                                . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
+                                                . "</tr>";
+
+                                        if ($tripPeriod->getType() == "ab") {
+                                            $ab_GpsTableBuilder .= $row;
+                                        }
+                                        if ($tripPeriod->getType() == "ba") {
+                                            $ba_GpsTableBuilder .= $row;
+                                        }
+                                    }
                                 }
+                                echo "<tr>"
+                                . "<td colspan=\"5\" style=\" vertical-align: top;\">"
+                                . "<table style=\"width:100%\">"
+                                . "<thead>$voucher_header</thead>"
+                                . "<tbody>$abVoucherTableBodyBuilder</tbody>"
+                                . "</table>"
+                                . "</td>"
+                                . "<td colspan=\"2\"  style=\" vertical-align: top;\">"
+                                . "<table style=\"width:100%\">"
+                                . "<thead>$gps_header</thead>"
+                                . "<tbody>$ab_GpsTableBuilder</tbody>"
+                                . "</table>"
+                                . "</td>"
+                                . "<td style=\"border: 2px solid green;\">.</td>"
+                                . "<td colspan=\"5\" style=\" vertical-align: top;\">"
+                                . "<table style=\"width:100%\">"
+                                . "<thead>$voucher_header</thead>"
+                                . "<tbody>$baVoucherTableBodyBuilder</tbody>"
+                                . "</table>"
+                                . "</td>"
+                                . "<td colspan=\"2\"  style=\" vertical-align: top;\">"
+                                . "<table style=\"width:100%\">"
+                                . "<thead>$gps_header</thead>"
+                                . "<tbody>$ba_GpsTableBuilder</tbody>"
+                                . "</table>"
+                                . "</td>"
+                                . "</tr>";
                             }
                         }
-
-                        //now gps table body builder
-                        $ab_GpsTableBuilder = "";
-                        $ba_GpsTableBuilder = "";
-
-                        foreach ($gpsIntervals as $direction) {
-                            foreach ($direction as $tripPeriod) {
-                                $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
-                                $startTimeActual = $tripPeriod->getStartTimeActual();
-
-                                $scheduledInterval = $tripPeriod->getScheduledInterval();
-                                $scheduledIntervaColor = $tripPeriod->getScheduledIntervalColor();
-
-                                $gpsBasedActualInterval = $tripPeriod->getGpsBasedActualInterval();
-                                $gpsBasedActualIntervalColor = $tripPeriod->getGpsBasedActualIntervalColor();
-                                $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
-                                $rowColor = "white";
-                                if ($tripPeriodTypeFomRequest == $tripPeriod->getType() && $startTimeScheduledFomRequest == $tripPeriod->getStartTimeScheduled()) {
-                                    $rowColor = "lightgreen";
-                                }
-                                $row = "<tr>"
-                                        . "<td><b><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>" . $exodusNumber . "</a></b></td>"
-                                        . "<td style=\"background-color:$rowColor\">$startTimeScheduled</td>"
-                                        . "<td>$startTimeActual</td>"
-                                        . "<td style=\"background-color:$scheduledIntervaColor\">$scheduledInterval</td>"
-                                        . "<td style=\"background-color:$gpsBasedActualIntervalColor\">$gpsBasedActualInterval</td>"
-                                        . "</tr>";
-
-                                if ($tripPeriod->getType() == "ab") {
-                                    $ab_GpsTableBuilder .= $row;
-                                }
-                                if ($tripPeriod->getType() == "ba") {
-                                    $ba_GpsTableBuilder .= $row;
-                                }
-                            }
-                        }
-                        echo "<tr>"
-                        . "<td colspan=\"5\" style=\" vertical-align: top;\">"
-                        . "<table style=\"width:100%\">"
-                        . "<thead>$voucher_header</thead>"
-                        . "<tbody>$abVoucherTableBodyBuilder</tbody>"
-                        . "</table>"
-                        . "</td>"
-                        . "<td colspan=\"2\"  style=\" vertical-align: top;\">"
-                        . "<table style=\"width:100%\">"
-                        . "<thead>$gps_header</thead>"
-                        . "<tbody>$ab_GpsTableBuilder</tbody>"
-                        . "</table>"
-                        . "</td>"
-                        . "<td style=\"border: 2px solid green;\">.</td>"
-                        . "<td colspan=\"5\" style=\" vertical-align: top;\">"
-                        . "<table style=\"width:100%\">"
-                        . "<thead>$voucher_header</thead>"
-                        . "<tbody>$baVoucherTableBodyBuilder</tbody>"
-                        . "</table>"
-                        . "</td>"
-                        . "<td colspan=\"2\"  style=\" vertical-align: top;\">"
-                        . "<table style=\"width:100%\">"
-                        . "<thead>$gps_header</thead>"
-                        . "<tbody>$ba_GpsTableBuilder</tbody>"
-                        . "</table>"
-                        . "</td>"
-                        . "</tr>";
                     }
                 }
                 ?>

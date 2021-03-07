@@ -19,16 +19,27 @@ if (isset($_POST["routes:dates"])) {
 $s = microtime(true);
 $routeController = new RouteXLController();
 $routes = $routeController->getSiftedRoutes($requestedRoutesAndDates);
-
-$data = array();
+$tripVouchersData = array();
+$tripPeriodsData = array();
 foreach ($routes as $route) {
     $days = $route->getDays();
+    $routeNumber = $route->getNumber();
     foreach ($days as $day) {
+        $dateStamp = $day->getDateStamp();
         $exoduses = $day->getExoduses();
         foreach ($exoduses as $exodus) {
+            $exodusNumber = $exodus->getNumber();
             $tripVouchers = $exodus->getTripVouchers();
             foreach ($tripVouchers as $tripVoucher) {
                 $tripPeriods = $tripVoucher->getTripPeriods();
+                $tripVoucherNumber = $tripVoucher->getNumber();
+                $busNumber = $tripVoucher->getBusNumber();
+                $busType = $tripVoucher->getBusType();
+                $driverNumber = $tripVoucher->getDriverNumber();
+                $driverName = $tripVoucher->getDriverName();
+                $notes = $tripVoucher->getNotes();
+
+                $tv = array($tripVoucherNumber, $busNumber, $driverNumber, $driverName, $notes, $exodusNumber, $dateStamp, $routeNumber);
 
                 foreach ($tripPeriods as $tripPeriod) {
                     $type = $tripPeriod->getType();
@@ -38,13 +49,17 @@ foreach ($routes as $route) {
                     $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
                     $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
                     $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
-                    $tp = array($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
-                    array_push($data, $tp);
+                    $tp = array($routeNumber, $dateStamp, $exodusNumber, $tripVoucherNumber, $driverNumber, $driverName, $busNumber, $busType, $startTimeScheduled, $startTimeScheduled, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference, $type, $notes);
+                    array_push($tripPeriodsData, $tp);
                 }
             }
         }
     }
 }
+
+$chunkedArray = array_chunk($tripPeriodsData, 4000);
+
+
 
 
 $host = 'remotemysql.com';
@@ -62,9 +77,16 @@ $options = [
 try {
     $pdo = new mPDO($dsn, $user, $pass, $options);
 
-//one version
-    $stmt = $pdo->multiPrepare('INSERT INTO trip_period (type, start_time_scheduled, start_time_actual, start_time_difference, arrival_time_scheduled, arrival_time_actual, arrival_time_difference)', $data);
-    $stmt->multiExecute($data);
+    $index = 0;
+    foreach ($chunkedArray as $data) {
+        if ($index >= 2) {
+            break;
+        }
+        $stmt = $pdo->multiPrepare('INSERT INTO join_table (route_number, date_stamp, exodus_number, trip_voucher_number, driver_number, driver_name, bus_number, bus_type, start_time_scheduled, start_time_actual, start_time_difference, arrival_time_scheduled, arrival_time_actual, arrival_time_difference, type, notes)', $data);
+        $stmt->multiExecute($data);
+        $index++;
+    }
+
     /*
       //second version !!!!!NOT WORKING
       $pdo->beginTransaction(); //**** ADD THIS

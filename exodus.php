@@ -60,21 +60,21 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                                     $tripPeriodDifferenceTimeLights = $tripPeriod->getTripPeriodDifferenceTimeColor();
                                     $tripPeriodType = $tripPeriod->getType();
                                     $tripPeriodRow = "<tr style=\"background-color:$rowColor;\">"
-                                            . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
+                                            . "<td name='startTimeScheduled'>" . $startTimeScheduledFromData. "</td>"
                                             . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
                                             . "<td name='startTimeDifference' style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
                                             . "<td>" . $tripPeriod->getTypeGe() . "</td>"
                                             . "<td name='arrivalTimeScheduled'>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
                                             . "<td name='arrivalTimeActual'>" . $tripPeriod->getArrivalTimeActual() . "</td>"
                                             . "<td name='startTimeDifference' style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                                            . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
+                                            . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduledFromData'  target='_blank'>link</a></td>"
                                             . "<td name='tripPeriodScheduledTime'>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
                                             . "<td name='tripPeriodActualTime'>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
                                             . "<td name='tripPeriodDifferenceTime' style=\"background-color:$tripPeriodDifferenceTimeLights;\" >" . $tripPeriod->getTripPeriodDifferenceTime() . "</td>"
                                             . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
                                             . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
                                             . "<td name='lostTime' style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
-                                            . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
+                                            . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduledFromData'  target='_blank'>   O</a></td>"
                                             . "</tr>";
 
                                     $bodyBuilder .= $tripPeriodRow;

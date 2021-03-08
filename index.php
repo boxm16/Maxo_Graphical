@@ -1,7 +1,10 @@
 <?php
 require_once 'Controller/RouteXLController.php';
+require_once 'clientId.php'; //here i take clientId from cookie, or set new
+
 $routesController = new RouteXLController();
-$routes = $routesController->getFullRoutes();
+$routes = $routesController->getFullRoutes($clientId);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

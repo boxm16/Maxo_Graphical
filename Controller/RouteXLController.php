@@ -9,14 +9,14 @@ class RouteXLController {
 
     private $routes; //this is array of routes
 
-    public function getFullRoutes() {
-        $excelRows = $this->readExcelFile();
+    public function getFullRoutes($clientId) {
+        $excelRows = $this->readExcelFile($clientId);
         $fullRoutes = $this->getRoutesFromExcelRows($excelRows); //array of routes
         return $fullRoutes;
     }
 
-    private function readExcelFile() {
-        if ($xlsx = SimpleXLSX::parse('uploads/routeExcelFile.xlsx')) {
+    private function readExcelFile($clientId) {
+        if ($xlsx = SimpleXLSX::parse("uploads/" . $clientId . "_routeExcelFile.xlsx")) {
             $rows = $xlsx->rowsEx();
         } else {
             header("Location:excelFileErrorPage.php");
@@ -317,11 +317,11 @@ class RouteXLController {
         $this->routes = $routes;
     }
 
-    public function getSiftedRoutes($requestedRoutesAndDates) {
+    public function getSiftedRoutes($clientId, $requestedRoutesAndDates) {
 
         $requestedRoutesAndDatesSeparated = $this->separetRoutesAndDates($requestedRoutesAndDates);
 
-        $fullRoutes = $this->getFullRoutes();
+        $fullRoutes = $this->getFullRoutes($clientId);
         $returnArray = array();
         foreach ($fullRoutes as $route) {
             $routeNumber = $route->getNumber();
@@ -367,9 +367,9 @@ class RouteXLController {
         return $routesAndDates;
     }
 
-    public function getRoutesDelailedPackage($requestedRoutesAndDates) {
+    public function getRoutesDelailedPackage($clientId, $requestedRoutesAndDates) {
 
-        $routes = $this->getSiftedRoutes($requestedRoutesAndDates);
+        $routes = $this->getSiftedRoutes($clientId, $requestedRoutesAndDates);
 
         $startTimeScheduledPackage = array();
         $startTimeActualPackage = array();

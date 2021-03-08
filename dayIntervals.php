@@ -1,5 +1,6 @@
 <?php
 require_once './Controller/RouteXLController.php';
+require_once 'clientId.php';
 if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["tripPeriodType"]) && isset($_GET["startTimeScheduled"])) {
     $routeNumber = $_GET["routeNumber"];
     $dateStamp = $_GET["dateStamp"];
@@ -8,7 +9,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["tri
     $dayIntervalsDetails = "$dateStamp,  მარშრუტი # $routeNumber";
     $routeController = new RouteXLController();
     $requestedDates = array($dateStamp);
-    $routes = $routeController->getFullRoutes();
+    $routes = $routeController->getFullRoutes($clientId);
 } else {
     $dayIntervalsDetails = "რაღაც შეცდომა მოხდა, სცადე თავიდან";
 }

@@ -1,5 +1,6 @@
 <?php
 require_once 'Controller/RouteXLController.php';
+require_once 'clientId.php';
 
 session_start();
 if (isset($_POST["routes:dates"])) {
@@ -16,7 +17,7 @@ if (isset($_POST["routes:dates"])) {
 }
 
 $routeController = new RouteXLController();
-$routesDetailedPackage = $routeController->getRoutesDelailedPackage($requestedRoutesAndDates);
+$routesDetailedPackage = $routeController->getRoutesDelailedPackage($clientId, $requestedRoutesAndDates);
 $routes = $routesDetailedPackage["routes"];
 $startTimeActualPackage = $routesDetailedPackage["startTimeActualPackage"];
 $startTimeScheduledPackage = $routesDetailedPackage["startTimeScheduledPackage"];

@@ -1,5 +1,6 @@
 <?php
 require_once './Controller/RouteXLController.php';
+require_once 'clientId.php';
 $bodyBuilder = "";
 if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exodusNumber"]) && isset($_GET["startTimeScheduled"])) {
     $routeNumber = $_GET["routeNumber"];
@@ -8,7 +9,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $startTimeScheduled = $_GET["startTimeScheduled"];
     $exodusDetails = "$dateStamp,  მარშრუტი # $routeNumber, გასვლა #$exodusNumber";
     $routeController = new RouteXLController();
-    $routes = $routeController->getFullRoutes();
+    $routes = $routeController->getFullRoutes($clientId);
 
     $found = false;
 

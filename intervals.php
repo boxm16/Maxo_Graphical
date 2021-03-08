@@ -1,5 +1,6 @@
 <?php
 require_once 'Controller/RouteXLController.php';
+require_once 'clientId.php';
 session_start();
 if (isset($_POST["routes:dates"])) {
     $_SESSION["routes:dates"] = $_POST["routes:dates"];
@@ -16,7 +17,7 @@ if (isset($_POST["routes:dates"])) {
 
 
 $routeController = new RouteXLController();
-$routes = $routeController->getSiftedRoutes($requestedRoutesAndDates);
+$routes = $routeController->getSiftedRoutes($clientId, $requestedRoutesAndDates);
 ?>
 <!DOCTYPE html>
 

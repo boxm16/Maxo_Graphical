@@ -789,13 +789,13 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                 }
 
 //this is for filtering--------------------
-                                var rows = document.getElementById("mainTable").rows;
+                                var rows = document.getElementById("mainTableBody").rows;
                                 var cloneRows = new Array();
                                 for (y = 0; y < rows.length; y++) {
                                     var cloneRow = rows[y];
                                     cloneRows.push(cloneRow);
                                 }
-
+                                console.log(cloneRows);
                                 function filter() {
 
                                     var startTimeScheduledCheckboxes = document.querySelectorAll('input[name=startTimeScheduledPackage]:checked');
@@ -863,16 +863,15 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
 
 
                                     mainTableBody.innerHTML = "";
+
                                     for (x = 0; x < cloneRows.length; x++) {
                                         var cells = cloneRows[x].getElementsByTagName("td");
-                                        if (x == 0) {
-                                            mainTableBody.appendChild(cloneRows[x]);//table headers
-                                        }
-                                        if (cells.length <= 1) {
+                                        if (cells.length <= 1) {//captures
                                             if (captures.checked) {
                                                 mainTableBody.appendChild(cloneRows[x]);
                                             }
                                         } else {
+                                            console.log(cloneRows);
                                             if (startTimeScheduledArray.includes(cells[0].innerHTML)
                                                     && startTimeActualArray.includes(cells[1].innerHTML)
                                                     && startTimeDifferenceArray.includes(cells[2].innerHTML)
@@ -882,9 +881,9 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                                     && arrivalTimeDifferenceArray.includes(cells[6].innerHTML)
                                                     && tripPeriodScheduledArray.includes(cells[8].innerHTML)
                                                     && tripPeriodActualArray.includes(cells[9].innerHTML)
-                                                    && haltTimeScheduledArray.includes(cells[10].innerHTML)
-                                                    && haltTimeActualArray.includes(cells[11].innerHTML)
-                                                    && lostTimeArray.includes(cells[12].innerHTML)) {
+                                                    && haltTimeScheduledArray.includes(cells[11].innerHTML)
+                                                    && haltTimeActualArray.includes(cells[12].innerHTML)
+                                                    && lostTimeArray.includes(cells[13].innerHTML)) {
 
                                                 mainTableBody.appendChild(cloneRows[x]);
                                             }

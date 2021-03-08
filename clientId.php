@@ -5,9 +5,9 @@ if (isset($_COOKIE["clientId"])) {
     $clientId = $_COOKIE["clientId"];
 } else {
  //   echo "<h1>Request from a new client has been detected</h1><br>";
-    if (file_exists("clientIdCounter.txt")) {
+    if (file_exists("uploads/clientIdCounter.txt")) {
 
-        $myfile = fopen("clientIdCounter.txt", 'r+');
+        $myfile = fopen("uploads/clientIdCounter.txt", 'r+');
         flock($myfile, LOCK_EX);
         $clientId = stream_get_contents($myfile);
 

@@ -3,6 +3,7 @@
 if (isset($_COOKIE["clientId"])) {
     // echo "Client id=" . $_COOKIE["clientId"];
     $clientId = $_COOKIE["clientId"];
+    setcookie("clientId", $clientId, time() + (10 * 365 * 24 * 60 * 60), "/"); // expiration 10 years 
 } else {
     //   echo "<h1>Request from a new client has been detected</h1><br>";
     if (file_exists("uploads/clientIdCounter.txt")) {

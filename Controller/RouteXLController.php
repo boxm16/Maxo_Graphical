@@ -469,6 +469,11 @@ class RouteXLController {
                     foreach ($tripVouchers as $tripVoucher) {
                         $busNumber = $tripVoucher->getBusNumber();
                         $driverName = $tripVoucher->getDriverName();
+//this part is for setting "nulovani ciris" meore punkti
+                        $firstTripPeriodStartPoint = $tripVoucher->getFirstTripPeriodStartPoint();
+                        $lastTripPeriodEndPoint = $tripVoucher->getLastTripPeriodEndPoint();
+
+
                         $tripPeriods = $tripVoucher->getTripPeriods();
                         foreach ($tripPeriods as $tripPeriod) {
                             $routeNumberPackage[$routeNumber] = true;
@@ -476,7 +481,15 @@ class RouteXLController {
                             $busNumberPackage[$busNumber] = true;
                             $exodusNumberPackage[$exodusNumber] = true;
                             $driverNamePackage[$driverName] = true;
-                            $tripPeriodTypePackage[$tripPeriod->getTypeGe()] = true;
+
+                            $tripPeriodType = $tripPeriod->getTypeGe();
+                            if ($tripPeriodType == "ბაზიდან გასვლა") {
+                                $tripPeriodType .= "-" . $firstTripPeriodStartPoint;
+                            }
+                            if ($tripPeriodType == "ბაზაში დაბრუნება") {
+                                $tripPeriodType = "$lastTripPeriodEndPoint-ბაზაში დაბრუნება";
+                            }
+                            $tripPeriodTypePackage[$tripPeriodType] = true;
 
                             $startTimeScheduledPackage[$tripPeriod->getStartTimeScheduled()] = true;
                             $startTimeActualPackage[$tripPeriod->getStartTimeActual()] = true;
@@ -505,7 +518,7 @@ class RouteXLController {
         ksort($busNumberPackage);
         ksort($exodusNumberPackage);
         ksort($driverNamePackage);
-        ksort($tripPeriodTypePackage);
+      //  ksort($tripPeriodTypePackage);
         ksort($startTimeScheduledPackage);
         ksort($startTimeActualPackage);
         ksort($arrivalTimeScheduledPackage);

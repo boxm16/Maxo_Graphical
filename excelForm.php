@@ -576,7 +576,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                     var cloneRow = rows[y];
                                     cloneRows.push(cloneRow);
                                 }
-                                console.log(cloneRows);
+                              
                                 function filter() {
 
                                     var routeNumberCheckboxes = document.querySelectorAll('input[name=routeNumberPackage]:checked');

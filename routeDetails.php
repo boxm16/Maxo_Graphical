@@ -795,7 +795,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                     var cloneRow = rows[y];
                                     cloneRows.push(cloneRow);
                                 }
-                                console.log(cloneRows);
+                           
                                 function filter() {
 
                                     var startTimeScheduledCheckboxes = document.querySelectorAll('input[name=startTimeScheduledPackage]:checked');

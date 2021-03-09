@@ -871,7 +871,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                                 mainTableBody.appendChild(cloneRows[x]);
                                             }
                                         } else {
-                                            console.log(cloneRows);
+                                  
                                             if (startTimeScheduledArray.includes(cells[0].innerHTML)
                                                     && startTimeActualArray.includes(cells[1].innerHTML)
                                                     && startTimeDifferenceArray.includes(cells[2].innerHTML)

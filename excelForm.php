@@ -664,7 +664,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 mainTableBody.appendChild(cloneRows[x]);
                                             }
                                         } else {
-                                            console.log(cloneRows);
+                                          
                                             if (routeNumberArray.includes(cells[0].innerHTML)
                                                     && dateStampArray.includes(cells[1].innerHTML)
                                                     && busNumberArray.includes(cells[2].innerHTML)

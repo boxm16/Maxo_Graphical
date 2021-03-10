@@ -741,29 +741,31 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                         var routeNumber = cells[0].innerHTML;
 
                                         if (routeNumbers.includes(routeNumber.toString())) {
-                                            var tripPeriodTime = cells[11].innerHTML;
+                                            var tripPeriodTimeScheduled = cells[10].innerHTML;
+                                            var tripPeriodTimeActual = cells[11].innerHTML;
                                             var tripPeriodType = cells[5].innerHTML;
-                                            if (tripPeriodTime != "") {
+                                            if (tripPeriodTimeActual != ""&&percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
                                                 if (tripPeriodType == "A_B" || tripPeriodType == "B_A") {
 
                                                     var index = routeNumbers.indexOf(routeNumber);
                                                     var count = counter[index];
                                                     counter[index] = count + 1;
-                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTime);
+                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
                                                     var totalTime = total[index] + triPeriodInSeconds;
                                                     total[index] = totalTime;
                                                 }
                                             }
                                         } else {
-                                            var tripPeriodTime = cells[11].innerHTML;
+                                            var tripPeriodTimeScheduled = cells[10].innerHTML;
+                                            var tripPeriodTimeActual = cells[11].innerHTML;
                                             var tripPeriodType = cells[5].innerHTML;
-                                            if (tripPeriodTime != "") {
+                                            if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
                                                 if (tripPeriodType == "A_B" || tripPeriodType == "B_A") {
                                                     //push new data into arrays
                                                     routeNumbers.push(routeNumber);
                                                     counter.push(1);
 
-                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTime);
+                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
                                                     total.push(triPeriodInSeconds);
                                                 }
                                             }
@@ -799,10 +801,22 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                     var minutes = Math.trunc(remainder / 60);
                                     remainder = remainder - minutes * 60;
                                     var seconds = remainder;
+                                    if (hours < 10) {
+                                        hours = "0" + hours;
+                                    }
+                                    if (minutes < 10) {
+                                        minutes = "0" + minutes;
+                                    }
+                                    if (seconds < 10) {
+                                        seconds = "0" + seconds;
+                                    }
                                     return hours + ":" + minutes + ":" + seconds;
 
                                 }
 
+                                function percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual) {
+return true;
+                                }
 
         </script>
     </body>

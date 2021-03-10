@@ -16,7 +16,7 @@ class RouteXLController {
     }
 
     private function readExcelFile($clientId) {
-        if ($xlsx = SimpleXLSX::parse("uploads/" . $clientId . "_routeExcelFile.xlsx")) {
+        if ($xlsx = SimpleXLSX::parse("uploads/routeExcelFile_" . $clientId . ".xlsx")) {
             $rows = $xlsx->rowsEx();
         } else {
             header("Location:excelFileErrorPage.php");
@@ -518,7 +518,7 @@ class RouteXLController {
         ksort($busNumberPackage);
         ksort($exodusNumberPackage);
         ksort($driverNamePackage);
-      //  ksort($tripPeriodTypePackage);
+        //  ksort($tripPeriodTypePackage);
         ksort($startTimeScheduledPackage);
         ksort($startTimeActualPackage);
         ksort($arrivalTimeScheduledPackage);

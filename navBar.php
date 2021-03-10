@@ -35,6 +35,7 @@ switch ($currentPage) {
     case "excelForm.php":
         $excelFormActive = $activeClass;
         $filterButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button></li>";
+        $markerButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#calculationModal\">გამოთვლები</button></li>";
         $excelExportButton = " <li style=\"padding-left:50px\">
             <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
             <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>

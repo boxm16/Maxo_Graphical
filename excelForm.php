@@ -472,6 +472,44 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
         <!--FILTER MODAL WINODW end -->
 
 
+        <!-- CALCULATION MODAL WINODW start -->
+        <!-- Modal -->
+        <div class="modal fade" id="calculationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">გამოთვლები</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table id="calculationModalTable" style="width:100%;"  height="100px">
+                            <thead>
+                                <tr>
+                                    <th>მარშრუტის #</th>
+                                    <th>counted rows</th>
+                                    <th>total</th>
+                                    <th>average</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calculationsTableBody">
+
+                            </tbody>
+                        </table>
+
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" >დახურვა</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CALCULATION MODAL WINODW end -->
+
+
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -560,7 +598,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                             checkboxes = document.querySelectorAll('input[name=tripPeriodDifferenceTimePackage]');
                                             break;
                                     }
-                                    console.log(event.target.checked);
+
                                     for (x = 0; x < checkboxes.length; x++) {
                                         checkboxes[x].checked = event.target.checked;
                                     }
@@ -576,7 +614,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                     var cloneRow = rows[y];
                                     cloneRows.push(cloneRow);
                                 }
-                              
+
                                 function filter() {
 
                                     var routeNumberCheckboxes = document.querySelectorAll('input[name=routeNumberPackage]:checked');
@@ -601,7 +639,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                     var tripPeriodTypeArray = new Array();
                                     var startTimeScheduledArray = new Array();
                                     var startTimeActualArray = new Array();
-                                    var startTimeDifferenceArray = new Array();
+
 
                                     var arrivalTimeScheduledArray = new Array();
                                     var arrivalTimeActualArray = new Array();
@@ -664,7 +702,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 mainTableBody.appendChild(cloneRows[x]);
                                             }
                                         } else {
-                                          
+
                                             if (routeNumberArray.includes(cells[0].innerHTML)
                                                     && dateStampArray.includes(cells[1].innerHTML)
                                                     && busNumberArray.includes(cells[2].innerHTML)
@@ -680,10 +718,91 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                     && tripPeriodDifferenceTimeArray.includes(cells[12].innerHTML)) {
 
                                                 mainTableBody.appendChild(cloneRows[x]);
+
                                             }
                                         }
                                     }
+                                    calculateAndDisplayAverage();
                                 }
+
+                                //here calculations of averages
+
+                                calculateAndDisplayAverage();
+
+                                function calculateAndDisplayAverage() {
+                                    var calculationRows = document.getElementById("mainTableBody").rows;
+                                    calculationsTableBody.innerHTML = "";
+                                    var routeNumbers = new Array();
+                                    var counter = new Array();
+                                    var total = new Array();
+
+                                    for (x = 0; x < calculationRows.length; x++) {
+                                        var cells = calculationRows[x].getElementsByTagName("td");
+                                        var routeNumber = cells[0].innerHTML;
+
+                                        if (routeNumbers.includes(routeNumber.toString())) {
+                                            var tripPeriodTime = cells[11].innerHTML;
+                                            var tripPeriodType = cells[5].innerHTML;
+                                            if (tripPeriodTime != "") {
+                                                if (tripPeriodType == "A_B" || tripPeriodType == "B_A") {
+
+                                                    var index = routeNumbers.indexOf(routeNumber);
+                                                    var count = counter[index];
+                                                    counter[index] = count + 1;
+                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTime);
+                                                    var totalTime = total[index] + triPeriodInSeconds;
+                                                    total[index] = totalTime;
+                                                }
+                                            }
+                                        } else {
+                                            var tripPeriodTime = cells[11].innerHTML;
+                                            var tripPeriodType = cells[5].innerHTML;
+                                            if (tripPeriodTime != "") {
+                                                if (tripPeriodType == "A_B" || tripPeriodType == "B_A") {
+                                                    //push new data into arrays
+                                                    routeNumbers.push(routeNumber);
+                                                    counter.push(1);
+
+                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTime);
+                                                    total.push(triPeriodInSeconds);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    var trs = "";
+                                    for (x = 0; x < routeNumbers.length; x++) {
+                                        var routeNumber = routeNumbers[x];
+                                        var count = counter[x];
+                                        var totalSeconds = total[x];
+                                        var averageTime = calculateAverage(totalSeconds, count);
+
+                                        trs += "<tr><td>" + routeNumber + "</td><td>" + count + "</td><td>" + totalSeconds + "</td><td>" + averageTime + "</td></tr>";
+                                    }
+                                    calculationsTableBody.innerHTML = trs;
+                                }
+
+
+                                function convertTimeStampIntoSeconds(timeStamp) {
+                                    var timeArray = timeStamp.split(":");
+                                    var seconds = (timeArray[0] * 60 * 60) + (timeArray[1] * 60) + timeArray[2] * 1;
+                                    return seconds;
+
+                                }
+
+                                function calculateAverage(totalSeconds, count) {
+
+                                    var averageSeconds = Math.round(totalSeconds / count);
+                                    console.log(totalSeconds + "/" + count + "=" + averageSeconds);
+                                    var hours = Math.trunc(averageSeconds / 3600);
+                                    var remainder = averageSeconds - hours * 3600;
+                                    var minutes = Math.trunc(remainder / 60);
+                                    remainder = remainder - minutes * 60;
+                                    var seconds = remainder;
+                                    return hours + ":" + minutes + ":" + seconds;
+
+                                }
+
 
         </script>
     </body>

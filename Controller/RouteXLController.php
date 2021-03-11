@@ -16,7 +16,7 @@ class RouteXLController {
     }
 
     private function readExcelFile($clientId) {
-        if ($xlsx = SimpleXLSX::parse("uploads/routeExcelFile_" . $clientId . ".xlsx")) {
+        if ($xlsx = SimpleXLSX::parse("uploads/routeExcelFile" . $clientId . ".xlsx")) {
             $rows = $xlsx->rowsEx();
         } else {
             header("Location:excelFileErrorPage.php");

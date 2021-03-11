@@ -33,7 +33,7 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
         $errorAlert = "ფაილის ატვირთვა ვერ მოხერხდა. სცადე თავიდან";
 // if everything is ok, try to upload file
     } else {
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "uploads/routeExcelFile_" . $clientId . ".xlsx")) {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "uploads/routeExcelFile" . $clientId . ".xlsx")) {
             echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
             deployFile();
         } else {

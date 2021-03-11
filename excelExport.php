@@ -82,21 +82,23 @@ $styleArray = [
         ],
     ],
 ];
+/*
+  $spreadsheet->getActiveSheet()->getStyle("A1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("B1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("C1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("D1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("E1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("F1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("G1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("H1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("I1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("J1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("K1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("L1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("M1")->applyFromArray($styleArray);
+  $spreadsheet->getActiveSheet()->getStyle("N1")->applyFromArray($styleArray);
+ */
 
-$spreadsheet->getActiveSheet()->getStyle("A1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("B1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("C1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("D1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("E1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("F1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("G1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("H1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("I1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("J1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("K1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("L1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("M1")->applyFromArray($styleArray);
-$spreadsheet->getActiveSheet()->getStyle("N1")->applyFromArray($styleArray);
 
 //endof header
 //now body
@@ -156,24 +158,27 @@ foreach ($routes as $route) {
                     $sheet->getCell("N$row")->getHyperlink()->setUrl("$context/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
                     $sheet->setCellValue("N$row", "დეტალურად");
 
-                    $spreadsheet->getActiveSheet()->getStyle("A$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("B$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("C$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("D$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("E$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("F$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("G$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("H$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("I$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("J$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("K$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("L$row")->applyFromArray($styleArray);
-                    $spreadsheet->getActiveSheet()->getStyle("M$row")->applyFromArray($styleArray);
 
+                    /*
+
+                      $spreadsheet->getActiveSheet()->getStyle("A$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("B$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("C$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("D$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("E$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("F$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("G$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("H$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("I$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("J$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("K$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("L$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("M$row")->applyFromArray($styleArray);
+                      $spreadsheet->getActiveSheet()->getStyle("N$row")->applyFromArray($styleArray);
+
+                     */
                     $spreadsheet->getActiveSheet()->getStyle("M$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeColor);
-                    $spreadsheet->getActiveSheet()->getStyle("N$row")->applyFromArray($styleArray);
 
-//   . "<td style=\"width:100px;background-color:$tripPeriodDifferenceTimeColor\">$tripPeriodDifferenceTime</td>"
                     $row++;
                 }
             }

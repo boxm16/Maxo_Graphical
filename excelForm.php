@@ -485,12 +485,13 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                     </div>
                     <div class="modal-body">
                         <table id="calculationModalTable" style="width:100%;"  height="100px">
+                            <p>გამოთვლისთვის არის გამოყენებული მხოლოდ ის ბრუნები, რომლების წირის გეგმიური და ფაქტიური დროს შორის აცდენა არ აღემატება 20%-ს  </p>
                             <thead>
                                 <tr>
-                                    <th>მარშრუტის #</th>
-                                    <th>counted rows</th>
-                                    <th>total</th>
-                                    <th>average</th>
+                                    <th>მარშრუტი და მიმართულება</th>
+                                    <th>ჩათვლილი ბრუნები</th>
+
+                                    <th>ბრუნების საშუალო ფაქტიური დრო</th>
                                 </tr>
                             </thead>
                             <tbody id="calculationsTableBody">
@@ -763,7 +764,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
 
                                             if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
 
-
+                                                console.log(tripPeriodTimeActual);
                                                 index = routeNumbers.indexOf(routeNumberAndPoints);
                                                 count = counter[index];
                                                 counter[index] = count + 1;
@@ -777,6 +778,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                             tripPeriodTimeActual = cells[11].innerHTML;
 
                                             if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
+                                                console.log(tripPeriodTimeActual);
                                                 //push new data into arrays
                                                 routeNumbers.push(routeNumberAndPoints);//here routNumber is in shape 1:A_B
                                                 counter.push(1);
@@ -795,7 +797,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                         count = counter[x];
                                         totalSeconds = total[x];
                                         averageTime = calculateAverage(totalSeconds, count);
-                                        trs += "<tr><td>" + routeNumber + "</td><td>" + count + "</td><td>" + totalSeconds + "</td><td>" + averageTime + "</td></tr>";
+                                        trs += "<tr><td>" + routeNumber + "</td><td>" + count + "</td><td>" + averageTime + "</td></tr>";
                                     }
                                     calculationsTableBody.innerHTML = trs;
                                 }
@@ -811,7 +813,6 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                 function calculateAverage(totalSeconds, count) {
 
                                     var averageSeconds = Math.round(totalSeconds / count);
-                                    console.log(totalSeconds + "/" + count + "=" + averageSeconds);
                                     var hours = Math.trunc(averageSeconds / 3600);
                                     var remainder = averageSeconds - hours * 3600;
                                     var minutes = Math.trunc(remainder / 60);
@@ -831,7 +832,14 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                 }
 
                                 function percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual) {
-                                    return true;
+                                    let  tripPeriodTimeScheduledInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeScheduled);
+                                    let  tripPeriodTimeActualInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
+                                    let difference = Math.abs(tripPeriodTimeScheduledInSeconds - tripPeriodTimeActualInSeconds);
+                                    if (difference < (tripPeriodTimeScheduledInSeconds / 100) * 20) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
                                 }
 
         </script>

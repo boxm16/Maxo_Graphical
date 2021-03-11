@@ -168,6 +168,8 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <th style="text-align: center">წირის<br>გეგმიური<br>დრო</th>
                         <th style="text-align: center">წირის<br>ფაქტიური<br>დრო</th>
                         <th style="text-align: center">სხვაობა</th>
+                        <th style="text-align: center">დეტალურად</th>
+
                     </tr>
 
                 </thead>
@@ -220,6 +222,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                         . "<td>$tripPeriodScheduledTime</td>"
                                         . "<td>$tripPeriodActualTime</td>"
                                         . "<td style=\"width:100px;background-color:$tripPeriodDifferenceTimeColor\">$tripPeriodDifferenceTime</td>"
+                                        . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>დეტალურად</a></td>"
                                         . "</tr>";
                                     }
                                 }

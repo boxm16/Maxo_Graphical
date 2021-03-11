@@ -485,7 +485,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                     </div>
                     <div class="modal-body">
                         <table id="calculationModalTable" style="width:100%;"  height="100px">
-                            <p>გამოთვლისთვის არის გამოყენებული მხოლოდ ის ბრუნები, რომლების წირის გეგმიური და ფაქტიური დროს შორის აცდენა არ აღემატება 20%-ს  </p>
+                            <p>გამოთვლისთვის არის გამოყენებული მხოლოდ ის წირები, რომლების გეგმიური და ფაქტიური დროს შორის აცდენა არ აღემატება 20%-ს  </p>
                             <thead>
                                 <tr>
                                     <th>მარშრუტი და მიმართულება</th>

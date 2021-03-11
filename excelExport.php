@@ -1,4 +1,5 @@
 <?php
+
 require_once 'Controller/RouteXLController.php';
 require_once 'clientId.php';
 session_start();
@@ -17,6 +18,12 @@ if (isset($_POST["routes:dates"])) {
 
 $routeController = new RouteXLController();
 $routes = $routeController->getSiftedRoutes($clientId, $requestedRoutesAndDates);
+//this thing-context, i need to write hyperlinks
+$context = "http://berishvili.eu5.org";
+$server = $_SERVER['SERVER_NAME'];
+if ($server == "localhost") {
+    $context = "http://localhost/Maxo_Graphical";
+}
 
 
 require 'vendor/autoload.php';
@@ -38,9 +45,10 @@ $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(13);
 $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(13);
 $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(13);
 $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(15);
 
-$spreadsheet->getActiveSheet()->getStyle("A1:M1")->getFont()->setSize(14);
-$spreadsheet->getActiveSheet()->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffc0cb');
+$spreadsheet->getActiveSheet()->getStyle("A1:N1")->getFont()->setSize(14);
+$spreadsheet->getActiveSheet()->getStyle('A1:N1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffc0cb');
 
 $spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setWrapText(true);
 $spreadsheet->getActiveSheet()->getStyle('F1')->getAlignment()->setWrapText(true);
@@ -64,6 +72,7 @@ $sheet->setCellValue('J1', 'მისვლის ფაქტიური დ�
 $sheet->setCellValue('K1', 'წირის გეგმიური დრო');
 $sheet->setCellValue('L1', 'წირის ფაქტიური დრო');
 $sheet->setCellValue('M1', 'სხვაობა');
+$sheet->setCellValue('N1', 'დეტალურად');
 
 $styleArray = [
     'borders' => [
@@ -87,6 +96,7 @@ $spreadsheet->getActiveSheet()->getStyle("J1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("K1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("L1")->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->getStyle("M1")->applyFromArray($styleArray);
+$spreadsheet->getActiveSheet()->getStyle("N1")->applyFromArray($styleArray);
 
 //endof header
 //now body
@@ -143,6 +153,9 @@ foreach ($routes as $route) {
                     $sheet->setCellValue("L$row", $tripPeriodActualTime);
                     $sheet->setCellValue("M$row", $tripPeriodDifferenceTime);
 
+                    $sheet->getCell("N$row")->getHyperlink()->setUrl("$context/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
+                    $sheet->setCellValue("N$row", "დეტალურად");
+
                     $spreadsheet->getActiveSheet()->getStyle("A$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("B$row")->applyFromArray($styleArray);
                     $spreadsheet->getActiveSheet()->getStyle("C$row")->applyFromArray($styleArray);
@@ -158,6 +171,7 @@ foreach ($routes as $route) {
                     $spreadsheet->getActiveSheet()->getStyle("M$row")->applyFromArray($styleArray);
 
                     $spreadsheet->getActiveSheet()->getStyle("M$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeColor);
+                    $spreadsheet->getActiveSheet()->getStyle("N$row")->applyFromArray($styleArray);
 
 //   . "<td style=\"width:100px;background-color:$tripPeriodDifferenceTimeColor\">$tripPeriodDifferenceTime</td>"
                     $row++;

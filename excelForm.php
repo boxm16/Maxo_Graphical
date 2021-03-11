@@ -735,50 +735,66 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                     var routeNumbers = new Array();
                                     var counter = new Array();
                                     var total = new Array();
-
+                                    var cells;
+                                    var routeNumber;
+                                    var routeNumberAndPoints;
+                                    var tripPeriodTimeScheduled;
+                                    var tripPeriodTimeActual;
+                                    var tripPeriodType;
+                                    var index;
+                                    var count;
+                                    var triPeriodInSeconds;
+                                    var totalTime;
                                     for (x = 0; x < calculationRows.length; x++) {
-                                        var cells = calculationRows[x].getElementsByTagName("td");
-                                        var routeNumber = cells[0].innerHTML;
+                                        cells = calculationRows[x].getElementsByTagName("td");
+                                        routeNumber = cells[0].innerHTML;
+                                        tripPeriodType = cells[5].innerHTML;
+                                        if (tripPeriodType == "A_B") {
+                                            routeNumberAndPoints = routeNumber.toString() + ":A_B";
+                                        } else if (tripPeriodType == "B_A") {
+                                            routeNumberAndPoints = routeNumber.toString() + ":B_A";
+                                        } else {
+                                            continue;
+                                        }
 
-                                        if (routeNumbers.includes(routeNumber.toString())) {
-                                            var tripPeriodTimeScheduled = cells[10].innerHTML;
-                                            var tripPeriodTimeActual = cells[11].innerHTML;
-                                            var tripPeriodType = cells[5].innerHTML;
-                                            if (tripPeriodTimeActual != ""&&percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
-                                                if (tripPeriodType == "A_B" || tripPeriodType == "B_A") {
+                                        if (routeNumbers.includes(routeNumberAndPoints)) {
+                                            tripPeriodTimeScheduled = cells[10].innerHTML;
+                                            tripPeriodTimeActual = cells[11].innerHTML;
 
-                                                    var index = routeNumbers.indexOf(routeNumber);
-                                                    var count = counter[index];
-                                                    counter[index] = count + 1;
-                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
-                                                    var totalTime = total[index] + triPeriodInSeconds;
-                                                    total[index] = totalTime;
-                                                }
+                                            if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
+
+
+                                                index = routeNumbers.indexOf(routeNumberAndPoints);
+                                                count = counter[index];
+                                                counter[index] = count + 1;
+                                                triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
+                                                totalTime = total[index] + triPeriodInSeconds;
+                                                total[index] = totalTime;
+
                                             }
                                         } else {
-                                            var tripPeriodTimeScheduled = cells[10].innerHTML;
-                                            var tripPeriodTimeActual = cells[11].innerHTML;
-                                            var tripPeriodType = cells[5].innerHTML;
-                                            if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
-                                                if (tripPeriodType == "A_B" || tripPeriodType == "B_A") {
-                                                    //push new data into arrays
-                                                    routeNumbers.push(routeNumber);
-                                                    counter.push(1);
+                                            tripPeriodTimeScheduled = cells[10].innerHTML;
+                                            tripPeriodTimeActual = cells[11].innerHTML;
 
-                                                    var triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
-                                                    total.push(triPeriodInSeconds);
-                                                }
+                                            if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
+                                                //push new data into arrays
+                                                routeNumbers.push(routeNumberAndPoints);//here routNumber is in shape 1:A_B
+                                                counter.push(1);
+                                                triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
+                                                total.push(triPeriodInSeconds);
                                             }
                                         }
+
                                     }
 
                                     var trs = "";
+                                    var totalSeconds;
+                                    var averageTime;
                                     for (x = 0; x < routeNumbers.length; x++) {
-                                        var routeNumber = routeNumbers[x];
-                                        var count = counter[x];
-                                        var totalSeconds = total[x];
-                                        var averageTime = calculateAverage(totalSeconds, count);
-
+                                        routeNumber = routeNumbers[x];
+                                        count = counter[x];
+                                        totalSeconds = total[x];
+                                        averageTime = calculateAverage(totalSeconds, count);
                                         trs += "<tr><td>" + routeNumber + "</td><td>" + count + "</td><td>" + totalSeconds + "</td><td>" + averageTime + "</td></tr>";
                                     }
                                     calculationsTableBody.innerHTML = trs;
@@ -815,7 +831,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                 }
 
                                 function percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual) {
-return true;
+                                    return true;
                                 }
 
         </script>

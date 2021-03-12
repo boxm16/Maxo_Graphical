@@ -10,6 +10,7 @@ $filterButton = "";
 $markerButton = "";
 $tableCopyButton = "";
 $excelExportButton = "";
+$b = "";
 $activeClass = "class=\"active\"";
 $currentPage = basename($_SERVER["SCRIPT_FILENAME"]);
 
@@ -40,6 +41,14 @@ switch ($currentPage) {
             <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
             <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
           </form></li>";
+        $b = " <li><div class=\"dropdown\">
+            <button class=\"dropbtn\">Dropdown</button>
+            <div class=\"dropdown-content\">
+                <a href=\"#\">Link 1</a>
+                <a href=\"#\">Link 2</a>
+                <a href=\"#\">Link 3</a>
+            </div>
+        </div></li>";
         break;
 }
 
@@ -51,6 +60,7 @@ echo "<ul>
   <li><a $routeDetailsPageActive href=\"routeDetails.php\">ბრუნები</a></li>
   <li><a $intervalsActive href=\"intervals.php\">ინტერვალები</a></li>
   <li><a $excelFormActive href=\"excelForm.php\">ექსელის ფორმა</a></li>
+   $b   
   $filterButton
   $markerButton
   $tableCopyButton

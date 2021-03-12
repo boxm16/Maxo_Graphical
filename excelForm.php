@@ -44,6 +44,29 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
         <style>
+            /* Fixed Headers */
+
+            th {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 45px;
+                z-index: 2;
+
+            }
+
+            th[scope=row] {
+                position: -webkit-sticky;
+                position: sticky;
+                left: 0;
+                z-index: 1;
+            }
+
+            th[scope=row] {
+                vertical-align: top;
+                color: inherit;
+                background-color: inherit;
+                background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
+            }
             /* navbar styling */
             ul {
                 list-style-type: none;
@@ -76,7 +99,50 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
             .active {
                 background-color: lightgreen;
             }
+
+            /* dropdown button styling start */
+            .dropbtn {
+                background-color: inherit;
+                color: white;
+                padding:14px 16px;
+                font-size: 16px;
+                border: none;
+            }
+
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: fixed;
+                background-color: #f1f1f1;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 4;
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            .dropdown-content a:hover {background-color: #ddd;}
+
+            .dropdown:hover .dropdown-content {display: block;}
+
+            .dropdown:hover .dropbtn {background-color: white; color:blue;}
+
+            /* dropdown button styling end */
+
+
             /* end of navbar styling */
+
+
+
 
             /* loader styling */
             .content {display:none;}
@@ -118,29 +184,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
             }
 
 
-            /* Fixed Headers */
 
-            th {
-                position: -webkit-sticky;
-                position: sticky;
-                top: 45px;
-                z-index: 2;
-
-            }
-
-            th[scope=row] {
-                position: -webkit-sticky;
-                position: sticky;
-                left: 0;
-                z-index: 1;
-            }
-
-            th[scope=row] {
-                vertical-align: top;
-                color: inherit;
-                background-color: inherit;
-                background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
-            }
 
         </style>
     </head>
@@ -148,6 +192,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
         <?php
         include 'navBar.php';
         ?>
+
         <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"></div>
         <div class="content"> 
 

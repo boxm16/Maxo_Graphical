@@ -24,16 +24,16 @@ $routes = $routesController->getFullRoutes($clientId);
             }
 
 
-
+            /* side bar styling */
             .sidebar-container {
                 position: fixed;
-                width: 220px;
+                width: 400px;
                 height: 100%;
-                left: 0;
+                right: 0;
                 overflow-x: hidden;
                 overflow-y: auto;
-                background: #1a1a1a;
-                color: #fff;
+                background: lightblue;
+                color: black;
             }
 
             .content-container {
@@ -64,7 +64,7 @@ $routes = $routesController->getFullRoutes($clientId);
             .sidebar-navigation li a {
                 padding: 10px 15px 10px 30px;
                 display: block;
-                color: #fff;
+                color: black;
             }
 
             .sidebar-navigation li .fa {
@@ -96,9 +96,9 @@ $routes = $routesController->getFullRoutes($clientId);
             }
 
             .sidebar-navigation .header {
-                font-size: 12px;
+                font-size: 20px;
                 text-transform: uppercase;
-                background-color: #151515;
+                background-color: lightblue;
                 padding: 10px 15px 10px 30px;
             }
 
@@ -107,7 +107,7 @@ $routes = $routesController->getFullRoutes($clientId);
             }
 
             .content-container {
-                padding-left: 220px;
+                padding-left: 0;
             }
 
         </style>
@@ -115,99 +115,81 @@ $routes = $routesController->getFullRoutes($clientId);
     <body>
         <div class="container">
             <div class=""row>
-                <div class="col">
-                    <nav class="navbar fixed-top navbar-light bg-light">
-                        <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
-                        <table>
-                            <thead>
-                            <th>
-                                <input type="checkbox" id="mainCheckBox" style="width:28px;height:28px"  checked="true" onclick="selectRouteAll(event)">
-                            </th>
-                            <th style="width:200px">
-                                ყველა
-                            </th>
-                            <th>
-                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#<?php echo $routeNumber; ?>" aria-expanded="false" aria-controls="<?php echo $routeNumber; ?>">
-                                    +
-                                </button>
-                            </th>
-                            </thead>
-                        </table>
-                        <form id="form" action="deletion.php" method="POST">
+                <div class="col">    
+                    <form id="form" action="deletion.php" method="POST">
+                        <input hidden type="text" id="routes_dates" name="routes:dates">
+                        <nav class="navbar fixed-top navbar-light bg-light">
+                            <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
+                            <table>
+                                <thead>
+                                <th>
+                                    <input type="checkbox" id="mainCheckBox" style="width:28px;height:28px"  checked="true" onclick="selectRouteAll(event)">
+                                </th>
+                                <th style="width:200px">
+                                    ყველა
+                                </th>
+                                <th>
+                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#<?php echo $routeNumber; ?>" aria-expanded="false" aria-controls="<?php echo $routeNumber; ?>">
+                                        +
+                                    </button>
+                                </th>
+                                </thead>
+                            </table>
+
                             <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('routeDetails.php')">ბრუნების ნახვა</button>
                             <button type="submit" class="btn btn-warning" style="font-size: 20px" onclick="requestRouter('intervals.php')">ინტერვალების ნახვა</button>
                             <button type="submit" class="btn btn-secondery" style="font-size: 20px" onclick="requestRouter('excelForm.php')">ექსელის ფორმა</button>
 
-                            <input hidden type="text" id="routes_dates" name="routes:dates">
 
-                        </form>
-                    </nav>
-                    <hr>
-                    &nbsp<hr>
 
-                    <div class="sidebar-container">
-                        <div class="sidebar-logo">
-                            Project Name
+
+                        </nav>
+                        <hr>
+                        &nbsp<hr>
+
+                        <div class="sidebar-container">
+                            <div class="sidebar-logo">
+                                ფუნქციები
+                            </div>
+                            <ul class="sidebar-navigation">
+                                <li class="header">გამოთვლები</li>
+                                <li>
+                                    <a href="#" onclick="submitLink()">
+                                        <i class="fa fa-home" aria-hidden="true"></i>საგარანტიო რეისები
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li class="header">სხვა ფუნქციები<br><br>(მომავალში რო დამჭირდება)</li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-users" aria-hidden="true"></i> -----
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-cog" aria-hidden="true"></i> -----
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> -----
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="sidebar-navigation">
-                            <li class="header">Navigation</li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-home" aria-hidden="true"></i> Homepage
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
-                                </a>
-                            </li>
-                            <li class="header">Another Menu</li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-users" aria-hidden="true"></i> Friends
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-cog" aria-hidden="true"></i> Settings
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-info-circle" aria-hidden="true"></i> Information
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-
-
+                    </form>
 
                     <div class="content-container">
 
                         <div class="container-fluid">
 
-                            <!-- Main component for a primary marketing message or call to action -->
-                            <div class="jumbotron">
-                                <h1>Navbar example</h1>
-                                <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-                                <p>To see the difference between static and fixed top navbars, just scroll.</p>
-                                <p>
-                                    <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
-                                </p>
-                            </div>
-
-
-
-
-
-
-
-
-
                             <?php
                             if (count($routes) > 1) {
-                                echo "<center><h2>აირჩიე მარშრუტი</h2></center>";
+                                echo "<div style=\"left:0\"><h2>აირჩიე მარშრუტი</h2></div>";
                             }
                             ?>
 
@@ -263,7 +245,7 @@ $routes = $routesController->getFullRoutes($clientId);
                                 </div> 
 
 
-                                </table><?php
+                                <?php
                             }
                             ?>
 
@@ -281,9 +263,20 @@ $routes = $routesController->getFullRoutes($clientId);
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
                                                 function requestRouter(requestTarget) {
+                                                    form.target = "_self";
                                                     form.action = requestTarget;
                                                     routes_dates.value = collectSellectedCheckBoxes();
                                                     console.log(form.action);
+                                                }
+
+
+                                                //this is to turn a link  into submit button
+                                                function submitLink() {
+
+                                                    form.target = "_blank";
+                                                    form.action = "garanteed.php";
+                                                    routes_dates.value = collectSellectedCheckBoxes();
+                                                    form.submit();
                                                 }
 
                                                 function selectRouteAllDates(event, routeNumber) {
@@ -352,6 +345,9 @@ $routes = $routesController->getFullRoutes($clientId);
                                                     }
                                                     return returnValue;
                                                 }
+
+
+
         </script>
     </body>
 </html>

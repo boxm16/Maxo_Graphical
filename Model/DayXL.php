@@ -225,4 +225,29 @@ class DayXL {
         return $array[$index];
     }
 
+    public function getLastTrips() {
+        $intervals = $this->getIntervals();
+        $scheduledIntervals = $intervals["scheduledIntervals"];
+        $gpsIntervals = $intervals["gpsIntervals"];
+        $ab_tripPeriodsScheduled = $scheduledIntervals[0];
+        $ba_tripPeriodsScheduled = $scheduledIntervals[1];
+        $ab_tripPeriodsGPS = $gpsIntervals[0];
+        $ba_tripPeriodsGPS = $gpsIntervals[1];
+
+
+        $ab_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsScheduled) - 1, $ab_tripPeriodsScheduled);
+        $ba_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsScheduled) - 1, $ba_tripPeriodsScheduled);
+
+        $ab_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsGPS) - 1, $ab_tripPeriodsGPS);
+        $ba_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsGPS) - 1, $ba_tripPeriodsGPS);
+
+
+        $returnArray["ab_lastTripPeriodScheduled"] = $ab_lastTripPeriodScheduled;
+        $returnArray["ba_lastTripPeriodScheduled"] = $ba_lastTripPeriodScheduled;
+        $returnArray["ab_lastTripPeriodActual"] = $ab_lastTripPeriodActual;
+        $returnArray["ba_lastTripPeriodActual"] = $ba_lastTripPeriodActual;
+
+        return $returnArray;
+    }
+
 }

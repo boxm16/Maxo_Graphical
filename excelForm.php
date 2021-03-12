@@ -102,11 +102,13 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
 
             /* dropdown button styling start */
             .dropbtn {
-                background-color: inherit;
+
+                background-color: rgb(207, 110, 45);
                 color: white;
                 padding:14px 16px;
                 font-size: 16px;
                 border: none;
+            
             }
 
             .dropdown {

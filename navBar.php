@@ -10,7 +10,7 @@ $filterButton = "";
 $markerButton = "";
 $tableCopyButton = "";
 $excelExportButton = "";
-$b = "";
+$dropDown = "";
 $activeClass = "class=\"active\"";
 $currentPage = basename($_SERVER["SCRIPT_FILENAME"]);
 
@@ -21,9 +21,16 @@ switch ($currentPage) {
         break;
     case "routeDetails.php":
         $routeDetailsPageActive = $activeClass;
-        $filterButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button></li>";
-        $markerButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#markerModal\">მარკერები</button></li>";
-        $tableCopyButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-warning\" onclick=\"copytable('mainTable')\">ცხრილის კოპირება</button></li>";
+
+        $dropDown = " <li style=\"padding-left:150px\"><div class=\"dropdown\">
+            <button class=\"dropbtn\">ფუნქციები</button>
+            <div class=\"dropdown-content\">
+                <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button><br>
+                <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#markerModal\">მარკერები</button><br>
+              <button  class=\"btn btn-warning\" onclick=\"copytable('mainTable')\">ცხრილის კოპირება</button>
+           </div></li>";
+
+
 
         break;
     case "intervals.php":
@@ -35,20 +42,17 @@ switch ($currentPage) {
         break;
     case "excelForm.php":
         $excelFormActive = $activeClass;
-        $filterButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button></li>";
-        $markerButton = "<li style=\"padding-left:50px\"><button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#calculationModal\">გამოთვლები</button></li>";
-        $excelExportButton = " <li style=\"padding-left:50px\">
-            <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
-            <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
-          </form></li>";
-        $b = " <li><div class=\"dropdown\">
-            <button class=\"dropbtn\">Dropdown</button>
+
+        $dropDown = " <li style=\"padding-left:150px\"><div class=\"dropdown\">
+            <button class=\"dropbtn\">ფუნქციები</button>
             <div class=\"dropdown-content\">
-                <a href=\"#\">Link 1</a>
-                <a href=\"#\">Link 2</a>
-                <a href=\"#\">Link 3</a>
-            </div>
-        </div></li>";
+                <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button><br>
+                <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#calculationModal\">გამოთვლები</button>
+               <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
+            <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
+          </form>
+         </div>
+       </li>";
         break;
 }
 
@@ -60,7 +64,7 @@ echo "<ul>
   <li><a $routeDetailsPageActive href=\"routeDetails.php\">ბრუნები</a></li>
   <li><a $intervalsActive href=\"intervals.php\">ინტერვალები</a></li>
   <li><a $excelFormActive href=\"excelForm.php\">ექსელის ფორმა</a></li>
-   $b   
+  $dropDown 
   $filterButton
   $markerButton
   $tableCopyButton

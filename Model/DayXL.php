@@ -235,12 +235,27 @@ class DayXL {
         $ba_tripPeriodsGPS = $gpsIntervals[1];
 
 
-        $ab_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsScheduled) - 1, $ab_tripPeriodsScheduled);
-        $ba_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsScheduled) - 1, $ba_tripPeriodsScheduled);
 
-        $ab_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsGPS) - 1, $ab_tripPeriodsGPS);
-        $ba_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsGPS) - 1, $ba_tripPeriodsGPS);
-
+        if (count($ab_tripPeriodsScheduled) > 0) {
+            $ab_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsScheduled) - 1, $ab_tripPeriodsScheduled);
+        } else {
+            $ab_lastTripPeriodScheduled = null;
+        }
+        if (count($ba_tripPeriodsScheduled) > 0) {
+            $ba_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsScheduled) - 1, $ba_tripPeriodsScheduled);
+        } else {
+            $ba_lastTripPeriodScheduled = null;
+        }
+        if (count($ab_tripPeriodsGPS) > 0) {
+            $ab_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsGPS) - 1, $ab_tripPeriodsGPS);
+        } else {
+            $ab_lastTripPeriodActual = null;
+        }
+        if (count($ba_tripPeriodsGPS) > 0) {
+            $ba_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsGPS) - 1, $ba_tripPeriodsGPS);
+        } else {
+            $ba_lastTripPeriodActual = null;
+        }
 
         $returnArray["ab_lastTripPeriodScheduled"] = $ab_lastTripPeriodScheduled;
         $returnArray["ba_lastTripPeriodScheduled"] = $ba_lastTripPeriodScheduled;

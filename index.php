@@ -160,7 +160,7 @@ $routes = $routesController->getFullRoutes($clientId);
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+                                        <i class="fa fa-tachometer" aria-hidden="true"></i> -----
                                     </a>
                                 </li>
                                 <li class="header">სხვა ფუნქციები<br><br>(მომავალში რო დამჭირდება)</li>
@@ -274,7 +274,7 @@ $routes = $routesController->getFullRoutes($clientId);
                                                 function submitLink() {
 
                                                     form.target = "_blank";
-                                                    form.action = "garanteed.php";
+                                                    form.action = "guaranteed.php";
                                                     routes_dates.value = collectSellectedCheckBoxes();
                                                     form.submit();
                                                 }

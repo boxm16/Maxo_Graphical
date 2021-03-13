@@ -300,6 +300,9 @@ and open the template in the editor.
 
 
 
-
+        <hr>
+        <br>
+        <br><br>
+        <hr>
     </body>
 </html>

@@ -107,9 +107,9 @@ and open the template in the editor.
                 <tr>
                     <th>--</th>
                     <th>--</th>
-                    <th colspan="6">A_B მიმართულება</th>
+                    <th colspan="7">A_B მიმართულება</th>
                     <th>--</th>
-                    <th colspan="6">B_A მიმართულება</th>
+                    <th colspan="7">B_A მიმართულება</th>
                 </tr>
                 <tr>
                     <th>
@@ -117,6 +117,9 @@ and open the template in the editor.
                     </th>
                     <th>
                         თარიღი
+                    </th>
+                    <th>
+                        მძღოლი
                     </th>
                     <th><b>1</b><br>
                         A_B     Start Time Scheduled
@@ -134,6 +137,9 @@ and open the template in the editor.
                     </th>
                     <th>
                         --
+                    </th>
+                    <th>
+                        მძღოლი
                     </th>
                     <th><b>1</b><br>
                         B_A     Start Time Scheduled
@@ -172,6 +178,7 @@ and open the template in the editor.
                             $ab_lastTripPeriodStartTimeActual = $ab_lastTripPeriodScheduled->getStartTimeActual();
                             $ab_lastTripPeriodExodusNumber = $ab_lastTripPeriodScheduled->getTripPeriodDNA()->getExodusNumber();
                             $ab_lastTripPeriodType = $ab_lastTripPeriodScheduled->getType();
+                            $ab_driverName = $ab_lastTripPeriodScheduled->getTripPeriodDNA()->getDriverName();
                         } else {
                             $ab_lastTripPeriodStartTimeScheduled = "reisi vre idzebneba";
                             $ab_lastTripPeriodStartTimeActual = "reisi vre idzebneba";
@@ -183,6 +190,7 @@ and open the template in the editor.
                             $ba_lastTripPeriodStartTimeActual = $ba_lastTripPeriodScheduled->getStartTimeActual();
                             $ba_lastTripPeriodExodusNumber = $ba_lastTripPeriodScheduled->getTripPeriodDNA()->getExodusNumber();
                             $ba_lastTripPeriodType = $ba_lastTripPeriodScheduled->getType();
+                            $ba_driverName = $ba_lastTripPeriodScheduled->getTripPeriodDNA()->getDriverName();
                         } else {
                             $ba_lastTripPeriodStartTimeScheduled = "reisi vre idzebneba";
                             $ba_lastTripPeriodStartTimeActual = "reisi vre idzebneba";
@@ -249,6 +257,7 @@ and open the template in the editor.
                         $row = "<tr>"
                                 . "<td>$routeNumber</td>"
                                 . "<td>$dateStamp</td>"
+                                . "<td>$ab_driverName</td>"
                                 . "<td>$ab_lastTripPeriodStartTimeScheduled</td>"
                                 . "<td style=\"background-color:$ab_light\">$ab_lastTripPeriodStartTimeActual</td>"
                                 . "<td><a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$ab_lastTripPeriodType&startTimeScheduled=$ab_lastTripPeriodStartTimeScheduled'  target='_blank'>$ab_lastTripPeriodExodusNumber</a></td>"
@@ -256,6 +265,7 @@ and open the template in the editor.
                                 . "<td>$gps_ab_lastTripScheduled</td>"
                                 . "<td>$gps_ab_lastTripActual</td>"
                                 . "<td>--</td>"
+                                . "<td>$ba_driverName</td>"
                                 . "<td>$ba_lastTripPeriodStartTimeScheduled</td>"
                                 . "<td style=\"background-color:$ba_light\">$ba_lastTripPeriodStartTimeActual</td>"
                                 . "<td><a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$ba_lastTripPeriodType&startTimeScheduled=$ba_lastTripPeriodStartTimeScheduled'  target='_blank'>$ba_lastTripPeriodExodusNumber</a></td>"

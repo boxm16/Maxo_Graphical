@@ -2,6 +2,7 @@
 
 require_once 'Controller/RouteXLController.php';
 require_once 'mPDO.php';
+require_once 'clientId.php';
 session_start();
 if (isset($_POST["routes:dates"])) {
     $_SESSION["routes:dates"] = $_POST["routes:dates"];
@@ -18,7 +19,7 @@ if (isset($_POST["routes:dates"])) {
 
 $s = microtime(true);
 $routeController = new RouteXLController();
-$routes = $routeController->getSiftedRoutes($requestedRoutesAndDates);
+$routes = $routeController->getSiftedRoutes($clientId, $requestedRoutesAndDates);
 $tripVouchersData = array();
 $tripPeriodsData = array();
 foreach ($routes as $route) {

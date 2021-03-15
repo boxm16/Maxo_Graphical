@@ -45,7 +45,6 @@ class DataBaseTools {
     `bus_type` VARCHAR(35) NULL,
     `notes` VARCHAR(2000) NULL,
     PRIMARY KEY (`number`),
-    INDEX `route_number_idx` (`route_number` ASC) VISIBLE,
     CONSTRAINT `route_number`
     FOREIGN KEY (`route_number`)
     REFERENCES `231185`.`route` (`number`)
@@ -77,7 +76,6 @@ class DataBaseTools {
   `arrival_time_scheduled` VARCHAR(10) NULL,
   `arrival_time_actual` VARCHAR(10) NULL,
   `arrival_time_difference` VARCHAR(10) NULL,
-    INDEX `trip_voucher_idx` (`trip_voucher_number` ASC) VISIBLE,
     CONSTRAINT `trip_voucher`
     FOREIGN KEY (`trip_voucher_number`)
     REFERENCES `231185`.`trip_voucher` (`number`)

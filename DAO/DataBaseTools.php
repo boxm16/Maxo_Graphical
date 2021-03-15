@@ -97,4 +97,34 @@ class DataBaseTools {
         }
     }
 
+    public function insert() {
+        $routeNumber = '9';
+        $a_point = "ისანი";
+        $b_point = "ლოჭინი";
+        $routeValuesArray = array($routeNumber, $a_point, $b_point);
+        $tripVoucherNuber = "AA-1112";
+        $dateStamp = "2020-12-01";
+        $exodusNumber = 1;
+        $driverNumber = "1126";
+        $driverName = "Koka";
+        $busNumber = "BUS-NUMBER-12";
+        $busType = "SUZUKI";
+        $notes = "lalalalallalalalalalalalalaalalalalalala";
+        $tripPeriodValuesArray = array($tripVoucherNuber, $routeNumber, $dateStamp, $exodusNumber, $driverNumber, $driverName, $busNumber, $busType, $notes);
+        $sql = "INSERT INTO route (number, a_point, b_point) VALUES (?,?,?)";
+        $sql_1 = "INSERT INTO trip_voucher (number, route_number, date_stamp, exodus_number, driver_number, driver_name, bus_number, bus_type, notes) VALUES (?,?,?,?,?,?,?,?,?)";
+        try {
+            $this->connection->beginTransaction();
+            $this->connection->prepare($sql)->execute($routeValuesArray);
+            $this->connection->prepare($sql_1)->execute($tripPeriodValuesArray);
+            $this->connection->commit();
+            echo "route inserted successfully" . "<br>";
+            echo "trip_period inserted successfully" . "<br>";
+        } catch (\PDOException $e) {
+
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
 }

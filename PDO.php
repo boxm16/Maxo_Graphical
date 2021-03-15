@@ -4,7 +4,7 @@ require_once 'Controller/RouteXLController.php';
 require_once 'mPDO.php';
 //require_once 'clientId.php';
 //--------------------------------------------------
-$clientId = "0";
+$clientId = "11";
 //-----------------------------------------------
 /*
   session_start();
@@ -65,8 +65,8 @@ foreach ($routes as $route) {
 
 $chunkedArray = array_chunk($tripPeriodsData, 4000);
 
-
-
+echo "Chanked array count:" . count($chunkedArray);
+echo "<br>";
 
 $host = 'remotemysql.com';
 $db = '9w706j5s1P';
@@ -86,10 +86,15 @@ try {
     $index = 0;
     foreach ($chunkedArray as $data) {
         if ($index >= 2) {
-            break;
+            //break;
         }
+        $pdo->beginTransaction();
         $stmt = $pdo->multiPrepare('INSERT INTO join_table (route_number, date_stamp, exodus_number, trip_voucher_number, driver_number, driver_name, bus_number, bus_type, start_time_scheduled, start_time_actual, start_time_difference, arrival_time_scheduled, arrival_time_actual, arrival_time_difference, type, notes)', $data);
         $stmt->multiExecute($data);
+        $stmt = $pdo->prepare("INSERT INTO trip_voucher (bus_number, bus_type) VALUES (?,?)");
+        $indexArray = array($index, $index);
+        $stmt->execute($indexArray);
+        $pdo->commit();
         $index++;
     }
 

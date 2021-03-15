@@ -29,7 +29,7 @@ class DataBaseConnection {
         }
     }
 
-    public function getPDO2() {
+    public function getlocalhostConnection() {
         $host = 'localhost';
         $db = '231185';
         $user = '231185';
@@ -46,7 +46,7 @@ class DataBaseConnection {
             $pdo = new PDO($dsn, $user, $pass, $options);
             return $pdo;
         } catch (\PDOException $e) {
-            echo $e->getMessage() . " Eroor Code:";
+            echo $e->getMessage() . " Error Code:";
             echo $e->getCode();
         }
     }

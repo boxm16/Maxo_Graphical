@@ -21,7 +21,7 @@ class DataBaseConnection {
             PDO::ATTR_EMULATE_PREPARES => false,
         ];
         try {
-            $pdo = new PDO($dsn, $user, $pass, $options);
+            $pdo = new mPDO($dsn, $user, $pass, $options);
             return $pdo;
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Eroor Code:";
@@ -29,7 +29,7 @@ class DataBaseConnection {
         }
     }
 
-    public function getlocalhostConnection() {
+    public function getLocalhostConnection() {
         $host = 'localhost';
         $db = '231185';
         $user = '231185';
@@ -43,7 +43,7 @@ class DataBaseConnection {
             PDO::ATTR_EMULATE_PREPARES => false,
         ];
         try {
-            $pdo = new PDO($dsn, $user, $pass, $options);
+            $pdo = new mPDO($dsn, $user, $pass, $options);
             return $pdo;
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";

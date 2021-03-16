@@ -1,5 +1,6 @@
 <?php
 require_once 'DAO/DataBaseTools.php';
+require_once 'Controller/RouteXLController.php';
 $dataBaseTools = new DataBaseTools();
 ?>
 <!DOCTYPE html>
@@ -23,6 +24,155 @@ $dataBaseTools = new DataBaseTools();
             $dataBaseTools->createTripPeriodTable();
         }
         ?>
+
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="insertRoutes">
+            <button type="submit">INSERT Routes</button>
+
+        </form>
+        <?php
+        if (isset($_POST["insertRoutes"])) {
+            $s = microtime(true);
+            $routeController = new RouteXLController();
+            $clientId = "0";
+            $routes = $routeController->getFullRoutes($clientId);
+            $insertData = array();
+            foreach ($routes as $route) {
+                $routeNumber = $route->getNumber();
+                $insertRow = array($routeNumber, "lapaluka", "zumbaland");
+                array_push($insertData, $insertRow);
+            }
+
+            $dataBaseTools->insertRoutes($insertData);
+            $e = microtime(true);
+            echo "Time required:" . ($e - $s);
+        }
+        ?>
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="insertTripVouchers">
+            <button type="submit">INSERT Trip Vouchers</button>
+
+        </form>
+        <?php
+        if (isset($_POST["insertTripVouchers"])) {
+            $s = microtime(true);
+            $routeController = new RouteXLController();
+            $clientId = "0";
+            $routes = $routeController->getFullRoutes($clientId);
+            $insertData = array();
+            foreach ($routes as $route) {
+                $routeNumber = $route->getNumber();
+                $days = $route->getDays();
+                foreach ($days as $day) {
+                    $dateStamp = $day->getDateStamp();
+                    $time = strtotime($dateStamp);
+                    $dateStamp = date('Y-m-d', $time);
+
+                    $exoduses = $day->getExoduses();
+                    foreach ($exoduses as $exodus) {
+                        $exodusNumber = $exodus->getNumber();
+                        $tripVouchers = $exodus->getTripVouchers();
+                        foreach ($tripVouchers as $tripVoucher) {
+                            $tripPeriods = $tripVoucher->getTripPeriods();
+                            $tripVoucherNumber = $tripVoucher->getNumber();
+                            $busNumber = $tripVoucher->getBusNumber();
+                            $busType = $tripVoucher->getBusType();
+                            $driverNumber = $tripVoucher->getDriverNumber();
+                            $driverName = $tripVoucher->getDriverName();
+                            $notes = $tripVoucher->getNotes();
+
+                            $row = array($tripVoucherNumber, $routeNumber, $dateStamp, $exodusNumber, $driverNumber, $driverName, $busNumber, $busType, $notes);
+                            array_push($insertData, $row);
+                            /*
+                              foreach ($tripPeriods as $tripPeriod) {
+                              $type = $tripPeriod->getType();
+                              $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                              $startTimeActual = $tripPeriod->getStartTimeActual();
+                              $startTimeDifference = $tripPeriod->getStartTimeDifference();
+                              $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
+                              $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
+                              $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
+                              $tp = array($routeNumber, $dateStamp, $exodusNumber, $tripVoucherNumber, $driverNumber, $driverName, $busNumber, $busType, $startTimeScheduled, $startTimeScheduled, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference, $type, $notes);
+                              array_push($tripPeriodsData, $tp);
+                              }
+
+                             */
+                        }
+                    }
+                }
+            }
+
+            $dataBaseTools->insertTripVouchers($insertData);
+            $e = microtime(true);
+            echo "Time required:" . ($e - $s);
+        }
+        ?>
+
+
+
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="insertTripPeriods">
+            <button type="submit">INSERT Trip Periods</button>
+
+        </form>
+        <?php
+        if (isset($_POST["insertTripPeriods"])) {
+            $s = microtime(true);
+            $routeController = new RouteXLController();
+            $clientId = "0";
+            $routes = $routeController->getFullRoutes($clientId);
+            $insertData = array();
+            foreach ($routes as $route) {
+                $routeNumber = $route->getNumber();
+                $days = $route->getDays();
+                foreach ($days as $day) {
+                    $dateStamp = $day->getDateStamp();
+                    $time = strtotime($dateStamp);
+                    $dateStamp = date('Y-m-d', $time);
+
+                    $exoduses = $day->getExoduses();
+                    foreach ($exoduses as $exodus) {
+                        $exodusNumber = $exodus->getNumber();
+                        $tripVouchers = $exodus->getTripVouchers();
+                        foreach ($tripVouchers as $tripVoucher) {
+                            $tripPeriods = $tripVoucher->getTripPeriods();
+                            $tripVoucherNumber = $tripVoucher->getNumber();
+                            $busNumber = $tripVoucher->getBusNumber();
+                            $busType = $tripVoucher->getBusType();
+                            $driverNumber = $tripVoucher->getDriverNumber();
+                            $driverName = $tripVoucher->getDriverName();
+                            $notes = $tripVoucher->getNotes();
+
+
+
+                            foreach ($tripPeriods as $tripPeriod) {
+                                $type = $tripPeriod->getType();
+                                $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                                $startTimeActual = $tripPeriod->getStartTimeActual();
+                                $startTimeDifference = $tripPeriod->getStartTimeDifference();
+                                $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
+                                $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
+                                $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
+
+                                $row = array($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+                                array_push($insertData, $row);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $dataBaseTools->insertTripPeriods($insertData);
+            $e = microtime(true);
+            echo "Time required:" . ($e - $s);
+        }
+        ?>
+
+
+
         <hr>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <input hidden name="insert">
@@ -31,8 +181,9 @@ $dataBaseTools = new DataBaseTools();
         </form>
         <?php
         if (isset($_POST["insert"])) {
-         $dataBaseTools->insert();
+            $dataBaseTools->insert();
         }
         ?>
+
     </body>
 </html>

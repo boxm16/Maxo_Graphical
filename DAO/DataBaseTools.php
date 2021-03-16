@@ -8,7 +8,7 @@ class DataBaseTools {
 
     function __construct() {
         $dataBaseConnection = new DataBaseConnection();
-        $this->connection = $dataBaseConnection->getlocalhostConnection();
+        $this->connection = $dataBaseConnection->getLocalhostConnection();
     }
 
     public function createRouteTable() {
@@ -124,6 +124,57 @@ class DataBaseTools {
 
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function insertRoutes($routesData) {
+        try {
+            $this->connection->beginTransaction();
+            $stmt = $this->connection->multiPrepare('INSERT INTO route (number, a_point, b_point)', $routesData);
+            $stmt->multiExecute($routesData);
+            // $stmt = $pdo->prepare("INSERT INTO trip_voucher (bus_number, bus_type) VALUES (?,?)");
+            //$indexArray = array($index, $index);
+            // $stmt->execute($indexArray);
+            $this->connection->commit();
+            echo "Routes inserted successfully into database" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function insertTripVouchers($tripVouchersData) {
+        try {
+            $this->connection->beginTransaction();
+            $stmt = $this->connection->multiPrepare('INSERT INTO trip_voucher (number, route_number, date_stamp, exodus_number, driver_number, driver_name, bus_number, bus_type, notes)', $tripVouchersData);
+            $stmt->multiExecute($tripVouchersData);
+            // $stmt = $pdo->prepare("INSERT INTO trip_voucher (bus_number, bus_type) VALUES (?,?)");
+            //$indexArray = array($index, $index);
+            // $stmt->execute($indexArray);
+            $this->connection->commit();
+            echo "TripVouchers inserted successfully into database" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function insertTripPeriods($tripPeriodsData) {
+        $chunkedArray = array_chunk($tripPeriodsData, 5000);
+        foreach ($chunkedArray as $data) {
+            try {
+                $this->connection->beginTransaction();
+                $stmt = $this->connection->multiPrepare('INSERT INTO trip_period (trip_voucher_number, type, start_time_scheduled, start_time_actual, start_time_difference, arrival_time_scheduled, arrival_time_actual, arrival_time_difference)', $data);
+                $stmt->multiExecute($data);
+                // $stmt = $pdo->prepare("INSERT INTO trip_voucher (bus_number, bus_type) VALUES (?,?)");
+                //$indexArray = array($index, $index);
+                // $stmt->execute($indexArray);
+                $this->connection->commit();
+                echo "Trip Periods inserted successfully into database" . "<br>";
+            } catch (\PDOException $e) {
+                echo $e->getMessage() . " Error Code:";
+                echo $e->getCode() . "<br>";
+            }
         }
     }
 

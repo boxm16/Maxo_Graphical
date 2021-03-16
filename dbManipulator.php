@@ -184,6 +184,40 @@ $dataBaseTools = new DataBaseTools();
             $dataBaseTools->insert();
         }
         ?>
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="selectRouteNumbers">
+            <button type="submit">SELECT ALL ROUTE NUMBERS</button>
+
+        </form>
+        <?php
+        if (isset($_POST["selectRouteNumbers"])) {
+            $routeNumbers = $dataBaseTools->getRouteNumbers();
+            foreach ($routeNumbers as $row) {
+                echo $row["number"];
+                echo "<br>";
+            }
+        }
+        ?>
+
+
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="selectFullRoutes">
+            <button type="submit">SELECT FULL ROUTES</button>
+
+        </form>
+        <?php
+        if (isset($_POST["selectFullRoutes"])) {
+            $s= microtime(true);
+            $routes = $dataBaseTools->getFullRoutes();
+          foreach($routes as $route){
+              echo $routeNumber=$route->getNumber();echo "<br>";
+          }
+            $e = microtime(true);
+            echo "<br>Time required:" . ($e - $s);
+        }
+        ?>
 
     </body>
 </html>

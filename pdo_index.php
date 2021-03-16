@@ -1,9 +1,9 @@
 <?php
-require_once 'Controller/RouteXLController.php';
-require_once 'clientId.php'; //here i take clientId from cookie, or set new
+require_once 'DAO/DataBaseTools.php';
+
 $s = microtime(true);
-$routesController = new RouteXLController();
-$routes = $routesController->getFullRoutes($clientId);
+$dataBaseTools = new DataBaseTools();
+$routes = $dataBaseTools->getFullRoutes();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -248,12 +248,15 @@ $routes = $routesController->getFullRoutes($clientId);
                                 <?php
                             }
                             ?>
+                            <hr><hr>
+                            <?php
+                            $e = microtime(true);
+                            echo "<br> Display time required:" . ($e - $s);
+                            ?>
 
 
                             <hr><hr>
-                            <?php $e = microtime(true);
-                            echo "<br> Display time required:" . ($e - $s);
-                            ?>
+
                         </div>
                     </div>
                 </div>

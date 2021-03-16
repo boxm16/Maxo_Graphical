@@ -1,6 +1,7 @@
 <?php
 
 require_once 'DataBaseConnection.php';
+require_once 'Model/RouteXL.php';
 
 class DataBaseTools {
 
@@ -176,6 +177,155 @@ class DataBaseTools {
                 echo $e->getCode() . "<br>";
             }
         }
+    }
+
+    //---------------------//------------//----------------
+    //---------------------//------------//----------------
+    //---------------------//------------//----------------
+    //---------------------//------------//----------------
+    //--------------------- //select part//------------------
+
+
+    public function getRouteNumbers() {
+
+
+        try {
+            $sql = "SELECT number FROM route";
+            $result = $this->connection->query($sql)->fetchAll();
+            return $result;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function getFullRoutes() {
+
+        try {
+            $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number";
+            $result = $this->connection->query($sql)->fetchAll();
+            $routes = array();
+            foreach ($result as $row) {
+                $routeNumber = $row["route_number"];
+                if (key_exists($routeNumber, $routes)) {
+                    $existingRoute = $routes[$routeNumber];
+                    $refilledRoute = $this->addRowElementsToRoute($existingRoute, $row);
+                    $routes[$routeNumber] = $refilledRoute;
+                } else {
+                    $newRoute = new RouteXL();
+                    $newRoute->setNumber($routeNumber);
+                    $refilledRoute = $this->addRowElementsToRoute($newRoute, $row);
+                    $routes[$routeNumber] = $refilledRoute;
+                }
+            }
+
+            return $routes;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    //route filling part
+
+    private function addRowElementsToRoute($route, $row) {
+
+        $dateStamp = $row["date_stamp"];
+        $days = $route->getDays();
+        if (array_key_exists($dateStamp, $days)) {
+            $existingDay = $days[$dateStamp];
+            $refilledDay = $this->addElementsToExistingDay($existingDay, $row);
+            $days[$dateStamp] = $refilledDay;
+        } else {
+            $newDay = new DayXL();
+            $newDay->setDateStamp($dateStamp);
+            $refilledDay = $this->addElementsToExistingDay($newDay, $row);
+            $days[$dateStamp] = $refilledDay;
+        }
+        $route->setDays($days);
+        return $route;
+    }
+
+    private function addElementsToExistingDay($day, $row) {
+        $exodusNumber = $row["exodus_number"];
+        $exoduses = $day->getExoduses();
+        if (array_key_exists($exodusNumber, $exoduses)) {
+            $existingExodus = $exoduses[$exodusNumber];
+            $refilledExodus = $this->addElementsToExistingExodus($existingExodus, $row);
+            $exoduses[$exodusNumber] = $refilledExodus;
+        } else {
+            $newExodus = new ExodusXL();
+            $newExodus->setNumber($exodusNumber);
+            $refilledExodus = $this->addElementsToExistingExodus($newExodus, $row);
+            $exoduses[$exodusNumber] = $refilledExodus;
+        }
+        $day->setExoduses($exoduses);
+        return $day;
+    }
+
+    private function addElementsToExistingExodus($exodus, $row) {
+        $tripVoucherNumber = $row["exodus_number"];
+        $vouchers = $exodus->getTripVouchers();
+        if (array_key_exists($tripVoucherNumber, $vouchers)) {
+            $existingVoucher = $vouchers[$tripVoucherNumber];
+            $refilledVoucher = $this->addElementsToExistingTripVoucher($existingVoucher, $row);
+            $vouchers[$tripVoucherNumber] = $refilledVoucher;
+        } else {
+            $busNumber = $row["bus_number"];
+            $busType = $row["bus_type"];
+            $driverNumber = $row["driver_number"];
+            $driverName = $row["driver_name"];
+            $notes = $row["notes"];
+
+            $newTripVoucher = new TripVoucherXL();
+            $newTripVoucher->setNumber($tripVoucherNumber);
+            $newTripVoucher->setBusNumber($busNumber);
+            $newTripVoucher->setBusType($busType);
+            $newTripVoucher->setDriverNumber($driverNumber);
+            $newTripVoucher->setDriverName($driverName);
+            $newTripVoucher->setNotes($notes);
+            $refilledVoucher = $this->addElementsToExistingTripVoucher($newTripVoucher, $row);
+            $vouchers[$tripVoucherNumber] = $refilledVoucher;
+        }
+        $exodus->setTripVouchers($vouchers);
+        return $exodus;
+    }
+
+    private function addElementsToExistingTripVoucher($tripVoucher, $row) {
+        $tripPeriods = $tripVoucher->getTripPeriods();
+
+        $tripPeriod = $this->createTripPeriod($row);
+        $tripPeriodType = $tripPeriod->getType();
+        if ($tripPeriodType != "baseLeaving") {
+            $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
+        }
+        array_push($tripPeriods, $tripPeriod);
+
+
+        $tripVoucher->setTripPeriods($tripPeriods);
+        return $tripVoucher;
+    }
+
+    private function createTripPeriod($row) {
+        $type = $row["type"];
+        $startTimeScheduled = $row["start_time_scheduled"];
+        $startTimeActual = $row["start_time_actual"];
+        $startTimeDifference = $row["start_time_difference"];
+        $arrivalTimeScheduled = $row["arrival_time_scheduled"];
+        $arrivalTimeActual = $row["arrival_time_actual"];
+        $arrivalTimeDifference = $row["arrival_time_difference"];
+        $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        return $tripPeriod;
+    }
+
+    private function addPreviosTripPeriodTimes($tripPeriod, $tripPeriods) {
+
+        $previousTripPeriod = $tripPeriods[count($tripPeriods) - 1];
+        $previousTripPeriodArrivalTimeActual = $previousTripPeriod->getArrivalTimeActual();
+        $previousTripPeriodArrivalTimeScheduled = $previousTripPeriod->getArrivalTimeScheduled();
+        $tripPeriod->setPreviousTripPeriodArrivalTimeActual($previousTripPeriodArrivalTimeActual);
+        $tripPeriod->setPreviousTripPeriodArrivalTimeScheduled($previousTripPeriodArrivalTimeScheduled);
+        return $tripPeriod;
     }
 
 }

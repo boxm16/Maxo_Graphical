@@ -214,11 +214,24 @@ $clienId = '0';
 
         <?php
         if (isset($_POST["selectFullRoutesFromDB"])) {
-            $s = microtime(true);
+            $index=0;
             $routes = $dataBaseTools->getFullRoutes();
-            echo "RoutesCount" . count($routes);
-            $e = microtime(true);
-            echo "Time required:" . ($e - $s);
+            foreach ($routes as $route) {
+                $days = $route->getDays();
+                foreach ($days as $day) {
+                    $exoduses = $day->getExoduses();
+                    foreach ($exoduses as $exodus) {
+                        $tripVouchers = $exodus->getTripVouchers();
+                        foreach ($tripVouchers as $tripVoucher) {
+                            $tripPeriods = $tripVoucher->getTripPeriods();
+                            foreach ($tripPeriods as $tripPeriod) {
+                                $index++;
+                            }
+                        }
+                    }
+                }
+            }
+            echo $index;
         }
         ?>
 
@@ -231,11 +244,24 @@ $clienId = '0';
 
         <?php
         if (isset($_POST["selectFullRoutesFromFile"])) {
-            $s = microtime(true);
+            $index = 0;
             $routes = $routeController->getFullRoutes($clienId);
-            echo "RoutesCount" . count($routes);
-            $e = microtime(true);
-            echo "Time required:" . ($e - $s);
+            foreach ($routes as $route) {
+                $days = $route->getDays();
+                foreach ($days as $day) {
+                    $exoduses = $day->getExoduses();
+                    foreach ($exoduses as $exodus) {
+                        $tripVouchers = $exodus->getTripVouchers();
+                        foreach ($tripVouchers as $tripVoucher) {
+                            $tripPeriods = $tripVoucher->getTripPeriods();
+                            foreach ($tripPeriods as $tripPeriod) {
+                                $index++;
+                            }
+                        }
+                    }
+                }
+            }
+            echo $index;
         }
         ?>
 

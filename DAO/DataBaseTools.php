@@ -264,13 +264,14 @@ class DataBaseTools {
     }
 
     private function addElementsToExistingExodus($exodus, $row) {
-        $tripVoucherNumber = $row["exodus_number"];
+        $tripVoucherNumber = $row["trip_voucher_number"];
         $vouchers = $exodus->getTripVouchers();
         if (array_key_exists($tripVoucherNumber, $vouchers)) {
             $existingVoucher = $vouchers[$tripVoucherNumber];
             $refilledVoucher = $this->addElementsToExistingTripVoucher($existingVoucher, $row);
             $vouchers[$tripVoucherNumber] = $refilledVoucher;
         } else {
+
             $busNumber = $row["bus_number"];
             $busType = $row["bus_type"];
             $driverNumber = $row["driver_number"];

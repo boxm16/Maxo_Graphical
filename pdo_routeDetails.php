@@ -1,9 +1,7 @@
 <?php
 require_once 'DAO/DataBaseTools.php';
-
-$s = microtime(true);
+require_once 'Controller/RouteXLController.php';
 $dataBaseTools = new DataBaseTools();
-$routes = $dataBaseTools->getFullRoutes();
 
 session_start();
 if (isset($_POST["routes:dates"])) {

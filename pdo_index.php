@@ -136,7 +136,7 @@ $routes = $dataBaseTools->getFullRoutes();
                                 </thead>
                             </table>
 
-                            <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('routeDetails.php')">ბრუნების ნახვა</button>
+                            <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('pdo_routeDetails.php')">ბრუნების ნახვა</button>
                             <button type="submit" class="btn btn-warning" style="font-size: 20px" onclick="requestRouter('intervals.php')">ინტერვალების ნახვა</button>
                             <button type="submit" class="btn btn-secondery" style="font-size: 20px" onclick="requestRouter('excelForm.php')">ექსელის ფორმა</button>
 

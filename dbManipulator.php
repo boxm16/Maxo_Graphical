@@ -2,6 +2,8 @@
 require_once 'DAO/DataBaseTools.php';
 require_once 'Controller/RouteXLController.php';
 $dataBaseTools = new DataBaseTools();
+$routeController = new RouteXLController();
+$clienId = '0';
 ?>
 <!DOCTYPE html>
 
@@ -205,20 +207,35 @@ $dataBaseTools = new DataBaseTools();
 
         <hr>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-            <input hidden name="selectFullRoutes">
-            <button type="submit">SELECT FULL ROUTES</button>
+            <input hidden name="selectFullRoutesFromDB">
+            <button type="submit">SELECT FULL ROUTES FROM DATABASE</button>
 
         </form>
+
         <?php
-        if (isset($_POST["selectFullRoutes"])) {
+        if (isset($_POST["selectFullRoutesFromDB"])) {
             $s = microtime(true);
             $routes = $dataBaseTools->getFullRoutes();
-            foreach ($routes as $route) {
-                echo $routeNumber = $route->getNumber();
-                echo "<br>";
-            }
+            echo "RoutesCount" . count($routes);
             $e = microtime(true);
-            echo "<br>Time required:" . ($e - $s);
+            echo "Time required:" . ($e - $s);
+        }
+        ?>
+
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="selectFullRoutesFromFile">
+            <button type="submit">SELECT FULL ROUTES FROM File</button>
+
+        </form>
+
+        <?php
+        if (isset($_POST["selectFullRoutesFromFile"])) {
+            $s = microtime(true);
+            $routes = $routeController->getFullRoutes($clienId);
+            echo "RoutesCount" . count($routes);
+            $e = microtime(true);
+            echo "Time required:" . ($e - $s);
         }
         ?>
 

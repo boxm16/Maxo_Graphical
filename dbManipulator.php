@@ -67,7 +67,8 @@ $dataBaseTools = new DataBaseTools();
                 $days = $route->getDays();
                 foreach ($days as $day) {
                     $dateStamp = $day->getDateStamp();
-                    $time = strtotime($dateStamp);
+                    //here i need thrick to convert time format 
+                    $time = strtotime(str_replace('/', '-', $dateStamp));
                     $dateStamp = date('Y-m-d', $time);
 
                     $exoduses = $day->getExoduses();
@@ -130,7 +131,8 @@ $dataBaseTools = new DataBaseTools();
                 $days = $route->getDays();
                 foreach ($days as $day) {
                     $dateStamp = $day->getDateStamp();
-                    $time = strtotime($dateStamp);
+                    //here i need thrick to convert time format 
+                    $time = strtotime(str_replace('/', '-', $dateStamp));
                     $dateStamp = date('Y-m-d', $time);
 
                     $exoduses = $day->getExoduses();
@@ -209,11 +211,12 @@ $dataBaseTools = new DataBaseTools();
         </form>
         <?php
         if (isset($_POST["selectFullRoutes"])) {
-            $s= microtime(true);
+            $s = microtime(true);
             $routes = $dataBaseTools->getFullRoutes();
-          foreach($routes as $route){
-              echo $routeNumber=$route->getNumber();echo "<br>";
-          }
+            foreach ($routes as $route) {
+                echo $routeNumber = $route->getNumber();
+                echo "<br>";
+            }
             $e = microtime(true);
             echo "<br>Time required:" . ($e - $s);
         }

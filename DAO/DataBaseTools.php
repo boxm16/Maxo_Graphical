@@ -19,7 +19,7 @@ class DataBaseTools {
   `a_point` VARCHAR(100) NULL,
   `b_point` VARCHAR(100) NULL,
    PRIMARY KEY (`number`),
-   UNIQUE INDEX `precedence_UNIQUE` (`precedence` ASC) VISIBLE)
+   UNIQUE INDEX `precedence_UNIQUE` (`precedence` ASC) )
    ENGINE = InnoDB
    DEFAULT CHARACTER SET = utf8;
    ";

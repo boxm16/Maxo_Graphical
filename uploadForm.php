@@ -1,5 +1,6 @@
 <?php
 require_once 'clientId.php';
+require_once 'Controller/UploadController.php';
 
 $errorAlert = "";
 $errorMessage = "";
@@ -35,6 +36,11 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "uploads/routeExcelFile" . $clientId . ".xlsx")) {
             echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
+
+            //this part is for database iserton
+            $uploadController = new UploadController();
+            $uploadController->saveUploadedDataIntoDatabase($clientId);
+            // here end insertion part
             deployFile();
         } else {
 

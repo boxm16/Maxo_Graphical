@@ -177,17 +177,7 @@ $clienId = '0';
 
 
 
-        <hr>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-            <input hidden name="insert">
-            <button type="submit">INSERT STATEMENT</button>
-
-        </form>
-        <?php
-        if (isset($_POST["insert"])) {
-            $dataBaseTools->insert();
-        }
-        ?>
+     
         <hr>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <input hidden name="selectRouteNumbers">

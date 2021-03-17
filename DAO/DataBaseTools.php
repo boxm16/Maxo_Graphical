@@ -49,7 +49,7 @@ class DataBaseTools {
     CONSTRAINT `route_number`
     FOREIGN KEY (`route_number`)
     REFERENCES `231185`.`route` (`number`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -80,7 +80,7 @@ class DataBaseTools {
     CONSTRAINT `trip_voucher`
     FOREIGN KEY (`trip_voucher_number`)
     REFERENCES `231185`.`trip_voucher` (`number`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
@@ -95,36 +95,6 @@ class DataBaseTools {
                 echo $e->getMessage() . " Error Code:";
                 echo $e->getCode() . "<br>";
             }
-        }
-    }
-
-    public function insert() {
-        $routeNumber = '9';
-        $a_point = "ისანი";
-        $b_point = "ლოჭინი";
-        $routeValuesArray = array($routeNumber, $a_point, $b_point);
-        $tripVoucherNuber = "AA-1112";
-        $dateStamp = "2020-12-01";
-        $exodusNumber = 1;
-        $driverNumber = "1126";
-        $driverName = "Koka";
-        $busNumber = "BUS-NUMBER-12";
-        $busType = "SUZUKI";
-        $notes = "lalalalallalalalalalalalalaalalalalalala";
-        $tripPeriodValuesArray = array($tripVoucherNuber, $routeNumber, $dateStamp, $exodusNumber, $driverNumber, $driverName, $busNumber, $busType, $notes);
-        $sql = "INSERT INTO route (number, a_point, b_point) VALUES (?,?,?)";
-        $sql_1 = "INSERT INTO trip_voucher (number, route_number, date_stamp, exodus_number, driver_number, driver_name, bus_number, bus_type, notes) VALUES (?,?,?,?,?,?,?,?,?)";
-        try {
-            $this->connection->beginTransaction();
-            $this->connection->prepare($sql)->execute($routeValuesArray);
-            $this->connection->prepare($sql_1)->execute($tripPeriodValuesArray);
-            $this->connection->commit();
-            echo "route inserted successfully" . "<br>";
-            echo "trip_period inserted successfully" . "<br>";
-        } catch (\PDOException $e) {
-
-            echo $e->getMessage() . " Error Code:";
-            echo $e->getCode() . "<br>";
         }
     }
 
@@ -176,6 +146,73 @@ class DataBaseTools {
                 echo $e->getMessage() . " Error Code:";
                 echo $e->getCode() . "<br>";
             }
+        }
+    }
+
+    public function insertUploadedData($routes) {
+        $tripVouchersData = array();
+        $tripPeriodsData = array();
+
+        foreach ($routes as $route) {
+            $routeNumber = $route->getNumber();
+            $days = $route->getDays();
+            foreach ($days as $day) {
+                $dateStamp = $day->getDateStamp();
+                //here i need thrick to convert time format 
+                $time = strtotime(str_replace('/', '-', $dateStamp));
+                $dateStamp = date('Y-m-d', $time);
+
+                $exoduses = $day->getExoduses();
+                foreach ($exoduses as $exodus) {
+                    $exodusNumber = $exodus->getNumber();
+                    $tripVouchers = $exodus->getTripVouchers();
+                    foreach ($tripVouchers as $tripVoucher) {
+                        $tripPeriods = $tripVoucher->getTripPeriods();
+                        $tripVoucherNumber = $tripVoucher->getNumber();
+                        $busNumber = $tripVoucher->getBusNumber();
+                        $busType = $tripVoucher->getBusType();
+                        $driverNumber = $tripVoucher->getDriverNumber();
+                        $driverName = $tripVoucher->getDriverName();
+                        $notes = $tripVoucher->getNotes();
+
+                        $row = array($tripVoucherNumber, $routeNumber, $dateStamp, $exodusNumber, $driverNumber, $driverName, $busNumber, $busType, $notes);
+                        array_push($tripVouchersData, $row);
+
+                        foreach ($tripPeriods as $tripPeriod) {
+                            $type = $tripPeriod->getType();
+                            $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
+                            $startTimeActual = $tripPeriod->getStartTimeActual();
+                            $startTimeDifference = $tripPeriod->getStartTimeDifference();
+                            $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
+                            $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
+                            $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
+
+                            $row = array($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+                            if (count($row) != 8)
+                                echo"KOKO<br>";
+                            array_push($tripPeriodsData, $row);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        try {
+            $this->connection->beginTransaction();
+            $stmt = $this->connection->multiPrepare('INSERT INTO trip_voucher (number, route_number, date_stamp, exodus_number, driver_number, driver_name, bus_number, bus_type, notes)', $tripVouchersData);
+            $stmt->multiExecute($tripVouchersData);
+            //---
+            $chunkedArray = array_chunk($tripPeriodsData, 5000);
+            foreach ($chunkedArray as $data) {
+                $stmt2 = $this->connection->multiPrepare('INSERT INTO trip_period (trip_voucher_number, type, start_time_scheduled, start_time_actual, start_time_difference, arrival_time_scheduled, arrival_time_actual, arrival_time_difference)', $data);
+                $stmt2->multiExecute($data);
+            }
+            $this->connection->commit();
+            echo "New Data inserted successfully into database" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
         }
     }
 
@@ -327,6 +364,43 @@ class DataBaseTools {
         $tripPeriod->setPreviousTripPeriodArrivalTimeActual($previousTripPeriodArrivalTimeActual);
         $tripPeriod->setPreviousTripPeriodArrivalTimeScheduled($previousTripPeriodArrivalTimeScheduled);
         return $tripPeriod;
+    }
+
+    public function getRoutesDatesFromDataBase(): array {
+        //return array of routes and dates in format route:date
+        $routesDates = array();
+        try {
+            $sql = "SELECT DISTINCT route_number, date_stamp FROM trip_voucher";
+            $result = $this->connection->query($sql)->fetchAll();
+            foreach ($result as $row) {
+                $route = $row["route_number"];
+                $dateStamp = $row["date_stamp"];
+                $entry = "$route:$dateStamp";
+                array_push($routesDates, $entry);
+            }
+            return $routesDates;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    ///----------------------------------------//--------------------------------
+
+    public function deleteVouchers(array $vouchersForDeletion) {
+        $firstVoucher = array_shift($vouchersForDeletion);
+        $sql = "DELETE FROM trip_voucher WHERE number='$firstVoucher' ";
+        foreach ($vouchersForDeletion as $voucherNumber) {
+            $sql .= " OR number='$voucherNumber' ";
+        }
+        $sql .= ";";
+        try {
+            $this->connection->exec($sql);
+            echo "Records that are to be renewed deleted successfully";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
     }
 
 }

@@ -40,10 +40,12 @@ $clienId = '0';
             $clientId = "0";
             $routes = $routeController->getFullRoutes($clientId);
             $insertData = array();
+            $index = 1;
             foreach ($routes as $route) {
                 $routeNumber = $route->getNumber();
-                $insertRow = array($routeNumber, "lapaluka", "zumbaland");
+                $insertRow = array($routeNumber, $index, "A-პუნკტი", "B-პუნკტი");
                 array_push($insertData, $insertRow);
+                $index++;
             }
 
             $dataBaseTools->insertRoutes($insertData);
@@ -177,7 +179,7 @@ $clienId = '0';
 
 
 
-     
+
         <hr>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <input hidden name="selectRouteNumbers">
@@ -204,7 +206,7 @@ $clienId = '0';
 
         <?php
         if (isset($_POST["selectFullRoutesFromDB"])) {
-            $index=0;
+            $index = 0;
             $routes = $dataBaseTools->getFullRoutes();
             foreach ($routes as $route) {
                 $days = $route->getDays();

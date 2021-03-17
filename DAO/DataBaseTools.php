@@ -15,9 +15,11 @@ class DataBaseTools {
     public function createRouteTable() {
         $sql = "CREATE TABLE `231185`.`route` (
   `number` VARCHAR(10) NOT NULL,
+  `precedence` INT(3) NOT NULL,
   `a_point` VARCHAR(100) NULL,
   `b_point` VARCHAR(100) NULL,
-   PRIMARY KEY (`number`))
+   PRIMARY KEY (`number`),
+   UNIQUE INDEX `precedence_UNIQUE` (`precedence` ASC) VISIBLE)
    ENGINE = InnoDB
    DEFAULT CHARACTER SET = utf8;
    ";
@@ -101,7 +103,7 @@ class DataBaseTools {
     public function insertRoutes($routesData) {
         try {
             $this->connection->beginTransaction();
-            $stmt = $this->connection->multiPrepare('INSERT INTO route (number, a_point, b_point)', $routesData);
+            $stmt = $this->connection->multiPrepare('INSERT INTO route (number, precedence, a_point, b_point)', $routesData);
             $stmt->multiExecute($routesData);
             // $stmt = $pdo->prepare("INSERT INTO trip_voucher (bus_number, bus_type) VALUES (?,?)");
             //$indexArray = array($index, $index);
@@ -239,7 +241,7 @@ class DataBaseTools {
     public function getFullRoutes() {
 
         try {
-            $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number";
+            $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number ORDER BY precedence";
             $result = $this->connection->query($sql)->fetchAll();
             $routes = array();
             foreach ($result as $row) {

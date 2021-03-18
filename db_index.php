@@ -122,7 +122,7 @@ $routes = $dataBaseTools->getFullRoutes();
                     <form id="form" action="deletion.php" method="POST">
                         <input hidden type="text" id="routes_dates" name="routes:dates">
                         <nav class="navbar fixed-top navbar-light bg-light">
-                            <a class="btn btn-primary" href="uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
+                            <a class="btn btn-primary" href="db_uploadForm.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
                             <table>
                                 <thead>
                                 <th>
@@ -139,9 +139,9 @@ $routes = $dataBaseTools->getFullRoutes();
                                 </thead>
                             </table>
 
-                            <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('routeDetails.php')">ბრუნების ნახვა</button>
-                            <button type="submit" class="btn btn-warning" style="font-size: 20px" onclick="requestRouter('intervals.php')">ინტერვალების ნახვა</button>
-                            <button type="submit" class="btn btn-secondery" style="font-size: 20px" onclick="requestRouter('excelForm.php')">ექსელის ფორმა</button>
+                            <button type="submit" class="btn btn-success" style="font-size: 20px" onclick="requestRouter('db_routeDetails.php')">ბრუნების ნახვა</button>
+                            <button type="submit" class="btn btn-warning" style="font-size: 20px" onclick="requestRouter('db_intervals.php')">ინტერვალების ნახვა</button>
+                            <button type="submit" class="btn btn-secondery" style="font-size: 20px" onclick="requestRouter('db_excelForm.php')">ექსელის ფორმა</button>
 
 
 

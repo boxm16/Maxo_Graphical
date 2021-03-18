@@ -265,6 +265,54 @@ class DataBaseTools {
         }
     }
 
+    public function getRequestedRoutesAndDates($requestedRoutesAndDates) {
+        $routesAndDates = explode(",", $requestedRoutesAndDates);
+
+        if (count($routesAndDates) > 0) {
+            $firstRouteAndDate = array_shift($routesAndDates);
+            $d = explode(":", $firstRouteAndDate);
+            $firstRoutNumber = $d[0];
+            $firstDate = $d[1];
+
+            $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number WHERE route_number='$firstRoutNumber' AND date_stamp='$firstDate' ";
+
+
+            foreach ($routesAndDates as $routeAndDate) {
+                if ($routeAndDate != "") {
+                    $d = explode(":", $routeAndDate);
+                    $routNumber = $d[0];
+                    $date = $d[1];
+                    $sql .= "OR route_number='$routNumber' AND date_stamp='$date' ";
+                }
+            }
+            $sql .= " ORDER BY precedence;";
+        }
+
+        try {
+            $result = $this->connection->query($sql)->fetchAll();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+
+        $routes = array();
+        foreach ($result as $row) {
+            $routeNumber = $row["route_number"];
+            if (key_exists($routeNumber, $routes)) {
+                $existingRoute = $routes[$routeNumber];
+                $refilledRoute = $this->addRowElementsToRoute($existingRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            } else {
+                $newRoute = new RouteXL();
+                $newRoute->setNumber($routeNumber);
+                $refilledRoute = $this->addRowElementsToRoute($newRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            }
+        }
+
+        return $routes;
+    }
+
     //route filling part
 
     private function addRowElementsToRoute($route, $row) {

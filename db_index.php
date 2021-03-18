@@ -280,7 +280,7 @@ $routes = $dataBaseTools->getFullRoutes();
                                                 function submitLink() {
 
                                                     form.target = "_blank";
-                                                    form.action = "guaranteed.php";
+                                                    form.action = "db_guaranteed.php";
                                                     routes_dates.value = collectSellectedCheckBoxes();
                                                     form.submit();
                                                 }

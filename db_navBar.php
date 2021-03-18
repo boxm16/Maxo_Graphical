@@ -40,7 +40,7 @@ switch ($currentPage) {
             <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
           </form></li>";
         break;
-    case "excelForm.php":
+    case "db_excelForm.php":
         $excelFormActive = $activeClass;
 
         $dropDown = " <li style=\"padding-left:150px\"><div class=\"dropdown\">

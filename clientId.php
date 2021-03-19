@@ -30,7 +30,7 @@ if (isset($_COOKIE["clientId"])) {
     setcookie($cookie_name, $cookie_value, time() + (10 * 365 * 24 * 60 * 60), "/"); // expiration 10 years 
     //  echo "<h1>Client Id has been set to $clientId for 30 days</h1>";
 }
-
+$clientId = 111;
 
 
 

@@ -40,12 +40,17 @@ $clienId = '0';
             $clientId = "0";
             $routes = $routeController->getFullRoutes($clientId);
             $insertData = array();
-            $index = 1;
+
             foreach ($routes as $route) {
                 $routeNumber = $route->getNumber();
-                $insertRow = array($routeNumber, $index, "A-პუნკტი", "B-პუნკტი");
+                $exploded = explode("-", $routeNumber);
+                $prefix = $exploded[0];
+                $suffix = null;
+                if (count($exploded) > 1) {
+                    $suffix = $exploded[1];
+                }
+                $insertRow = array($routeNumber, $prefix, $suffix, "A-პუნკტი", "B-პუნკტი");
                 array_push($insertData, $insertRow);
-                $index++;
             }
 
             $dataBaseTools->insertRoutes($insertData);
@@ -189,8 +194,8 @@ $clienId = '0';
         <?php
         if (isset($_POST["selectRouteNumbers"])) {
             $routeNumbers = $dataBaseTools->getRouteNumbers();
-            foreach ($routeNumbers as $row) {
-                echo $row["number"];
+            foreach ($routeNumbers as $routeNumber) {
+                echo $routeNumbers;
                 echo "<br>";
             }
         }

@@ -15,11 +15,11 @@ class DataBaseTools {
     public function createRouteTable() {
         $sql = "CREATE TABLE `231185`.`route` (
   `number` VARCHAR(10) NOT NULL,
-  `precedence` INT(3) NOT NULL,
+  `prefix` int(4) NOT NULL, 
+  `suffix` INT(3) NULL,
   `a_point` VARCHAR(100) NULL,
   `b_point` VARCHAR(100) NULL,
-   PRIMARY KEY (`number`),
-   UNIQUE INDEX `precedence_UNIQUE` (`precedence` ASC) )
+   PRIMARY KEY (`number`))
    ENGINE = InnoDB
    DEFAULT CHARACTER SET = utf8;
    ";
@@ -103,7 +103,7 @@ class DataBaseTools {
     public function insertRoutes($routesData) {
         try {
             $this->connection->beginTransaction();
-            $stmt = $this->connection->multiPrepare('INSERT INTO route (number, precedence, a_point, b_point)', $routesData);
+            $stmt = $this->connection->multiPrepare('INSERT INTO route (number, prefix, suffix, a_point, b_point)', $routesData);
             $stmt->multiExecute($routesData);
             // $stmt = $pdo->prepare("INSERT INTO trip_voucher (bus_number, bus_type) VALUES (?,?)");
             //$indexArray = array($index, $index);
@@ -230,8 +230,12 @@ class DataBaseTools {
 
         try {
             $sql = "SELECT number FROM route";
-            $result = $this->connection->query($sql)->fetchAll();
-            return $result;
+            $resultSet = $this->connection->query($sql)->fetchAll();
+            $returnArray = array();
+            foreach ($resultSet as $row) {
+                array_push($returnArray, $row["number"]);
+            }
+            return $returnArray;
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
@@ -241,7 +245,7 @@ class DataBaseTools {
     public function getFullRoutes() {
 
         try {
-            $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number ORDER BY precedence";
+            $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number ORDER BY prefix, suffix;";
             $result = $this->connection->query($sql)->fetchAll();
             $routes = array();
             foreach ($result as $row) {

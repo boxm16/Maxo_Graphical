@@ -289,7 +289,7 @@ class DataBaseTools {
                     $sql .= "OR route_number='$routNumber' AND date_stamp='$date' ";
                 }
             }
-            $sql .= " ORDER BY precedence;";
+            $sql .= " ORDER BY prefix, suffix;";
         }
 
         try {

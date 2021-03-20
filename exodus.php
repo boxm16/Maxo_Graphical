@@ -6,7 +6,12 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $dateStamp = $_GET["dateStamp"];
     $exodusNumber = $_GET["exodusNumber"];
     $startTimeScheduled = $_GET["startTimeScheduled"];
+    //convert dataStamp
+    $time = strtotime(str_replace('/', '-', $dateStamp));
+    $dateStamp = date('Y-m-d', $time);
+
     $exodusDetails = "$dateStamp,  მარშრუტი # $routeNumber, გასვლა #$exodusNumber";
+
     $routeController = new RouteDBController();
     $routes = $routeController->getRouteForExodus($routeNumber, $dateStamp, $exodusNumber);
 

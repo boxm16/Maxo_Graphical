@@ -171,4 +171,10 @@ class RouteDBController {
         return $excelFormPackage;
     }
 
+    public function getRouteForExodus($routeNumber, $dateStamp, $exodusNumber) {
+
+        $routes = $this->dataBaseTools->getRouteForExodus($routeNumber, $dateStamp, $exodusNumber);
+        return $routes = $this->setTripPeriodDNAs($routes);
+    }
+
 }

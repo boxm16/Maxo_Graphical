@@ -1,6 +1,5 @@
 <?php
-require_once './Controller/RouteXLController.php';
-require_once 'clientId.php';
+require_once 'Controller/RouteDBController.php';
 $bodyBuilder = "";
 if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exodusNumber"]) && isset($_GET["startTimeScheduled"])) {
     $routeNumber = $_GET["routeNumber"];
@@ -8,8 +7,8 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $exodusNumber = $_GET["exodusNumber"];
     $startTimeScheduled = $_GET["startTimeScheduled"];
     $exodusDetails = "$dateStamp,  მარშრუტი # $routeNumber, გასვლა #$exodusNumber";
-    $routeController = new RouteXLController();
-    $routes = $routeController->getFullRoutes($clientId);
+    $routeController = new RouteDBController();
+    $routes = $routeController->getRouteForExodus($routeNumber, $dateStamp, $exodusNumber);
 
     $found = false;
 
@@ -61,7 +60,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
                                     $tripPeriodDifferenceTimeLights = $tripPeriod->getTripPeriodDifferenceTimeColor();
                                     $tripPeriodType = $tripPeriod->getType();
                                     $tripPeriodRow = "<tr style=\"background-color:$rowColor;\">"
-                                            . "<td name='startTimeScheduled'>" . $startTimeScheduledFromData. "</td>"
+                                            . "<td name='startTimeScheduled'>" . $startTimeScheduledFromData . "</td>"
                                             . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
                                             . "<td name='startTimeDifference' style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
                                             . "<td>" . $tripPeriod->getTypeGe() . "</td>"

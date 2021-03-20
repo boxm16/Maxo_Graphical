@@ -161,8 +161,7 @@ class DataBaseTools {
             foreach ($days as $day) {
                 $dateStamp = $day->getDateStamp();
                 //here i need thrick to convert time format 
-                $time = strtotime(str_replace('/', '-', $dateStamp));
-                $dateStamp = date('Y-m-d', $time);
+                $dateStamp = convertDateStamp($dateStamp);
 
                 $exoduses = $day->getExoduses();
                 foreach ($exoduses as $exodus) {
@@ -299,6 +298,34 @@ class DataBaseTools {
             echo $e->getCode() . "<br>";
         }
 
+        $routes = array();
+        foreach ($result as $row) {
+            $routeNumber = $row["route_number"];
+            if (key_exists($routeNumber, $routes)) {
+                $existingRoute = $routes[$routeNumber];
+                $refilledRoute = $this->addRowElementsToRoute($existingRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            } else {
+                $newRoute = new RouteXL();
+                $newRoute->setNumber($routeNumber);
+                $refilledRoute = $this->addRowElementsToRoute($newRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            }
+        }
+
+        return $routes;
+    }
+
+    public function getRouteForExodus($routeNumber, $dateStamp, $exodusNumber) {
+
+        $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number WHERE route_number='$routeNumber' AND date_stamp='$dateStamp' AND exodus_number=$exodusNumber ";
+
+        try {
+            $result = $this->connection->query($sql)->fetchAll();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
         $routes = array();
         foreach ($result as $row) {
             $routeNumber = $row["route_number"];
@@ -455,6 +482,12 @@ class DataBaseTools {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
         }
+    }
+
+    //------------------------------
+    private function convertDateStamp($dateStamp) {
+        $time = strtotime(str_replace('/', '-', $dateStamp));
+        return $dateStamp = date('Y-m-d', $time);
     }
 
 }

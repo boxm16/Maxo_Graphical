@@ -161,7 +161,7 @@ class DataBaseTools {
             foreach ($days as $day) {
                 $dateStamp = $day->getDateStamp();
                 //here i need thrick to convert time format 
-                $dateStamp = convertDateStamp($dateStamp);
+                $dateStamp = $this->convertDateStamp($dateStamp);
 
                 $exoduses = $day->getExoduses();
                 foreach ($exoduses as $exodus) {

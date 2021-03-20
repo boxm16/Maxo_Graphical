@@ -344,6 +344,34 @@ class DataBaseTools {
         return $routes;
     }
 
+    public function getRouteForDay($routeNumber, $dateStamp) {
+
+        $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number WHERE route_number='$routeNumber' AND date_stamp='$dateStamp';";
+
+        try {
+            $result = $this->connection->query($sql)->fetchAll();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+        $routes = array();
+        foreach ($result as $row) {
+            $routeNumber = $row["route_number"];
+            if (key_exists($routeNumber, $routes)) {
+                $existingRoute = $routes[$routeNumber];
+                $refilledRoute = $this->addRowElementsToRoute($existingRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            } else {
+                $newRoute = new RouteXL();
+                $newRoute->setNumber($routeNumber);
+                $refilledRoute = $this->addRowElementsToRoute($newRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            }
+        }
+
+        return $routes;
+    }
+
     //route filling part
 
     private function addRowElementsToRoute($route, $row) {

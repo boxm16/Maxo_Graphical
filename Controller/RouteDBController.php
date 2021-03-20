@@ -174,7 +174,13 @@ class RouteDBController {
     public function getRouteForExodus($routeNumber, $dateStamp, $exodusNumber) {
 
         $routes = $this->dataBaseTools->getRouteForExodus($routeNumber, $dateStamp, $exodusNumber);
-        return $routes = $this->setTripPeriodDNAs($routes);
+        return $this->setTripPeriodDNAs($routes);
+    }
+
+    public function getRouteForDay($routeNumber, $dateStamp) {
+
+        $routes = $this->dataBaseTools->getRouteForDay($routeNumber, $dateStamp);
+        return $this->setTripPeriodDNAs($routes);
     }
 
 }

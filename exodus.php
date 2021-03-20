@@ -13,7 +13,7 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $exodusDetails = "$dateStamp,  მარშრუტი # $routeNumber, გასვლა #$exodusNumber";
 
     $routeController = new RouteDBController();
-    $routes = $routeController->getRouteForExodus($routeNumber, $dateStamp, $exodusNumber);
+    $routes = $routeController->getRouteForExodus($routeNumber, $dateStamp, $exodusNumber); //actually return one route, but i just use already created functions, so, dont worry
 
     $found = false;
 

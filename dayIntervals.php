@@ -1,15 +1,18 @@
 <?php
-require_once './Controller/RouteXLController.php';
-require_once 'clientId.php';
+require_once 'Controller/RouteDBController.php';
 if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["tripPeriodType"]) && isset($_GET["startTimeScheduled"])) {
     $routeNumber = $_GET["routeNumber"];
     $dateStamp = $_GET["dateStamp"];
+    //convert dataStamp
+    $time = strtotime(str_replace('/', '-', $dateStamp));
+    $dateStamp = date('Y-m-d', $time);
+
     $tripPeriodTypeFomRequest = $_GET["tripPeriodType"];
     $startTimeScheduledFomRequest = $_GET["startTimeScheduled"];
     $dayIntervalsDetails = "$dateStamp,  მარშრუტი # $routeNumber";
-    $routeController = new RouteXLController();
-    $requestedDates = array($dateStamp);
-    $routes = $routeController->getFullRoutes($clientId);
+
+    $routeController = new RouteDBController();
+    $routes = $routeController->getRouteForDay($routeNumber, $dateStamp); //actually return one route, but i just use already created functions, so, dont worry
 } else {
     $dayIntervalsDetails = "რაღაც შეცდომა მოხდა, სცადე თავიდან";
 }

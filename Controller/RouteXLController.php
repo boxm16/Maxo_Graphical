@@ -98,7 +98,7 @@ class RouteXLController {
             $busType = $row[1]["value"];
             $driverNumber = $row[3]["value"];
             $driverName = $row[4]["value"];
-            $notes = $row[26]["value"];
+            $notes = $row[28]["value"];
 
             $newTripVoucher = new TripVoucherXL();
             $newTripVoucher->setNumber($tripVoucherNumber);
@@ -116,7 +116,7 @@ class RouteXLController {
 
     private function addElementsToExistingTripVoucher($tripVoucher, $row) {
         $tripPeriods = $tripVoucher->getTripPeriods();
-        $tripPeriodTypeStampInRowCell = $row[13]["value"];
+        $tripPeriodTypeStampInRowCell = $row[15]["value"];
         $tripPeriodType = $this->getTripTypeFromTripStampInRowCell($tripPeriodTypeStampInRowCell);
         if ($tripPeriodType == "baseLeaving") {
             $tripPeriod = $this->createBaseLeavingPeriod($row);
@@ -146,7 +146,7 @@ class RouteXLController {
 
     private function createBaseLeavingPeriod($row) {
         $tripPeriodType = "baseLeaving";
-        if ($row[14]["value"] != "") {
+        if ($row[16]["value"] != "") {
             $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
         } else {
             $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
@@ -156,7 +156,7 @@ class RouteXLController {
 
     private function createBaseReturnPeriod($row) {
         $tripPeriodType = "baseReturn";
-        if ($row[14]["value"] != "") {
+        if ($row[16]["value"] != "") {
             $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
         } else {
             $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
@@ -166,7 +166,7 @@ class RouteXLController {
 
     private function createBreakPeriod($row) {
         $tripPeriodType = "break";
-        if ($row[14]["value"] != "") {
+        if ($row[16]["value"] != "") {
             $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
         } else {
             $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
@@ -176,9 +176,9 @@ class RouteXLController {
 
     private function createTripPeridsOfRound($row) {
         $tripPeriodsOfRound = array();
-        if ($row[14]["value"] != "" && $row[20]["value"] != "") {
-            $leftSideTime = $row[14]["value"];
-            $rightSideTime = $row[20]["value"];
+        if ($row[16]["value"] != "" && $row[22]["value"] != "") {
+            $leftSideTime = $row[16]["value"];
+            $rightSideTime = $row[22]["value"];
             $timeCalculator = new TimeCalculator();
             $leftSideTimeInSeconds = $timeCalculator->getSecondsFromTimeStamp($leftSideTime);
             $rightSideTimeInSeconds = $timeCalculator->getSecondsFromTimeStamp($rightSideTime);
@@ -201,12 +201,12 @@ class RouteXLController {
                 return $tripPeriodsOfRound;
             }
         }
-        if ($row[14]["value"] != "") {
+        if ($row[16]["value"] != "") {
             $tripPeriodType = "ab";
             $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
             array_push($tripPeriodsOfRound, $tripPeriod);
         }
-        if ($row[20]["value"] != "") {
+        if ($row[22]["value"] != "") {
             $tripPeriodType = "ba";
             $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
             array_push($tripPeriodsOfRound, $tripPeriod);
@@ -233,23 +233,23 @@ class RouteXLController {
 
     private function createTripPeriodFromLeftSide($row, $type) {
 
-        $startTimeScheduled = $row[14]["value"];
-        $startTimeActual = $row[15]["value"];
-        $startTimeDifference = $row[16]["value"];
-        $arrivalTimeScheduled = $row[17]["value"];
-        $arrivalTimeActual = $row[18]["value"];
-        $arrivalTimeDifference = $row[19]["value"];
+        $startTimeScheduled = $row[16]["value"];
+        $startTimeActual = $row[17]["value"];
+        $startTimeDifference = $row[18]["value"];
+        $arrivalTimeScheduled = $row[19]["value"];
+        $arrivalTimeActual = $row[20]["value"];
+        $arrivalTimeDifference = $row[21]["value"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
         return $tripPeriod;
     }
 
     private function createTripPeriodFromRightSide($row, $type) {
-        $startTimeScheduled = $row[20]["value"];
-        $startTimeActual = $row[21]["value"];
-        $startTimeDifference = $row[22]["value"];
-        $arrivalTimeScheduled = $row[23]["value"];
-        $arrivalTimeActual = $row[24]["value"];
-        $arrivalTimeDifference = $row[25]["value"];
+        $startTimeScheduled = $row[22]["value"];
+        $startTimeActual = $row[23]["value"];
+        $startTimeDifference = $row[24]["value"];
+        $arrivalTimeScheduled = $row[25]["value"];
+        $arrivalTimeActual = $row[26]["value"];
+        $arrivalTimeDifference = $row[27]["value"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
         return $tripPeriod;
     }

@@ -269,6 +269,8 @@ class DataBaseTools {
     }
 
     public function getRequestedRoutesAndDates($requestedRoutesAndDates) {
+
+
         $routesAndDates = explode(",", $requestedRoutesAndDates);
 
         if (count($routesAndDates) > 0) {
@@ -276,6 +278,9 @@ class DataBaseTools {
             $d = explode(":", $firstRouteAndDate);
             $firstRoutNumber = $d[0];
             $firstDate = $d[1];
+            if (strpos($firstDate, "/")) {
+                $firstDate = date_create_from_format("d/m/Y", $firstDate)->format("Y-m-d");
+            }
 
             $sql = "SELECT * FROM route t1 INNER JOIN trip_voucher t2 ON t1.number=t2.route_number INNER JOIN trip_period t3 ON t2.number=t3.trip_voucher_number WHERE route_number='$firstRoutNumber' AND date_stamp='$firstDate' ";
 
@@ -285,10 +290,15 @@ class DataBaseTools {
                     $d = explode(":", $routeAndDate);
                     $routNumber = $d[0];
                     $date = $d[1];
+
+                    if (strpos($date, "/")) {
+                        $date = date_create_from_format("d/m/Y", $date)->format("Y-m-d");
+                    }
                     $sql .= "OR route_number='$routNumber' AND date_stamp='$date' ";
                 }
             }
             $sql .= " ORDER BY prefix, suffix;";
+     
         }
 
         try {
@@ -297,7 +307,6 @@ class DataBaseTools {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
         }
-
         $routes = array();
         foreach ($result as $row) {
             $routeNumber = $row["route_number"];

@@ -1,6 +1,5 @@
 <?php
 require_once 'Controller/RouteDBController.php';
-
 session_start();
 if (isset($_POST["routes:dates"])) {
     $_SESSION["routes:dates"] = $_POST["routes:dates"];

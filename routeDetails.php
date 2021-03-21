@@ -207,6 +207,7 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                         <th>დგომის<br>ფაქტიური<br>დრო</th>
                         <th>'დაკარგული<br>დრო'</th>
                         <th>GPS ინტერვალი</th>
+                        <th>ინტე/ლების ლინკი</th>
                     </tr>
                 </thead>
 
@@ -215,22 +216,22 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                     foreach ($routes as $route) {
                         $routeNumber = $route->getNumber();
                         $days = $route->getDays();
-                        echo "<tr><td colspan='15'><center>მარშრუტა #: " . $routeNumber . "</center></td></tr>";
+                        echo "<tr><td colspan='16'><center>მარშრუტა #: " . $routeNumber . "</center></td></tr>";
 
 
                         foreach ($days as $day) {
                             $dateStamp = $day->getDateStamp();
                             $day->getIntervals(); //here I actially set Intervals
-                            echo "<tr><td colspan='15'><center>თარიღი: " . $dateStamp . "</center></td></tr>";
+                            echo "<tr><td colspan='16'><center>თარიღი: " . $dateStamp . "</center></td></tr>";
                             $exoduses = $day->getExoduses();
                             foreach ($exoduses as $exodus) {
                                 $exodusNumber = $exodus->getNumber();
-                                echo "<tr><td colspan='15'><center>გასვლა #: " . $exodusNumber . "<center></td></tr>";
+                                echo "<tr><td colspan='16'><center>გასვლა #: " . $exodusNumber . "<center></td></tr>";
 
 
                                 $tripVouchers = $exodus->getTripVouchers();
                                 foreach ($tripVouchers as $tripVoucher) {
-                                    echo "<tr><td colspan='15'><center>მარშრუტი #" . $route->getNumber()
+                                    echo "<tr><td colspan='16'><center>მარშრუტი #" . $route->getNumber()
                                     . ". თარიღი:" . $day->getDateStamp()
                                     . ". გასვლა #" . $exodus->getNumber()
                                     . ". საგზური #" . $tripVoucher->getNumber()
@@ -275,7 +276,8 @@ $lostTimePackage = $routesDetailedPackage["lostTimePackage"];
                                         . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
                                         . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
                                         . "<td name='lostTime' style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
-                                        . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
+                                        . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . "</td>"
+                                        . "<td><a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>O</a> </td>"
                                         . "</tr>";
                                     }
                                 }

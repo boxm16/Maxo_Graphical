@@ -128,12 +128,24 @@ foreach ($routes as $route) {
                 $tripVouvherNumber = $tripVoucher->getNumber();
                 $notes = $tripVoucher->getNotes();
 
-                $sheet->setCellValue("A$row", "მარშრუტა #: " . $routeNumber .
+                $text = "მარშრუტა #: " . $routeNumber .
                         "თარიღი: " . $dateStamp .
                         "გასვლა #: " . $exodusNumber .
                         "საგზური #: " . $tripVouvherNumber .
-                        "შენიშვნები: " . $notes);
+                        "შენიშვნები: " . $notes;
+
+
+
+                $sheet->setCellValue("A$row", $text);
                 $spreadsheet->getActiveSheet()->mergeCells("A$row:P$row");
+                $spreadsheet->getActiveSheet()->getStyle("A$row:P$row")->getAlignment()->setWrapText(true);
+                /*   $width = 120;
+                  $height = 20;
+                  if (strlen($text) > $width) {
+                  $spreadsheet->getActiveSheet()->getRowDimension($row)->setRowHeight(ceil(strlen($text) / $width) * $height);
+                  }
+                 */
+
                 $row++;
 
                 $tripPeriods = $tripVoucher->getTripPeriods();
@@ -142,6 +154,7 @@ foreach ($routes as $route) {
                     $startTimeActual = $tripPeriod->getStartTimeActual();
                     $startTimeDifference = $tripPeriod->getStartTimeDifference();
                     $tripPeriodType = $tripPeriod->getType();
+                    $tripPeriodTypeGe = $tripPeriod->getTypeGe();
                     $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
                     $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
                     $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
@@ -157,9 +170,6 @@ foreach ($routes as $route) {
 
 
 
-                    $lostTimeLights = $tripPeriod->getLightsForLostTime();
-                    $startTimeDifferenceLights = $tripPeriod->getStartTimeDifferenceColor();
-                    $arrivalTimeDifferenceLights = $tripPeriod->getArrivalTimeDifferenceColor();
 
                     $rowColor = "white";
                     if ($tripPeriod->getType() == "break") {
@@ -171,52 +181,53 @@ foreach ($routes as $route) {
                             $arrivalTimeDifferenceLights = "lightgrey";
                         }
                     }
+                    $rowColor = convertColor($rowColor);
+                    $lostTimeLights = convertColor($tripPeriod->getLightsForLostTime());
+                    $startTimeDifferenceLights = convertColor($tripPeriod->getStartTimeDifferenceColor());
+                    $arrivalTimeDifferenceLights = convertColor($tripPeriod->getArrivalTimeDifferenceColor());
 
-                    $tripPeriodDifferenceTimeLights = $tripPeriod->getTripPeriodDifferenceTimeColor();
+
+
+                    $tripPeriodDifferenceTimeLights = convertColor($tripPeriod->getTripPeriodDifferenceTimeColor());
 
 
                     //cell filling
+                    $spreadsheet->getActiveSheet()->getStyle("A$row:P$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($rowColor);
+
+
+
                     $sheet->setCellValue("A$row", $startTimeScheduled);
                     $sheet->setCellValue("B$row", $startTimeActual);
                     $sheet->setCellValue("C$row", $startTimeDifference);
-                    $sheet->setCellValue("D$row", $tripPeriodType);
+                    $spreadsheet->getActiveSheet()->getStyle("C$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($startTimeDifferenceLights);
+
+
+                    $sheet->setCellValue("D$row", $tripPeriodTypeGe);
                     $sheet->setCellValue("E$row", $arrivalTimeScheduled);
                     $sheet->setCellValue("F$row", $arrivalTimeActual);
                     $sheet->setCellValue("G$row", $arrivalTimeDifference);
+                    $spreadsheet->getActiveSheet()->getStyle("G$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($arrivalTimeDifferenceLights);
 
-                    $sheet->setCellValue("H$row", "link here");
+
+                    $sheet->getCell("H$row")->getHyperlink()->setUrl("$context/exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled");
+                    $sheet->setCellValue("H$row", "link");
 
                     $sheet->setCellValue("I$row", $tripPeriodScheduledTime);
                     $sheet->setCellValue("J$row", $tripPeriodActualTime);
                     $sheet->setCellValue("K$row", $tripPeriodDifferenceTime);
+                    $spreadsheet->getActiveSheet()->getStyle("K$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($tripPeriodDifferenceTimeLights);
+
                     $sheet->setCellValue("L$row", $haltTimeScheduled);
                     $sheet->setCellValue("M$row", $haltTimeActual);
                     $sheet->setCellValue("N$row", $lostTime);
+                    $spreadsheet->getActiveSheet()->getStyle("N$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($lostTimeLights);
+
                     $sheet->setCellValue("O$row", $gpsBasedActualInterval);
-                    $sheet->setCellValue("P$row", "link here");
+
+                    $sheet->getCell("P$row")->getHyperlink()->setUrl("$context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled");
+                    $sheet->setCellValue("P$row", "O");
 
                     $row++;
-                    /*
-
-                      echo "<tr style=\"background-color:$rowColor;\">"
-                      . "<td name='startTimeScheduled'>" . $tripPeriod->getStartTimeScheduled() . "</td>"
-                      . "<td name='startTimeActual'>" . $tripPeriod->getStartTimeActual() . "</td>"
-                      . "<td name='startTimeDifference' style=\"background-color:$startTimeDifferenceLights;\">" . $tripPeriod->getStartTimeDifference() . "</td>"
-                      . "<td>" . $tripPeriod->getTypeGe() . "</td>"
-                      . "<td name='arrivalTimeScheduled'>" . $tripPeriod->getArrivalTimeScheduled() . "</td>"
-                      . "<td name='arrivalTimeActual'>" . $tripPeriod->getArrivalTimeActual() . "</td>"
-                      . "<td name='startTimeDifference' style=\"background-color:$arrivalTimeDifferenceLights;\">" . $tripPeriod->getArrivalTimeDifference() . "</td>"
-                      . "<td><a href='exodus.php?routeNumber=$routeNumber&dateStamp=$dateStamp&exodusNumber=$exodusNumber&startTimeScheduled=$startTimeScheduled'  target='_blank'>link</a></td>"
-                      . "<td name='tripPeriodScheduledTime'>" . $tripPeriod->getTripPeriodScheduledTime() . "</td>"
-                      . "<td name='tripPeriodActualTime'>" . $tripPeriod->getTripPeriodActualTime() . "</td>"
-                      . "<td name='tripPeriodDifferenceTime' style=\"background-color:$tripPeriodDifferenceTimeLights;\" >" . $tripPeriod->getTripPeriodDifferenceTime() . "</td>"
-                      . "<td name='haltTimeScheduled'>" . $tripPeriod->getHaltTimeScheduled() . "</td>"
-                      . "<td name='haltTimeActual'>" . $tripPeriod->getHaltTimeActual() . "</td>"
-                      . "<td name='lostTime' style='background-color:$lostTimeLights'>" . $tripPeriod->getLostTime() . "</td>"
-                      . "<td style='background-color:white'> " . $tripPeriod->getGpsBasedActualInterval() . " <a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$startTimeScheduled'  target='_blank'>   O</a></td>"
-                      . "</tr>";
-                     * 
-                     * */
                 }
             }
         }
@@ -249,3 +260,24 @@ header("Content-disposition: attachment; filename=\"" . $filename . "\"");
 readfile($filename);
 
 unlink($filename);
+
+function convertColor($colorPlainText) {
+    if ($colorPlainText == "white") {
+        return "FFFFFF";
+    }
+    if ($colorPlainText == "red") {
+        return "FF0000";
+    }
+    if ($colorPlainText == "yellow") {
+        return "FFFF00";
+    }
+    if ($colorPlainText == "green") {
+        return "008000";
+    }
+    if ($colorPlainText == "blue") {
+        return "0000FF";
+    }
+    if ($colorPlainText == "lightgrey") {
+        return "d3d3d3";
+    }
+}

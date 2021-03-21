@@ -27,8 +27,10 @@ switch ($currentPage) {
             <div class=\"dropdown-content\">
                 <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button><br>
                 <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#markerModal\">მარკერები</button><br>
-              <button  class=\"btn btn-warning\" onclick=\"copytable('mainTable')\">ცხრილის კოპირება</button>
-           </div></li>";
+             <form id=\"convert_form\" action=\"routeDetailsExcelExport.php\" method=\"POST\">
+             <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
+             </form>
+          </div></li>";
 
 
 

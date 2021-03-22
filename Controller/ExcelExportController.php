@@ -202,6 +202,8 @@ class ExcelExportController {
                 $sheet->setCellValue("C$row", $ab_driverName);
                 $sheet->setCellValue("D$row", $ab_lastTripPeriodStartTimeScheduled);
                 $sheet->setCellValue("E$row", $ab_lastTripPeriodStartTimeActual);
+                $ab_light = $this->convertColor($ab_light);
+                $sheet->getStyle("E$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ab_light);
 
                 $sheet->setCellValue("F$row", $ab_lastTripPeriodExodusNumber);
                 $tripPeriodType = "ab";
@@ -218,6 +220,9 @@ class ExcelExportController {
                 $sheet->setCellValue("K$row", $ba_driverName);
                 $sheet->setCellValue("L$row", $ba_lastTripPeriodStartTimeScheduled);
                 $sheet->setCellValue("M$row", $ba_lastTripPeriodStartTimeActual);
+
+                $ba_light = $this->convertColor($ba_light);
+                $spreadsheet->getActiveSheet()->getStyle("M$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ba_light);
 
                 $sheet->setCellValue("N$row", $ba_lastTripPeriodExodusNumber);
                 $tripPeriodType = "ba";
@@ -283,6 +288,28 @@ class ExcelExportController {
         readfile($filename);
 
         unlink($filename);
+    }
+
+    //------------
+    private function convertColor($colorPlainText) {
+        if ($colorPlainText == "white") {
+            return "FFFFFF";
+        }
+        if ($colorPlainText == "red") {
+            return "FF0000";
+        }
+        if ($colorPlainText == "yellow") {
+            return "FFFF00";
+        }
+        if ($colorPlainText == "green") {
+            return "008000";
+        }
+        if ($colorPlainText == "blue") {
+            return "0000FF";
+        }
+        if ($colorPlainText == "lightgrey") {
+            return "d3d3d3";
+        }
     }
 
 }

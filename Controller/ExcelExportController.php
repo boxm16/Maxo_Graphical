@@ -197,12 +197,15 @@ class ExcelExportController {
                     }
                 }
                 $middle_light = "white";
+                $sheet->setCellValue("J$row", "0");
                 if ($ab_light == "red" || $ab_light == "yellow") {
                     $middle_light = $ab_light;
+                    $sheet->setCellValue("J$row", "1");
                 }
                 if ($ba_light == "red" || $ba_light == "yellow") {
                     if ($middle_light == "white" || $middle_light == "yellow") {
                         $middle_light = $ba_light;
+                        $sheet->setCellValue("J$row", "1");
                     }
                 }
 
@@ -228,7 +231,7 @@ class ExcelExportController {
                 $sheet->setCellValue("H$row", $gps_ab_lastTripScheduled);
                 $sheet->setCellValue("I$row", $gps_ab_lastTripActual);
 
-                $sheet->setCellValue("J$row", "-");
+
                 $sheet->getStyle("J$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($middle_light);
 
 

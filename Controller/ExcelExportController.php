@@ -198,15 +198,16 @@ class ExcelExportController {
                 }
                 $middle_light = "white";
                 $sheet->setCellValue("J$row", "0");
-                if ($ab_light == "red" || $ab_light == "yellow") {
-                    $middle_light = $ab_light;
+                if (($ab_light == "yellow" || $ba_light == "yellow")) {
+                    $middle_light = "yellow";
+                }
+                if ($ab_light == "red" || $ba_light == "red") {
+                    $middle_light = "red";
                     $sheet->setCellValue("J$row", "1");
                 }
-                if ($ba_light == "red" || $ba_light == "yellow") {
-                    if ($middle_light == "white" || $middle_light == "yellow") {
-                        $middle_light = $ba_light;
-                        $sheet->setCellValue("J$row", "1");
-                    }
+                if ($ab_light == "red" && $ba_light == "red") {
+                    $middle_light = $ab_light;
+                    $sheet->setCellValue("J$row", "2");
                 }
 
 

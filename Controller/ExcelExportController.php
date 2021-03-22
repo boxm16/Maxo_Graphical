@@ -197,12 +197,23 @@ class ExcelExportController {
                     }
                 }
 
-                $sheet->setCellValue("A$row", $routeNumber);
+                if ($ab_light == "red" || $ab_light = "yellow") {
+                    $middle_light = $ab_light;
+                }
+                if ($ba_light == "red" || $ba_light = "yellow") {
+                    if ($middle_light == "white" || $middle_light == "yellow") {
+                        $middle_light = $ba_light;
+                    }
+                }
+
+                $ab_light = $this->convertColor($ab_light);
+                $ba_light = $this->convertColor($ba_light);
+                $middle_light = $this->convertColor($middle_light);
                 $sheet->setCellValue("B$row", $dateStamp);
                 $sheet->setCellValue("C$row", $ab_driverName);
                 $sheet->setCellValue("D$row", $ab_lastTripPeriodStartTimeScheduled);
                 $sheet->setCellValue("E$row", $ab_lastTripPeriodStartTimeActual);
-                $ab_light = $this->convertColor($ab_light);
+
                 $sheet->getStyle("E$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ab_light);
 
                 $sheet->setCellValue("F$row", $ab_lastTripPeriodExodusNumber);
@@ -216,12 +227,14 @@ class ExcelExportController {
                 $sheet->setCellValue("I$row", $gps_ab_lastTripActual);
 
                 $sheet->setCellValue("J$row", "-");
+                $sheet->getStyle("J$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($middle_light);
+
 
                 $sheet->setCellValue("K$row", $ba_driverName);
                 $sheet->setCellValue("L$row", $ba_lastTripPeriodStartTimeScheduled);
                 $sheet->setCellValue("M$row", $ba_lastTripPeriodStartTimeActual);
 
-                $ba_light = $this->convertColor($ba_light);
+
                 $spreadsheet->getActiveSheet()->getStyle("M$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ba_light);
 
                 $sheet->setCellValue("N$row", $ba_lastTripPeriodExodusNumber);

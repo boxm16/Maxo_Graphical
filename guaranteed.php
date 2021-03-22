@@ -43,11 +43,12 @@ and open the template in the editor.
     <center> 
         <form action="excelExportDispatcher.php" method="POST">
             <input hidden name="guaranteed">
-            <input type='submit' value="ექსელში ექსპორტი" style="background-color: orange">
+            <input type='submit' value="ექსელში ექსპორტი" style="background-color: orange;  font-size: 20px;">
         </form>
     </center>
     <h4>1-დაგეგმილი ბოლო რეისის გეგმიური გასვლის დრო. 2-დაგეგმილი ბოლო რეისის ფაქტიური გასვლის დრო.   3- დაგეგმილი ბოლო რეისის გასვლის ნომერი.   <br>
-        4-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის გასვლის ნომერი. 5-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის გეგმიური გასვლის დრო. 6-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის ფაქტიური გასვლის დრო </h4>
+        4-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის გასვლის ნომერი. 5-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის გეგმიური გასვლის დრო. 6-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის ფაქტიური გასვლის დრო<br>
+    რ.ვ.ი. - რეისი ვერ იძებნება </h4>
     <table>
         <thead>
             <tr>
@@ -67,18 +68,18 @@ and open the template in the editor.
                 <th>
                     მძღოლი
                 </th>
-                <th><b>1</b><br>
+                <th><b>1*</b><br>
                     A_B     გეგმიური გასვლის დრო
                 </th>
-                <th><b>2</b><br>
+                <th><b>2*</b><br>
                     A_B     ფაქტიური გასვლის დრო
                 </th>
-                <th><b>3</b><br>გასვლის ნომერი</th>
-                <th><b>4</b><br>GPS გასვლის ნომერი</th>
-                <th><b>5</b><br>
+                <th><b>3*</b><br>გასვლის ნომერი</th>
+                <th><b>4*</b><br>GPS გასვლის ნომერი</th>
+                <th><b>5*</b><br>
                     A_B    GPS გეგმიური გასვლის დრო
                 </th>
-                <th><b>6</b><br>
+                <th><b>6*</b><br>
                     A_B    ფაქტიური გასვლის დრო
                 </th>
                 <th>
@@ -87,18 +88,18 @@ and open the template in the editor.
                 <th>
                     მძღოლი
                 </th>
-                <th><b>1</b><br>
+                <th><b>1*</b><br>
                     B_A     გეგმიური გასვლის დრო
                 </th>
-                <th><b>2</b><br>
+                <th><b>2*</b><br>
                     B_A     ფაქტიური გასვლის დრო
                 </th>
-                <th><b>3</b><br>გასვლის ნომერი</th>
-                <th><b>4</b><br>GPS გასვლის ნომერი</th>
-                <th><b>5</b><br>
+                <th><b>3*</b><br>გასვლის ნომერი</th>
+                <th><b>4*</b><br>GPS გასვლის ნომერი</th>
+                <th><b>5*</b><br>
                     B_A    GPS გეგმიური გასვლის დრო
                 </th>
-                <th><b>6</b><br>
+                <th><b>6*</b><br>
                     B_A    GPS   ფაქტიური გასვლის დრო
                 </th>
             </tr>
@@ -126,10 +127,10 @@ and open the template in the editor.
                         $ab_lastTripPeriodType = $ab_lastTripPeriodScheduled->getType();
                         $ab_driverName = $ab_lastTripPeriodScheduled->getTripPeriodDNA()->getDriverName();
                     } else {
-                        $ab_lastTripPeriodStartTimeScheduled = "რეისი ვერ იძებნება";
-                        $ab_lastTripPeriodStartTimeActual = "რეისი ვერ იძებნება";
-                        $ab_lastTripPeriodExodusNumber = "რეისი ვერ იძებნება";
-                        $ab_lastTripPeriodType = "რეისი ვერ იძებნება";
+                        $ab_lastTripPeriodStartTimeScheduled = "რ.ვ.ი.*";
+                        $ab_lastTripPeriodStartTimeActual = "რ.ვ.ი.*";
+                        $ab_lastTripPeriodExodusNumber = "რ.ვ.ი.*ა";
+                        $ab_lastTripPeriodType = "რ.ვ.ი.*";
                     }
                     if ($ba_lastTripPeriodScheduled != null) {
                         $ba_lastTripPeriodStartTimeScheduled = $ba_lastTripPeriodScheduled->getStartTimeScheduled();
@@ -138,10 +139,10 @@ and open the template in the editor.
                         $ba_lastTripPeriodType = $ba_lastTripPeriodScheduled->getType();
                         $ba_driverName = $ba_lastTripPeriodScheduled->getTripPeriodDNA()->getDriverName();
                     } else {
-                        $ba_lastTripPeriodStartTimeScheduled = "რეისი ვერ იძებნება";
-                        $ba_lastTripPeriodStartTimeActual = "რეისი ვერ იძებნება";
-                        $ba_lastTripPeriodExodusNumber = "რეისი ვერ იძებნება";
-                        $ba_lastTripPeriodType = "რეისი ვერ იძებნება";
+                        $ba_lastTripPeriodStartTimeScheduled = "რ.ვ.ი.*";
+                        $ba_lastTripPeriodStartTimeActual = "რ.ვ.ი.*";
+                        $ba_lastTripPeriodExodusNumber = "რ.ვ.ი.*";
+                        $ba_lastTripPeriodType = "რ.ვ.ი.*";
                     }
                     if ($ab_lastTripPeriodActual != null) {
                         $gps_ab_lastTripScheduled = $ab_lastTripPeriodActual->getStartTimeScheduled();
@@ -149,10 +150,10 @@ and open the template in the editor.
                         $gps_ab_lastTripExodusNumber = $ab_lastTripPeriodActual->getTripPeriodDNA()->getExodusNumber();
                         $gps_ab_lastTripPeriodType = $ab_lastTripPeriodActual->getType();
                     } else {
-                        $gps_ab_lastTripScheduled = "რეისი ვერ იძებნება";
-                        $gps_ab_lastTripActual = "რეისი ვერ იძებნება";
-                        $gps_ab_lastTripExodusNumber = "რეისი ვერ იძებნება";
-                        $gps_ab_lastTripPeriodType = "რეისი ვერ იძებნება";
+                        $gps_ab_lastTripScheduled = "რ.ვ.ი.*";
+                        $gps_ab_lastTripActual = "რ.ვ.ი.*";
+                        $gps_ab_lastTripExodusNumber = "რ.ვ.ი.*";
+                        $gps_ab_lastTripPeriodType = "რ.ვ.ი.*";
                     }
 
                     if ($ba_lastTripPeriodActual != null) {
@@ -161,10 +162,10 @@ and open the template in the editor.
                         $gps_ba_lastTripExodusNumber = $ba_lastTripPeriodActual->getTripPeriodDNA()->getExodusNumber();
                         $gps_ba_lastTripPeriodType = $ba_lastTripPeriodActual->getType();
                     } else {
-                        $gps_ba_lastTripScheduled = "რეისი ვერ იძებნება";
-                        $gps_ba_lastTripActual = "რეისი ვერ იძებნება";
-                        $gps_ba_lastTripExodusNumber = "რეისი ვერ იძებნება";
-                        $gps_ba_lastTripPeriodType = "რეისი ვერ იძებნება";
+                        $gps_ba_lastTripScheduled = "რ.ვ.ი.*";
+                        $gps_ba_lastTripActual = "რ.ვ.ი.*";
+                        $gps_ba_lastTripExodusNumber = "რ.ვ.ი.*";
+                        $gps_ba_lastTripPeriodType = "რ.ვ.ი.*";
                     }
 //HERE START CHECKING ALGORITHM
                     if ($ab_lastTripPeriodScheduled != null && $ab_lastTripPeriodActual != null) {
@@ -235,21 +236,6 @@ and open the template in the editor.
                             . "</tr>";
 
                     echo $row;
-
-                    //---------------
-                    /*     echo "$routeNumber :"
-                      . "$dateStamp:"
-                      . "$ab_lastTripPeriodStartTimeScheduled:"
-                      . "$ab_lastTripPeriodStartTimeActual:"
-                      . "$gps_ab_lastTripScheduled:"
-                      . "$gps_ab_lastTripActual:"
-                      . "<td>--<td>"
-                      . "$ba_lastTripPeriodStartTimeScheduled:"
-                      . "$ba_lastTripPeriodStartTimeActual:"
-                      . "$gps_ba_lastTripScheduled:"
-                      . "$gps_ba_lastTripActual:"
-                      . "<br>";
-                     */
                 }
             }
             echo $bodyBuilder;

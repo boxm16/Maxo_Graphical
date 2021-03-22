@@ -196,15 +196,16 @@ class ExcelExportController {
                         }
                     }
                 }
-
-                if ($ab_light == "red" || $ab_light = "yellow") {
+                $middle_light = "white";
+                if ($ab_light == "red" || $ab_light == "yellow") {
                     $middle_light = $ab_light;
                 }
-                if ($ba_light == "red" || $ba_light = "yellow") {
+                if ($ba_light == "red" || $ba_light == "yellow") {
                     if ($middle_light == "white" || $middle_light == "yellow") {
                         $middle_light = $ba_light;
                     }
                 }
+
 
                 $ab_light = $this->convertColor($ab_light);
                 $ba_light = $this->convertColor($ba_light);

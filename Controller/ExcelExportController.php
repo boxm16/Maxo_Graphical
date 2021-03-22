@@ -66,7 +66,7 @@ class ExcelExportController {
         $sheet->setCellValue('G2', '4* -  GPS გასვლის ნომერი');
         $sheet->setCellValue('H2', '5* -  A_B GPS გეგმიური გასვლის დრო');
         $sheet->setCellValue('I2', '6* -  A_B ფაქტიური გასვლის დრო');
-        $sheet->setCellValue('J2', '-');
+        //  $sheet->setCellValue('J2', '=SUBTOTAL(9,J3:J114)'); THIS IS WRITTEN AT THE END OF THIS FUNCTION, TO SEE WHAT ROW IS LAST
 
         $sheet->setCellValue('K2', 'მძღოლი');
         $sheet->setCellValue('L2', '1* - A_B გეგმიური გასვლის დრო');
@@ -256,7 +256,7 @@ class ExcelExportController {
             }
         }
 
-
+        $sheet->setCellValue('J2', "=SUBTOTAL(9,J3:J$row)");
 
 
 

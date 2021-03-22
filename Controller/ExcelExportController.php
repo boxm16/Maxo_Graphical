@@ -210,6 +210,7 @@ class ExcelExportController {
                 $ab_light = $this->convertColor($ab_light);
                 $ba_light = $this->convertColor($ba_light);
                 $middle_light = $this->convertColor($middle_light);
+                $sheet->setCellValue("A$row", $routeNumber);
                 $sheet->setCellValue("B$row", $dateStamp);
                 $sheet->setCellValue("C$row", $ab_driverName);
                 $sheet->setCellValue("D$row", $ab_lastTripPeriodStartTimeScheduled);
@@ -248,27 +249,8 @@ class ExcelExportController {
                 $sheet->setCellValue("P$row", $gps_ba_lastTripScheduled);
                 $sheet->setCellValue("Q$row", $gps_ba_lastTripActual);
 
-                /* "<tr>"
-                  . "<td>$routeNumber</td>"
-                  . "<td>$dateStamp</td>"
-                  . "<td>$ab_driverName</td>"
-                  . "<td>$ab_lastTripPeriodStartTimeScheduled</td>"
-                  . "<td style=\"background-color:$ab_light\">$ab_lastTripPeriodStartTimeActual</td>"
-                  . "<td><a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$ab_lastTripPeriodType&startTimeScheduled=$ab_lastTripPeriodStartTimeScheduled'  target='_blank'>$ab_lastTripPeriodExodusNumber</a></td>"
-                  . "<td><a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$gps_ab_lastTripPeriodType&startTimeScheduled=$gps_ab_lastTripScheduled'  target='_blank'>$gps_ab_lastTripExodusNumber</a></td>"
-                  . "<td>$gps_ab_lastTripScheduled</td>"
-                  . "<td>$gps_ab_lastTripActual</td>"
-                  . "<td>-</td>"
-                  . "<td>$ba_driverName</td>"
-                  . "<td>$ba_lastTripPeriodStartTimeScheduled</td>"
-                  . "<td style=\"background-color:$ba_light\">$ba_lastTripPeriodStartTimeActual</td>"
-                  . "<td><a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$ba_lastTripPeriodType&startTimeScheduled=$ba_lastTripPeriodStartTimeScheduled'  target='_blank'>$ba_lastTripPeriodExodusNumber</a></td>"
-                  . "<td><a href='dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$gps_ba_lastTripPeriodType&startTimeScheduled=$gps_ba_lastTripScheduled'  target='_blank'>$gps_ba_lastTripExodusNumber</a></td>"
-                  . "<td>$gps_ba_lastTripScheduled</td>"
-                  . "<td>$gps_ba_lastTripActual</td>"
-                  . "</tr>"; */
+                $row++;
             }
-            $row++;
         }
 
 

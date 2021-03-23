@@ -451,9 +451,12 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                             <table id="calculationModalTable" style="width:100%;"  height="100px">
                                 <thead>
                                     <tr>
-                                        <th>მარშრუტი და მიმართულება</th>
+                                        <th>მარშრუტი</th>
+                                        <th>ორივე მიმართულების<br>ჩათვლილი ბრუნები</th>
+                                        <th>ორივე მიმართულების<br>ბრუნების საშუალო ფაქტიური დრო</th>
+                                        <th>მიმართულება</th>
                                         <th>ჩათვლილი ბრუნები</th>
-
+                                        <th>ბრუნების სტანდარტული გეგმიური დრო</th>
                                         <th>ბრუნების საშუალო ფაქტიური დრო</th>
                                     </tr>
                                 </thead>
@@ -783,6 +786,117 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                 function calculateAndDisplayAverage() {
                                     var calculationRows = document.getElementById("mainTableBody").rows;
                                     calculationsTableBody.innerHTML = "";
+                                    let routes = new Map();
+                                    let cells;
+                                    let routeNumber;
+                                    let tripPeriodType;
+                                    let tripPeriodTimeScheduled;
+                                    let tripPeriodTimeActual;
+                                    let tripPeriodTimeScheduledInSeconds;
+                                    let tripPeriodTimeActualInSeconds;
+                                    for (x = 0; x < calculationRows.length; x++) {
+                                        cells = calculationRows[x].getElementsByTagName("td");
+                                        routeNumber = cells[0].innerHTML;
+                                        tripPeriodType = cells[5].innerHTML;
+                                        if (tripPeriodType == "A_B" || tripPeriodType == "B_A") {
+                                            tripPeriodTimeScheduled = cells[10].innerHTML;
+                                            tripPeriodTimeActual = cells[11].innerHTML;
+                                            if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
+                                                if (routes.has(routeNumber)) {
+                                                    if (tripPeriodType == "A_B") {
+                                                        tripPeriodTimeActualInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
+                                                        let route = routes.get(routeNumber);
+                                                        route.ab_count = route.ab_count + 1;
+                                                        route.ab_tripPeriodTimeTotal += tripPeriodTimeActualInSeconds;
+                                                        if (route.ab_tripPeriodTimeStandart == "") {
+                                                            route.ab_tripPeriodTimeStandart = tripPeriodTimeScheduled;
+                                                        } else {
+                                                            if (route.ab_tripPeriodTimeStandart != tripPeriodTimeScheduled) {
+                                                                route.ab_tripPeriodTimeStandart = "multiStandart";
+                                                            }
+                                                        }
+
+                                                    } else {
+                                                        tripPeriodTimeActualInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
+                                                        let route = routes.get(routeNumber);
+                                                        route.ba_count = route.ba_count + 1;
+                                                        route.ba_tripPeriodTimeTotal += tripPeriodTimeActualInSeconds;
+                                                        if (route.ba_tripPeriodTimeStandart == "") {
+                                                            route.ba_tripPeriodTimeStandart = tripPeriodTimeScheduled;
+                                                        } else {
+                                                            if (route.ba_tripPeriodTimeStandart != tripPeriodTimeScheduled) {
+                                                                route.ba_tripPeriodTimeStandart = "multiStandart";
+                                                            }
+                                                        }
+                                                    }
+
+                                                } else {
+                                                    if (tripPeriodType == "A_B") {
+                                                        tripPeriodTimeActualInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
+                                                        let route = {routeNumber: routeNumber, ab_count: 1, ab_tripPeriodTimeStandart: tripPeriodTimeScheduled, ab_tripPeriodTimeTotal: tripPeriodTimeActualInSeconds, ba_count: 0, ba_tripPeriodTimeStandart: "", ba_tripPeriodTimeTotal: 0};
+                                                        routes.set(routeNumber, route);
+                                                    } else {
+                                                        tripPeriodTimeActualInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
+                                                        let route = {routeNumber: routeNumber, ab_count: 0, ab_tripPeriodTimeStandart: "", ab_tripPeriodTimeTotal: 0, ba_count: 1, ba_tripPeriodTimeStandart: tripPeriodTimeScheduled, ba_tripPeriodTimeTotal: tripPeriodTimeActualInSeconds};
+                                                        routes.set(routeNumber, route);
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+
+
+
+
+                                    let trs = "";
+                                    let ab_count;
+                                    let ab_standartTime;
+                                    let ab_totalTotalTime;
+                                    let ab_averageTime;
+
+                                    let ba_count;
+                                    let ba_standartTime;
+                                    let ba_totalTotalTime;
+                                    let ba_averageTime;
+
+                                    let both_count;
+                                    let both_averageTime;
+                                    let both_averageTimeInSeconds;
+                                    for (let [routeNumber, route] of routes) {
+                                        ab_count = route.ab_count;
+                                        ab_standartTime = route.ab_tripPeriodTimeStandart;
+                                        ab_totalTotalTime = route.ab_tripPeriodTimeTotal;
+                                        ab_averageTime = calculateAverage(ab_totalTotalTime, ab_count);
+                                        ba_count = route.ba_count;
+                                        ba_standartTime = route.ba_tripPeriodTimeStandart;
+                                        ba_totalTotalTime = route.ba_tripPeriodTimeTotal;
+                                        ba_averageTime = calculateAverage(ba_totalTotalTime, ba_count);
+                                        both_count = ab_count + ba_count;
+                                        if (ab_averageTime != "" && ba_averageTime != "") {
+                                            both_averageTimeInSeconds = convertTimeStampIntoSeconds(ab_averageTime) + convertTimeStampIntoSeconds(ba_averageTime)
+                                        } else {
+                                            both_averageTimeInSeconds = "";
+                                        }
+                                        both_averageTime = calculateAverage(both_averageTimeInSeconds, 2);
+                                        trs += "<tr><td rowspan='2'>" + routeNumber + "</td><td rowspan='2'>" + both_count + "</td><td rowspan='2'>" + both_averageTime + "</td><td>A_B</td><td>" + ab_count + "</td><td>" + ab_standartTime + "</td><td>" + ab_averageTime + "</td></tr>"
+                                                + "<tr><td>B_A</td><td>" + ba_count + "</td><td>" + ba_standartTime + "</td><td>" + ba_averageTime + "</td></tr>";
+
+
+                                    }
+
+
+                                    calculationsTableBody.innerHTML = trs;
+                                    let perc = percentage.value;
+                                    percentDisplay.innerHTML = "გამოთვლისთვის არის გამოყენებული მხოლოდ A-B და B-A წირები, რომლების გეგმიური და ფაქტიური დროს შორის აცდენა უდრის ან ნაკლებია( =< ) " + perc + "%-ს";
+
+                                }
+
+
+                                function calculateAndDisplayAverage1() {
+                                    var calculationRows = document.getElementById("mainTableBody").rows;
+                                    calculationsTableBody.innerHTML = "";
                                     var routeNumbers = new Array();
                                     var counter = new Array();
                                     var total = new Array();
@@ -863,6 +977,9 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                 }
 
                                 function calculateAverage(totalSeconds, count) {
+                                    if (totalSeconds == "") {
+                                        return "";
+                                    }
 
                                     var averageSeconds = Math.round(totalSeconds / count);
                                     var hours = Math.trunc(averageSeconds / 3600);

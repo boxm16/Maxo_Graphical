@@ -201,6 +201,26 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
 
             <!-- FILTER MODAL WINODW start -->
             <!-- Modal -->
+            <form id="excelExportForm" action="excelExportDispatcher.php" method="POST"  target="_blank">
+                <input name="excelForm" hidden>
+                <input id="routeNumber"  name="routeNumber" type="hidden">
+                <input id="dateStamp"  name="dateStamp" type="hidden">
+                <input id="busNumber"  name="busNumber" type="hidden">
+                <input id="exodusNumber"  name="exodusNumber" type="hidden">
+                <input id="driverName"  name="driverName" type="hidden">
+
+                <input id="tripPeriodType"  name="tripPeriodType" type="hidden">
+                <input id="startTimeScheduled"  name="startTimeScheduled" type="hidden">
+                <input id="startTimeActual"  name="startTimeActual" type="hidden">
+                <input id="arrivalTimeScheduled"  name="arrivalTimeScheduled" type="hidden">
+                <input id="arrivalTimeActual"  name="arrivalTimeActual" type="hidden">
+
+                <input id="tripPeriodScheduled"  name="tripPeriodScheduled" type="hidden">
+                <input id="tripPeriodActual"  name="tripPeriodActual" type="hidden">
+                <input id="tripPeriodDifference"  name="tripPeriodDifference" type="hidden">
+                <input id="percents"  name="percents" type="hidden">
+            </form>
+
             <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -254,7 +274,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($routeNumberPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"routeNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"routeNumberPackage\" class=\"routeNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -267,7 +287,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($dateStampPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"dateStampPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"dateStampPackage\" class=\"dateStampPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -280,7 +300,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($busNumberPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"busNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"busNumberPackage\" class=\"busNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -293,7 +313,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($exodusNumberPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"exodusNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"exodusNumberPackage\" class=\"exodusNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -306,7 +326,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($driverNamePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"driverNamePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"driverNamePackage\" class=\"driverNamePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -319,7 +339,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($tripPeriodTypePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"tripPeriodTypePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"tripPeriodTypePackage\" class=\"tripPeriodTypePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -332,7 +352,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($startTimeScheduledPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"startTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"startTimeScheduledPackage\" class=\"startTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -345,7 +365,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($startTimeActualPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"startTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"startTimeActualPackage\" class=\"startTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -358,7 +378,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($arrivalTimeScheduledPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"arrivalTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"arrivalTimeScheduledPackage\" class=\"arrivalTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -371,7 +391,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($arrivalTimeActualPackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"arrivalTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"arrivalTimeActualPackage\" class=\"arrivalTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -384,7 +404,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($tripPeriodScheduledTimePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"tripPeriodScheduledTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"tripPeriodScheduledTimePackage\" class=\"tripPeriodScheduledTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -397,7 +417,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($tripPeriodActualTimePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"tripPeriodActualTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"tripPeriodActualTimePackage\" class=\"tripPeriodActualTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -410,7 +430,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                                     <?php
                                                     foreach ($tripPeriodDifferenceTimePackage as $x => $x_value) {
-                                                        echo "<tr><td><input name=\"tripPeriodDifferenceTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                                        echo "<tr><td><input name=\"tripPeriodDifferenceTimePackage\" class=\"tripPeriodDifferenceTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
                                                     }
                                                     ?> 
                                                 </tbody>
@@ -431,6 +451,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                     </div>
                 </div>
             </div>
+
             <!--FILTER MODAL WINODW end -->
 
 
@@ -452,12 +473,15 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                 <thead>
                                     <tr>
                                         <th>მარშრუტი</th>
-                                        <th>ორივე მიმართულების<br>ჩათვლილი ბრუნები</th>
-                                        <th>ორივე მიმართულების<br>ბრუნების საშუალო ფაქტიური დრო</th>
                                         <th>მიმართულება</th>
-                                        <th>ჩათვლილი ბრუნები</th>
-                                        <th>ბრუნების სტანდარტული გეგმიური დრო</th>
-                                        <th>ბრუნების საშუალო ფაქტიური დრო</th>
+                                        <th>-პროცენტი<=X<0 ჩათვლილი ბრუნები ჩაოდენობა</th>
+                                        <th>-პროცენტი<=X<0 ჩათვლილი ბრუნების საშუალო ფაქტიური დრო</th>
+                                        <th>0<=X<პროცენტი ჩათვლილი ბრუნები ჩაოდენობა</th>
+                                        <th>0<=X<პროცენტი ჩათვლილი ბრუნების საშუალო ფაქტიური დრო</th>
+                                        <th>ყველა ჩათვლილი ბრუნები ჩაოდენობა</th>
+                                        <th>ყველა ჩათვლილი ბრუნების საშუალო ფაქტიური დრო</th>
+                                        <th>ყველა ჩათვლილი ბრუნების  სტანდარტული გეგმიური დრო</th>
+                                        <th>ორივე მიმართულების ბრუნების საშუალო ფაქტიური დრო</th>
                                     </tr>
                                 </thead>
                                 <tbody id="calculationsTableBody">
@@ -518,12 +542,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                         $exodusNumber = $tripPeriod->getTripPeriodDNA()->getExodusNumber();
                                         $driverName = $tripPeriod->getTripPeriodDNA()->getDriverName();
                                         $tripPeriodType = $tripPeriod->getTypeGe();
-                                        if ($tripPeriodType == "ბაზიდან გასვლა") {
-                                            $tripPeriodType .= "-" . $firstTripPeriodStartPoint;
-                                        }
-                                        if ($tripPeriodType == "ბაზაში დაბრუნება") {
-                                            $tripPeriodType = "$lastTripPeriodEndPoint-ბაზაში დაბრუნება";
-                                        }
+
 
                                         $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                                         $startTimeActual = $tripPeriod->getStartTimeActual();
@@ -592,18 +611,6 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                     row.style.fontWeight = "bold";
                                     chosenRow = row;
                                 }
-
-                                //this is for phpsperadsheet 
-                                $(document).ready(function () {
-                                    $('#convert').click(function () {
-                                        var table_content = '<table>';
-                                        table_content += $('#mainTable').html();
-                                        table_content += '</table>';
-                                        $('#file_content').val(table_content);
-                                        $('#convert_form').submit();
-                                    });
-                                });
-
 
 
                                 //now for checking all checkboxes of a column
@@ -879,9 +886,9 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                         } else {
                                             both_averageTimeInSeconds = "";
                                         }
-                                        both_averageTime = calculateAverage(both_averageTimeInSeconds, 2);
-                                        trs += "<tr><td rowspan='2'>" + routeNumber + "</td><td rowspan='2'>" + both_count + "</td><td rowspan='2'>" + both_averageTime + "</td><td>A_B</td><td>" + ab_count + "</td><td>" + ab_standartTime + "</td><td>" + ab_averageTime + "</td></tr>"
-                                                + "<tr><td>B_A</td><td>" + ba_count + "</td><td>" + ba_standartTime + "</td><td>" + ba_averageTime + "</td></tr>";
+                                        both_averageTime = calculateAverage(both_averageTimeInSeconds, 1);
+                                        trs += "<tr><td rowspan='2'>" + routeNumber + "</td><td>A_B</td><td>-</td><td>-</td><td>-</td><td>" + ab_count + "</td><td>" + ab_standartTime + "</td><td>" + ab_averageTime + "</td><td rowspan='2'>" + both_count + "</td><td rowspan='2'>" + both_averageTime + "</td></tr>"
+                                                + "<tr><td>B_A</td><td>-</td><td>-</td><td>-</td><td>" + ba_count + "</td><td>" + ba_standartTime + "</td><td>" + ba_averageTime + "</td></tr>";
 
 
                                     }
@@ -894,79 +901,6 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                 }
 
 
-                                function calculateAndDisplayAverage1() {
-                                    var calculationRows = document.getElementById("mainTableBody").rows;
-                                    calculationsTableBody.innerHTML = "";
-                                    var routeNumbers = new Array();
-                                    var counter = new Array();
-                                    var total = new Array();
-                                    var cells;
-                                    var routeNumber;
-                                    var routeNumberAndPoints;
-                                    var tripPeriodTimeScheduled;
-                                    var tripPeriodTimeActual;
-                                    var tripPeriodType;
-                                    var index;
-                                    var count;
-                                    var triPeriodInSeconds;
-                                    var totalTime;
-                                    for (x = 0; x < calculationRows.length; x++) {
-                                        cells = calculationRows[x].getElementsByTagName("td");
-                                        routeNumber = cells[0].innerHTML;
-                                        tripPeriodType = cells[5].innerHTML;
-                                        if (tripPeriodType == "A_B") {
-                                            routeNumberAndPoints = routeNumber.toString() + ":A_B";
-                                        } else if (tripPeriodType == "B_A") {
-                                            routeNumberAndPoints = routeNumber.toString() + ":B_A";
-                                        } else {
-                                            continue;
-                                        }
-
-                                        if (routeNumbers.includes(routeNumberAndPoints)) {
-                                            tripPeriodTimeScheduled = cells[10].innerHTML;
-                                            tripPeriodTimeActual = cells[11].innerHTML;
-
-                                            if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
-
-
-                                                index = routeNumbers.indexOf(routeNumberAndPoints);
-                                                count = counter[index];
-                                                counter[index] = count + 1;
-                                                triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
-                                                totalTime = total[index] + triPeriodInSeconds;
-                                                total[index] = totalTime;
-
-                                            }
-                                        } else {
-                                            tripPeriodTimeScheduled = cells[10].innerHTML;
-                                            tripPeriodTimeActual = cells[11].innerHTML;
-
-                                            if (tripPeriodTimeActual != "" && percentageChecks(tripPeriodTimeScheduled, tripPeriodTimeActual)) {
-                                                //push new data into arrays
-                                                routeNumbers.push(routeNumberAndPoints);//here routNumber is in shape 1:A_B
-                                                counter.push(1);
-                                                triPeriodInSeconds = convertTimeStampIntoSeconds(tripPeriodTimeActual);
-                                                total.push(triPeriodInSeconds);
-                                            }
-                                        }
-
-                                    }
-
-                                    var trs = "";
-                                    var totalSeconds;
-                                    var averageTime;
-
-                                    for (x = 0; x < routeNumbers.length; x++) {
-                                        routeNumber = routeNumbers[x];
-                                        count = counter[x];
-                                        totalSeconds = total[x];
-                                        averageTime = calculateAverage(totalSeconds, count);
-                                        trs += "<tr><td>" + routeNumber + "</td><td>" + count + "</td><td>" + averageTime + "</td></tr>";
-                                    }
-                                    calculationsTableBody.innerHTML = trs;
-                                    let perc = percentage.value;
-                                    percentDisplay.innerHTML = "გამოთვლისთვის არის გამოყენებული მხოლოდ A-B და B-A წირები, რომლების გეგმიური და ფაქტიური დროს შორის აცდენა უდრის ან ნაკლებია( =< ) " + perc + "%-ს";
-                                }
 
 
                                 function convertTimeStampIntoSeconds(timeStamp) {
@@ -1011,6 +945,62 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                                     } else {
                                         return false;
                                     }
+                                }
+
+
+                                //submit for excelExprot
+
+                                function collectAndSubmit() {
+
+                                    let rn = collectSellectedCheckBoxes(".routeNumberPackage");
+                                    let ds = collectSellectedCheckBoxes(".dateStampPackage");
+
+
+                                    let bn = collectSellectedCheckBoxes(".busNumberPackage");
+                                    let en = collectSellectedCheckBoxes(".exodusNumberPackage");
+
+                                    let dn = collectSellectedCheckBoxes(".driverNamePackage");
+                                    let tpt = collectSellectedCheckBoxes(".tripPeriodTypePackage");
+
+                                    let sts = collectSellectedCheckBoxes(".startTimeScheduledPackage");
+                                    let sta = collectSellectedCheckBoxes(".startTimeActualPackage");
+
+                                    let ats = collectSellectedCheckBoxes(".arrivalTimeScheduledPackage");
+                                    let ata = collectSellectedCheckBoxes(".arrivalTimeActualPackage");
+
+                                    let tps = collectSellectedCheckBoxes(".tripPeriodScheduledTimePackage");
+                                    let tpa = collectSellectedCheckBoxes(".tripPeriodActualTimePackage");
+                                    let tpd = collectSellectedCheckBoxes(".tripPeriodDifferenceTimePackage");
+
+
+                                    routeNumber.value = rn;
+                                    dateStamp.value = ds;
+                                    busNumber.value = bn;
+                                    exodusNumber.value = en;
+                                    driverName.value = dn;
+                                    tripPeriodType.value = tpt;
+                                    startTimeScheduled.value = sts;
+                                    startTimeActual.value = sta;
+                                    arrivalTimeScheduled.value = ats;
+                                    arrivalTimeActual.value = ata;
+                                    tripPeriodScheduled.value = tps;
+                                    tripPeriodActual.value = tpa;
+                                    tripPeriodDifference.value = tpd;
+                                    percents.value = percentage.value;
+
+                                    excelExportForm.submit();
+
+
+                                }
+
+                                function collectSellectedCheckBoxes(className) {
+                                    var returnValue = "";
+                                    var targetCheckBoxes = document.querySelectorAll(className);
+                                    for (x = 0; x < targetCheckBoxes.length; x++) {
+                                        if (targetCheckBoxes[x].checked)
+                                            returnValue += targetCheckBoxes[x].value + ",";
+                                    }
+                                    return returnValue;
                                 }
 
         </script>

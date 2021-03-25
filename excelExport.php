@@ -104,6 +104,7 @@ $styleArray = [
 //now body
 
 $row = 2;
+
 foreach ($routes as $route) {
     $days = $route->getDays();
     foreach ($days as $day) {

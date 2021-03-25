@@ -27,3 +27,8 @@ $excelExportController = new ExcelExportController();
 if (isset($_POST["guaranteed"])) {
     $excelExportController->exportGuaranteedTripPeriods($routes);
 }
+
+if (isset($_POST["excelForm"])) {
+    $requestedData = $_POST;
+    $excelExportController->exportExcelForm($routes, $requestedData);
+}

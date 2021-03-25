@@ -483,12 +483,7 @@ class RouteXLController {
                             $driverNamePackage[$driverName] = true;
 
                             $tripPeriodType = $tripPeriod->getTypeGe();
-                            if ($tripPeriodType == "ბაზიდან გასვლა") {
-                                $tripPeriodType .= "-" . $firstTripPeriodStartPoint;
-                            }
-                            if ($tripPeriodType == "ბაზაში დაბრუნება") {
-                                $tripPeriodType = "$lastTripPeriodEndPoint-ბაზაში დაბრუნება";
-                            }
+
                             $tripPeriodTypePackage[$tripPeriodType] = true;
 
                             $startTimeScheduledPackage[$tripPeriod->getStartTimeScheduled()] = true;

@@ -50,11 +50,9 @@ switch ($currentPage) {
             <div class=\"dropdown-content\">
                 <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#filterModal\">ფილტრები</button><br>
                 <button  class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#calculationModal\">გამოთვლები</button>
-               <form id=\"convert_form\" action=\"excelExport.php\" method=\"POST\">
-            <button type=\"submit\"class=\"btn btn-warning \">ექსელში ექსპორტი</button>
-          </form>
          </div>
        </li>";
+        $excelExportButton = "<li> <button class=\"btn btn-info btn-warning \" onclick=\"collectAndSubmit()\">ექსელში ექსპორტი</button></li>";
         break;
 }
 

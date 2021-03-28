@@ -134,7 +134,7 @@ class RouteDBController {
         ksort($busNumberPackage);
         ksort($exodusNumberPackage);
         ksort($driverNamePackage);
-        //  ksort($tripPeriodTypePackage);
+//  ksort($tripPeriodTypePackage);
         ksort($startTimeScheduledPackage);
         ksort($startTimeActualPackage);
         ksort($arrivalTimeScheduledPackage);
@@ -210,46 +210,37 @@ class RouteDBController {
 
         foreach ($routes as $route) {
             $routeNumber = $route->getNumber();
-            if (key_exists($routeNumber, $newFilterData["routeNumber"])) {
-                $days = $route->getDays();
-                foreach ($days as $day) {
-                    $dateStamp = $day->getDateStamp();
-                    $exoduses = $day->getExoduses();
-                    foreach ($exoduses as $exodus) {
-                        $exodusNumber = $exodus->getNumber();
-                        $tripVouchers = $exodus->getTripVouchers();
-                        foreach ($tripVouchers as $tripVoucher) {
-                            $busNumber = $tripVoucher->getBusNumber();
-                            $driverName = $tripVoucher->getDriverName();
-//this part is for setting "nulovani ciris" meore punkti
-                            $firstTripPeriodStartPoint = $tripVoucher->getFirstTripPeriodStartPoint();
-                            $lastTripPeriodEndPoint = $tripVoucher->getLastTripPeriodEndPoint();
+
+            $days = $route->getDays();
+            foreach ($days as $day) {
+                $dateStamp = $day->getDateStamp();
+                $exoduses = $day->getExoduses();
+                foreach ($exoduses as $exodus) {
+                    $exodusNumber = $exodus->getNumber();
+                    $tripVouchers = $exodus->getTripVouchers();
+                    foreach ($tripVouchers as $tripVoucher) {
+                        $busNumber = $tripVoucher->getBusNumber();
+                        $driverName = $tripVoucher->getDriverName();
+                        $tripPeriods = $tripVoucher->getTripPeriods();
+                        foreach ($tripPeriods as $tripPeriod) {
 
 
-                            $tripPeriods = $tripVoucher->getTripPeriods();
-                            foreach ($tripPeriods as $tripPeriod) {
+                            $routeNumberPackage[$routeNumber] = "true";
+//$dateStampPackage[$dateStamp] = $newFilterData["dateStamp"][$dateStamp];
+//$busNumberPackage[$busNumber] = $newFilterData["busNumber"][$busNumber];
+//$exodusNumberPackage[$exodusNumber] = $newFilterData["exodusNumber"][$exodusNumber];
+//$driverNamePackage[$driverName] = $newFilterData["driverName"][$driverName];
 
+                            $tripPeriodType = $tripPeriod->getTypeGe();
 
-                                $routeNumberPackage[$routeNumber] = $newFilterData["routeNumber"][$routeNumber];
-                                $dateStampPackage[$dateStamp] = $newFilterData["dateStamp"][$dateStamp];
-                                $busNumberPackage[$busNumber] = $newFilterData["busNumber"][$busNumber];
-                                $exodusNumberPackage[$exodusNumber] = $newFilterData["exodusNumber"][$exodusNumber];
-                                $driverNamePackage[$driverName] = $newFilterData["driverName"][$driverName];
-
-                                $tripPeriodType = $tripPeriod->getTypeGe();
-
-                                $tripPeriodTypePackage[$tripPeriodType] = $newFilterData["tripPeriodType"][$tripPeriodType];
-
-                                $startTimeScheduledPackage[$tripPeriod->getStartTimeScheduled()] = $newFilterData["startTimeScheduled"][$tripPeriod->getStartTimeScheduled()];
-                                $startTimeActualPackage[$tripPeriod->getStartTimeActual()] = $newFilterData["startTimeActual"][$tripPeriod->getStartTimeActual()];
-
-                                $arrivalTimeScheduledPackage[$tripPeriod->getArrivalTimeScheduled()] = $newFilterData["arrivalTimeScheduled"][$tripPeriod->getArrivalTimeScheduled()];
-                                $arrivalTimeActualPackage[$tripPeriod->getArrivalTimeActual()] = $newFilterData["arrivalTimeActual"][$tripPeriod->getArrivalTimeActual()];
-
-                                $tripPeriodScheduledPackage[$tripPeriod->getTripPeriodScheduledTime()] = $newFilterData["tripPeriodScheduled"][$tripPeriod->getTripPeriodScheduledTime()];
-                                $tripPeriodActualPackage[$tripPeriod->getTripPeriodActualTime()] = $newFilterData["tripPeriodActual"][$tripPeriod->getTripPeriodActualTime()];
-                                $tripPeriodDifferenceTimePackage[$tripPeriod->getTripPeriodDifferenceTime()] = $newFilterData["tripPeriodDifference"][$tripPeriod->getTripPeriodDifferenceTime()];
-                            }
+//$tripPeriodTypePackage[$tripPeriodType] = $newFilterData["tripPeriodType"][$tripPeriodType];
+//$startTimeScheduledPackage[$tripPeriod->getStartTimeScheduled()] = $newFilterData["startTimeScheduled"][$tripPeriod->getStartTimeScheduled()];
+//$startTimeActualPackage[$tripPeriod->getStartTimeActual()] = $newFilterData["startTimeActual"][$tripPeriod->getStartTimeActual()];
+//  $arrivalTimeScheduledPackage[$tripPeriod->getArrivalTimeScheduled()] = $newFilterData["arrivalTimeScheduled"][$tripPeriod->getArrivalTimeScheduled()];
+// $arrivalTimeActualPackage[$tripPeriod->getArrivalTimeActual()] = $newFilterData["arrivalTimeActual"][$tripPeriod->getArrivalTimeActual()];
+//$tripPeriodScheduledPackage[$tripPeriod->getTripPeriodScheduledTime()] = $newFilterData["tripPeriodScheduled"][$tripPeriod->getTripPeriodScheduledTime()];
+//$tripPeriodActualPackage[$tripPeriod->getTripPeriodActualTime()] = $newFilterData["tripPeriodActual"][$tripPeriod->getTripPeriodActualTime()];
+//$tripPeriodDifferenceTimePackage[$tripPeriod->getTripPeriodDifferenceTime()] = $newFilterData["tripPeriodDifference"][$tripPeriod->getTripPeriodDifferenceTime()];
                         }
                     }
                 }
@@ -262,7 +253,7 @@ class RouteDBController {
         ksort($busNumberPackage);
         ksort($exodusNumberPackage);
         ksort($driverNamePackage);
-        //  ksort($tripPeriodTypePackage);
+//  ksort($tripPeriodTypePackage);
         ksort($startTimeScheduledPackage);
         ksort($startTimeActualPackage);
         ksort($arrivalTimeScheduledPackage);

@@ -145,20 +145,24 @@ class RouteXLController {
     }
 
     private function createBaseLeavingPeriod($row) {
-        $tripPeriodType = "baseLeaving";
+
         if ($row[16]["value"] != "") {
+            $tripPeriodType = "baseLeaving_A";
             $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
         } else {
+            $tripPeriodType = "baseLeaving_B";
             $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
         }
         return $tripPeriod;
     }
 
     private function createBaseReturnPeriod($row) {
-        $tripPeriodType = "baseReturn";
+
         if ($row[16]["value"] != "") {
+            $tripPeriodType = "A_baseReturn";
             $tripPeriod = $this->createTripPeriodFromLeftSide($row, $tripPeriodType);
         } else {
+            $tripPeriodType = "B_baseReturn";
             $tripPeriod = $this->createTripPeriodFromRightSide($row, $tripPeriodType);
         }
         return $tripPeriod;
@@ -177,8 +181,8 @@ class RouteXLController {
     private function createTripPeridsOfRound($row) {
         $tripPeriodsOfRound = array();
         if ($row[16]["value"] != "" && $row[22]["value"] != "") {
-            $leftSideTime = $row[16]["value"];
-            $rightSideTime = $row[22]["value"];
+            $leftSideTime = $this->time24($row[16]["value"]);
+            $rightSideTime = $this->time24($row[22]["value"]);
             $timeCalculator = new TimeCalculator();
             $leftSideTimeInSeconds = $timeCalculator->getSecondsFromTimeStamp($leftSideTime);
             $rightSideTimeInSeconds = $timeCalculator->getSecondsFromTimeStamp($rightSideTime);
@@ -233,22 +237,22 @@ class RouteXLController {
 
     private function createTripPeriodFromLeftSide($row, $type) {
 
-        $startTimeScheduled = $row[16]["value"];
-        $startTimeActual = $row[17]["value"];
+        $startTimeScheduled = $this->time24($row[16]["value"]);
+        $startTimeActual = $this->time24($row[17]["value"]);
         $startTimeDifference = $row[18]["value"];
-        $arrivalTimeScheduled = $row[19]["value"];
-        $arrivalTimeActual = $row[20]["value"];
+        $arrivalTimeScheduled = $this->time24($row[19]["value"]);
+        $arrivalTimeActual = $this->time24($row[20]["value"]);
         $arrivalTimeDifference = $row[21]["value"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
         return $tripPeriod;
     }
 
     private function createTripPeriodFromRightSide($row, $type) {
-        $startTimeScheduled = $row[22]["value"];
-        $startTimeActual = $row[23]["value"];
+        $startTimeScheduled = $this->time24($row[22]["value"]);
+        $startTimeActual = $this->time24($row[23]["value"]);
         $startTimeDifference = $row[24]["value"];
-        $arrivalTimeScheduled = $row[25]["value"];
-        $arrivalTimeActual = $row[26]["value"];
+        $arrivalTimeScheduled = $this->time24($row[25]["value"]);
+        $arrivalTimeActual = $this->time24($row[26]["value"]);
         $arrivalTimeDifference = $row[27]["value"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
         return $tripPeriod;
@@ -303,6 +307,25 @@ class RouteXLController {
 
 
         return $routes;
+    }
+
+    private function time24($shortTimeStamp) {
+        if ($shortTimeStamp == "") {
+            return $shortTimeStamp;
+        }
+        $splittedTime = explode(":", $shortTimeStamp);
+        $hours = $splittedTime[0];
+        $minutes = $splittedTime[1];
+        $totalSeconds = ($hours * 60 * 60) + ($minutes * 60);
+        if ($totalSeconds > 3 * 60 * 60) {
+            return $shortTimeStamp;
+        } else {
+            $totalSeconds += 24 * 60 * 60;
+            $h = floor($totalSeconds / 3600);
+            $m = floor(($totalSeconds - ($h * 3600)) / 60);
+
+            return sprintf('%02d', $h) . ":" . sprintf('%02d', $m);
+        }
     }
 
     //--------------------------------------------------

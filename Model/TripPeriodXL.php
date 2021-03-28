@@ -67,7 +67,7 @@ class TripPeriodXL {
 
     public function getColor() {
         switch ($this->type) {
-            case "baseLeaving":
+            case "baseLeaving" || "baseLeaving_A" || "baseLeaving_B":
                 return "grey";
             case "break":
                 return "yellow";
@@ -75,8 +75,7 @@ class TripPeriodXL {
                 return "blue";
             case "ba":
                 return "green";
-
-            case "baseReturn":
+            case "baseReturn" || "A_baseReturn" || "B_baseReturn":
                 return "grey";
         }
     }
@@ -86,8 +85,16 @@ class TripPeriodXL {
         switch ($type) {
             case "baseLeaving":
                 return "ბაზიდან გასვლა";
+            case "baseLeaving_A":
+                return "ბაზიდან გასვლა_A";
+            case "baseLeaving_B":
+                return "ბაზიდან გასვლა_B";
             case "baseReturn":
                 return "ბაზაში დაბრუნება";
+            case "A_baseReturn":
+                return "A_ბაზაში დაბრუნება";
+            case "B_baseReturn":
+                return "B_ბაზაში დაბრუნება";
             case "break":
                 return "შესვენება";
             case "ab":
@@ -330,8 +337,7 @@ class TripPeriodXL {
             return "";
         }
     }
-    
-    
+
     function getGSpot() {
         return $this->gSpot;
     }
@@ -339,7 +345,5 @@ class TripPeriodXL {
     function setGSpot($gSpot) {
         $this->gSpot .= $gSpot;
     }
-
-
 
 }

@@ -189,8 +189,7 @@ class DataBaseTools {
                             $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
 
                             $row = array($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
-                            if (count($row) != 8)
-                                echo"KOKO<br>";
+                         
                             array_push($tripPeriodsData, $row);
                         }
                     }
@@ -452,7 +451,7 @@ class DataBaseTools {
 
         $tripPeriod = $this->createTripPeriod($row);
         $tripPeriodType = $tripPeriod->getType();
-        if ($tripPeriodType != "baseLeaving") {
+        if ($tripPeriodType != "baseLeaving"&&$tripPeriodType != "baseLeaving_A"&&$tripPeriodType != "baseLeaving_B") {
             $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
         }
         array_push($tripPeriods, $tripPeriod);

@@ -20,7 +20,7 @@ class UploadController {
 
         $routeNumbersForInsertion = array();
         $vouchersForDeletion = array();
-        var_dump($dbRoutes);
+    
         foreach ($xlRoutes as $route) {
 
             $routeNumber = $route->getNumber();

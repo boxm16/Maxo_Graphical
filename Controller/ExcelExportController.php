@@ -61,21 +61,21 @@ class ExcelExportController {
         $sheet->setCellValue('A2', 'მარშ. #');
         $sheet->setCellValue('B2', 'თარიღი');
         $sheet->setCellValue('C2', 'მძღოლი');
-        $sheet->setCellValue('D2', '1* -  A_B გეგმიური გასვლის დრო');
-        $sheet->setCellValue('E2', '2* -  A_B ფაქტიური გასვლის დრო ');
-        $sheet->setCellValue('F2', '3* -  გასვლის ნომერი');
-        $sheet->setCellValue('G2', '4* -  GPS გასვლის ნომერი');
-        $sheet->setCellValue('H2', '5* -  A_B GPS გეგმიური გასვლის დრო');
-        $sheet->setCellValue('I2', '6* -  A_B ფაქტიური გასვლის დრო');
+        $sheet->setCellValue('D2', 'გეგმიური გასვლის დრო');
+        $sheet->setCellValue('E2', 'ფაქტიური გასვლის დრო ');
+        $sheet->setCellValue('F2', 'გასვლის ნომერი');
+        $sheet->setCellValue('G2', 'GPS გასვლის ნომერი');
+        $sheet->setCellValue('H2', 'GPS გეგმიური გასვლის დრო');
+        $sheet->setCellValue('I2', 'ფაქტიური გასვლის დრო');
         //  $sheet->setCellValue('J2', '=SUBTOTAL(9,J3:J114)'); THIS IS WRITTEN AT THE END OF THIS FUNCTION, TO SEE WHAT ROW IS LAST
 
         $sheet->setCellValue('K2', 'მძღოლი');
-        $sheet->setCellValue('L2', '1* - A_B გეგმიური გასვლის დრო');
-        $sheet->setCellValue('M2', '2* -  A_B ფაქტიური გასვლის დრო ');
-        $sheet->setCellValue('N2', '3* -  გასვლის ნომერი');
-        $sheet->setCellValue('O2', '4* -  GPS გასვლის ნომერი');
-        $sheet->setCellValue('P2', '5* -  A_B GPS გეგმიური გასვლის დრო');
-        $sheet->setCellValue('Q2', '6* -  A_B ფაქტიური გასვლის დრო');
+        $sheet->setCellValue('L2', 'გეგმიური გასვლის დრო');
+        $sheet->setCellValue('M2', 'ფაქტიური გასვლის დრო ');
+        $sheet->setCellValue('N2', 'გასვლის ნომერი');
+        $sheet->setCellValue('O2', 'GPS გასვლის ნომერი');
+        $sheet->setCellValue('P2', 'GPS გეგმიური გასვლის დრო');
+        $sheet->setCellValue('Q2', 'ფაქტიური გასვლის დრო');
 
         $sheet->getStyle('A:S')->getAlignment()->setHorizontal('center'); //this align all cell texts to center
         $sheet->mergeCells("A1:I1");

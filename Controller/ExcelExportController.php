@@ -3,6 +3,7 @@
 require 'vendor/autoload.php';
 require_once 'TimeCalculator.php';
 require_once 'Model/TripPeriodDataCarrier.php';
+require_once 'DAO/DataBaseTools.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -24,7 +25,8 @@ class ExcelExportController {
 
     public function exportGuaranteedTripPeriods($routes) {
 
-
+        $dataBaseTools = new DataBaseTools();
+        $routePoints = $dataBaseTools->getRoutePoints(); //associative array with key=routeNumber and value is a route with names
 
         $spreadsheet = new Spreadsheet();
 
@@ -253,6 +255,11 @@ class ExcelExportController {
 
                 $sheet->setCellValue("P$row", $gps_ba_lastTripScheduled);
                 $sheet->setCellValue("Q$row", $gps_ba_lastTripActual);
+
+                $aPoint = $routePoints[$routeNumber]->getAPoint();
+                $bPoint = $routePoints[$routeNumber]->getBPoint();
+                $sheet->setCellValue("R$row", $aPoint);
+                $sheet->setCellValue("S$row", $bPoint);
 
                 $row++;
             }

@@ -189,7 +189,7 @@ class DataBaseTools {
                             $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
 
                             $row = array($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
-                         
+
                             array_push($tripPeriodsData, $row);
                         }
                     }
@@ -297,7 +297,6 @@ class DataBaseTools {
                 }
             }
             $sql .= " ORDER BY prefix, suffix;";
-     
         }
 
         try {
@@ -451,7 +450,7 @@ class DataBaseTools {
 
         $tripPeriod = $this->createTripPeriod($row);
         $tripPeriodType = $tripPeriod->getType();
-        if ($tripPeriodType != "baseLeaving"&&$tripPeriodType != "baseLeaving_A"&&$tripPeriodType != "baseLeaving_B") {
+        if ($tripPeriodType != "baseLeaving" && $tripPeriodType != "baseLeaving_A" && $tripPeriodType != "baseLeaving_B") {
             $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
         }
         array_push($tripPeriods, $tripPeriod);
@@ -496,6 +495,28 @@ class DataBaseTools {
                 array_push($routesDates, $entry);
             }
             return $routesDates;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function getRoutePoints() {
+
+        $routes = array();
+        try {
+            $sql = "SELECT  *  FROM `231185`.route";
+            $result = $this->connection->query($sql)->fetchAll();
+            foreach ($result as $row) {
+                $route = new RouteXL();
+
+                $route->setNumber($row["number"]);
+                $route->setAPoint($row["a_point"]);
+                $route->setBPoint($row["b_point"]);
+                $routes[$row["number"]] = $route;
+            }
+
+            return $routes;
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";

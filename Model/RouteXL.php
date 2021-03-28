@@ -5,12 +5,14 @@ include_once 'DayXL.php';
 class RouteXL {
 
     private $number;
+    private $aPoint;
+    private $bPoint;
     private $days;
 
     function __construct() {
         $this->days = array();
     }
-    
+
     function getNumber() {
         return $this->number;
     }
@@ -27,6 +29,20 @@ class RouteXL {
         $this->days = $days;
     }
 
+    function getAPoint() {
+        return $this->aPoint;
+    }
 
+    function getBPoint() {
+        return $this->bPoint;
+    }
+
+    function setAPoint($aPoint) {
+        $this->aPoint = $aPoint;
+    }
+
+    function setBPoint($bPoint) {
+        $this->bPoint = $bPoint;
+    }
 
 }

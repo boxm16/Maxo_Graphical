@@ -16,13 +16,12 @@ if (isset($_POST["routes:dates"])) {
     }
 }
 $s = microtime(true);
-
+$routeController = new RouteDBController();
 if (isset($_POST["filter"])) {
-   echo "koko";
-    exit;
+    unset($_POST["filter"]);
+    $filterData = $_POST;
+    $excelFormPackage = $routeController->getExcelFormFilterPackage($requestedRoutesAndDates, $filterData);
 } else {
-
-    $routeController = new RouteDBController();
     $excelFormPackage = $routeController->getExcelFormPackage($requestedRoutesAndDates);
 }
 /*
@@ -74,12 +73,11 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
         </style>
     </head>
     <body>
-        <?php
-        $button = "<button type=\"button\" style=\"background-color:lightblue;\" onclick=\"collectAndSubmit()\">გაფილტრვა</button>";
-        ?>
+
         <div>
             <form id="averagesForm" action="averages.php" method="POST">
                 <input name="filter" hidden>
+                <input id="masterFilter" name="masterFilter" hidden>
                 <input id="routeNumber"  name="routeNumber" type="hidden">
                 <input id="dateStamp"  name="dateStamp" type="hidden">
                 <input id="busNumber"  name="busNumber" type="hidden">
@@ -95,7 +93,7 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                 <input id="tripPeriodScheduled"  name="tripPeriodScheduled" type="hidden">
                 <input id="tripPeriodActual"  name="tripPeriodActual" type="hidden">
                 <input id="tripPeriodDifference"  name="tripPeriodDifference" type="hidden">
-                <input id="percents"  name="percents" type="hidden">
+
             </form>
 
 
@@ -143,15 +141,20 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                     </tr>
                     <tr>
                         <td>
-                            <table width="100%">
+                            <table  width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('routeNumber')">გაფილტრვა</button></th></tr>
+
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($routeNumberPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"routeNumberPackage\" class=\"routeNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"routeNumberPackage\" class=\"routeNumberPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
-                                    ?> 
+                                    ?>
                                 </tbody>
                             </table>
                         </td>
@@ -159,12 +162,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('dateStamp')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($dateStampPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"dateStampPackage\" class=\"dateStampPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"dateStampPackage\" class=\"dateStampPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -173,13 +180,17 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('busNumber')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($busNumberPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"busNumberPackage\" class=\"busNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"busNumberPackage\" class=\"busNumberPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
-                                    ?> 
+                                    ?>
                                 </tbody>
                             </table>
                         </td>
@@ -187,12 +198,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('exodusNumber')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($exodusNumberPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"exodusNumberPackage\" class=\"exodusNumberPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"exodusNumberPackage\" class=\"exodusNumberPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -201,12 +216,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('driverName')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($driverNamePackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"driverNamePackage\" class=\"driverNamePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"driverNamePackage\" class=\"driverNamePackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -215,12 +234,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('tripPeriodType')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($tripPeriodTypePackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"tripPeriodTypePackage\" class=\"tripPeriodTypePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"tripPeriodTypePackage\" class=\"tripPeriodTypePackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -229,12 +252,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('startTimeScheduled')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($startTimeScheduledPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"startTimeScheduledPackage\" class=\"startTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"startTimeScheduledPackage\" class=\"startTimeScheduledPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -243,12 +270,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('startTimeActual')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($startTimeActualPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"startTimeActualPackage\" class=\"startTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"startTimeActualPackage\" class=\"startTimeActualPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -257,12 +288,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('arrivalTimeScheduled')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($arrivalTimeScheduledPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"arrivalTimeScheduledPackage\" class=\"arrivalTimeScheduledPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"arrivalTimeScheduledPackage\" class=\"arrivalTimeScheduledPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -271,12 +306,16 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('arrivalTimeActual')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($arrivalTimeActualPackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"arrivalTimeActualPackage\" class=\"arrivalTimeActualPackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"arrivalTimeActualPackage\" class=\"arrivalTimeActualPackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
                                     ?> 
                                 </tbody>
                             </table>
@@ -285,13 +324,18 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('tripPeriodScheduledTime')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($tripPeriodScheduledTimePackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"tripPeriodScheduledTimePackage\" class=\"tripPeriodScheduledTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"tripPeriodScheduledTimePackage\" class=\"tripPeriodScheduledTimePackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
-                                    ?> 
+                                    ?>
+
                                 </tbody>
                             </table>
                         </td>
@@ -299,13 +343,17 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('tripPeriodActualTime')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($tripPeriodActualTimePackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"tripPeriodActualTimePackage\" class=\"tripPeriodActualTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"tripPeriodActualTimePackage\" class=\"tripPeriodActualTimePackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
-                                    ?> 
+                                    ?>
                                 </tbody>
                             </table>
                         </td>
@@ -313,13 +361,17 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
                         <td>
                             <table width="100%">
                                 <thead stlyle="display:block;" ></thead>
+                                <tr><th> <button type="button" style="background-color:lightblue;" onclick="collectAndSubmit('tripPeriodDifferneceTime')">გაფილტრვა</button></th></tr>
                                 <tbody style="height:300px; overflow-y:scroll; display:block;">
                                     <?php
                                     foreach ($tripPeriodDifferenceTimePackage as $x => $x_value) {
-                                        echo "<tr><td><input name=\"tripPeriodDifferenceTimePackage\" class=\"tripPeriodDifferenceTimePackage\" type=\"checkbox\" checked=\"$x_value\" value=\"$x\"></td><td>$x</td></tr>";
+                                        $checked = "";
+                                        if ($x_value == "true") {
+                                            $checked = "checked";
+                                        }
+                                        echo "<tr><td><input name=\"tripPeriodDifferenceTimePackage\" class=\"tripPeriodDifferenceTimePackage\" type=\"checkbox\" $checked value=\"$x\"></td><td>$x</td></tr>";
                                     }
-                                    echo "<tr>$button</tr>";
-                                    ?> 
+                                    ?>
                                 </tbody>
                             </table>
                         </td>
@@ -331,29 +383,29 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
         </div>
         <script>
 
-           function collectAndSubmit() {
+            function collectAndSubmit(mF) {
 
-                let rn = collectSellectedCheckBoxes(".routeNumberPackage");
-                let ds = collectSellectedCheckBoxes(".dateStampPackage");
-
-
-                let bn = collectSellectedCheckBoxes(".busNumberPackage");
-                let en = collectSellectedCheckBoxes(".exodusNumberPackage");
-
-                let dn = collectSellectedCheckBoxes(".driverNamePackage");
-                let tpt = collectSellectedCheckBoxes(".tripPeriodTypePackage");
-
-                let sts = collectSellectedCheckBoxes(".startTimeScheduledPackage");
-                let sta = collectSellectedCheckBoxes(".startTimeActualPackage");
-
-                let ats = collectSellectedCheckBoxes(".arrivalTimeScheduledPackage");
-                let ata = collectSellectedCheckBoxes(".arrivalTimeActualPackage");
-
-                let tps = collectSellectedCheckBoxes(".tripPeriodScheduledTimePackage");
-                let tpa = collectSellectedCheckBoxes(".tripPeriodActualTimePackage");
-                let tpd = collectSellectedCheckBoxes(".tripPeriodDifferenceTimePackage");
+                let rn = collectCheckBoxesValues(".routeNumberPackage");
+                let ds = collectCheckBoxesValues(".dateStampPackage");
 
 
+                let bn = collectCheckBoxesValues(".busNumberPackage");
+                let en = collectCheckBoxesValues(".exodusNumberPackage");
+
+                let dn = collectCheckBoxesValues(".driverNamePackage");
+                let tpt = collectCheckBoxesValues(".tripPeriodTypePackage");
+
+                let sts = collectCheckBoxesValues(".startTimeScheduledPackage");
+                let sta = collectCheckBoxesValues(".startTimeActualPackage");
+
+                let ats = collectCheckBoxesValues(".arrivalTimeScheduledPackage");
+                let ata = collectCheckBoxesValues(".arrivalTimeActualPackage");
+
+                let tps = collectCheckBoxesValues(".tripPeriodScheduledTimePackage");
+                let tpa = collectCheckBoxesValues(".tripPeriodActualTimePackage");
+                let tpd = collectCheckBoxesValues(".tripPeriodDifferenceTimePackage");
+
+                masterFilter.value = mF;
                 routeNumber.value = rn;
                 dateStamp.value = ds;
                 busNumber.value = bn;
@@ -374,12 +426,15 @@ $tripPeriodDifferenceTimePackage = $excelFormPackage["tripPeriodDifferenceTimePa
 
             }
 
-            function collectSellectedCheckBoxes(className) {
+            function collectCheckBoxesValues(className) {
                 var returnValue = "";
                 var targetCheckBoxes = document.querySelectorAll(className);
                 for (x = 0; x < targetCheckBoxes.length; x++) {
-                    if (targetCheckBoxes[x].checked)
-                        returnValue += targetCheckBoxes[x].value + ",";
+                    if (targetCheckBoxes[x].checked) {
+                        returnValue += targetCheckBoxes[x].value + "=true" + ",";
+                    } else {
+                        returnValue += targetCheckBoxes[x].value + "=false" + ",";
+                    }
                 }
                 return returnValue;
             }

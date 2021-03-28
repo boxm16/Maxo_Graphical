@@ -104,12 +104,7 @@ class RouteDBController {
                             $driverNamePackage[$driverName] = true;
 
                             $tripPeriodType = $tripPeriod->getTypeGe();
-                            if ($tripPeriodType == "ბაზიდან გასვლა") {
-                                $tripPeriodType .= "-" . $firstTripPeriodStartPoint;
-                            }
-                            if ($tripPeriodType == "ბაზაში დაბრუნება") {
-                                $tripPeriodType = "$lastTripPeriodEndPoint-ბაზაში დაბრუნება";
-                            }
+
                             $tripPeriodTypePackage[$tripPeriodType] = true;
 
                             $startTimeScheduledPackage[$tripPeriod->getStartTimeScheduled()] = true;
@@ -181,6 +176,155 @@ class RouteDBController {
 
         $routes = $this->dataBaseTools->getRouteForDay($routeNumber, $dateStamp);
         return $this->setTripPeriodDNAs($routes);
+    }
+
+    public function getExcelFormFilterPackage($requestedRoutesAndDates, $filterData) {
+        $masterFilter = $filterData["masterFilter"];
+        unset($filterData["masterFilter"]);
+
+        if (isset($_SESSION["originalFilterData"])) {
+            $originalFilterData = $_SESSION["originalFilterData"];
+            $newFilterData = $this->convertFilterData($filterData);
+            $originalFilterData = $this->recheckOriginalFilterData($originalFilterData, $newFilterData);
+        } else {
+            $originalFilterData = $this->convertFilterData($filterData);
+            $_SESSION["originalFilterData"] = $originalFilterData;
+        }
+        $routes = $this->getRequestedRoutesAndDates($requestedRoutesAndDates);
+
+
+
+        $routeNumberPackage = array();
+        $dateStampPackage = array();
+        $busNumberPackage = array();
+        $exodusNumberPackage = array();
+        $driverNamePackage = array();
+        $tripPeriodTypePackage = array();
+        $startTimeScheduledPackage = array();
+        $startTimeActualPackage = array();
+        $arrivalTimeScheduledPackage = array();
+        $arrivalTimeActualPackage = array();
+        $tripPeriodScheduledPackage = array();
+        $tripPeriodActualPackage = array();
+        $tripPeriodDifferenceTimePackage = array();
+
+        foreach ($routes as $route) {
+            $routeNumber = $route->getNumber();
+            if (key_exists($routeNumber, $newFilterData["routeNumber"])) {
+                $days = $route->getDays();
+                foreach ($days as $day) {
+                    $dateStamp = $day->getDateStamp();
+                    $exoduses = $day->getExoduses();
+                    foreach ($exoduses as $exodus) {
+                        $exodusNumber = $exodus->getNumber();
+                        $tripVouchers = $exodus->getTripVouchers();
+                        foreach ($tripVouchers as $tripVoucher) {
+                            $busNumber = $tripVoucher->getBusNumber();
+                            $driverName = $tripVoucher->getDriverName();
+//this part is for setting "nulovani ciris" meore punkti
+                            $firstTripPeriodStartPoint = $tripVoucher->getFirstTripPeriodStartPoint();
+                            $lastTripPeriodEndPoint = $tripVoucher->getLastTripPeriodEndPoint();
+
+
+                            $tripPeriods = $tripVoucher->getTripPeriods();
+                            foreach ($tripPeriods as $tripPeriod) {
+
+
+                                $routeNumberPackage[$routeNumber] = $newFilterData["routeNumber"][$routeNumber];
+                                $dateStampPackage[$dateStamp] = $newFilterData["dateStamp"][$dateStamp];
+                                $busNumberPackage[$busNumber] = $newFilterData["busNumber"][$busNumber];
+                                $exodusNumberPackage[$exodusNumber] = $newFilterData["exodusNumber"][$exodusNumber];
+                                $driverNamePackage[$driverName] = $newFilterData["driverName"][$driverName];
+
+                                $tripPeriodType = $tripPeriod->getTypeGe();
+
+                                $tripPeriodTypePackage[$tripPeriodType] = $newFilterData["tripPeriodType"][$tripPeriodType];
+
+                                $startTimeScheduledPackage[$tripPeriod->getStartTimeScheduled()] = $newFilterData["startTimeScheduled"][$tripPeriod->getStartTimeScheduled()];
+                                $startTimeActualPackage[$tripPeriod->getStartTimeActual()] = $newFilterData["startTimeActual"][$tripPeriod->getStartTimeActual()];
+
+                                $arrivalTimeScheduledPackage[$tripPeriod->getArrivalTimeScheduled()] = $newFilterData["arrivalTimeScheduled"][$tripPeriod->getArrivalTimeScheduled()];
+                                $arrivalTimeActualPackage[$tripPeriod->getArrivalTimeActual()] = $newFilterData["arrivalTimeActual"][$tripPeriod->getArrivalTimeActual()];
+
+                                $tripPeriodScheduledPackage[$tripPeriod->getTripPeriodScheduledTime()] = $newFilterData["tripPeriodScheduled"][$tripPeriod->getTripPeriodScheduledTime()];
+                                $tripPeriodActualPackage[$tripPeriod->getTripPeriodActualTime()] = $newFilterData["tripPeriodActual"][$tripPeriod->getTripPeriodActualTime()];
+                                $tripPeriodDifferenceTimePackage[$tripPeriod->getTripPeriodDifferenceTime()] = $newFilterData["tripPeriodDifference"][$tripPeriod->getTripPeriodDifferenceTime()];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        ksort($routeNumberPackage);
+        ksort($dateStampPackage);
+        ksort($busNumberPackage);
+        ksort($exodusNumberPackage);
+        ksort($driverNamePackage);
+        //  ksort($tripPeriodTypePackage);
+        ksort($startTimeScheduledPackage);
+        ksort($startTimeActualPackage);
+        ksort($arrivalTimeScheduledPackage);
+        ksort($arrivalTimeActualPackage);
+        ksort($tripPeriodScheduledPackage);
+        ksort($tripPeriodActualPackage);
+        ksort($tripPeriodDifferenceTimePackage);
+
+
+        $excelFormPackage["routes"] = $routes;
+        $excelFormPackage["routeNumberPackage"] = $routeNumberPackage;
+        $excelFormPackage["dateStampPackage"] = $dateStampPackage;
+        $excelFormPackage["busNumberPackage"] = $busNumberPackage;
+        $excelFormPackage["exodusNumberPackage"] = $exodusNumberPackage;
+        $excelFormPackage["driverNamePackage"] = $driverNamePackage;
+        $excelFormPackage["tripPeriodTypePackage"] = $tripPeriodTypePackage;
+
+        $excelFormPackage["startTimeActualPackage"] = $startTimeActualPackage;
+        $excelFormPackage["startTimeScheduledPackage"] = $startTimeScheduledPackage;
+
+
+        $excelFormPackage["arrivalTimeScheduledPackage"] = $arrivalTimeScheduledPackage;
+        $excelFormPackage["arrivalTimeActualPackage"] = $arrivalTimeActualPackage;
+
+        $excelFormPackage["tripPeriodScheduledPackage"] = $tripPeriodScheduledPackage;
+        $excelFormPackage["tripPeriodActualPackage"] = $tripPeriodActualPackage;
+        $excelFormPackage["tripPeriodDifferenceTimePackage"] = $tripPeriodDifferenceTimePackage;
+
+        return $excelFormPackage;
+    }
+
+    private function convertFilterData($filterData): array {
+        $returnArray = array();
+        foreach ($filterData as $key => $value) {
+            $arrayedValue = $this->arrayString($value);
+            $returnArray[$key] = $arrayedValue;
+        }
+        return $returnArray;
+    }
+
+    private function arrayString(string $string): array {
+        $returnArray = array();
+        $p = explode(",", $string);
+        foreach ($p as $item) {
+            if ($item != "") {
+                $dp = explode("=", $item);
+                $returnArray[$dp[0]] = $dp[1];
+            }
+        }
+        return $returnArray;
+    }
+
+    private function recheckOriginalFilterData($originalFilterData, $newFilterData) {
+
+
+
+        foreach ($newFilterData as $dataName => $column) {
+            foreach ($column as $itemName => $itemValue) {
+                $originalFilterData[$dataName][$itemName] = $newFilterData[$dataName][$itemName];
+            }
+        }
+        return $originalFilterData;
     }
 
 }

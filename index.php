@@ -179,6 +179,16 @@ $routes = $routesController->getFullRoutes($clientId);
                                         <i class="fa fa-info-circle" aria-hidden="true"></i> -----
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> -----
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="routes.php">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> მარშრუტების დასახელებები
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </form>

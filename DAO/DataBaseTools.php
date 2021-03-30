@@ -505,7 +505,7 @@ class DataBaseTools {
 
         $routes = array();
         try {
-            $sql = "SELECT  *  FROM `231185`.route";
+            $sql = "SELECT  *  FROM `231185`.route ORDER BY prefix, suffix ";
             $result = $this->connection->query($sql)->fetchAll();
             foreach ($result as $row) {
                 $route = new RouteXL();
@@ -517,6 +517,20 @@ class DataBaseTools {
             }
 
             return $routes;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function changeRouteNames($routeNumber, $aPoint, $bPoint) {
+        $sql = "UPDATE route SET a_point=?, b_point=? WHERE number=?";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->bindParam(1, $aPoint);
+            $statement->bindParam(2, $bPoint);
+            $statement->bindParam(3, $routeNumber);
+            $statement->execute();
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";

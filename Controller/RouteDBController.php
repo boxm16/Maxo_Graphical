@@ -318,4 +318,12 @@ class RouteDBController {
         return $originalFilterData;
     }
 
+    public function getRoutePoints() {
+        return $this->dataBaseTools->getRoutePoints();
+    }
+
+    public function changeRouteNames($routeNumber, $aPoint, $bPoint) {
+        $this->dataBaseTools->changeRouteNames($routeNumber, $aPoint, $bPoint) ;
+    }
+
 }

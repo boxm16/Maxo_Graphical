@@ -31,25 +31,26 @@ class ExcelExportController {
         $spreadsheet = new Spreadsheet();
 
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(7);
-        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(13);
-        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(13);
-        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(7);
-        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(7);
-        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(13);
-        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(13);
-        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(13);
-        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(13);
-        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(7);
-        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(7);
-        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(13);
-        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(13);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(11);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(23);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(7);
+        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(23);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(10);
 
-
-        $spreadsheet->getActiveSheet()->getStyle("A1:Q2")->getFont()->setSize(14);
+        $spreadsheet->getActiveSheet()->getStyle("A1:S2")->getFont()->setSize(14);
 
 
 
@@ -58,30 +59,45 @@ class ExcelExportController {
         $spreadsheet->getActiveSheet()->getStyle('L2:Q2')->getAlignment()->setWrapText(true);
 
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'A_B');
-        $sheet->setCellValue('K1', 'B_A');
+        $sheet->setCellValue('E1', 'A_B');
+        $sheet->setCellValue('M1', 'B_A');
         $sheet->setCellValue('A2', 'მარშ. #');
-        $sheet->setCellValue('B2', 'თარიღი');
-        $sheet->setCellValue('C2', 'მძღოლი');
-        $sheet->setCellValue('D2', 'გეგმიური გასვლის დრო');
-        $sheet->setCellValue('E2', 'ფაქტიური გასვლის დრო ');
-        $sheet->setCellValue('F2', 'გასვლის ნომერი');
-        $sheet->setCellValue('G2', 'GPS გასვლის ნომერი');
-        $sheet->setCellValue('H2', 'GPS გეგმიური გასვლის დრო');
-        $sheet->setCellValue('I2', 'ფაქტიური გასვლის დრო');
+        $sheet->getStyle('A2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('B2', 'A პუნკტი');
+        $sheet->setCellValue('C2', 'B პუნკტი');
+        $sheet->setCellValue('D2', 'თარიღი');
+        $sheet->setCellValue('E2', 'მძღოლი');
+        $sheet->setCellValue('F2', 'გეგმიური გასვლის დრო');
+        $sheet->getStyle('F2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('G2', 'ფაქტიური გასვლის დრო ');
+        $sheet->getStyle('G2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('H2', 'გასვლის ნომერი');
+        $sheet->getStyle('H2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('I2', 'GPS გასვლის ნომერი');
+        $sheet->getStyle('I2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('J2', 'GPS გეგმიური გასვლის დრო');
+        $sheet->getStyle('J2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('K2', 'ფაქტიური გასვლის დრო');
+        $sheet->getStyle('K2')->getAlignment()->setTextRotation(90);
         //  $sheet->setCellValue('J2', '=SUBTOTAL(9,J3:J114)'); THIS IS WRITTEN AT THE END OF THIS FUNCTION, TO SEE WHAT ROW IS LAST
 
-        $sheet->setCellValue('K2', 'მძღოლი');
-        $sheet->setCellValue('L2', 'გეგმიური გასვლის დრო');
-        $sheet->setCellValue('M2', 'ფაქტიური გასვლის დრო ');
-        $sheet->setCellValue('N2', 'გასვლის ნომერი');
-        $sheet->setCellValue('O2', 'GPS გასვლის ნომერი');
-        $sheet->setCellValue('P2', 'GPS გეგმიური გასვლის დრო');
-        $sheet->setCellValue('Q2', 'ფაქტიური გასვლის დრო');
+        $sheet->setCellValue('M2', 'მძღოლი');
+        $sheet->setCellValue('N2', 'გეგმიური გასვლის დრო');
+        $sheet->getStyle('N2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('O2', 'ფაქტიური გასვლის დრო ');
+        $sheet->getStyle('O2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('P2', 'გასვლის ნომერი');
+        $sheet->getStyle('P2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('Q2', 'GPS გასვლის ნომერი');
+        $sheet->getStyle('Q2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('R2', 'GPS გეგმიური გასვლის დრო');
+        $sheet->getStyle('R2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('S2', 'ფაქტიური გასვლის დრო');
+        $sheet->getStyle('S2')->getAlignment()->setTextRotation(90);
 
         $sheet->getStyle('A:S')->getAlignment()->setHorizontal('center'); //this align all cell texts to center
-        $sheet->mergeCells("A1:I1");
-        $sheet->mergeCells("K1:S1");
+        $sheet->mergeCells("E1:K1");
+        $sheet->mergeCells("M1:S1");
         $styleArray = [
             'borders' => [
                 'outline' => [
@@ -95,6 +111,11 @@ class ExcelExportController {
         $row = 3;
         foreach ($routes as $route) {
             $routeNumber = $route->getNumber();
+
+            $aPoint = $routePoints[$routeNumber]->getAPoint();
+            $bPoint = $routePoints[$routeNumber]->getBPoint();
+
+
             $days = $route->getDays();
             foreach ($days as $day) {
                 $dateStamp = $day->getDateStamp();
@@ -200,17 +221,17 @@ class ExcelExportController {
                     }
                 }
                 $middle_light = "white";
-                $sheet->setCellValue("J$row", "0");
+                $sheet->setCellValue("L$row", "0");
                 if (($ab_light == "yellow" || $ba_light == "yellow")) {
                     $middle_light = "yellow";
                 }
                 if ($ab_light == "red" || $ba_light == "red") {
                     $middle_light = "red";
-                    $sheet->setCellValue("J$row", "1");
+                    $sheet->setCellValue("L$row", "1");
                 }
                 if ($ab_light == "red" && $ba_light == "red") {
                     $middle_light = $ab_light;
-                    $sheet->setCellValue("J$row", "2");
+                    $sheet->setCellValue("L$row", "2");
                 }
 
 
@@ -218,54 +239,52 @@ class ExcelExportController {
                 $ba_light = $this->convertColor($ba_light);
                 $middle_light = $this->convertColor($middle_light);
                 $sheet->setCellValue("A$row", $routeNumber);
-                $sheet->setCellValue("B$row", $dateStamp);
-                $sheet->setCellValue("C$row", $ab_driverName);
-                $sheet->setCellValue("D$row", $ab_lastTripPeriodStartTimeScheduled);
-                $sheet->setCellValue("E$row", $ab_lastTripPeriodStartTimeActual);
+                $sheet->setCellValue("B$row", $aPoint);
+                $sheet->setCellValue("C$row", $bPoint);
+                $sheet->setCellValue("D$row", $dateStamp);
+                $sheet->setCellValue("E$row", $ab_driverName);
+                $sheet->setCellValue("F$row", $ab_lastTripPeriodStartTimeScheduled);
+                $sheet->setCellValue("G$row", $ab_lastTripPeriodStartTimeActual);
 
-                $sheet->getStyle("E$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ab_light);
+                $sheet->getStyle("G$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ab_light);
 
-                $sheet->setCellValue("F$row", $ab_lastTripPeriodExodusNumber);
+                $sheet->setCellValue("H$row", $ab_lastTripPeriodExodusNumber);
                 $tripPeriodType = "ab";
-                $sheet->getCell("F$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$ab_lastTripPeriodStartTimeScheduled");
+                $sheet->getCell("H$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$ab_lastTripPeriodStartTimeScheduled");
 
-                $sheet->setCellValue("G$row", $gps_ab_lastTripExodusNumber);
-                $sheet->getCell("G$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$gps_ab_lastTripExodusNumber");
+                $sheet->setCellValue("I$row", $gps_ab_lastTripExodusNumber);
+                $sheet->getCell("I$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$gps_ab_lastTripExodusNumber");
 
-                $sheet->setCellValue("H$row", $gps_ab_lastTripScheduled);
-                $sheet->setCellValue("I$row", $gps_ab_lastTripActual);
-
-
-                $sheet->getStyle("J$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($middle_light);
+                $sheet->setCellValue("J$row", $gps_ab_lastTripScheduled);
+                $sheet->setCellValue("K$row", $gps_ab_lastTripActual);
 
 
-                $sheet->setCellValue("K$row", $ba_driverName);
-                $sheet->setCellValue("L$row", $ba_lastTripPeriodStartTimeScheduled);
-                $sheet->setCellValue("M$row", $ba_lastTripPeriodStartTimeActual);
+                $sheet->getStyle("L$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($middle_light);
 
 
-                $spreadsheet->getActiveSheet()->getStyle("M$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ba_light);
+                $sheet->setCellValue("M$row", $ba_driverName);
+                $sheet->setCellValue("N$row", $ba_lastTripPeriodStartTimeScheduled);
+                $sheet->setCellValue("O$row", $ba_lastTripPeriodStartTimeActual);
 
-                $sheet->setCellValue("N$row", $ba_lastTripPeriodExodusNumber);
+
+                $spreadsheet->getActiveSheet()->getStyle("O$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ba_light);
+
+                $sheet->setCellValue("P$row", $ba_lastTripPeriodExodusNumber);
                 $tripPeriodType = "ba";
-                $sheet->getCell("N$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$ba_lastTripPeriodStartTimeScheduled");
+                $sheet->getCell("P$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$ba_lastTripPeriodStartTimeScheduled");
 
-                $sheet->setCellValue("O$row", $gps_ba_lastTripExodusNumber);
-                $sheet->getCell("O$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$gps_ba_lastTripExodusNumber");
+                $sheet->setCellValue("Q$row", $gps_ba_lastTripExodusNumber);
+                $sheet->getCell("Q$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$gps_ba_lastTripExodusNumber");
 
-                $sheet->setCellValue("P$row", $gps_ba_lastTripScheduled);
-                $sheet->setCellValue("Q$row", $gps_ba_lastTripActual);
+                $sheet->setCellValue("R$row", $gps_ba_lastTripScheduled);
+                $sheet->setCellValue("S$row", $gps_ba_lastTripActual);
 
-                $aPoint = $routePoints[$routeNumber]->getAPoint();
-                $bPoint = $routePoints[$routeNumber]->getBPoint();
-                $sheet->setCellValue("R$row", $aPoint);
-                $sheet->setCellValue("S$row", $bPoint);
 
                 $row++;
             }
         }
 
-        $sheet->setCellValue('J2', "=SUBTOTAL(9,J3:J$row)");
+        $sheet->setCellValue('L2', "=SUBTOTAL(9,L3:L$row)");
 
         $this->exportFile($spreadsheet);
     }

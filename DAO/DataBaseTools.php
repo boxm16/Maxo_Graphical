@@ -13,7 +13,7 @@ class DataBaseTools {
     }
 
     public function createRouteTable() {
-        $sql = "CREATE TABLE `231185`.`route` (
+        $sql = "CREATE TABLE `route` (
   `number` VARCHAR(10) NOT NULL,
   `prefix` int(4) NOT NULL, 
   `suffix` INT(3) NULL,
@@ -37,7 +37,7 @@ class DataBaseTools {
     }
 
     public function createTripVoucherTable() {
-        $sql = "CREATE TABLE `231185`.`trip_voucher` (
+        $sql = "CREATE TABLE `trip_voucher` (
     `number` VARCHAR(20) NOT NULL,
     `route_number` VARCHAR(10) NOT NULL,
     `date_stamp` DATE NOT NULL,
@@ -50,7 +50,7 @@ class DataBaseTools {
     PRIMARY KEY (`number`),
     CONSTRAINT `route_number`
     FOREIGN KEY (`route_number`)
-    REFERENCES `231185`.`route` (`number`)
+    REFERENCES `route` (`number`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
     ENGINE = InnoDB
@@ -70,7 +70,7 @@ class DataBaseTools {
     }
 
     public function createTripPeriodTable() {
-        $sql = "CREATE TABLE `231185`.`trip_period` (
+        $sql = "CREATE TABLE `trip_period` (
   `trip_voucher_number` VARCHAR(20) NOT NULL,
   `type` VARCHAR(15) NOT NULL,
   `start_time_scheduled` VARCHAR(10) NULL,
@@ -81,7 +81,7 @@ class DataBaseTools {
   `arrival_time_difference` VARCHAR(10) NULL,
     CONSTRAINT `trip_voucher`
     FOREIGN KEY (`trip_voucher_number`)
-    REFERENCES `231185`.`trip_voucher` (`number`)
+    REFERENCES `trip_voucher` (`number`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
     ENGINE = InnoDB
@@ -505,7 +505,7 @@ class DataBaseTools {
 
         $routes = array();
         try {
-            $sql = "SELECT  *  FROM `231185`.route ORDER BY prefix, suffix ";
+            $sql = "SELECT  *  FROM route ORDER BY prefix, suffix ";
             $result = $this->connection->query($sql)->fetchAll();
             foreach ($result as $row) {
                 $route = new RouteXL();

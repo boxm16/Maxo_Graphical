@@ -517,29 +517,34 @@ class ExcelExportController {
 
 
         $sheet->getColumnDimension('A')->setWidth(13);
-        $sheet->getColumnDimension('B')->setWidth(13);
-        $sheet->getColumnDimension('C')->setWidth(7);
-        $sheet->getColumnDimension('D')->setWidth(13);
-        $sheet->getColumnDimension('E')->setWidth(7);
-        $sheet->getColumnDimension('F')->setWidth(13);
-        $sheet->getColumnDimension('G')->setWidth(7);
-        $sheet->getColumnDimension('H')->setWidth(13);
-        $sheet->getColumnDimension('I')->setWidth(13);
-        $sheet->getColumnDimension('J')->setWidth(13);
-        $sheet->getColumnDimension('K')->setWidth(13);
-        $sheet->getStyle('A1:K1')->getAlignment()->setWrapText(true);
+        $sheet->getColumnDimension('B')->setWidth(10);
+        $sheet->getColumnDimension('C')->setWidth(18);
+        $sheet->getColumnDimension('D')->setWidth(18);
+        $sheet->getColumnDimension('E')->setWidth(18);
+        $sheet->getColumnDimension('F')->setWidth(20);
+        $sheet->getColumnDimension('G')->setWidth(18);
+        $sheet->getColumnDimension('H')->setWidth(18);
+        $sheet->getColumnDimension('I')->setWidth(17);
+        $sheet->getColumnDimension('J')->setWidth(17);
+        $sheet->getColumnDimension('K')->setWidth(19);
+        $sheet->getColumnDimension('L')->setWidth(20);
+        $sheet->getStyle('A1:L1')->getAlignment()->setWrapText(true);
+
+        $sheet->getStyle("A1:L1")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('d3d3d3');
+
 
         $sheet->setCellValue('A1', 'მარშრუტის #');
         $sheet->setCellValue('B1', 'მიმართულება');
-        $sheet->setCellValue('C1', '-პროცენტი<=X<0 ჩათვლილი ბრუნები ჩაოდენობა');
-        $sheet->setCellValue('D1', '-პროცენტი<=X<0 ჩათვლილი ბრუნების საშუალო ფაქტიური დრო');
-        $sheet->setCellValue('E1', '0<=X<პროცენტი ჩათვლილი ბრუნები ჩაოდენობა');
-        $sheet->setCellValue('F1', '0<=X<პროცენტი ჩათვლილი ბრუნების საშუალო ფაქტიური დრო');
-        $sheet->setCellValue('G1', 'ყველა ჩათვლილი ბრუნები ჩაოდენობა');
-        $sheet->setCellValue('H1', 'ყველა ჩათვლილი ბრუნების საშუალო ფაქტიური დრო');
-        $sheet->setCellValue('I1', 'ყველა ჩათვლილი ბრუნების სტანდარტული გეგმიური დრო');
-        $sheet->setCellValue('J1', 'ყველა ჩათვლილი ბრუნების  სტანდარტული გეგმიური დრო');
-        $sheet->setCellValue('K1', 'ორივე მიმართულების ბრუნების საშუალო ფაქტიური დრო');
+        $sheet->setCellValue('C1', "+$percents% ჩათვლილი რეისების რაოდენობა");
+        $sheet->setCellValue('D1', "+$percents% ჩათვლილი რეისების საშუალო ფაქტიური დრო");
+        $sheet->setCellValue('E1', "−$percents% ჩათვლილი რეისების რაოდენობა");
+        $sheet->setCellValue('F1', "−$percents% ჩათვლილი რეისების  საშუალო ფაქტიური დრო");
+        $sheet->setCellValue('G1', 'ყველა ჩათვლილი რეისების რაოდენობა');
+        $sheet->setCellValue('H1', 'ყველა ჩათვლილი რეისების საშუალო ფაქტიური დრო');
+        $sheet->setCellValue('I1', 'რეისის გეგმიური დრო');
+        $sheet->setCellValue('J1', 'ბრუნების გეგმიური დრო');
+        $sheet->setCellValue('K1', 'ყველა ჩათვლილი რეისების რაოდენობა');
+        $sheet->setCellValue('L1', 'ორივე მიმართულების ბრუნების საშუალო ფაქტიური დრო');
 
         $sheet->getStyle('A')->getAlignment()->setVertical('center');
         $sheet->getStyle('A')->getAlignment()->setHorizontal('center');
@@ -587,19 +592,19 @@ class ExcelExportController {
 
             $xRow--;
             $totalCount = $tripPeriodDataCarrier->getAbLowCount() + $tripPeriodDataCarrier->getAbHighCount() + $tripPeriodDataCarrier->getBaLowCount() + $tripPeriodDataCarrier->getBaHighCount();
-            $sheet->setCellValue("J$xRow", $totalCount);
+            $sheet->setCellValue("K$xRow", $totalCount);
             $yRow = $xRow + 1;
-            $sheet->mergeCells("J$xRow:J$yRow");
+            $sheet->mergeCells("K$xRow:K$yRow");
             if ($abLowHighAverage != "" && $baLowHighAverage != "") {
                 $bothLowHighTotal = $this->timeCalculator->getSecondsFromTimeStamp($abLowHighAverage) + $this->timeCalculator->getSecondsFromTimeStamp($baLowHighAverage);
                 $bothLowHighAverage = $this->calculateAverage($bothLowHighTotal, 1);
             } else {
                 $bothLowHighAverage = "";
             }
-            $sheet->setCellValue("K$xRow", $bothLowHighAverage);
-            $sheet->mergeCells("K$xRow:K$yRow");
-            $sheet->getStyle('J:K')->getAlignment()->setVertical('center');
-            $sheet->getStyle('J:K')->getAlignment()->setHorizontal('center');
+            $sheet->setCellValue("L$xRow", $bothLowHighAverage);
+            $sheet->mergeCells("L$xRow:L$yRow");
+            $sheet->getStyle('K:L')->getAlignment()->setVertical('center');
+            $sheet->getStyle('K:L')->getAlignment()->setHorizontal('center');
             $xRow += 2;
         }
 

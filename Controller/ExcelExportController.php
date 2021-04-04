@@ -290,6 +290,8 @@ class ExcelExportController {
     }
 
     public function exportExcelForm($routes, $requestedData) {
+
+
         $percents = $requestedData["percents"];
         $requestedRouteNumbers = $this->convertDataToArray($requestedData["routeNumber"]);
         $requestedDateStamps = $this->convertDataToArray($requestedData["dateStamp"]);
@@ -462,7 +464,7 @@ class ExcelExportController {
                                                                 $tripPeriodDataCarrier->setAbTripPeriodTimeStandart($tripPeriod->getTripPeriodScheduledTime());
                                                             } else {
                                                                 if ($abTripPeriodTimeStandart != $tripPeriod->getTripPeriodScheduledTime()) {
-                                                                    $tripPeriodDataCarrier->setAbTripPeriodTimeStandart("multi standart");
+                                                                    $tripPeriodDataCarrier->setAbTripPeriodTimeStandart("მრავალი გეგმიური დრო");
                                                                 }
                                                             }
                                                         } else {//now B_A
@@ -492,7 +494,7 @@ class ExcelExportController {
                                                                 $tripPeriodDataCarrier->setBaTripPeriodTimeStandart($tripPeriod->getTripPeriodScheduledTime());
                                                             } else {
                                                                 if ($baTripPeriodTimeStandart != $tripPeriod->getTripPeriodScheduledTime()) {
-                                                                    $tripPeriodDataCarrier->setBaTripPeriodTimeStandart("multi standart");
+                                                                    $tripPeriodDataCarrier->setBaTripPeriodTimeStandart("მრავალი გეგმიური დრო");
                                                                 }
                                                             }
                                                         }
@@ -550,6 +552,9 @@ class ExcelExportController {
         $sheet->getStyle('A')->getAlignment()->setHorizontal('center');
         $xRow = 2;
         $yRow;
+        
+        
+        $requestedDateStampsString=$requestedData["dateStamp"];
         foreach ($calculationMap as $tripPeriodDataCarrier) {
             $routeNumber = $tripPeriodDataCarrier->getRouteNumber();
             $sheet->setCellValue("A$xRow", $routeNumber);
@@ -558,14 +563,19 @@ class ExcelExportController {
             $sheet->setCellValue("B$xRow", "A_B");
 
             $sheet->setCellValue("C$xRow", $tripPeriodDataCarrier->getAbLowCount());
+            $sheet->getCell("C$xRow")->getHyperlink()->setUrl("$this->context/countedTripPeriods.php?routeNumber=$routeNumber&dateStamps=$requestedDateStampsString&type=ab&percents=$percents&height=low");
+
             $abLowAverage = $this->calculateAverage($tripPeriodDataCarrier->getAbLowTotal(), $tripPeriodDataCarrier->getAbLowCount());
             $sheet->setCellValue("D$xRow", $abLowAverage);
 
             $sheet->setCellValue("E$xRow", $tripPeriodDataCarrier->getAbHighCount());
+            $sheet->getCell("E$xRow")->getHyperlink()->setUrl("$this->context/countedTripPeriods.php?routeNumber=$routeNumber&dateStamps=$requestedDateStampsString&type=ab&percents=$percents&height=high");
+
             $abHighAverage = $this->calculateAverage($tripPeriodDataCarrier->getAbHighTotal(), $tripPeriodDataCarrier->getAbHighCount());
             $sheet->setCellValue("F$xRow", $abHighAverage);
 
             $sheet->setCellValue("G$xRow", $tripPeriodDataCarrier->getAbLowCount() + $tripPeriodDataCarrier->getAbHighCount());
+            $sheet->getCell("G$xRow")->getHyperlink()->setUrl("$this->context/countedTripPeriods.php?routeNumber=$routeNumber&dateStamps=$requestedDateStampsString&type=ab&percents=$percents&height=both");
 
 
             $abLowHighAverage = $this->calculateAverage($tripPeriodDataCarrier->getAbLowTotal() + $tripPeriodDataCarrier->getAbHighTotal(), $tripPeriodDataCarrier->getAbLowCount() + $tripPeriodDataCarrier->getAbHighCount());
@@ -575,14 +585,19 @@ class ExcelExportController {
 
             $sheet->setCellValue("B$xRow", "B_A");
             $sheet->setCellValue("C$xRow", $tripPeriodDataCarrier->getBaLowCount());
+            $sheet->getCell("C$xRow")->getHyperlink()->setUrl("$this->context/countedTripPeriods.php?routeNumber=$routeNumber&dateStamps=$requestedDateStampsString&type=ba&percents=$percents&height=low");
+
             $baLowAverage = $this->calculateAverage($tripPeriodDataCarrier->getBaLowTotal(), $tripPeriodDataCarrier->getBaLowCount());
             $sheet->setCellValue("D$xRow", $baLowAverage);
 
             $sheet->setCellValue("E$xRow", $tripPeriodDataCarrier->getBaHighCount());
+            $sheet->getCell("E$xRow")->getHyperlink()->setUrl("$this->context/countedTripPeriods.php?routeNumber=$routeNumber&dateStamps=$requestedDateStampsString&type=ba&percents=$percents&height=high");
+
             $baHighAverage = $this->calculateAverage($tripPeriodDataCarrier->getBaHighTotal(), $tripPeriodDataCarrier->getBaHighCount());
             $sheet->setCellValue("F$xRow", $baHighAverage);
 
             $sheet->setCellValue("G$xRow", $tripPeriodDataCarrier->getBaLowCount() + $tripPeriodDataCarrier->getBaHighCount());
+            $sheet->getCell("G$xRow")->getHyperlink()->setUrl("$this->context/countedTripPeriods.php?routeNumber=$routeNumber&dateStamps=$requestedDateStampsString&type=ba&percents=$percents&height=both");
 
             $baLowHighAverage = $this->calculateAverage($tripPeriodDataCarrier->getBaLowTotal() + $tripPeriodDataCarrier->getBaHighTotal(), $tripPeriodDataCarrier->getBaLowCount() + $tripPeriodDataCarrier->getBaHighCount());
 
@@ -591,9 +606,14 @@ class ExcelExportController {
 
 
             $xRow--;
+            $yRow = $xRow + 1;
+            $roundTimeScheduled = $tripPeriodDataCarrier->getRoundTimeScheduled();
+            $sheet->setCellValue("J$xRow", $roundTimeScheduled);
+            $sheet->mergeCells("J$xRow:J$yRow");
+
+
             $totalCount = $tripPeriodDataCarrier->getAbLowCount() + $tripPeriodDataCarrier->getAbHighCount() + $tripPeriodDataCarrier->getBaLowCount() + $tripPeriodDataCarrier->getBaHighCount();
             $sheet->setCellValue("K$xRow", $totalCount);
-            $yRow = $xRow + 1;
             $sheet->mergeCells("K$xRow:K$yRow");
             if ($abLowHighAverage != "" && $baLowHighAverage != "") {
                 $bothLowHighTotal = $this->timeCalculator->getSecondsFromTimeStamp($abLowHighAverage) + $this->timeCalculator->getSecondsFromTimeStamp($baLowHighAverage);
@@ -603,8 +623,8 @@ class ExcelExportController {
             }
             $sheet->setCellValue("L$xRow", $bothLowHighAverage);
             $sheet->mergeCells("L$xRow:L$yRow");
-            $sheet->getStyle('K:L')->getAlignment()->setVertical('center');
-            $sheet->getStyle('K:L')->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('J:L')->getAlignment()->setVertical('center');
+            $sheet->getStyle('J:L')->getAlignment()->setHorizontal('center');
             $xRow += 2;
         }
 
@@ -660,7 +680,8 @@ class ExcelExportController {
         }
         return $dataArray;
     }
-
+    
+//same function i have in countedTripPeriods to show selected routes
     private function lowPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents) {
 
         $tripPeriodScheduledTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodScheduledTime);
@@ -674,6 +695,8 @@ class ExcelExportController {
         }
     }
 
+    
+    //same function i have in countedTripPeriods.php to show selected routes
     private function highPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents) {
 
         $tripPeriodScheduledTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodScheduledTime);

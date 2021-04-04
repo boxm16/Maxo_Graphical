@@ -2,13 +2,16 @@
 
 require_once 'DAO/DataBaseTools.php';
 require_once 'Model/TripPeriodDNA_XL.php';
+require_once 'Controller/TimeCalculator.php';
 
 class RouteDBController {
 
     private $dataBaseTools;
+    private $timeCalculator;
 
     function __construct() {
         $this->dataBaseTools = new DataBaseTools();
+        $this->timeCalculator = new TimeCalculator();
     }
 
     public function getRequestedRoutesAndDates($requestedRoutesAndDates) {
@@ -323,7 +326,88 @@ class RouteDBController {
     }
 
     public function changeRouteNames($routeNumber, $aPoint, $bPoint) {
-        $this->dataBaseTools->changeRouteNames($routeNumber, $aPoint, $bPoint) ;
+        $this->dataBaseTools->changeRouteNames($routeNumber, $aPoint, $bPoint);
+    }
+
+    public function getRequestedTripPeriods($routeNumber, $dateStampsString, $type, $percents, $height) {
+        $requestedTripPeriods = array();
+        $dateStampsArray = explode(",", $dateStampsString);
+        $requestedRoutesAndDates = "";
+        foreach ($dateStampsArray as $dateStamp) {
+            if ($dateStamp != "") {
+                $item = $routeNumber . ":" . $dateStamp;
+                $requestedRoutesAndDates .= $item . ",";
+            }
+        }
+        $routes = $this->dataBaseTools->getRequestedRoutesAndDates($requestedRoutesAndDates);
+        $routes = $this->setTripPeriodDNAs($routes);
+        foreach ($routes as $route) {
+            $days = $route->getDays();
+            foreach ($days as $day) {
+                $exoduses = $day->getExoduses();
+                foreach ($exoduses as $exodus) {
+                    $tripVouchers = $exodus->getTripVouchers();
+                    foreach ($tripVouchers as $tripVoucher) {
+                        $tripPeriods = $tripVoucher->getTripPeriods();
+                        foreach ($tripPeriods as $tripPeriod) {
+                            $tripPeriodType = $tripPeriod->getType();
+                            if ($tripPeriodType == $type) {
+                                $tripPeriodScheduledTime = $tripPeriod->getTripPeriodScheduledTime();
+                                $tripPeriodActualTime = $tripPeriod->getTripPeriodActualTime();
+                                if ($tripPeriodActualTime != "") {
+                                    if ($height == "low") {
+                                        if ($this->lowPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents)) {
+                                            array_push($requestedTripPeriods, $tripPeriod);
+                                        }
+                                    }
+                                    if ($height == "high") {
+                                        if ($this->highPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents)) {
+                                            array_push($requestedTripPeriods, $tripPeriod);
+                                        }
+                                    }
+                                    if ($height == "both") {
+                                        if ($this->lowPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents) || $this->highPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents)) {
+                                            array_push($requestedTripPeriods, $tripPeriod);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return $requestedTripPeriods;
+    }
+
+//same function i have in ExcelExportController
+    private function lowPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents) {
+
+        $tripPeriodScheduledTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodScheduledTime);
+        $tripPeriodActualTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodActualTime);
+        $difference = $tripPeriodScheduledTimeInSeconds - $tripPeriodActualTimeInSeconds;
+        if ($difference >= ($tripPeriodScheduledTimeInSeconds / 100) * (-1 * $percents) &&
+                $difference < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //same function i have in ExcelExportController
+    private function highPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents) {
+
+        $tripPeriodScheduledTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodScheduledTime);
+        $tripPeriodActualTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($tripPeriodActualTime);
+        $difference = $tripPeriodScheduledTimeInSeconds - $tripPeriodActualTimeInSeconds;
+        if ($difference <= ($tripPeriodScheduledTimeInSeconds / 100) * $percents &&
+                $difference >= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

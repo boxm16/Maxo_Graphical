@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Controller/TimeCalculator.php';
+
 class TripPeriodDataCarrier {
 
     private $routeNumber;
@@ -13,6 +15,7 @@ class TripPeriodDataCarrier {
     private $baHighCount;
     private $baLowTotal;
     private $baHighTotal;
+    private $timeCalculator;
 
     function __construct() {
         $this->routeNumber = "";
@@ -26,6 +29,7 @@ class TripPeriodDataCarrier {
         $this->baHighCount = 0;
         $this->baLowTotal = 0;
         $this->baHighTotal = 0;
+        $this->timeCalculator = new TimeCalculator();
     }
 
     function getRouteNumber() {
@@ -114,6 +118,15 @@ class TripPeriodDataCarrier {
 
     function setBaHighTotal($baHighTotal) {
         $this->baHighTotal = $baHighTotal;
+    }
+
+    function getRoundTimeScheduled() {
+        if ($this->abTripPeriodTimeStandart == "" || $this->baTripPeriodTimeStandart == "" || $this->abTripPeriodTimeStandart == "მრავალი გეგმიური დრო" || $this->baTripPeriodTimeStandart == "მრავალი გეგმიური დრო") {
+            return "";
+        } else {
+            $seconds = $this->timeCalculator->getSecondsFromTimeStamp($this->abTripPeriodTimeStandart) + $this->timeCalculator->getSecondsFromTimeStamp($this->baTripPeriodTimeStandart);
+            return $this->timeCalculator->getTimeStampFromSeconds($seconds);
+        }
     }
 
 }

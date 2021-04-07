@@ -30,6 +30,7 @@ class ExcelExportController {
 
         $spreadsheet = new Spreadsheet();
 
+        
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(7);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(20);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(20);

@@ -159,6 +159,11 @@ $routes = $routesController->getFullRoutes($clientId);
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="#" onclick="submitLink('guaranteedNew.php')">
+                                        <i class="fa fa-home" aria-hidden="true"></i>საგარანტიო რეისები მისვლების გათვალისწინებით
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="#" onclick="submitLink('averages.php')">
                                         <i class="fa fa-tachometer" aria-hidden="true"></i> ბრუნების საშუალო ფაქტიური დროს გამოთვლები
                                     </a>

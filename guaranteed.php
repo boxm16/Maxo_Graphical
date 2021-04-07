@@ -41,6 +41,7 @@ and open the template in the editor.
     </head>
     <body>
     <center> 
+        <h1>საგარანტიო რეისები</h1>
         <form action="excelExportDispatcher.php" method="POST">
             <input hidden name="guaranteed">
             <input type='submit' value="ექსელში ექსპორტი" style="background-color: orange;  font-size: 20px;">
@@ -48,7 +49,7 @@ and open the template in the editor.
     </center>
     <h4>1-დაგეგმილი ბოლო რეისის გეგმიური გასვლის დრო. 2-დაგეგმილი ბოლო რეისის ფაქტიური გასვლის დრო.   3- დაგეგმილი ბოლო რეისის გასვლის ნომერი.   <br>
         4-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის გასვლის ნომერი. 5-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის გეგმიური გასვლის დრო. 6-GPS მაჩვენებლებით გამოთვლილი ბოლო რეისის ფაქტიური გასვლის დრო<br>
-    რ.ვ.ი. - რეისი ვერ იძებნება </h4>
+        რ.ვ.ი. - რეისი ვერ იძებნება </h4>
     <table>
         <thead>
             <tr>

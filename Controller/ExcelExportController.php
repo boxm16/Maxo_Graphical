@@ -30,7 +30,7 @@ class ExcelExportController {
 
         $spreadsheet = new Spreadsheet();
 
-        
+
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(7);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(20);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(20);
@@ -51,7 +51,7 @@ class ExcelExportController {
         $spreadsheet->getActiveSheet()->getColumnDimension('R')->setWidth(10);
         $spreadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(10);
 
-        $spreadsheet->getActiveSheet()->getStyle("A1:S2")->getFont()->setSize(14);
+        $spreadsheet->getActiveSheet()->getStyle("E1:S2")->getFont()->setSize(14);
 
 
 
@@ -60,6 +60,7 @@ class ExcelExportController {
         $spreadsheet->getActiveSheet()->getStyle('L2:Q2')->getAlignment()->setWrapText(true);
 
         $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('C1', 'საგარანტიო რეისები');
         $sheet->setCellValue('E1', 'A_B');
         $sheet->setCellValue('M1', 'B_A');
         $sheet->setCellValue('A2', 'მარშ. #');
@@ -289,6 +290,280 @@ class ExcelExportController {
 
         $this->exportFile($spreadsheet);
     }
+
+    /////////////this is maybe for deleteion
+
+
+
+    public function exportGuaranteedTripPeriodsNewVersion($routes) {
+
+        $dataBaseTools = new DataBaseTools();
+        $routePoints = $dataBaseTools->getRoutePoints(); //associative array with key=routeNumber and value is a route with names
+
+        $spreadsheet = new Spreadsheet();
+
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(7);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(11);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(23);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(7);
+        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(23);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(10);
+
+        $spreadsheet->getActiveSheet()->getStyle("E1:S2")->getFont()->setSize(14);
+
+
+
+        $spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setWrapText(true);
+        $spreadsheet->getActiveSheet()->getStyle('D2:I2')->getAlignment()->setWrapText(true);
+        $spreadsheet->getActiveSheet()->getStyle('L2:Q2')->getAlignment()->setWrapText(true);
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('C1', 'საგარანტიო რეისები მისვლების გათვალისწინებით');
+        $sheet->setCellValue('E1', 'A_B');
+        $sheet->setCellValue('M1', 'B_A');
+        $sheet->setCellValue('A2', 'მარშ. #');
+        $sheet->getStyle('A2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('B2', 'A პუნკტი');
+        $sheet->setCellValue('C2', 'B პუნკტი');
+        $sheet->setCellValue('D2', 'თარიღი');
+        $sheet->setCellValue('E2', 'მძღოლი');
+        $sheet->setCellValue('F2', 'გეგმიური გასვლის დრო');
+        $sheet->getStyle('F2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('G2', 'ფაქტიური გასვლის დრო ');
+        $sheet->getStyle('G2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('H2', 'გასვლის ნომერი');
+        $sheet->getStyle('H2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('I2', 'GPS გასვლის ნომერი');
+        $sheet->getStyle('I2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('J2', 'GPS გეგმიური გასვლის დრო');
+        $sheet->getStyle('J2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('K2', 'ფაქტიური გასვლის დრო');
+        $sheet->getStyle('K2')->getAlignment()->setTextRotation(90);
+        //  $sheet->setCellValue('J2', '=SUBTOTAL(9,J3:J114)'); THIS IS WRITTEN AT THE END OF THIS FUNCTION, TO SEE WHAT ROW IS LAST
+
+        $sheet->setCellValue('M2', 'მძღოლი');
+        $sheet->setCellValue('N2', 'გეგმიური გასვლის დრო');
+        $sheet->getStyle('N2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('O2', 'ფაქტიური გასვლის დრო ');
+        $sheet->getStyle('O2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('P2', 'გასვლის ნომერი');
+        $sheet->getStyle('P2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('Q2', 'GPS გასვლის ნომერი');
+        $sheet->getStyle('Q2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('R2', 'GPS გეგმიური გასვლის დრო');
+        $sheet->getStyle('R2')->getAlignment()->setTextRotation(90);
+        $sheet->setCellValue('S2', 'ფაქტიური გასვლის დრო');
+        $sheet->getStyle('S2')->getAlignment()->setTextRotation(90);
+
+        $sheet->getStyle('A:S')->getAlignment()->setHorizontal('center'); //this align all cell texts to center
+        $sheet->mergeCells("E1:K1");
+        $sheet->mergeCells("M1:S1");
+        $styleArray = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '#000000'],
+                ],
+            ],
+        ];
+
+
+        $row = 3;
+        foreach ($routes as $route) {
+            $routeNumber = $route->getNumber();
+
+            $aPoint = $routePoints[$routeNumber]->getAPoint();
+            $bPoint = $routePoints[$routeNumber]->getBPoint();
+
+
+            $days = $route->getDays();
+            foreach ($days as $day) {
+                $dateStamp = $day->getDateStamp();
+                $lastTrips = $day->getLastTripsNew();
+                $ab_lastTripPeriodScheduled = $lastTrips["ab_lastTripPeriodScheduled"];
+                $ba_lastTripPeriodScheduled = $lastTrips["ba_lastTripPeriodScheduled"];
+                $ab_lastTripPeriodActual = $lastTrips["ab_lastTripPeriodActual"];
+                $ba_lastTripPeriodActual = $lastTrips["ba_lastTripPeriodActual"];
+
+                $ab_light = "white";
+                $ba_light = "white";
+                if ($ab_lastTripPeriodScheduled != null) {
+                    $ab_lastTripPeriodStartTimeScheduled = $ab_lastTripPeriodScheduled->getStartTimeScheduled();
+                    $ab_lastTripPeriodStartTimeActual = $ab_lastTripPeriodScheduled->getStartTimeActual();
+                    $ab_lastTripPeriodExodusNumber = $ab_lastTripPeriodScheduled->getTripPeriodDNA()->getExodusNumber();
+                    $ab_lastTripPeriodType = $ab_lastTripPeriodScheduled->getType();
+                    $ab_driverName = $ab_lastTripPeriodScheduled->getTripPeriodDNA()->getDriverName();
+                } else {
+                    $ab_lastTripPeriodStartTimeScheduled = "რ.ვ.ი.*";
+                    $ab_lastTripPeriodStartTimeActual = "რ.ვ.ი.*";
+                    $ab_lastTripPeriodExodusNumber = "რ.ვ.ი.*";
+                    $ab_lastTripPeriodType = "რ.ვ.ი.*";
+                }
+                if ($ba_lastTripPeriodScheduled != null) {
+                    $ba_lastTripPeriodStartTimeScheduled = $ba_lastTripPeriodScheduled->getStartTimeScheduled();
+                    $ba_lastTripPeriodStartTimeActual = $ba_lastTripPeriodScheduled->getStartTimeActual();
+                    $ba_lastTripPeriodExodusNumber = $ba_lastTripPeriodScheduled->getTripPeriodDNA()->getExodusNumber();
+                    $ba_lastTripPeriodType = $ba_lastTripPeriodScheduled->getType();
+                    $ba_driverName = $ba_lastTripPeriodScheduled->getTripPeriodDNA()->getDriverName();
+                } else {
+                    $ba_lastTripPeriodStartTimeScheduled = "რ.ვ.ი.*";
+                    $ba_lastTripPeriodStartTimeActual = "რ.ვ.ი.*";
+                    $ba_lastTripPeriodExodusNumber = "რ.ვ.ი.*";
+                    $ba_lastTripPeriodType = "რ.ვ.ი.*";
+                }
+                if ($ab_lastTripPeriodActual != null) {
+                    $gps_ab_lastTripScheduled = $ab_lastTripPeriodActual->getStartTimeScheduled();
+                    $gps_ab_lastTripActual = $ab_lastTripPeriodActual->getStartTimeActual();
+                    $gps_ab_lastTripExodusNumber = $ab_lastTripPeriodActual->getTripPeriodDNA()->getExodusNumber();
+                    $gps_ab_lastTripPeriodType = $ab_lastTripPeriodActual->getType();
+                } else {
+                    $gps_ab_lastTripScheduled = "რ.ვ.ი.*";
+                    $gps_ab_lastTripActual = "რ.ვ.ი.*";
+                    $gps_ab_lastTripExodusNumber = "რ.ვ.ი.*";
+                    $gps_ab_lastTripPeriodType = "რ.ვ.ი.*";
+                }
+
+                if ($ba_lastTripPeriodActual != null) {
+                    $gps_ba_lastTripScheduled = $ba_lastTripPeriodActual->getStartTimeScheduled();
+                    $gps_ba_lastTripActual = $ba_lastTripPeriodActual->getStartTimeActual();
+                    $gps_ba_lastTripExodusNumber = $ba_lastTripPeriodActual->getTripPeriodDNA()->getExodusNumber();
+                    $gps_ba_lastTripPeriodType = $ba_lastTripPeriodActual->getType();
+                } else {
+                    $gps_ba_lastTripScheduled = "რ.ვ.ი.*";
+                    $gps_ba_lastTripActual = "რ.ვ.ი.*";
+                    $gps_ba_lastTripExodusNumber = "რ.ვ.ი.*";
+                    $gps_ba_lastTripPeriodType = "რ.ვ.ი.*";
+                }
+//HERE START CHECKING ALGORITHM
+                if ($ab_lastTripPeriodScheduled != null && $ab_lastTripPeriodActual != null) {
+                    if ($ab_lastTripPeriodStartTimeActual != "") {
+                        $ab_lastTripPeriodStartTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($ab_lastTripPeriodStartTimeScheduled);
+                        $ab_lastTripPeriodStartTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($ab_lastTripPeriodStartTimeActual);
+                        if (($ab_lastTripPeriodStartTimeScheduledInSeconds - $ab_lastTripPeriodStartTimeActualInSeconds) > 60) {
+                            $ab_light = "yellow";
+                            if ($gps_ab_lastTripActual != "") {
+                                $gps_ab_lastTripActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($gps_ab_lastTripActual);
+                                if (($ab_lastTripPeriodStartTimeScheduledInSeconds - $gps_ab_lastTripActualInSeconds) > 60) {
+                                    $ab_light = "red";
+                                }
+                            }
+                        }
+                    } else {
+                        $ab_lastTripPeriodStartTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($ab_lastTripPeriodStartTimeScheduled);
+                        $gps_ab_lastTripActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($gps_ab_lastTripActual);
+
+                        if (($ab_lastTripPeriodStartTimeScheduledInSeconds - $gps_ab_lastTripActualInSeconds) > 60) {
+                            $ab_light = "red";
+                        }
+                    }
+                }
+
+                if ($ba_lastTripPeriodScheduled != null && $ba_lastTripPeriodActual != null) {
+                    if ($ba_lastTripPeriodStartTimeActual != "") {
+                        $ba_lastTripPeriodStartTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($ba_lastTripPeriodStartTimeScheduled);
+                        $ba_lastTripPeriodStartTimeActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($ba_lastTripPeriodStartTimeActual);
+                        if (($ba_lastTripPeriodStartTimeScheduledInSeconds - $ba_lastTripPeriodStartTimeActualInSeconds) > 60) {
+                            $ba_light = "yellow";
+                            if ($gps_ba_lastTripActual != "") {
+                                $gps_ba_lastTripActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($gps_ba_lastTripActual);
+                                if (($ba_lastTripPeriodStartTimeScheduledInSeconds - $gps_ba_lastTripActualInSeconds) > 60) {
+                                    $ba_light = "red";
+                                }
+                            }
+                        }
+                    } else {
+                        $ba_lastTripPeriodStartTimeScheduledInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($ba_lastTripPeriodStartTimeScheduled);
+                        $gps_ba_lastTripActualInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($gps_ba_lastTripActual);
+
+                        if (($ba_lastTripPeriodStartTimeScheduledInSeconds - $gps_ba_lastTripActualInSeconds) > 60) {
+                            $ba_light = "red";
+                        }
+                    }
+                }
+                $middle_light = "white";
+                $sheet->setCellValue("L$row", "0");
+                if (($ab_light == "yellow" || $ba_light == "yellow")) {
+                    $middle_light = "yellow";
+                }
+                if ($ab_light == "red" || $ba_light == "red") {
+                    $middle_light = "red";
+                    $sheet->setCellValue("L$row", "1");
+                }
+                if ($ab_light == "red" && $ba_light == "red") {
+                    $middle_light = $ab_light;
+                    $sheet->setCellValue("L$row", "2");
+                }
+
+
+                $ab_light = $this->convertColor($ab_light);
+                $ba_light = $this->convertColor($ba_light);
+                $middle_light = $this->convertColor($middle_light);
+                $sheet->setCellValue("A$row", $routeNumber);
+                $sheet->setCellValue("B$row", $aPoint);
+                $sheet->setCellValue("C$row", $bPoint);
+                $sheet->setCellValue("D$row", $dateStamp);
+                $sheet->setCellValue("E$row", $ab_driverName);
+                $sheet->setCellValue("F$row", $ab_lastTripPeriodStartTimeScheduled);
+                $sheet->setCellValue("G$row", $ab_lastTripPeriodStartTimeActual);
+
+                $sheet->getStyle("G$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ab_light);
+
+                $sheet->setCellValue("H$row", $ab_lastTripPeriodExodusNumber);
+                $tripPeriodType = "ab";
+                $sheet->getCell("H$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$ab_lastTripPeriodStartTimeScheduled");
+
+                $sheet->setCellValue("I$row", $gps_ab_lastTripExodusNumber);
+                $sheet->getCell("I$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$gps_ab_lastTripExodusNumber");
+
+                $sheet->setCellValue("J$row", $gps_ab_lastTripScheduled);
+                $sheet->setCellValue("K$row", $gps_ab_lastTripActual);
+
+
+                $sheet->getStyle("L$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($middle_light);
+
+
+                $sheet->setCellValue("M$row", $ba_driverName);
+                $sheet->setCellValue("N$row", $ba_lastTripPeriodStartTimeScheduled);
+                $sheet->setCellValue("O$row", $ba_lastTripPeriodStartTimeActual);
+
+
+                $spreadsheet->getActiveSheet()->getStyle("O$row")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($ba_light);
+
+                $sheet->setCellValue("P$row", $ba_lastTripPeriodExodusNumber);
+                $tripPeriodType = "ba";
+                $sheet->getCell("P$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$ba_lastTripPeriodStartTimeScheduled");
+
+                $sheet->setCellValue("Q$row", $gps_ba_lastTripExodusNumber);
+                $sheet->getCell("Q$row")->getHyperlink()->setUrl("$this->context/dayIntervals.php?routeNumber=$routeNumber&dateStamp=$dateStamp&tripPeriodType=$tripPeriodType&startTimeScheduled=$gps_ba_lastTripExodusNumber");
+
+                $sheet->setCellValue("R$row", $gps_ba_lastTripScheduled);
+                $sheet->setCellValue("S$row", $gps_ba_lastTripActual);
+
+
+                $row++;
+            }
+        }
+
+        $sheet->setCellValue('L2', "=SUBTOTAL(9,L3:L$row)");
+
+        $this->exportFile($spreadsheet);
+    }
+
+    //////////////////////////////// this is end of part of maybe deletion
 
     public function exportExcelForm($routes, $requestedData) {
 
@@ -553,9 +828,9 @@ class ExcelExportController {
         $sheet->getStyle('A')->getAlignment()->setHorizontal('center');
         $xRow = 2;
         $yRow;
-        
-        
-        $requestedDateStampsString=$requestedData["dateStamp"];
+
+
+        $requestedDateStampsString = $requestedData["dateStamp"];
         foreach ($calculationMap as $tripPeriodDataCarrier) {
             $routeNumber = $tripPeriodDataCarrier->getRouteNumber();
             $sheet->setCellValue("A$xRow", $routeNumber);
@@ -681,7 +956,7 @@ class ExcelExportController {
         }
         return $dataArray;
     }
-    
+
 //same function i have in countedTripPeriods to show selected routes
     private function lowPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents) {
 
@@ -696,7 +971,6 @@ class ExcelExportController {
         }
     }
 
-    
     //same function i have in countedTripPeriods.php to show selected routes
     private function highPercentageChecks($tripPeriodScheduledTime, $tripPeriodActualTime, $percents) {
 

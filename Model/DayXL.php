@@ -265,4 +265,79 @@ class DayXL {
         return $returnArray;
     }
 
+    public function getLastTripsNew() {
+        $intervals = $this->getIntervals();
+        $scheduledIntervals = $intervals["scheduledIntervals"];
+        $gpsIntervals = $intervals["gpsIntervals"];
+        $ab_tripPeriodsScheduled = $scheduledIntervals[0];
+        $ba_tripPeriodsScheduled = $scheduledIntervals[1];
+        $ab_tripPeriodsGPS = $gpsIntervals[0];
+        $ba_tripPeriodsGPS = $gpsIntervals[1];
+
+
+
+        if (count($ab_tripPeriodsScheduled) > 0) {
+            $ab_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsScheduled) - 1, $ab_tripPeriodsScheduled);
+            if ($ab_lastTripPeriodScheduled->getArrivalTimeActual() == "") {
+                $ab_lastTripPeriodScheduled->setStartTimeActual("");
+            }
+        } else {
+            $ab_lastTripPeriodScheduled = null;
+        }
+
+        if (count($ba_tripPeriodsScheduled) > 0) {
+            $ba_lastTripPeriodScheduled = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsScheduled) - 1, $ba_tripPeriodsScheduled);
+            if ($ba_lastTripPeriodScheduled->getArrivalTimeActual() == "") {
+                $ba_lastTripPeriodScheduled->setStartTimeActual("");
+            }
+        } else {
+            $ba_lastTripPeriodScheduled = null;
+        }
+
+
+        if (count($ab_tripPeriodsGPS) > 0) {
+            $ab_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ab_tripPeriodsGPS) - 1, $ab_tripPeriodsGPS);
+            if ($ab_lastTripPeriodActual->getArrivalTimeActual() == "") {
+                $ab_lastTripPeriodActual = $this->getLastValidTripFromArray($ab_tripPeriodsGPS);
+            }
+        } else {
+            $ab_lastTripPeriodActual = null;
+        }
+
+
+        if (count($ba_tripPeriodsGPS) > 0) {
+            $ba_lastTripPeriodActual = $this->getNthItemOfAssociativeArray(count($ba_tripPeriodsGPS) - 1, $ba_tripPeriodsGPS);
+            if ($ba_lastTripPeriodActual->getArrivalTimeActual() == "") {
+                $ba_lastTripPeriodActual = $this->getLastValidTripFromArray($ba_tripPeriodsGPS);
+            }
+        } else {
+            $ba_lastTripPeriodActual = null;
+        }
+
+        $returnArray["ab_lastTripPeriodScheduled"] = $ab_lastTripPeriodScheduled;
+        $returnArray["ba_lastTripPeriodScheduled"] = $ba_lastTripPeriodScheduled;
+        $returnArray["ab_lastTripPeriodActual"] = $ab_lastTripPeriodActual;
+        $returnArray["ba_lastTripPeriodActual"] = $ba_lastTripPeriodActual;
+
+        return $returnArray;
+    }
+
+    private function getLastValidTripFromArray($tripPeriods) {
+        //valida here are those trips that have both startTimeActual and arrivalTimeActual known
+        if ($tripPeriods == 1) {//if in array exists only one tripPeriod
+            return null;
+        }
+        $index = count($tripPeriods) - 2;
+        while ($index > -1) {
+            $tripPeriod = $this->getNthItemOfAssociativeArray($index, $tripPeriods);
+            $startTimeAvtual = $tripPeriod->getStartTimeActual();
+            $arrivalTimeAvtual = $tripPeriod->getArrivalTimeActual();
+            if ($startTimeAvtual != "" && $arrivalTimeAvtual != "") {
+                return $tripPeriod;
+            }
+
+            $index--;
+        }
+    }
+
 }

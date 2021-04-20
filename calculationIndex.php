@@ -1,9 +1,9 @@
 <?php
-require_once 'clientId.php';
 require_once 'Controller/UploadController.php';
-
+require_once 'clientId.php';
 $errorAlert = "";
 $errorMessage = "";
+
 
 if (isset($_POST["submit"])) {//first checking if request commming form submit or it is empty request
     //if it is an empty reques, now need for php here
@@ -34,74 +34,34 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
         $errorAlert = "ფაილის ატვირთვა ვერ მოხერხდა. სცადე თავიდან";
 // if everything is ok, try to upload file
     } else {
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "uploads/routeExcelFile" . $clientId . ".xlsx")) {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "uploads/calculationsExcelFile" . $clientId . ".xlsx")) {
             echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
 
             //this part is for database iserton
             $uploadController = new UploadController();
-            $uploadController->saveUploadedDataIntoDatabase($clientId);
+
             // here end insertion part
-            deployFile();
         } else {
 
             $errorAlert = "ფაილის ატვირთვა ვერ მოხერხდა. სცადე თავიდან";
         }
     }
 }
-
-function deployFile() {
-    header("Location:index.php");
-}
 ?>
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>ფაილის ატვირთვა</title>
+        <title>გამოთვლები</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
             tr {
-                height: 80px;
+                height: 50px;
             }
-            /* navbar styling */
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                background-color: green;
-                position: fixed;
-                top: 0;
-                width: 100%;
-            }
-
-            li {
-                float: left;
-            }
-
-            li a {
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
-
-            li a:hover {
-                background-color:white;
-            }
-
-            .active {
-                background-color: lightgreen;
-            }
-            /* end of navbar styling */
         </style>
     </head>
     <body>
-
-        <?php
-        include 'navBar.php';
-        ?>
         <div class="container">
             <div class="row">
                 <div class="col">

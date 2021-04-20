@@ -185,12 +185,12 @@ $routes = $routesController->getFullRoutes($clientId);
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
-                                        <i class="fa fa-info-circle" aria-hidden="true"></i> -----
+                                    <a href="calculationIndex.php" target="_blank">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> გამოთვლები
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="routes.php">
+                                    <a href="routes.php" target="_blank">
                                         <i class="fa fa-info-circle" aria-hidden="true"></i> მარშრუტების დასახელებები
                                     </a>
                                 </li>

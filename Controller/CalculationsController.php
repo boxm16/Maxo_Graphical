@@ -6,18 +6,12 @@ require 'vendor/autoload.php';
 class CalculationsController {
 
     public function countExcelFile($clientId) {
-        //  $spreadsheet = $this->readExcelFile_2($clientId);
-        if ($xlsx = SimpleXLSX::parse("uploads/calculationsExcelFile" . $clientId . ".xlsx")) {
-           
-            $rows = $xlsx->rowsExY(0, 50000);
-            echo "RowCount".count($rows);
-        echo "<br>";
-            
-        } else {
-            header("Location:excelFileErrorPage.php");
-            echo "ფაილი არ არის ატვირთული ან დაზიანებულია(" . SimpleXLSX::parseError() . ")";
-            echo "<hr>";
-            return;
+        $spreadsheet = $this->readExcelFile_2($clientId);
+        $x = 10;
+        while ($x < 1000) {
+            echo "Cell" . $cellValue = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(5, $x)->getValue();
+            echo "<br>";
+            $x++;
         }
     }
 
@@ -38,7 +32,7 @@ class CalculationsController {
         $reader->setReadFilter(new MyReadFilter());
         $spreadsheet = $reader->load("uploads/calculationsExcelFile" . $clientId . ".xlsx");
 
-
+        return $spreadsheet;
 
         /*
           $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();

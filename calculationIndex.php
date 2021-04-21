@@ -1,11 +1,13 @@
 <?php
 require_once 'Controller/UploadController.php';
+require_once 'Controller/CalculationsController.php';
 require_once 'clientId.php';
 $errorAlert = "";
 $errorMessage = "";
+$s = microtime(true);
 
 
-if (isset($_POST["submit"])) {//first checking if request commming form submit or it is empty request
+if (isset($_POST["submit"])) {//first checking if request commming from submit or it is empty request
     //if it is an empty reques, now need for php here
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -46,6 +48,9 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
             $errorAlert = "ფაილის ატვირთვა ვერ მოხერხდა. სცადე თავიდან";
         }
     }
+} else {//count already uploaded file's size and row count
+    $calculationController = new CalculationsController();
+    $count = $calculationController->countExcelFile($clientId);
 }
 ?>
 <!DOCTYPE html>
@@ -97,6 +102,11 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
                             </table>
                         </center>
                     </form>
+                    <hr><hr>
+                    <?php
+                    $e = microtime(true);
+                    echo "<br> Display time required:" . ($e - $s);
+                    ?>
                 </div>
             </div>
         </div>

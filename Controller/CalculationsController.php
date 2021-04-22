@@ -6,7 +6,7 @@ require 'vendor/autoload.php';
 class CalculationsController {
 
     public function countExcelFile($clientId) {
-        $spreadsheet = $this->readExcelFile_2($clientId);
+        $spreadsheet = $this->readExcelFile($clientId);
         $x = 10;
         while ($x < 1000) {
             echo "Cell" . $cellValue = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(5, $x)->getValue();
@@ -16,18 +16,6 @@ class CalculationsController {
     }
 
     private function readExcelFile($clientId) {
-        if ($xlsx = SimpleXLSX::parse("uploads/calculationsExcelFile" . $clientId . ".xlsx")) {
-            $rows = $xlsx->rowsEx();
-        } else {
-            header("Location:excelFileErrorPage.php");
-            echo "ფაილი არ არის ატვირთული ან დაზიანებულია(" . SimpleXLSX::parseError() . ")";
-            echo "<hr>";
-            return;
-        }
-        return $rows;
-    }
-
-    private function readExcelFile_2($clientId) {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $reader->setReadFilter(new MyReadFilter());
         $spreadsheet = $reader->load("uploads/calculationsExcelFile" . $clientId . ".xlsx");

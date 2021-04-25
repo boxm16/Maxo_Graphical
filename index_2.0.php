@@ -1,6 +1,6 @@
 <?php
 require_once 'Controller/UploadController.php';
-require_once 'Controller/CalculationsController.php';
+require_once 'Controller/CronJobController.php';
 require_once 'clientId.php';
 $errorAlert = "";
 $errorMessage = "";
@@ -8,7 +8,6 @@ $s = microtime(true);
 
 
 if (isset($_POST["submit"])) {//first checking if request commming from submit or it is empty request
-    //if it is an empty reques, now need for php here
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
     $uploadOk = 1;
@@ -39,8 +38,11 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "uploads/calculationsExcelFile" . $clientId . ".xlsx")) {
             echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
 
-            //this part is for database iserton
-            $uploadController = new UploadController();
+            //this part for registering new upload into database (tech table)
+            //so that now its a cron`s job to run and insert into database part by part all xlsx file
+            $cronJobController = new CronJobController();
+            $cronJobController->registerNewUpload();
+
 
             // here end insertion part
         } else {
@@ -49,8 +51,6 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
         }
     }
 } else {//count already uploaded file's size and row count
-    // $calculationController = new CalculationsController();
-    //$calculationController->countExcelFile($clientId);
 }
 ?>
 <!DOCTYPE html>

@@ -2,8 +2,23 @@
 
 require_once "SimpleXLSX.php";
 require 'vendor/autoload.php';
+require_once 'DAO/DataBaseTools.php';
 
-class CalculationsController {
+class CronJobController {
+
+    private $dataBaseTools;
+
+    function __construct() {
+        $this->dataBaseTools = new DataBaseTools();
+    }
+
+    public function isLoading(): bool {
+        return $this->dataBaseTools->isLoading();
+    }
+
+    public function registerNewUpload() {
+        $this->dataBaseTools->registerNewUpload();
+    }
 
     public function readRows(int $startRow, int $endRow) {
         

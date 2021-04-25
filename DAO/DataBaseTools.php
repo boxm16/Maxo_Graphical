@@ -125,10 +125,12 @@ class DataBaseTools {
     }
 
     public function createTechTable() {
-        $sql = "CREATE TABLE `231185`.`tech` (
+        $sql = "CREATE TABLE `tech` (
   `loading` TINYINT(1) NOT NULL,
   `loading_start_row` INT(6) NOT NULL,
   `loading_end_row` INT(6) NOT NULL);
+  INSERT INTO `tech` (loading, loading_start_row,  loading_end_row)
+  VALUES(0,0,0);
 ";
         try {
             $this->connection->exec($sql);
@@ -614,6 +616,38 @@ class DataBaseTools {
     private function convertDateStamp($dateStamp) {
         $time = strtotime(str_replace('/', '-', $dateStamp));
         return $dateStamp = date('Y-m-d', $time);
+    }
+
+    //------------------------------
+    public function registerNewUpload() {
+        $sql = "UPDATE tech SET loading=1, loading_start_row=0, loading_end_row=1000 WHERE loading=0;";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->bindParam(1, $aPoint);
+            $statement->bindParam(2, $bPoint);
+            $statement->bindParam(3, $routeNumber);
+            $statement->execute();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function isLoading(): bool {
+        $isLoading;
+        $sql = "SELECT loading FROM tech";
+
+        try {
+
+            $result = $this->connection->query($sql)->fetchAll();
+            foreach ($result as $row) {
+                $isLoading = $row["loading"];
+            }
+            return $isLoading;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
     }
 
 }

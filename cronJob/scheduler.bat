@@ -1,0 +1,1 @@
+explorer "https://localhost/Maxo_Graphical/cronJobDispatcher.php"

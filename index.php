@@ -185,8 +185,8 @@ $routes = $routesController->getFullRoutes($clientId);
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="calculationIndex.php" target="_blank">
-                                        <i class="fa fa-info-circle" aria-hidden="true"></i> გამოთვლები
+                                    <a href="index_2.0.php" target="_blank">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> ვერსია 2.0
                                     </a>
                                 </li>
                                 <li>

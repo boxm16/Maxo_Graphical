@@ -15,7 +15,7 @@ $clienId = '0';
     <body>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <input hidden name="createTables">
-            <button type="submit">Create Table</button>
+            <button type="submit">Create Tables</button>
 
         </form>
         <?php

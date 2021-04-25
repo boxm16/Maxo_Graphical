@@ -104,7 +104,6 @@ class DataBaseTools {
         $sql = "CREATE TABLE `last_upload` (
   `number` VARCHAR(10) NOT NULL,
   `date_stamp` DATE NOT NULL,
-   INDEX `number_idx` (`number` ASC) VISIBLE,
    CONSTRAINT `number`
     FOREIGN KEY (`number`)
     REFERENCES `route` (`number`)

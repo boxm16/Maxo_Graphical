@@ -6,6 +6,9 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["exo
     $dateStamp = $_GET["dateStamp"];
     $exodusNumber = $_GET["exodusNumber"];
     $startTimeScheduled = $_GET["startTimeScheduled"];
+    if (strlen($startTimeScheduled) == 5) {
+        $startTimeScheduled = $startTimeScheduled . ":00";
+    }
     //convert dataStamp
     $time = strtotime(str_replace('/', '-', $dateStamp));
     $dateStamp = date('Y-m-d', $time);

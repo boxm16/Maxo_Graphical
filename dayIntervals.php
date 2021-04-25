@@ -9,6 +9,9 @@ if (isset($_GET["routeNumber"]) && isset($_GET["dateStamp"]) && isset($_GET["tri
 
     $tripPeriodTypeFomRequest = $_GET["tripPeriodType"];
     $startTimeScheduledFomRequest = $_GET["startTimeScheduled"];
+     if (strlen($startTimeScheduledFomRequest) == 5) {
+        $startTimeScheduledFomRequest = $startTimeScheduledFomRequest . ":00";
+    }
     $dayIntervalsDetails = "$dateStamp,  მარშრუტი # $routeNumber";
 
     $routeController = new RouteDBController();

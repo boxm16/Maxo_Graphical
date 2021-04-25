@@ -100,6 +100,30 @@ class DataBaseTools {
         }
     }
 
+    public function createLastUploadTable() {
+        $sql = "CREATE TABLE `last_upload` (
+  `number` VARCHAR(10) NOT NULL,
+  `date_stamp` DATE NOT NULL,
+   INDEX `number_idx` (`number` ASC) VISIBLE,
+   CONSTRAINT `number`
+    FOREIGN KEY (`number`)
+    REFERENCES `route` (`number`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'last_upload' created successfully" . "<br>";
+        } catch (\PDOException $e) {
+            if ($e->getCode() == "42S01") {
+                echo "Table 'last_upload' already exists" . "<br>";
+            } else {
+                echo $e->getMessage() . " Error Code:";
+                echo $e->getCode() . "<br>";
+            }
+        }
+    }
+
     public function insertRoutes($routesData) {
         try {
             $this->connection->beginTransaction();

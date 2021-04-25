@@ -73,11 +73,11 @@ class DataBaseTools {
         $sql = "CREATE TABLE `trip_period` (
   `trip_voucher_number` VARCHAR(20) NOT NULL,
   `type` VARCHAR(15) NOT NULL,
-  `start_time_scheduled` VARCHAR(10) NULL,
-  `start_time_actual` VARCHAR(10) NULL,
+  `start_time_scheduled` TIME(0) NULL  DEFAULT NULL,
+  `start_time_actual` TIME(0) NULL  DEFAULT NULL,
   `start_time_difference` VARCHAR(10) NULL,
-  `arrival_time_scheduled` VARCHAR(10) NULL,
-  `arrival_time_actual` VARCHAR(10) NULL,
+  `arrival_time_scheduled` TIME(0) NULL  DEFAULT NULL,
+  `arrival_time_actual` TIME(0) NULL  DEFAULT NULL,
   `arrival_time_difference` VARCHAR(10) NULL,
     CONSTRAINT `trip_voucher`
     FOREIGN KEY (`trip_voucher_number`)
@@ -183,9 +183,15 @@ class DataBaseTools {
                             $type = $tripPeriod->getType();
                             $startTimeScheduled = $tripPeriod->getStartTimeScheduled();
                             $startTimeActual = $tripPeriod->getStartTimeActual();
+                            if ($startTimeActual == "") {
+                                $startTimeActual = null;
+                            }
                             $startTimeDifference = $tripPeriod->getStartTimeDifference();
                             $arrivalTimeScheduled = $tripPeriod->getArrivalTimeScheduled();
                             $arrivalTimeActual = $tripPeriod->getArrivalTimeActual();
+                            if ($arrivalTimeActual == "") {
+                                $arrivalTimeActual = null;
+                            }
                             $arrivalTimeDifference = $tripPeriod->getArrivalTimeDifference();
 
                             $row = array($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
@@ -464,9 +470,15 @@ class DataBaseTools {
         $type = $row["type"];
         $startTimeScheduled = $row["start_time_scheduled"];
         $startTimeActual = $row["start_time_actual"];
+        if ($startTimeActual == null) {
+            $startTimeActual = "";
+        }
         $startTimeDifference = $row["start_time_difference"];
         $arrivalTimeScheduled = $row["arrival_time_scheduled"];
         $arrivalTimeActual = $row["arrival_time_actual"];
+        if ($arrivalTimeActual == null) {
+            $arrivalTimeActual = "";
+        }
         $arrivalTimeDifference = $row["arrival_time_difference"];
         $tripPeriod = new TripPeriodXL($type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
         return $tripPeriod;

@@ -124,6 +124,25 @@ class DataBaseTools {
         }
     }
 
+    public function createTechTable() {
+        $sql = "CREATE TABLE `231185`.`tech` (
+  `loading` TINYINT(1) NOT NULL,
+  `loading_start_row` INT(6) NOT NULL,
+  `loading_end_row` INT(6) NOT NULL);
+";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'tech' created successfully" . "<br>";
+        } catch (\PDOException $e) {
+            if ($e->getCode() == "42S01") {
+                echo "Table 'tech' already exists" . "<br>";
+            } else {
+                echo $e->getMessage() . " Error Code:";
+                echo $e->getCode() . "<br>";
+            }
+        }
+    }
+
     public function insertRoutes($routesData) {
         try {
             $this->connection->beginTransaction();

@@ -49,7 +49,7 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
         }
     }
 } else {//count already uploaded file's size and row count
-    $calculationController = new CalculationsController();
+    // $calculationController = new CalculationsController();
     //$calculationController->countExcelFile($clientId);
 }
 ?>
@@ -116,3 +116,4 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
 
     </body>
 </html>
+

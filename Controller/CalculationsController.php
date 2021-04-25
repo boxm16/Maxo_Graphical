@@ -5,6 +5,10 @@ require 'vendor/autoload.php';
 
 class CalculationsController {
 
+    public function readRows(int $startRow, int $endRow) {
+        
+    }
+
     public function countExcelFile($clientId) {
         $spreadsheet = $this->readExcelFile($clientId);
         $x = 10;

@@ -125,11 +125,12 @@ class DataBaseTools {
 
     public function createTechTable() {
         $sql = "CREATE TABLE `tech` (
-  `loading` TINYINT(1) NOT NULL,
-  `loading_start_row` INT(6) NOT NULL,
-  `loading_end_row` INT(6) NOT NULL);
-  INSERT INTO `tech` (loading, loading_start_row,  loading_end_row)
-  VALUES(0,0,0);
+  `tech_type` VARCHAR(15) NOT NULL,
+  `value` TINYINT(1) NOT NULL,
+  `start` INT(6) NOT NULL,
+  `end` INT(6) NOT NULL);
+  INSERT INTO `tech` (tech_type, value,  start, end)
+  VALUES('loading',0,8,8);
 ";
         try {
             $this->connection->exec($sql);
@@ -617,14 +618,28 @@ class DataBaseTools {
         return $dateStamp = date('Y-m-d', $time);
     }
 
+//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--
+////--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--
+////--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--
     //------------------------------
     public function registerNewUpload() {
-        $sql = "UPDATE tech SET loading=1, loading_start_row=0, loading_end_row=1000 WHERE loading=0;";
+        $sql = "UPDATE tech SET value=1, start=8, end=8 WHERE tech_type='loading';";
         try {
             $statement = $this->connection->prepare($sql);
-            $statement->bindParam(1, $aPoint);
-            $statement->bindParam(2, $bPoint);
-            $statement->bindParam(3, $routeNumber);
+
+            $statement->execute();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function registerNextChunk(int $loading_start_row, int $loading_end_row) {
+        $sql = "UPDATE tech SET start=?, end=? WHERE tech_type='loading';";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->bindParam(1, $loading_start_row);
+            $statement->bindParam(2, $loading_end_row);
             $statement->execute();
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
@@ -634,15 +649,46 @@ class DataBaseTools {
 
     public function isLoading(): bool {
         $isLoading;
-        $sql = "SELECT loading FROM tech";
+        $sql = "SELECT value FROM tech WHERE tech_type='loading'";
 
         try {
 
             $result = $this->connection->query($sql)->fetchAll();
             foreach ($result as $row) {
-                $isLoading = $row["loading"];
+                $isLoading = $row["value"];
             }
             return $isLoading;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function getLastUploadedRowIndex() {
+        $sql = "SELECT end FROM tech WHERE tech_type='loading'";
+
+        try {
+            $result = $this->connection->query($sql)->fetch();
+            return $result["end"];
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function loadNextChunk() {
+        
+    }
+
+    public function loadLastChunk() {
+        
+    }
+
+    public function resetTechTable() {
+        $sql = "UPDATE tech SET value=0, start=8, end=8 WHERE tech_type='loading';";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->execute();
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";

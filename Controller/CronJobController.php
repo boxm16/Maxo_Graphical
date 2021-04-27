@@ -3,6 +3,10 @@
 require_once "SimpleXLSX.php";
 require 'vendor/autoload.php';
 require_once 'DAO/DataBaseTools.php';
+//---------
+require_once 'LoadModel/Route.php';
+require_once 'LoadModel/TripVoucher.php';
+require_once 'LoadModel/TripPeriod.php';
 
 class CronJobController {
 
@@ -40,6 +44,7 @@ class CronJobController {
     }
 
     public function readNextChunk($clientId, int $startRow, int $endRow) {
+        $routes = array();
         $spreadsheet = $this->readExcelFile($clientId, $startRow, $endRow);
         $x = $startRow;
         while ($x < $endRow) {
@@ -48,7 +53,23 @@ class CronJobController {
                 echo "the end";
                 break;
             }
-           // echo $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x) . "---" . $spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x) . "<br>";
+            //here is actual reading of spreadsheet rows and sending values to apropriate destination
+            // echo $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x) . "---" . $spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x) . "<br>";
+
+            $routeNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(8, $x);
+            echo $routeNumber . "<br>";
+            if (array_key_exists($routeNumber, $routes)) {
+                $existingRoute = $routes[$routeNumber];
+                $refilledRoute = $this->addRowElementsToRoute($existingRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            } else {
+                $newRoute = new Route();
+                $newRoute->setNumber($routeNumber);
+                $refilledRoute = $this->addRowElementsToRoute($newRoute, $row);
+                $routes[$routeNumber] = $refilledRoute;
+            }
+
+
             $x++;
         }
     }
@@ -82,6 +103,5 @@ class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
     }
 
 }
-
 
 //--------MODEL ---------//

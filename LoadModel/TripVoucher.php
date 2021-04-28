@@ -1,5 +1,7 @@
 <?php
+
 require_once 'TripPeriod.php';
+
 class TripVoucher {
 
     private $number;
@@ -11,8 +13,7 @@ class TripVoucher {
     private $busNumber;
     private $busType;
     private $notes;
-    private $tripPeriods;
-    
+
     function getNumber() {
         return $this->number;
     }
@@ -47,10 +48,6 @@ class TripVoucher {
 
     function getNotes() {
         return $this->notes;
-    }
-
-    function getTripPeriods() {
-        return $this->tripPeriods;
     }
 
     function setNumber($number) {
@@ -88,11 +85,5 @@ class TripVoucher {
     function setNotes($notes) {
         $this->notes = $notes;
     }
-
-    function setTripPeriods($tripPeriods) {
-        $this->tripPeriods = $tripPeriods;
-    }
-
-
 
 }

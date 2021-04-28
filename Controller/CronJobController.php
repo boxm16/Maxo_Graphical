@@ -28,50 +28,81 @@ class CronJobController {
 
     public function loadChunk() {
         $clientId = 111;
-        $nextChunkStartingRow = $this->dataBaseTools->getLastUploadedRowIndex();
-        $nextChunk = $this->readNextChunk($clientId, $nextChunkStartingRow, $nextChunkStartingRow + 1000);
+        $nextChunkStartingRow = $this->dataBaseTools->getStartRowIndex();
+        $chunkMaxLength = 1000;
+        $nextChunkLastRow = $nextChunkStartingRow + $chunkMaxLength;
+        $spreadsheet = $this->readExcelFile($clientId, $nextChunkStartingRow, $nextChunkLastRow);
+        $nextChunkEndRow = $this->getNextChunkEndRow($spreadsheet, $nextChunkLastRow);
+        $nextChunk = $this->readNextChunk($spreadsheet, $nextChunkStartingRow, $nextChunkEndRow);
         if ($this->lastChunk) {
             $this->dataBaseTools->loadLastChunk();
             $this->dataBaseTools->resetTechTable();
         } else {
             $this->dataBaseTools->loadNextChunk();
-            $this->dataBaseTools->registerNextChunk($nextChunkStartingRow, $nextChunkStartingRow + 1000);
+            $this->dataBaseTools->registerNextChunk($nextChunkEndRow);
         }
+    }
+
+    private function getNextChunkEndRow($spreadsheet, $lastRow) {
+
+        $lastVoucherInChunk = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $lastRow)->getValue();
+
+        while (true) {
+            $lastRow--;
+            $beforeLastVoucherInChunk = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $lastRow)->getValue();
+            if ($beforeLastVoucherInChunk != $lastVoucherInChunk) {
+                return $lastRow + 1;
+            }
+            if ($lastRow == 8) {
+                return 1000;
+            }
+        }
+        return $lastRow;
     }
 
     public function registerNewUpload() {
         $this->dataBaseTools->registerNewUpload();
     }
 
-    public function readNextChunk($clientId, int $startRow, int $endRow) {
+    public function readNextChunk($spreadsheet, int $startRow, int $endRow) {
         $routes = array();
-        $spreadsheet = $this->readExcelFile($clientId, $startRow, $endRow);
         $x = $startRow;
         while ($x < $endRow) {
-            if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x) == "") {
+            $routeNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(8, $x)->getValue();
+
+            if ($routeNumber == "") {
                 $this->lastChunk = true;
                 echo "the end";
+                echo "<br>";
                 break;
-            }
-            //here is actual reading of spreadsheet rows and sending values to apropriate destination
-            // echo $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x) . "---" . $spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x) . "<br>";
-
-            $routeNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(8, $x);
-            echo $routeNumber . "<br>";
-            if (array_key_exists($routeNumber, $routes)) {
-                $existingRoute = $routes[$routeNumber];
-                $refilledRoute = $this->addRowElementsToRoute($existingRoute, $row);
-                $routes[$routeNumber] = $refilledRoute;
             } else {
-                $newRoute = new Route();
-                $newRoute->setNumber($routeNumber);
-                $refilledRoute = $this->addRowElementsToRoute($newRoute, $row);
-                $routes[$routeNumber] = $refilledRoute;
+                //here is actual reading of spreadsheet rows and sending values to apropriate destination
+                // echo $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x) . "---" . $spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x) . "<br>";
+
+
+                if (array_key_exists($routeNumber, $routes)) {
+                    $existingRoute = $routes[$routeNumber];
+                    $refilledRoute = $this->addRowElementsToRoute($existingRoute, $spreadsheet, $x);
+                    $routes[$routeNumber] = $refilledRoute;
+                } else {
+                    $newRoute = new Route();
+                    $newRoute->setNumber($routeNumber);
+                    $refilledRoute = $this->addRowElementsToRoute($newRoute, $spreadsheet, $x);
+                    $routes[$routeNumber] = $refilledRoute;
+                }
+
+                $x++;
             }
-
-
-            $x++;
         }
+    }
+
+    private function addRowElementsToRoute($route, $spreadsheet, $x) {
+        $tripVoucherNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x)->getValue();
+
+
+        echo $tripVoucherNumber;
+        echo "<br>";
+        return $route;
     }
 
     private function readExcelFile($clientId, $startRow, $endRow) {
@@ -83,6 +114,8 @@ class CronJobController {
     }
 
 }
+
+//--------------//---------------//----------------
 
 class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
 
@@ -103,5 +136,3 @@ class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
     }
 
 }
-
-//--------MODEL ---------//

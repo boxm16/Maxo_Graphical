@@ -127,10 +127,9 @@ class DataBaseTools {
         $sql = "CREATE TABLE `tech` (
   `tech_type` VARCHAR(15) NOT NULL,
   `value` TINYINT(1) NOT NULL,
-  `start` INT(6) NOT NULL,
-  `end` INT(6) NOT NULL);
-  INSERT INTO `tech` (tech_type, value,  start, end)
-  VALUES('loading',0,8,8);
+  `start_row` INT(6) NOT NULL);
+  INSERT INTO `tech` (tech_type, value,  start_row)
+  VALUES('loading',0,8);
 ";
         try {
             $this->connection->exec($sql);
@@ -623,7 +622,7 @@ class DataBaseTools {
 ////--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--
     //------------------------------
     public function registerNewUpload() {
-        $sql = "UPDATE tech SET value=1, start=8, end=8 WHERE tech_type='loading';";
+        $sql = "UPDATE tech SET value=1, start_row=8 WHERE tech_type='loading';";
         try {
             $statement = $this->connection->prepare($sql);
 
@@ -634,12 +633,12 @@ class DataBaseTools {
         }
     }
 
-    public function registerNextChunk(int $loading_start_row, int $loading_end_row) {
-        $sql = "UPDATE tech SET start=?, end=? WHERE tech_type='loading';";
+    public function registerNextChunk(int $endRow) {
+        $sql = "UPDATE tech SET start_row=? WHERE tech_type='loading';";
+        $loading_start_row = 0;
         try {
             $statement = $this->connection->prepare($sql);
-            $statement->bindParam(1, $loading_start_row);
-            $statement->bindParam(2, $loading_end_row);
+            $statement->bindParam(1, $endRow);
             $statement->execute();
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
@@ -664,12 +663,12 @@ class DataBaseTools {
         }
     }
 
-    public function getLastUploadedRowIndex() {
-        $sql = "SELECT end FROM tech WHERE tech_type='loading'";
+    public function getStartRowIndex() {
+        $sql = "SELECT start_row FROM tech WHERE tech_type='loading'";
 
         try {
             $result = $this->connection->query($sql)->fetch();
-            return $result["end"];
+            return $result["start_row"];
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
@@ -685,7 +684,7 @@ class DataBaseTools {
     }
 
     public function resetTechTable() {
-        $sql = "UPDATE tech SET value=0, start=8, end=8 WHERE tech_type='loading';";
+        $sql = "UPDATE tech SET value=0, start_row=8 WHERE tech_type='loading';";
         try {
             $statement = $this->connection->prepare($sql);
             $statement->execute();

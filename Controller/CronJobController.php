@@ -100,8 +100,8 @@ class CronJobController {
         $tripVoucherNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x)->getValue();
 
 
-        echo $tripVoucherNumber;
-        echo "<br>";
+        //echo $tripVoucherNumber;
+        // echo "<br>";
         return $route;
     }
 

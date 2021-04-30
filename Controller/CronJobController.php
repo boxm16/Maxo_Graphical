@@ -36,10 +36,10 @@ class CronJobController {
 
         $clientId = 111;
         $nextChunkStartingRow = $this->dataBaseTools->getStartRowIndex();
-        $chunkMaxLength = 1000;
+        $chunkMaxLength = 5000;
         $nextChunkLastRow = $nextChunkStartingRow + $chunkMaxLength;
         $spreadsheet = $this->readExcelFile($clientId, $nextChunkStartingRow, $nextChunkLastRow);
-        $nextChunkEndRow = $this->getNextChunkEndRow($spreadsheet, $nextChunkLastRow);
+        $nextChunkEndRow = $this->getNextChunkEndRow($spreadsheet, $nextChunkLastRow, $chunkMaxLength);
         $nextChunk = $this->getNextChunk($spreadsheet, $nextChunkStartingRow, $nextChunkEndRow);
         if ($this->lastChunk) {
             $this->dataBaseTools->loadLastChunk();
@@ -63,7 +63,7 @@ class CronJobController {
         return $spreadsheet;
     }
 
-    private function getNextChunkEndRow($spreadsheet, $lastRow) {
+    private function getNextChunkEndRow($spreadsheet, $lastRow, $chunkMaxLength) {
 
         $lastVoucherInChunk = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $lastRow)->getValue();
         if ($lastVoucherInChunk == "") {
@@ -77,7 +77,7 @@ class CronJobController {
                 return $lastRow + 1;
             }
             if ($lastRow == 8) {
-                return 1000;
+                return $chunkMaxLength;
             }
         }
         return $lastRow;

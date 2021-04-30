@@ -7,6 +7,7 @@ require_once 'DAO/DataBaseTools.php';
 require_once 'LoadModel/Chunk.php';
 require_once 'LoadModel/TripVoucher.php';
 require_once 'LoadModel/TripPeriod.php';
+require_once 'Controller/TimeCalculator.php';
 
 class CronJobController {
 
@@ -27,6 +28,12 @@ class CronJobController {
     }
 
     public function loadChunk() {
+
+        $start_memory = memory_get_usage(); //to measure variable size, see foot
+
+
+
+
         $clientId = 111;
         $nextChunkStartingRow = $this->dataBaseTools->getStartRowIndex();
         $chunkMaxLength = 1000;
@@ -43,6 +50,17 @@ class CronJobController {
             $this->dataBaseTools->loadNextChunk();
             $this->dataBaseTools->registerNextChunk($nextChunkEndRow);
         }
+        $needeMemory = memory_get_usage() - $start_memory;
+        echo 'Memory needed for loading:  (' . (($needeMemory / 1024) / 1024) . 'M) <br>';
+        echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
+    }
+
+    private function readExcelFile($clientId, $startRow, $endRow) {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader->setReadFilter(new MyReadFilter($startRow, $endRow));
+        $spreadsheet = $reader->load("uploads/calculationsExcelFile" . $clientId . ".xlsx");
+
+        return $spreadsheet;
     }
 
     private function getNextChunkEndRow($spreadsheet, $lastRow) {
@@ -95,9 +113,6 @@ class CronJobController {
                 $x++;
             }
         }
-    }
-
-    private function getTripPeriodData(Chunk $chunk, $spreadsheet, $x) {
         return $chunk;
     }
 
@@ -134,12 +149,166 @@ class CronJobController {
         return $chunk;
     }
 
-    private function readExcelFile($clientId, $startRow, $endRow) {
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $reader->setReadFilter(new MyReadFilter($startRow, $endRow));
-        $spreadsheet = $reader->load("uploads/calculationsExcelFile" . $clientId . ".xlsx");
+    private function getTripPeriodData(Chunk $chunk, $spreadsheet, $row) {
 
-        return $spreadsheet;
+        $tripPeriodType = $this->getTripTypeFromRowCell($spreadsheet, $row);
+        $tripPeriods = $chunk->getTripPeriods();
+
+        if ($tripPeriodType == "baseLeaving") {
+            $tripPeriod = $this->createBaseLeavingPeriod($spreadsheet, $row);
+            array_push($tripPeriods, $tripPeriod);
+        }
+        if ($tripPeriodType == "baseReturn") {
+            $tripPeriod = $this->createBaseReturnPeriod($spreadsheet, $row);
+            array_push($tripPeriods, $tripPeriod);
+        }
+        if ($tripPeriodType == "break") {
+            $tripPeriod = $this->createBreakPeriod($spreadsheet, $row);
+            array_push($tripPeriods, $tripPeriod);
+        }
+        if ($tripPeriodType == "round") {
+            $tripPeriodsOfRound = $this->createTripPeridsOfRound($spreadsheet, $row);
+            foreach ($tripPeriodsOfRound as $tripPeriod) {
+                array_push($tripPeriods, $tripPeriod);
+            }
+        }
+
+        $chunk->setTripPeriods($tripPeriods); //not sure if needed, maybe array is already pushed
+        return $chunk;
+    }
+
+    private function getTripTypeFromRowCell($spreadsheet, $x) {
+        //baseLeaving, baseReturn, ab, ba, break
+        $tripPeriodTypeStampInRowCell = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(8, $x)->getValue();
+        if (strpos($tripPeriodTypeStampInRowCell, "გასვლა") != null) {
+            return "baseLeaving";
+        }
+        if (strpos($tripPeriodTypeStampInRowCell, "შესვენება") != null) {
+            return "break";
+        }
+        if (strpos($tripPeriodTypeStampInRowCell, "დაბრუნება") != null) {
+            return "baseReturn";
+        }
+        if (strpos($tripPeriodTypeStampInRowCell, "ბრუნი") != null) {
+            return "round";
+        }
+    }
+
+    private function createBaseLeavingPeriod($spreadsheet, $row) {
+
+        if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
+            $tripPeriodType = "baseLeaving_A";
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+        } else {
+            $tripPeriodType = "baseLeaving_B";
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+        }
+        return $tripPeriod;
+    }
+
+    private function createBaseReturnPeriod($spreadsheet, $row) {
+        if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
+            $tripPeriodType = "A_baseReturn";
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+        } else {
+            $tripPeriodType = "B_baseReturn";
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+        }
+        return $tripPeriod;
+    }
+
+    private function createBreakPeriod($spreadsheet, $row) {
+        $tripPeriodType = "break";
+        if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+        } else {
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+        }
+        return $tripPeriod;
+    }
+
+    private function createTripPeridsOfRound($spreadsheet, $row) {
+        $tripPeriodsOfRound = array();
+        if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "" &&
+                $spreadsheet->getActiveSheet()->getCellByColumnAndRow(23, $x)->getValue() != "") {
+            $leftSideTime = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue());
+            $rightSideTime = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(23, $x)->getValue());
+            $timeCalculator = new TimeCalculator();
+            $leftSideTimeInSeconds = $timeCalculator->getSecondsFromTimeStamp($leftSideTime);
+            $rightSideTimeInSeconds = $timeCalculator->getSecondsFromTimeStamp($rightSideTime);
+            if ($leftSideTimeInSeconds < $rightSideTimeInSeconds) {
+                $tripPeriodType = "ab";
+                $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+                array_push($tripPeriodsOfRound, $tripPeriod);
+                $tripPeriodType = "ba";
+                $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+                array_push($tripPeriodsOfRound, $tripPeriod);
+                return $tripPeriodsOfRound;
+            } else {
+
+                $tripPeriodType = "ba";
+                $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+                array_push($tripPeriodsOfRound, $tripPeriod);
+                $tripPeriodType = "ab";
+                $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+                array_push($tripPeriodsOfRound, $tripPeriod);
+                return $tripPeriodsOfRound;
+            }
+        }
+        if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
+            $tripPeriodType = "ab";
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+            array_push($tripPeriodsOfRound, $tripPeriod);
+        }
+        if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(23, $x)->getValue() != "") {
+            $tripPeriodType = "ba";
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+            array_push($tripPeriodsOfRound, $tripPeriod);
+        }
+        return $tripPeriodsOfRound;
+    }
+
+    private function time24($shortTimeStamp) {
+        if ($shortTimeStamp == "") {
+            return $shortTimeStamp;
+        }
+        $splittedTime = explode(":", $shortTimeStamp);
+        $hours = $splittedTime[0];
+        $minutes = $splittedTime[1];
+        $totalSeconds = ($hours * 60 * 60) + ($minutes * 60);
+        if ($totalSeconds > 3 * 60 * 60) {
+            return $shortTimeStamp;
+        } else {
+            $totalSeconds += 24 * 60 * 60;
+            $h = floor($totalSeconds / 3600);
+            $m = floor(($totalSeconds - ($h * 3600)) / 60);
+
+            return sprintf('%02d', $h) . ":" . sprintf('%02d', $m);
+        }
+    }
+
+    private function createTripPeriodFromLeftSide($spreadsheet, $x, $type) {
+        $tripVoucherNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x)->getValue();
+        $startTimeScheduled = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue());
+        $startTimeActual = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(18, $x)->getValue());
+        $startTimeDifference = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(19, $x)->getValue();
+        $arrivalTimeScheduled = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(20, $x)->getValue());
+        $arrivalTimeActual = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(21, $x)->getValue());
+        $arrivalTimeDifference = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(22, $x)->getValue();
+        $tripPeriod = new TripPeriod($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        return $tripPeriod;
+    }
+
+    private function createTripPeriodFromRightSide($row, $type) {
+        $tripVoucherNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x)->getValue();
+        $startTimeScheduled = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(23, $x)->getValue());
+        $startTimeActual = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(24, $x)->getValue());
+        $startTimeDifference = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(25, $x)->getValue();
+        $arrivalTimeScheduled = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(26, $x)->getValue());
+        $arrivalTimeActual = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(27, $x)->getValue());
+        $arrivalTimeDifference = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(28, $x)->getValue();
+        $tripPeriod = new TripPeriod($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        return $tripPeriod;
     }
 
 }

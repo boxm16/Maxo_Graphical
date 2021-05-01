@@ -35,7 +35,7 @@ class CronJobController {
 
         $clientId = 111;
         $nextChunkStartingRow = $this->dataBaseTools->getStartRowIndex();
-        $chunkMaxLength = 5000;
+        $chunkMaxLength = 3000;
         $nextChunkLastRow = $nextChunkStartingRow + $chunkMaxLength;
         $spreadsheet = $this->readExcelFile($clientId, $nextChunkStartingRow, $nextChunkLastRow);
         $nextChunkEndRow = $this->getNextChunkEndRow($spreadsheet, $nextChunkLastRow, $chunkMaxLength);

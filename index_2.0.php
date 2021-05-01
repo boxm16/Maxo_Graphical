@@ -16,8 +16,8 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
 
 
 
-    if ($_FILES["fileToUpload"]["size"] > 500000000) {
-        $errorMessage = "ფაილის ზომა დაშვებულზე დიდია (მაგას რასაც ტვირთავ ექსელის ფაილი არ იქნება, რაია მაგხელა??? ).";
+    if ($_FILES["fileToUpload"]["size"] > 12582910) {//12MB=12582912bytes
+        $errorMessage = "ფაილის ზომა დაშვებულზე დიდია.";
         $uploadOk = 0;
     }
 

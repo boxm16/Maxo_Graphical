@@ -66,17 +66,38 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
                 height: 50px;
             }
         </style>
+
+        <script>
+
+            function getLoadingStatus() {
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("loadingStatusDisplay").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "cronJobDispatcher.php?statusRequest=on", true);
+                xmlhttp.send();
+
+            }
+        </script>    
+
+
     </head>
     <body>
         <div class="container">
             <div class="row">
                 <div class="col">
+                    <br>
+                    <button type="button" onclick="getLoadingStatus()">See if Loading</button>
+                    <div id="loadingStatusDisplay">status here </div>
                     <h2>ატვირთული მარშრუტები</h2>
                     <?php
                     $routeDBController = new RouteDBController();
                     $inLoadingMode = $routeDBController->isLoading();
                     if ($inLoadingMode) {
-                        echo "მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა..............";
+                        echo "მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა";
                     } else {
                         $lastUploadedData = $routeDBController->getLastUploadedData();
                         foreach ($lastUploadedData as $data) {

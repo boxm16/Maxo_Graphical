@@ -17,8 +17,12 @@ class CronJobController {
         $this->dataBaseTools = new DataBaseTools();
     }
 
+    public function getLoadingMode() {
+        return $inLoadingMode = $this->dataBaseTools->isLoading();
+    }
+
     public function isLoading(): bool {
-        $inLoadingMode = $this->dataBaseTools->isLoading();
+        $inLoadingMode = $this->getLoadingMode();
         if ($inLoadingMode) {
             $this->loadInDB();
         }

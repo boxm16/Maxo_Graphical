@@ -87,6 +87,8 @@ class CronJobController {
     public function getNextChunk($spreadsheet, int $startRow, int $endRow) {
         $chunk = new Chunk();
         $x = $startRow;
+        $lastUploadedRouteDates = $this->dataBaseTools->getLastUploadedRouteDates();
+
         while ($x < $endRow) {
             $routeNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(8, $x)->getValue();
 
@@ -98,17 +100,18 @@ class CronJobController {
 //here is actual reading of spreadsheet rows and sending values to apropriate destination
 // echo $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x) . "---" . $spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x) . "<br>";
 
-                $lastUploadedRouteDates = $this->dataBaseTools->getLastUploadedRouteDates();
+
                 $dateStamp = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(6, $x)->getValue();
-                $dateStamp = $this->convertDateStamp($dateStamp);
-                $routeNumberDateStamp = $routeNumber . ":" . $dateStamp;
+                $convertedDateStamp = $this->convertDateStamp($dateStamp);
+                $routeNumberDateStamp = $routeNumber . ":" . $convertedDateStamp;
                 if (in_array($routeNumberDateStamp, $lastUploadedRouteDates)) {
-//do nothing
+                    //do nothing
                 } else {
                     $routeDateInsertionData = $chunk->getRouteDates();
-                    $routeDateInsertionRow = array($routeNumber, $dateStamp);
+                    $routeDateInsertionRow = array($routeNumber, $convertedDateStamp);
+                    array_push($lastUploadedRouteDates, $routeNumberDateStamp);
                     array_push($routeDateInsertionData, $routeDateInsertionRow);
-                    $routeDateInsertionData = $chunk->setRouteDates($routeDateInsertionData);
+                    $chunk->setRouteDates($routeDateInsertionData);
                 }
 
 //---------
@@ -325,8 +328,7 @@ class CronJobController {
         if (count($tripPeriods) > 0) {
             //first register new uploaded routes and datestamps
             $routeDatesData = $chunk->getRouteDates();
-         //   $this->dataBaseTools->insertLastUploadedRouteDates($routeDatesData);
-
+            $this->dataBaseTools->insertLastUploadedRouteDates($routeDatesData);
             //now get routeNumbers from database to compare if there is some new route number in uploaded file 
             $routeNumbersFromChunk = $chunk->getRoutes();
             $routNumbersFromDB = $this->dataBaseTools->getRouteNumbers();

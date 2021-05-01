@@ -657,7 +657,6 @@ class DataBaseTools {
         $sql = "UPDATE tech SET value=1, start_row=8 WHERE tech_type='loading';";
         try {
             $statement = $this->connection->prepare($sql);
-
             $statement->execute();
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
@@ -669,8 +668,8 @@ class DataBaseTools {
         $sql = "DELETE FROM last_upload;";
         try {
             $statement = $this->connection->prepare($sql);
-
             $statement->execute();
+            echo "All data has been deleted successfully from last_upload table <br>";
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
@@ -679,11 +678,13 @@ class DataBaseTools {
 
     public function registerNextChunk(int $endRow) {
 
-        $sql = "UPDATE tech SET value=1, start_row=8 WHERE tech_type='loading';";
+        $sql = "UPDATE tech SET start_row=? WHERE tech_type='loading';";
+
         try {
             $statement = $this->connection->prepare($sql);
+            $statement->bindParam(1, $endRow);
             $statement->execute();
-            echo "Next chunk registered successfully into database <br>";
+            echo "Next chunk with EndRow=$endRow registered successfully into database <br>";
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
@@ -720,26 +721,22 @@ class DataBaseTools {
     }
 
     public function getLastUploadedRouteDates() {
-        $sql = "SELECT number, date_stamp FROM last_upload";
+        $sql = "SELECT  number, date_stamp FROM last_upload";
         $routeDates = array();
         try {
 
             $result = $this->connection->query($sql)->fetchAll();
-            foreach ($result as $row) {
-                $routeNumber = $row["number"];
-                $date_stamp = $row["date_stamp"];
-                $routeNumberDateStamp = $routeNumber . ":" . $date_stamp;
-                if (in_array($routeNumberDateStamp, $routeDates)) {
-                    //do nothing
-                } else {
-                    array_push($routeDates, $routeNumberDateStamp);
-                }
-            }
-            return $routeDates;
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
         }
+        foreach ($result as $row) {
+            $routeNumber = $row["number"];
+            $date_stamp = $row["date_stamp"];
+            $routeNumberDateStamp = $routeNumber . ":" . $date_stamp;
+            array_push($routeDates, $routeNumberDateStamp);
+        }
+        return $routeDates;
     }
 
     public function resetTechTable() {

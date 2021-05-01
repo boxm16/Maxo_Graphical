@@ -410,4 +410,13 @@ class RouteDBController {
         }
     }
 
+    public function getLastUploadedData() {
+        $lastUploadedData = $this->dataBaseTools->getLastUploadedRouteDates();
+        return $lastUploadedData;
+    }
+
+    public function isLoading() {
+        return $inLoadingMode = $this->dataBaseTools->isLoading();
+    }
+
 }

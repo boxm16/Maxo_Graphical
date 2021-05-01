@@ -1,5 +1,6 @@
 <?php
 require_once 'Controller/UploadController.php';
+require_once 'Controller/RouteDBController.php';
 require_once 'Controller/CronJobController.php';
 require_once 'clientId.php';
 $errorAlert = "";
@@ -70,6 +71,20 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
         <div class="container">
             <div class="row">
                 <div class="col">
+                    <h2>ატვირთული მარშრუტები</h2>
+                    <?php
+                    $routeDBController = new RouteDBController();
+                    $inLoadingMode = $routeDBController->isLoading();
+                    if ($inLoadingMode) {
+                        echo "მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა..............";
+                    } else {
+                        $lastUploadedData = $routeDBController->getLastUploadedData();
+                        foreach ($lastUploadedData as $data) {
+                            echo $data . "<br>";
+                        }
+                    }
+                    ?>
+                    <hr><hr>
                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
                         <center>
                             <table >
@@ -102,7 +117,9 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
                             </table>
                         </center>
                     </form>
-                    <hr><hr>
+                    <hr>
+
+
                     <?php
                     $e = microtime(true);
                     echo "<br> Display time required:" . ($e - $s);

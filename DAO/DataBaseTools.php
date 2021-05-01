@@ -604,6 +604,25 @@ class DataBaseTools {
         $sql .= ";";
         try {
             $this->connection->exec($sql);
+            echo "Records that are to be renewed deleted successfully <br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function deleteVouchers_2(array $vouchersForDeletion) {
+        //here is array of objects, in first version is just string
+        $firstVoucher = array_shift($vouchersForDeletion);
+        $firstVoucherNumber = $firstVoucher[0];
+        $sql = "DELETE FROM trip_voucher WHERE number='$firstVoucherNumber' ";
+        foreach ($vouchersForDeletion as $voucher) {
+            $firstVoucherNumber = $voucher[0];
+            $sql .= " OR number='$firstVoucherNumber' ";
+        }
+        $sql .= ";";
+        try {
+            $this->connection->exec($sql);
             echo "Records that are to be renewed deleted successfully";
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";

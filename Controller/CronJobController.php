@@ -5,8 +5,6 @@ require 'vendor/autoload.php';
 require_once 'DAO/DataBaseTools.php';
 //---------
 require_once 'LoadModel/Chunk.php';
-require_once 'LoadModel/TripVoucher.php';
-require_once 'LoadModel/TripPeriod.php';
 require_once 'Controller/TimeCalculator.php';
 
 class CronJobController {
@@ -22,17 +20,14 @@ class CronJobController {
     public function isLoading(): bool {
         $inLoadingMode = $this->dataBaseTools->isLoading();
         if ($inLoadingMode) {
-            $this->loadChunk();
+            $this->loadInDB();
         }
         return $inLoadingMode;
     }
 
-    public function loadChunk() {
+    public function loadInDB() {
 
         $start_memory = memory_get_usage(); //to measure variable size, see foot
-
-
-
 
         $clientId = 111;
         $nextChunkStartingRow = $this->dataBaseTools->getStartRowIndex();
@@ -42,12 +37,12 @@ class CronJobController {
         $nextChunkEndRow = $this->getNextChunkEndRow($spreadsheet, $nextChunkLastRow, $chunkMaxLength);
         $nextChunk = $this->getNextChunk($spreadsheet, $nextChunkStartingRow, $nextChunkEndRow);
         if ($this->lastChunk) {
-            $this->dataBaseTools->loadLastChunk();
+            $this->loadChunk($nextChunk);
             $this->dataBaseTools->resetTechTable();
             echo "End of Loading";
             echo "<br>";
         } else {
-            $this->dataBaseTools->loadNextChunk();
+            $this->loadChunk($nextChunk);
             $this->dataBaseTools->registerNextChunk($nextChunkEndRow);
         }
         $needeMemory = memory_get_usage() - $start_memory;
@@ -113,61 +108,59 @@ class CronJobController {
                 $x++;
             }
         }
+        foreach ($chunk->getTripVouchers() as $voucher) {
+            
+        }
         return $chunk;
     }
 
     private function getTripVoucherData(Chunk $chunk, $spreadsheet, $x) {
         $tripVoucherNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x)->getValue();
-        $tripVouchers = $chunk->getTripVouchers();
+        $tripVouchersDoubler = $chunk->getTripVouchersDoubler();
 
-        if (array_key_exists($tripVoucherNumber, $tripVouchers)) {
-            //do nothing
+        if (in_array($tripVoucherNumber, $tripVouchersDoubler)) {
+            return $chunk;
         } else {
-
-
+            $tripVouchers = $chunk->getTripVouchers();
             $routeNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(8, $x)->getValue();
             $dateStamp = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(6, $x)->getValue();
+            $convertedDateStamp = $this->convertDateStamp($dateStamp);
             $exodusNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(9, $x)->getValue();
             $driverNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(4, $x)->getValue();
             $driverName = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(5, $x)->getValue();
             $busNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(3, $x)->getValue();
             $busType = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(2, $x)->getValue();
             $notes = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(29, $x)->getValue();
-            $tripVoucher = new TripVoucher();
-            $tripVoucher->setNumber($tripVoucherNumber);
-            $tripVoucher->setRouteNumber($routeNumber);
-            $tripVoucher->setDateStamp($dateStamp);
-            $tripVoucher->setExodusNumber($exodusNumber);
-            $tripVoucher->setDriverName($driverName);
-            $tripVoucher->setDriverNumber($driverNumber);
-            $tripVoucher->setBusNumber($busNumber);
-            $tripVoucher->setBusType($busType);
-            $tripVoucher->setNotes($notes);
-            $tripVouchers[$tripVoucherNumber] = $tripVoucher;
+            $tripVoucher = array($tripVoucherNumber, $routeNumber, $convertedDateStamp, $exodusNumber, $driverNumber, $driverName, $busNumber, $busType, $notes);
+            array_push($tripVouchers, $tripVoucher);
+            array_push($tripVouchersDoubler, $tripVoucherNumber);
             $chunk->setTripVouchers($tripVouchers);
         }
+
+
+        $chunk->setTripVouchersDoubler($tripVouchersDoubler);
         return $chunk;
     }
 
-    private function getTripPeriodData(Chunk $chunk, $spreadsheet, $row) {
+    private function getTripPeriodData(Chunk $chunk, $spreadsheet, $x) {
 
-        $tripPeriodType = $this->getTripTypeFromRowCell($spreadsheet, $row);
+        $tripPeriodType = $this->getTripTypeFromRowCell($spreadsheet, $x);
         $tripPeriods = $chunk->getTripPeriods();
 
         if ($tripPeriodType == "baseLeaving") {
-            $tripPeriod = $this->createBaseLeavingPeriod($spreadsheet, $row);
+            $tripPeriod = $this->createBaseLeavingPeriod($spreadsheet, $x);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "baseReturn") {
-            $tripPeriod = $this->createBaseReturnPeriod($spreadsheet, $row);
+            $tripPeriod = $this->createBaseReturnPeriod($spreadsheet, $x);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "break") {
-            $tripPeriod = $this->createBreakPeriod($spreadsheet, $row);
+            $tripPeriod = $this->createBreakPeriod($spreadsheet, $x);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "round") {
-            $tripPeriodsOfRound = $this->createTripPeridsOfRound($spreadsheet, $row);
+            $tripPeriodsOfRound = $this->createTripPeridsOfRound($spreadsheet, $x);
             foreach ($tripPeriodsOfRound as $tripPeriod) {
                 array_push($tripPeriods, $tripPeriod);
             }
@@ -179,7 +172,7 @@ class CronJobController {
 
     private function getTripTypeFromRowCell($spreadsheet, $x) {
         //baseLeaving, baseReturn, ab, ba, break
-        $tripPeriodTypeStampInRowCell = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(8, $x)->getValue();
+        $tripPeriodTypeStampInRowCell = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(16, $x)->getValue();
         if (strpos($tripPeriodTypeStampInRowCell, "გასვლა") != null) {
             return "baseLeaving";
         }
@@ -194,40 +187,40 @@ class CronJobController {
         }
     }
 
-    private function createBaseLeavingPeriod($spreadsheet, $row) {
+    private function createBaseLeavingPeriod($spreadsheet, $x) {
 
         if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
             $tripPeriodType = "baseLeaving_A";
-            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $x, $tripPeriodType);
         } else {
             $tripPeriodType = "baseLeaving_B";
-            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $x, $tripPeriodType);
         }
         return $tripPeriod;
     }
 
-    private function createBaseReturnPeriod($spreadsheet, $row) {
+    private function createBaseReturnPeriod($spreadsheet, $x) {
         if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
             $tripPeriodType = "A_baseReturn";
-            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $x, $tripPeriodType);
         } else {
             $tripPeriodType = "B_baseReturn";
-            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $x, $tripPeriodType);
         }
         return $tripPeriod;
     }
 
-    private function createBreakPeriod($spreadsheet, $row) {
+    private function createBreakPeriod($spreadsheet, $x) {
         $tripPeriodType = "break";
         if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
-            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $x, $tripPeriodType);
         } else {
-            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $x, $tripPeriodType);
         }
         return $tripPeriod;
     }
 
-    private function createTripPeridsOfRound($spreadsheet, $row) {
+    private function createTripPeridsOfRound($spreadsheet, $x) {
         $tripPeriodsOfRound = array();
         if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "" &&
                 $spreadsheet->getActiveSheet()->getCellByColumnAndRow(23, $x)->getValue() != "") {
@@ -238,31 +231,31 @@ class CronJobController {
             $rightSideTimeInSeconds = $timeCalculator->getSecondsFromTimeStamp($rightSideTime);
             if ($leftSideTimeInSeconds < $rightSideTimeInSeconds) {
                 $tripPeriodType = "ab";
-                $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+                $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $x, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 $tripPeriodType = "ba";
-                $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+                $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $x, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 return $tripPeriodsOfRound;
             } else {
 
                 $tripPeriodType = "ba";
-                $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+                $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $x, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 $tripPeriodType = "ab";
-                $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+                $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $x, $tripPeriodType);
                 array_push($tripPeriodsOfRound, $tripPeriod);
                 return $tripPeriodsOfRound;
             }
         }
         if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x)->getValue() != "") {
             $tripPeriodType = "ab";
-            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromLeftSide($spreadsheet, $x, $tripPeriodType);
             array_push($tripPeriodsOfRound, $tripPeriod);
         }
         if ($spreadsheet->getActiveSheet()->getCellByColumnAndRow(23, $x)->getValue() != "") {
             $tripPeriodType = "ba";
-            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $row, $tripPeriodType);
+            $tripPeriod = $this->createTripPeriodFromRightSide($spreadsheet, $x, $tripPeriodType);
             array_push($tripPeriodsOfRound, $tripPeriod);
         }
         return $tripPeriodsOfRound;
@@ -295,11 +288,11 @@ class CronJobController {
         $arrivalTimeScheduled = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(20, $x)->getValue());
         $arrivalTimeActual = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(21, $x)->getValue());
         $arrivalTimeDifference = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(22, $x)->getValue();
-        $tripPeriod = new TripPeriod($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        $tripPeriod = array($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
         return $tripPeriod;
     }
 
-    private function createTripPeriodFromRightSide($row, $type) {
+    private function createTripPeriodFromRightSide($spreadsheet, $x, $type) {
         $tripVoucherNumber = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x)->getValue();
         $startTimeScheduled = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(23, $x)->getValue());
         $startTimeActual = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(24, $x)->getValue());
@@ -307,8 +300,55 @@ class CronJobController {
         $arrivalTimeScheduled = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(26, $x)->getValue());
         $arrivalTimeActual = $this->time24($spreadsheet->getActiveSheet()->getCellByColumnAndRow(27, $x)->getValue());
         $arrivalTimeDifference = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(28, $x)->getValue();
-        $tripPeriod = new TripPeriod($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
+        $tripPeriod = array($tripVoucherNumber, $type, $startTimeScheduled, $startTimeActual, $startTimeDifference, $arrivalTimeScheduled, $arrivalTimeActual, $arrivalTimeDifference);
         return $tripPeriod;
+    }
+
+    private function loadChunk($chunk) {
+
+        $tripPeriods = $chunk->getTripPeriods();
+
+        if (count($tripPeriods) > 0) {
+            //first get routeNumbers from database to compare if there is some new route number in uploaded file 
+            $routeNumbersFromChunk = $chunk->getRoutes();
+            $routNumbersFromDB = $this->dataBaseTools->getRouteNumbers();
+            $routeNumbersForInsertion = array();
+            foreach ($routeNumbersFromChunk as $routeNumberFromChunk) {
+                if (in_array($routeNumberFromChunk, $routNumbersFromDB)) {
+                    //do nothing
+                } else {
+                    array_push($routeNumbersForInsertion, $routeNumberFromChunk);
+                }
+            }
+            if (count($routeNumbersForInsertion) > 0) {
+                $insertData = array();
+                foreach ($routeNumbersForInsertion as $routeNumber) {
+
+                    $exploded = explode("-", $routeNumber);
+                    $prefix = $exploded[0];
+                    $suffix = null;
+                    if (count($exploded) > 1) {
+                        $suffix = $exploded[1];
+                    }
+                    $insertRow = array($routeNumber, $prefix, $suffix, "A-პუნკტი", "B-პუნკტი");
+                    array_push($insertData, $insertRow);
+                }
+                $this->dataBaseTools->insertRoutes($insertData);
+            }
+            //now trip vouchers
+            $tripVouchers = $chunk->getTripVouchers();
+
+            $tripPeriodsForInsertion = $chunk->getTripPeriods();
+            $this->dataBaseTools->deleteVouchers_2($tripVouchers);
+            $this->dataBaseTools->insertTripVouchers($tripVouchers);
+
+            $this->dataBaseTools->insertTripPeriods($tripPeriodsForInsertion);
+        }
+    }
+
+    private function convertDateStamp($dateStamp) {
+        $time = strtotime(str_replace('/', '-', $dateStamp));
+        return $dateStamp = date('Y-m-d', $time);
     }
 
 }

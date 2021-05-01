@@ -69,6 +69,11 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
 
         <script>
 
+            var myVar = setInterval(getLoadingStatus, 1000);
+
+
+
+
             function getLoadingStatus() {
 
                 var xmlhttp = new XMLHttpRequest();
@@ -90,14 +95,13 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
             <div class="row">
                 <div class="col">
                     <br>
-                    <button type="button" onclick="getLoadingStatus()">See if Loading</button>
-                    <div id="loadingStatusDisplay">status here </div>
                     <h2>ატვირთული მარშრუტები</h2>
+                    <div id="loadingStatusDisplay">ატვირთვის სტატუსი</div>
                     <?php
                     $routeDBController = new RouteDBController();
                     $inLoadingMode = $routeDBController->isLoading();
                     if ($inLoadingMode) {
-                        echo "მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა";
+                        //do nothing
                     } else {
                         $lastUploadedData = $routeDBController->getLastUploadedData();
                         foreach ($lastUploadedData as $data) {

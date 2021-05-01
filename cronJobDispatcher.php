@@ -9,7 +9,7 @@ $cronJobController = new CronJobController();
 if (isset($_GET["statusRequest"])) {
 
     if ($cronJobController->getLoadingMode()) {
-        echo "loading";
+        echo "მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა";
     } else {
         echo "ready";
     }

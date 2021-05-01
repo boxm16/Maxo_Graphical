@@ -36,6 +36,7 @@ class CronJobController {
         $spreadsheet = $this->readExcelFile($clientId, $nextChunkStartingRow, $nextChunkLastRow);
         $nextChunkEndRow = $this->getNextChunkEndRow($spreadsheet, $nextChunkLastRow, $chunkMaxLength);
         $nextChunk = $this->getNextChunk($spreadsheet, $nextChunkStartingRow, $nextChunkEndRow);
+
         if ($this->lastChunk) {
             $this->loadChunk($nextChunk);
             $this->dataBaseTools->resetTechTable();
@@ -80,6 +81,7 @@ class CronJobController {
 
     public function registerNewUpload() {
         $this->dataBaseTools->registerNewUpload();
+        $this->dataBaseTools->deleteLastUploadedData();
     }
 
     public function getNextChunk($spreadsheet, int $startRow, int $endRow) {
@@ -96,6 +98,20 @@ class CronJobController {
 //here is actual reading of spreadsheet rows and sending values to apropriate destination
 // echo $spreadsheet->getActiveSheet()->getCellByColumnAndRow(7, $x) . "---" . $spreadsheet->getActiveSheet()->getCellByColumnAndRow(17, $x) . "<br>";
 
+                $lastUploadedRouteDates = $this->dataBaseTools->getLastUploadedRouteDates();
+                $dateStamp = $spreadsheet->getActiveSheet()->getCellByColumnAndRow(6, $x)->getValue();
+                $dateStamp = $this->convertDateStamp($dateStamp);
+                $routeNumberDateStamp = $routeNumber . ":" . $dateStamp;
+                if (in_array($routeNumberDateStamp, $lastUploadedRouteDates)) {
+//do nothing
+                } else {
+                    $routeDateInsertionData = $chunk->getRouteDates();
+                    $routeDateInsertionRow = array($routeNumber, $dateStamp);
+                    array_push($routeDateInsertionData, $routeDateInsertionRow);
+                    $routeDateInsertionData = $chunk->setRouteDates($routeDateInsertionData);
+                }
+
+//---------
                 $routes = $chunk->getRoutes();
                 if (in_array($routeNumber, $routes)) {
 //do nothing
@@ -108,9 +124,7 @@ class CronJobController {
                 $x++;
             }
         }
-        foreach ($chunk->getTripVouchers() as $voucher) {
-            
-        }
+
         return $chunk;
     }
 
@@ -309,7 +323,11 @@ class CronJobController {
         $tripPeriods = $chunk->getTripPeriods();
 
         if (count($tripPeriods) > 0) {
-            //first get routeNumbers from database to compare if there is some new route number in uploaded file 
+            //first register new uploaded routes and datestamps
+            $routeDatesData = $chunk->getRouteDates();
+         //   $this->dataBaseTools->insertLastUploadedRouteDates($routeDatesData);
+
+            //now get routeNumbers from database to compare if there is some new route number in uploaded file 
             $routeNumbersFromChunk = $chunk->getRoutes();
             $routNumbersFromDB = $this->dataBaseTools->getRouteNumbers();
             $routeNumbersForInsertion = array();

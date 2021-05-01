@@ -266,6 +266,19 @@ class DataBaseTools {
         }
     }
 
+    public function insertLastUploadedRouteDates($routeDatesData) {
+        try {
+            $this->connection->beginTransaction();
+            $stmt = $this->connection->multiPrepare('INSERT INTO last_upload (number, date_stamp)', $routeDatesData);
+            $stmt->multiExecute($routeDatesData);
+            $this->connection->commit();
+            echo "New data (Last Uploaded Routes And Dates) inserted successfully into database" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
     //---------------------//------------//----------------
     //---------------------//------------//----------------
     //---------------------//------------//----------------
@@ -623,7 +636,7 @@ class DataBaseTools {
         $sql .= ";";
         try {
             $this->connection->exec($sql);
-            echo "Records that are to be renewed deleted successfully";
+            echo "Records that are to be renewed deleted successfully <br>";
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
@@ -652,13 +665,25 @@ class DataBaseTools {
         }
     }
 
-    public function registerNextChunk(int $endRow) {
-        $sql = "UPDATE tech SET start_row=? WHERE tech_type='loading';";
-        $loading_start_row = 0;
+    public function deleteLastUploadedData() {
+        $sql = "DELETE FROM last_upload;";
         try {
             $statement = $this->connection->prepare($sql);
-            $statement->bindParam(1, $endRow);
+
             $statement->execute();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function registerNextChunk(int $endRow) {
+
+        $sql = "UPDATE tech SET value=1, start_row=8 WHERE tech_type='loading';";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->execute();
+            echo "Next chunk registered successfully into database <br>";
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";
@@ -694,12 +719,27 @@ class DataBaseTools {
         }
     }
 
-    public function loadNextChunk() {
-        
-    }
+    public function getLastUploadedRouteDates() {
+        $sql = "SELECT number, date_stamp FROM last_upload";
+        $routeDates = array();
+        try {
 
-    public function loadLastChunk() {
-        
+            $result = $this->connection->query($sql)->fetchAll();
+            foreach ($result as $row) {
+                $routeNumber = $row["number"];
+                $date_stamp = $row["date_stamp"];
+                $routeNumberDateStamp = $routeNumber . ":" . $date_stamp;
+                if (in_array($routeNumberDateStamp, $routeDates)) {
+                    //do nothing
+                } else {
+                    array_push($routeDates, $routeNumberDateStamp);
+                }
+            }
+            return $routeDates;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
     }
 
     public function resetTechTable() {

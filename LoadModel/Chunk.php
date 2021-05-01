@@ -3,12 +3,14 @@
 class Chunk {
 
     private $routes;
+    private $routeDates;
     private $tripVouchers;
     private $tripVouchersDoubler;
     private $tripPeriods;
 
     function __construct() {
         $this->routes = array();
+        $this->routeDates=array();
         $this->tripVouchers = array();
         $this->tripVouchersDoubler=array();
         $this->tripPeriods = array();
@@ -44,6 +46,14 @@ class Chunk {
 
     function setTripVouchersDoubler($tripVouchersDoubler) {
         $this->tripVouchersDoubler = $tripVouchersDoubler;
+    }
+
+    function getRouteDates() {
+        return $this->routeDates;
+    }
+
+    function setRouteDates($routeDates) {
+        $this->routeDates = $routeDates;
     }
 
 

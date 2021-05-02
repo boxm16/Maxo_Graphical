@@ -1,7 +1,15 @@
 <?php
+require_once 'Controller_2.0/CronJobController.php';
 require_once 'Controller_2.0/IndexController.php';
-$indexController = new IndexController();
-$lastUploadedRoutesDates = $indexController->getLastUploadedRoutesDates();
+
+$cronJobController = new CronJobController();
+$isLoading = $cronJobController->getLoadingStatus();
+if ($isLoading) {
+    $lastUploadedRoutesDates = array();
+} else {
+    $indexController = new IndexController();
+    $lastUploadedRoutesDates = $indexController->getLastUploadedRoutesDates();
+}
 ?>
 
 <!DOCTYPE html>
@@ -104,30 +112,32 @@ $lastUploadedRoutesDates = $indexController->getLastUploadedRoutesDates();
         </style>
 
         <script>
+<?php
+if ($isLoading) {
+    echo "
             var myTaskScheduler = setInterval(getLoadingStatus, 1000);
             function getLoadingStatus() {
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        let loadingStatusDisplay = document.getElementById("loadingStatusDisplay");
-                        if (this.responseText == "loading") {
-                            loadingStatusDisplay.innerHTML = "მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა"
-                            loadingStatusDisplay.style.color = "#ff0000";
+                        let loadingStatusDisplay = document.getElementById(\"loadingStatusDisplay\");
+                        if (this.responseText == \"loading\") {
+                            loadingStatusDisplay.innerHTML = \"მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა\"
+                            loadingStatusDisplay.style.color = \"#ff0000\";
                         } else {
-                            loadingStatusDisplay.innerHTML = "ფაილის მონაცემთა ბაზაში გადატანა დასრილებულია"
-                            loadingStatusDisplay.style.color = "green";
-                            stopTaskScheduler();
+                            loadingStatusDisplay.innerHTML = \"ფაილის მონაცემთა ბაზაში გადატანა დასრილებულია\"
+                            loadingStatusDisplay.style.color = \"green\";
+                            location.reload();
                         }
 
                     }
                 };
-                xmlhttp.open("GET", "cronJobDispatcher.php?loadingStatusRequest=on", true);
+                xmlhttp.open(\"GET\", \"cronJobDispatcher.php?loadingStatusRequest=on\", true);
                 xmlhttp.send();
 
-            }
-            function stopTaskScheduler() {
-                clearInterval(myTaskScheduler);
-            }
+            } ";
+}
+?>
         </script>  
     </head>
     <body>  
@@ -138,7 +148,7 @@ $lastUploadedRoutesDates = $indexController->getLastUploadedRoutesDates();
                     <div class="content-container">
                         <div class="container-fluid">
                             <h3>ბოლო ატვირთული მონაცემები</h3>
-                            <div id="loadingStatusDisplay">ატვირთვის სტატუსი</div>
+                            <div id="loadingStatusDisplay"></div>
                             <?php
                             if (count($lastUploadedRoutesDates) > 1) {
                                 echo "<div style=\"left:0\"><h2>აირჩიე მარშრუტი</h2></div>";

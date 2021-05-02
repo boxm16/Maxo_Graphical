@@ -8,7 +8,7 @@ require_once 'Controller/CronJobController.php';
 $cronJobController = new CronJobController();
 if (isset($_GET["loadingStatusRequest"])) {
 
-    if ($cronJobController->getLoadingMode()) {
+    if ($cronJobController->getLoadingStatus()) {
         echo "loading";
     } else {
         echo "ready";

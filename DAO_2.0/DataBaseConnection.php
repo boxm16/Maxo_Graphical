@@ -6,8 +6,8 @@ class DataBaseConnection {
 
     public function getLocalhostConnection() {
         $host = 'localhost';
-        $db = '1181233';
-        $user = '1181233';
+        $db = '231185';
+        $user = '231185';
         $pass = 'athina2004';
         $charset = 'utf8';
 

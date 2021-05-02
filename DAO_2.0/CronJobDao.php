@@ -28,4 +28,27 @@ class CronJobDao {
         }
     }
 
+    public function registerNewUpload() {
+        $sql = "UPDATE tech SET value=1, start_row=8 WHERE tech_type='loading';";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->execute();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function deleteLastUploadedData() {
+        $sql = "DELETE FROM last_upload;";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->execute();
+            echo "All data has been deleted successfully from last_upload table <br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
 }

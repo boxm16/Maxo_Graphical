@@ -13,5 +13,10 @@ class CronJobController {
     public function getLoadingStatus(): bool {
         return $inLoadingMode = $this->cronJobDao->isLoading();
     }
+    
+    public function registerNewUpload() {
+        $this->cronJobDao->registerNewUpload();
+        $this->cronJobDao->deleteLastUploadedData();
+    }
 
 }

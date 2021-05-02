@@ -148,7 +148,12 @@ if ($isLoading) {
                     <div class="content-container">
                         <div class="container-fluid">
                             <h3>ბოლო ატვირთული მონაცემები</h3>
-                            <div id="loadingStatusDisplay"></div>
+                            <div id="loadingStatusDisplay"><?php
+                                if ($isLoading) {
+                                    echo "მიმდინარეობს ატვირთული ფაილების სტატუსის დადგენა";
+                                }
+                                ?>
+                            </div>
                             <?php
                             if (count($lastUploadedRoutesDates) > 1) {
                                 echo "<div style=\"left:0\"><h2>აირჩიე მარშრუტი</h2></div>";

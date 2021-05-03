@@ -9,10 +9,10 @@
   $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
   $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
   $writer->save("reports/walupa.xlsx");
-
-  $s = microtime(true);
-
  */
+  $s = microtime(true);
+  var_dump($_POST);
+
 echo"<hr>";
 
 

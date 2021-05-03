@@ -259,7 +259,7 @@ if ($isLoading) {
                         <ul class="sidebar-navigation">
                             <li class="header">გამოთვლები</li>
                             <li>
-                                <a href="#" onclick="submitLink('guaranteed.php')">
+                                <a href="#" onclick="submitLink('db_guaranteed.php')">
                                     <i class="fa fa-home" aria-hidden="true"></i>საგარანტიო რეისები
                                 </a>
                             </li>

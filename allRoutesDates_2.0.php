@@ -1,22 +1,14 @@
 <?php
-require_once 'Controller_2.0/CronJobController.php';
 require_once 'Controller_2.0/IndexController.php';
-
-$cronJobController = new CronJobController();
-$isLoading = $cronJobController->getLoadingStatus();
-if ($isLoading) {
-    $lastUploadedRoutesDates = array();
-} else {
-    $indexController = new IndexController();
-    $lastUploadedRoutesDates = $indexController->getLastUploadedRoutesDates();
-}
+$indexController = new IndexController();
+$allUploadedRoutesDates = $indexController->getAllUploadedRoutesDates();
 ?>
-
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>საწყისი გვერდი v_3.0</title>
+        <title>ყველა ატვირთული მონაცემები</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
@@ -36,7 +28,7 @@ if ($isLoading) {
                 right: 0;
                 overflow-x: hidden;
                 overflow-y: auto;
-                background: lightblue;
+                background: lightgreen;
                 color: black;
             }
 
@@ -47,7 +39,7 @@ if ($isLoading) {
             .sidebar-logo {
                 padding: 10px 15px 10px 30px;
                 font-size: 20px;
-                background-color: #2574A9;
+                background-color: green;
             }
 
             .sidebar-navigation {
@@ -83,7 +75,7 @@ if ($isLoading) {
             }
 
             .sidebar-navigation li::before {
-                background-color: #2574A9;
+                background-color: green;
                 position: absolute;
                 content: '';
                 height: 100%;
@@ -102,7 +94,7 @@ if ($isLoading) {
             .sidebar-navigation .header {
                 font-size: 20px;
                 text-transform: uppercase;
-                background-color: lightblue;
+                background-color: lightgreen;
                 padding: 10px 15px 10px 30px;
             }
 
@@ -110,42 +102,13 @@ if ($isLoading) {
                 background-color: transparent;
             }
         </style>
-
-        <script>
-<?php
-if ($isLoading) {
-    echo "
-            var myTaskScheduler = setInterval(getLoadingStatus, 1000);
-            function getLoadingStatus() {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        let loadingStatusDisplay = document.getElementById(\"loadingStatusDisplay\");
-                        if (this.responseText == \"loading\") {
-                            loadingStatusDisplay.innerHTML = \"მიმდინარეობს ატვირთული ფაილის მონაცემთა ბაზაში გადატანა\"
-                            loadingStatusDisplay.style.color = \"#ff0000\";
-                        } else {
-                            loadingStatusDisplay.innerHTML = \"ფაილის მონაცემთა ბაზაში გადატანა დასრილებულია\"
-                            loadingStatusDisplay.style.color = \"green\";
-                            location.reload();
-                        }
-
-                    }
-                };
-                xmlhttp.open(\"GET\", \"cronJobDispatcher.php?loadingStatusRequest=on\", true);
-                xmlhttp.send();
-
-            } ";
-}
-?>
-        </script>  
     </head>
-    <body>  
+    <body>
         <div class="container">
             <div class="row">
                 <div class="col">
                     <nav class="navbar fixed-top navbar-light bg-light">
-                       <a class="btn btn-primary" href="allRoutesDates_2.0.php" style="font-size: 20px">ყველა ატვირთული მონაცემები</a>
+                        <a class="btn btn-success" href="index_2.0.php" style="font-size: 20px">საწყისი გვერდი</a>
 
                         <table>
                             <thead>
@@ -163,7 +126,7 @@ if ($isLoading) {
                             </thead>
                         </table>
                         <a class="btn btn-warning" href="uploadForm_2.0.php" style="font-size: 20px">ახალი ფაილის ატვირთვა</a>
-                        
+                       
                     </nav>
                 </div>
             </div><hr><hr><hr><hr>
@@ -172,15 +135,9 @@ if ($isLoading) {
                 <div class="col-10 align-self-start">
                     <div class="content-container">
                         <div class="container-fluid">
-                            <h3>ბოლო ატვირთული მონაცემები</h3>
-                            <div id="loadingStatusDisplay"><?php
-                                if ($isLoading) {
-                                    echo "მიმდინარეობს ატვირთული ფაილების სტატუსის დადგენა";
-                                }
-                                ?>
-                            </div>
+                            <h3>ყველა ატვირთული მონაცემები</h3>
                             <?php
-                            if (count($lastUploadedRoutesDates) > 1) {
+                            if (count($allUploadedRoutesDates) > 1) {
                                 echo "<div style=\"left:0\"><h2>აირჩიე მარშრუტი</h2></div>";
                             }
                             ?>
@@ -188,7 +145,7 @@ if ($isLoading) {
                             <hr>
                             <?php
                             $bigTableRowBuilder = "";
-                            foreach ($lastUploadedRoutesDates as $routeDate) {
+                            foreach ($allUploadedRoutesDates as $routeDate) {
                                 $routeNumber = $routeDate->getRouteNumber();
                                 ?><table style="text-align:center; font-size:25px">
                                     <thead>

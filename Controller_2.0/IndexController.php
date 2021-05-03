@@ -33,9 +33,9 @@ class IndexController {
         return $arrayOfRoutes;
     }
 
-    public function getRoutesDates(): array {
+    public function getAllUploadedRoutesDates(): array {
 
-        $queryResultData = $this->routeDao->getRoutesDates();
+        $queryResultData = $this->routeDao->getAllUploadedRoutesDates();
         $arrayOfRoutes = array();
         foreach ($queryResultData as $row) {
             $routeNumber = $row["route_number"];

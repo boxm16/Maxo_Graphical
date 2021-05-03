@@ -22,7 +22,7 @@ class RouteDao {
         }
     }
 
-    public function getRoutesDates() {
+    public function getAllUploadedRoutesDates() {
         try {
             $sql = "SELECT DISTINCT route_number, date_stamp FROM trip_voucher t1 INNER JOIN route t2 ON t1.route_number=t2.number ORDER BY prefix, suffix";
             $result = $this->connection->query($sql)->fetchAll();

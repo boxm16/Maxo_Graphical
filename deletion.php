@@ -1,21 +1,14 @@
 <?php
 
-require_once 'DAO/DataBaseConnection.php';
-require_once 'Controller/RouteXLController.php';
-require_once 'clientId.php';
-session_start();
-if (isset($_POST["routes:dates"])) {
-    $_SESSION["routes:dates"] = $_POST["routes:dates"];
-    $requestedRoutesAndDates = $_POST["routes:dates"];
-} else {
-    if (isset($_SESSION["routes:dates"])) {
+require 'vendor/autoload.php';
 
-        $requestedRoutesAndDates = $_SESSION["routes:dates"];
-    } else {
-        header("Location:errorPage.php");
-        exit;
-    }
-}
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+$writer->save("reports/walupa.xlsx");
+
 $s = microtime(true);
 
 

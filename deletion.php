@@ -1,17 +1,18 @@
 <?php
 
-require 'vendor/autoload.php';
+/*
+  require 'vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+  use PhpOffice\PhpSpreadsheet\Spreadsheet;
+  use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
-$writer->save("reports/walupa.xlsx");
+  $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+  $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+  $writer->save("reports/walupa.xlsx");
 
-$s = microtime(true);
+  $s = microtime(true);
 
-
+ */
 echo"<hr>";
 
 

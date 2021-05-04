@@ -264,8 +264,8 @@ if ($isLoading) {
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
-                                    <i class="fa fa-cog" aria-hidden="true"></i> -----
+                                <a href="#" onclick="submitLink('reportMaker_2.0.php')">
+                                    <i class="fa fa-cog" aria-hidden="true"></i> რეპორტების მომზადება
                                 </a>
                             </li>
                             <li>

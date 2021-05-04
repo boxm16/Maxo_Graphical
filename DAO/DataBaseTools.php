@@ -144,6 +144,53 @@ class DataBaseTools {
         }
     }
 
+    public function createReportTechTable() {
+        $sql = "CREATE TABLE `report_tech` (
+  `report_type` VARCHAR(15) NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `start_row_number` VARCHAR(10) NOT NULL,
+  `percentage` INT NULL,
+   PRIMARY KEY (`id`));
+   ";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'report_tech' created successfully" . "<br>";
+        } catch (\PDOException $e) {
+            if ($e->getCode() == "42S01") {
+                echo "Table 'report_tech' already exists" . "<br>";
+            } else {
+                echo $e->getMessage() . " Error Code:";
+                echo $e->getCode() . "<br>";
+            }
+        }
+    }
+
+    public function createReportsRoutesDatesTable() {
+        $sql = "CREATE TABLE `reports_routes_dates` (
+    `report_id` INT NOT NULL,
+    `route_number` VARCHAR(10) NOT NULL,
+    `date_stamp` DATE NOT NULL,
+    CONSTRAINT `report_id`
+    FOREIGN KEY (`report_id`)
+    REFERENCES `report_tech` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);";
+
+
+
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'reports_routes_dates' created successfully" . "<br>";
+        } catch (\PDOException $e) {
+            if ($e->getCode() == "42S01") {
+                echo "Table 'reports_routes_dates' already exists" . "<br>";
+            } else {
+                echo $e->getMessage() . " Error Code:";
+                echo $e->getCode() . "<br>";
+            }
+        }
+    }
+
     public function insertRoutes($routesData) {
         try {
             $this->connection->beginTransaction();

@@ -26,6 +26,8 @@ $clienId = '0';
             $dataBaseTools->createTripPeriodTable();
             $dataBaseTools->createLastUploadTable();
             $dataBaseTools->createTechTable();
+            $dataBaseTools->createReportTechTable();
+            $dataBaseTools->createReportsRoutesDatesTable();
         }
         ?>
 

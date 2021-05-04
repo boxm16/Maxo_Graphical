@@ -1,6 +1,11 @@
 <?php
 require_once 'Controller_2.0/ReportController.php';
 $reportController = new ReportController();
+
+if (isset($_POST["routeDetailsReport"]) || isset($_POST["intervalsReport"]) || isset($_POST["excelFormReport"])) {
+    $requestedReportsData = $_POST;
+    $reportController->registerReports($requestedReportsData);
+}
 $reportList = $reportController->getReportList();
 ?>
 <!DOCTYPE html>
@@ -17,7 +22,19 @@ $reportList = $reportController->getReportList();
                 echo "<br>";
             }
         }
+
+        $s = microtime(true);
+     
+
+        echo"<hr>";
+
+
+        var_dump($_POST);
+        $e = microtime(true);
+        echo "Time needed:".($e - $s);
         ?>
+
+
 
     </body>
 </html>

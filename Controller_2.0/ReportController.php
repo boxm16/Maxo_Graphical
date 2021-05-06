@@ -22,14 +22,14 @@ class ReportController {
     }
 
     public function registerReports($requestedReportsData) {
-        $routesDates = $requestedReportsData["routes:dates"];
-        if (strlen($routesDates) == 0) {
+        $requestedRoutesDates = $requestedReportsData["routes:dates"];
+        if (strlen($requestedRoutesDates) == 0) {
             echo "No routes and dates has been selected<br>";
         } else {
             if (isset($requestedReportsData["routeDetailsReport"]) && $requestedReportsData["routeDetailsReport"] == "on") {
-                $this->reportDao->registerRouteDetailsReport();
-                // $reportId=$this->reportDao->getLastInertedReportId();
-                //  $this->reportDao->registerReportData($reportId, $requestedReportsData);
+                $lastInsertdionId = $this->reportDao->registerRouteDetailsReport(); //this function inserts data to report_tech and return id numbero of this(last)insertion
+                $nsertionData = $this->convertRequestedRoutesAndDatesToInsertionData($lastInsertdionId, $requestedRoutesDates);
+                $this->reportDao->registerReportData($nsertionData);
             }
             if (isset($requestedReportsData["intervalsReport"]) && $requestedReportsData["intervalsReport"] == "on") {
                 //registerRouteDetailsReport
@@ -38,6 +38,21 @@ class ReportController {
                 //registerRouteDetailsReport
             }
         }
+    }
+
+    private function convertRequestedRoutesAndDatesToInsertionData($reportId, $requestedRoutesAndDates) {
+        $insertionData = array();
+        $routesAndDates = explode(",", $requestedRoutesAndDates);
+        foreach ($routesAndDates as $routeAndDate) {
+            if ($routeAndDate != "") {
+                $d = explode(":", $routeAndDate);
+                $routNumber = $d[0];
+                $date = $d[1];
+                $insertionRow = array($reportId, $routNumber, $date);
+                array_push($insertionData, $insertionRow);
+            }
+        }
+        return $insertionData;
     }
 
 }

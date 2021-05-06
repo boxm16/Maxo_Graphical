@@ -29,7 +29,6 @@ $reportList = $reportController->getReportList();
         echo"<hr>";
 
 
-        var_dump($_POST);
         $e = microtime(true);
         echo "Time needed:".($e - $s);
         ?>

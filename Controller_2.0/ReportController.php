@@ -3,7 +3,9 @@
 require_once 'DAO_2.0/ReportDao.php';
 
 class ReportController {
-private $reportDao;
+
+    private $reportDao;
+
     function __construct() {
         $this->reportDao = new ReportDao();
     }
@@ -25,7 +27,9 @@ private $reportDao;
             echo "No routes and dates has been selected<br>";
         } else {
             if (isset($requestedReportsData["routeDetailsReport"]) && $requestedReportsData["routeDetailsReport"] == "on") {
-                //registerRouteDetailsReport
+                $this->reportDao->registerRouteDetailsReport();
+                // $reportId=$this->reportDao->getLastInertedReportId();
+                //  $this->reportDao->registerReportData($reportId, $requestedReportsData);
             }
             if (isset($requestedReportsData["intervalsReport"]) && $requestedReportsData["intervalsReport"] == "on") {
                 //registerRouteDetailsReport

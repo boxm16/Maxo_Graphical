@@ -32,7 +32,9 @@ class ReportController {
                 $this->reportDao->registerReportData($nsertionData);
             }
             if (isset($requestedReportsData["intervalsReport"]) && $requestedReportsData["intervalsReport"] == "on") {
-                //registerRouteDetailsReport
+              echo "lala";
+                $result= $this->reportDao->getR($requestedRoutesDates);
+               echo count($result);
             }
             if (isset($requestedReportsData["excelFormReport"]) && $requestedReportsData["excelFormReport"] == "on") {
                 //registerRouteDetailsReport

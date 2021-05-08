@@ -1,6 +1,6 @@
 <?php
 
-require_once 'DataBaseConnection.php';
+require_once 'DAO/DataBaseConnection.php';
 
 class CronJobDao {
 

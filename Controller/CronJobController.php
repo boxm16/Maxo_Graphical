@@ -3,6 +3,7 @@
 require_once "SimpleXLSX.php";
 require 'vendor/autoload.php';
 require_once 'DAO/DataBaseTools.php';
+require_once 'DAO_2.0/CronJobDao.php';
 //---------
 require_once 'LoadModel/Chunk.php';
 require_once 'Controller/TimeCalculator.php';
@@ -11,14 +12,18 @@ class CronJobController {
 
     private $lastChunk;
     private $dataBaseTools;
+    private $cronJobDao;
 
     function __construct() {
         $this->lastChunk = false;
         $this->dataBaseTools = new DataBaseTools();
+        $this->cronJobDao = new CronJobDao();
     }
 
+    ///------------
+
     public function getLoadingStatus(): bool {
-        return $inLoadingMode = $this->dataBaseTools->isLoading();
+        return $inLoadingMode = $this->cronJobDao->isLoading();
     }
 
     public function isLoading(): bool {
@@ -84,8 +89,8 @@ class CronJobController {
     }
 
     public function registerNewUpload() {
-        $this->dataBaseTools->registerNewUpload();
-        $this->dataBaseTools->deleteLastUploadedData();
+        $this->cronJobDao->registerNewUpload();
+        $this->cronJobDao->deleteLastUploadedData();
     }
 
     public function getNextChunk($spreadsheet, int $startRow, int $endRow) {
@@ -375,36 +380,30 @@ class CronJobController {
         return $dateStamp = date('Y-m-d', $time);
     }
 
+    public function isCreatingRoutedetailsReport(){
+    
+}
+
 }
 
 //--------------//---------------//----------------
 
 class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
 
-    private $startRow;
-    private $endRow;
+private $startRow;
+private $endRow;
 
-    function __construct($startRow, $endRow) {
-        $this->startRow = $startRow;
-        $this->endRow = $endRow;
-    }
+function __construct($startRow, $endRow) {
+    $this->startRow = $startRow;
+    $this->endRow = $endRow;
+}
 
-    public function readCell($column, $row, $worksheetName = '') {
+public function readCell($column, $row, $worksheetName = '') {
 // Read  rows startRow - endRow
-        if ($row >= $this->startRow && $row <= $this->endRow) {
-            return true;
-        }
-        return false;
+    if ($row >= $this->startRow && $row <= $this->endRow) {
+        return true;
     }
-    ///------------
-    
-    public function getLoadingStatus(): bool {
-        return $inLoadingMode = $this->cronJobDao->isLoading();
-    }
-    
-    public function registerNewUpload() {
-        $this->cronJobDao->registerNewUpload();
-        $this->cronJobDao->deleteLastUploadedData();
-    }
+    return false;
+}
 
 }

@@ -1,6 +1,6 @@
 <?php
 require_once 'clientId.php'; //here i take clientId from cookie, or set new
-require_once 'Controller_2.0/CronJobController.php';
+require_once 'Controller/CronJobController.php';
 
 $errorAlert = "";
 $errorMessage = "";

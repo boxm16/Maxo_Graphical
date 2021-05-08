@@ -1,5 +1,5 @@
 <?php
-require_once 'Controller_2.0/CronJobController.php';
+require_once 'Controller/CronJobController.php';
 require_once 'Controller_2.0/IndexController.php';
 
 $cronJobController = new CronJobController();

@@ -380,9 +380,9 @@ class CronJobController {
         return $dateStamp = date('Y-m-d', $time);
     }
 
-    public function isCreatingRoutedetailsReport(){
-    
-}
+    public function isCreatingRouteDetailsReport() {
+        return $this->cronJobDao->isCreatingRouteDetailsReport();
+    }
 
 }
 
@@ -390,20 +390,20 @@ class CronJobController {
 
 class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
 
-private $startRow;
-private $endRow;
+    private $startRow;
+    private $endRow;
 
-function __construct($startRow, $endRow) {
-    $this->startRow = $startRow;
-    $this->endRow = $endRow;
-}
-
-public function readCell($column, $row, $worksheetName = '') {
-// Read  rows startRow - endRow
-    if ($row >= $this->startRow && $row <= $this->endRow) {
-        return true;
+    function __construct($startRow, $endRow) {
+        $this->startRow = $startRow;
+        $this->endRow = $endRow;
     }
-    return false;
-}
+
+    public function readCell($column, $row, $worksheetName = '') {
+// Read  rows startRow - endRow
+        if ($row >= $this->startRow && $row <= $this->endRow) {
+            return true;
+        }
+        return false;
+    }
 
 }

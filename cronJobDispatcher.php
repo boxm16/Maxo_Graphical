@@ -17,8 +17,8 @@ if (isset($_GET["loadingStatusRequest"])) {
     if ($cronJobController->isLoading()) {
 
         echo "loading";
-    } if ($cronJobController->isCreatingRoutedetailsReport()) {
-        
+    } if ($cronJobController->isCreatingRouteDetailsReport()) {
+        echo "creating Route Details Report";
     } else {
         echo "ready";
     }

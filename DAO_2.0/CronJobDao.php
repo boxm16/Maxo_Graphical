@@ -51,4 +51,22 @@ class CronJobDao {
         }
     }
 
+    public function isCreatingRouteDetailsReport() {
+        $sql = "SELECT * FROM report_tech WHERE report_type='routeDetails' LIMIT 1";
+
+        try {
+
+            $result = $this->connection->query($sql)->fetchAll();
+       
+            if (count($result) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
 }

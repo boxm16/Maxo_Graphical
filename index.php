@@ -164,8 +164,8 @@ $routes = $routesController->getFullRoutes($clientId);
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" onclick="submitLink('averages.php')">
-                                        <i class="fa fa-tachometer" aria-hidden="true"></i> ბრუნების საშუალო ფაქტიური დროს გამოთვლები
+                                    <a href="#" onclick="submitLink('guaranteedUpload.php')">
+                                        <i class="fa fa-tachometer" aria-hidden="true"></i> ავტობუსების მარშრუტების ანალიზი
                                     </a>
                                 </li>
                                 <li class="header">სხვა ფუნქციები<br><br>(მომავალში რო დამჭირდება)</li>

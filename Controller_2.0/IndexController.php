@@ -13,13 +13,11 @@ class IndexController {
 
     public function getLastUploadedRoutesDates(): array {
         return $this->routeDao->getLastUploadedRoutesDates();
-       
     }
 
     public function getAllUploadedRoutesDates(): array {
 
-        return  $this->routeDao->getAllUploadedRoutesDates();
-        
+        return $this->routeDao->getAllUploadedRoutesDates();
     }
 
 }

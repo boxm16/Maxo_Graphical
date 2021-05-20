@@ -1,11 +1,12 @@
 <?php
 
 require_once 'Controller/CronJobController.php';
-
+require_once 'Controller_2.0/ReportController.php';
 
 
 
 $cronJobController = new CronJobController();
+$reportController = new ReportController();
 if (isset($_GET["loadingStatusRequest"])) {
 
     if ($cronJobController->getLoadingStatus()) {
@@ -17,8 +18,11 @@ if (isset($_GET["loadingStatusRequest"])) {
     if ($cronJobController->isLoading()) {
 
         echo "loading";
-    } if ($cronJobController->isCreatingRouteDetailsReport()) {
-        echo "creating Route Details Report";
+    }$id = $cronJobController->isCreatingRouteDetailsReport();
+    if ($id != null) {
+        echo $id."<br>";
+        echo "creating Route Details Report<br>";
+        $reportController->createRouteDetailsReport($id);
     } else {
         echo "ready";
     }

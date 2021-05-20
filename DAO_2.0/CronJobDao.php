@@ -11,7 +11,7 @@ class CronJobDao {
         $this->connection = $dataBaseConnection->getLocalhostConnection();
     }
 
-    public function isLoading(): bool {
+    public function getUploadingStatus(): bool {
         $isLoading;
         $sql = "SELECT value FROM tech WHERE tech_type='loading'";
 
@@ -52,17 +52,13 @@ class CronJobDao {
     }
 
     public function isCreatingRouteDetailsReport() {
-        $sql = "SELECT * FROM report_tech WHERE report_type='routeDetails' LIMIT 1";
+        $sql = "SELECT id FROM report_tech WHERE report_type='routeDetails' LIMIT 1";
 
         try {
 
-            $result = $this->connection->query($sql)->fetchAll();
-       
-            if (count($result) > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            $result = $this->connection->query($sql)->fetch();
+
+            return $result["id"];
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";

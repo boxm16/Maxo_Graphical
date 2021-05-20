@@ -1,1 +1,1 @@
-explorer "https://localhost/Maxo_Graphical/cronJobDispatcher.php"
+explorer "https://localhost/berishvilebi/cronJobDispatcher.php"

@@ -37,7 +37,19 @@ class ReportDao {
         }
     }
 
-    public function getR($requestedRoutesAndDates) {
+    public function unregisterRouteDetailsReport($reportId) {
+        $sql = "DELETE FROM report_tech WHERE id=$reportId;";
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->execute();
+            echo "Report has been deleted from database <br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function getRequestedRoutesAndDatesLimited($requestedRoutesAndDates) {
 
         $routesAndDates = explode(",", $requestedRoutesAndDates);
 
@@ -67,6 +79,20 @@ class ReportDao {
             }
             $sql .= " ORDER BY prefix, suffix;";
         }
+
+        try {
+            $result = $this->connection->query($sql)->fetchAll();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+        return $result;
+    }
+
+    public function getRegisteredRouteDetailsReportLimitedData($reportId, $limit) {
+
+
+        $sql = "SELECT * FROM trip_period t1 INNER JOIN trip_voucher t2 ON t1.trip_voucher_number=t2.number INNER JOIN reports_routes_dates t3 ON t2.date_stamp=t3.date_stamp AND t2.route_number=t3.route_number INNER JOIN report_tech t4 ON t4.id=t3.report_id WHERE  t4.id=$reportId LIMIT $limit ;";
 
         try {
             $result = $this->connection->query($sql)->fetchAll();

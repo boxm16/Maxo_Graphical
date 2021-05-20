@@ -172,7 +172,7 @@ class CronJobController {
 
         $tripPeriodType = $this->getTripTypeFromRowCell($spreadsheet, $x);
         $tripPeriods = $chunk->getTripPeriods();
-
+        
         if ($tripPeriodType == "baseLeaving") {
             $tripPeriod = $this->createBaseLeavingPeriod($spreadsheet, $x);
             array_push($tripPeriods, $tripPeriod);

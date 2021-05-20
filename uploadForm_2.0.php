@@ -15,7 +15,7 @@ if (isset($_POST["submit"])) {//first checking if request commming from submit o
 
 
 
-    if ($_FILES["fileToUpload"]["size"] > 12582910) {//12MB=12582912bytes-sheizleba shevamciro
+    if ($_FILES["fileToUpload"]["size"] > 10485760) {//10MB
         $errorMessage = "ფაილის ზომა დაშვებულზე დიდია.";
         $uploadOk = 0;
     }

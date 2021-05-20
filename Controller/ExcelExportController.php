@@ -909,6 +909,11 @@ class ExcelExportController {
         $this->exportFile($spreadsheet);
     }
 
+    public function exportGuaranteed($routes) {
+        
+        
+    }
+
     //---------------//----------------------//-------------------------//-----------------
     private function exportFile($spreadsheet) {
         $filename = 'tmps/' . time() . '.xlsx';

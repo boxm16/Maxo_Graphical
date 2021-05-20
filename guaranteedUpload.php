@@ -1,5 +1,5 @@
 <?php
-require_once 'Controller/UploadController.php';
+require_once 'Controller/GuarantyController.php';
 
 $errorAlert = "";
 $errorMessage = "";
@@ -37,7 +37,8 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
             echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
 
             //here maybe comes something
-            //
+            $guarantyController = new GuarantyController();
+            $routes = $guarantyController->getGuarantyRoutes();
             //
             // here end insertion part
             deployFile();

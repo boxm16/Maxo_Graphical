@@ -34,14 +34,9 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
 // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "uploads/guaranteedExcelFile.xlsx")) {
-            echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
-
+            //  echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
             //here maybe comes something
-            $guarantyController = new GuarantyController();
-            $routes = $guarantyController->getGuarantyRoutes();
-            //
-            // here end insertion part
-           
+
             deployFile();
         } else {
 
@@ -51,7 +46,7 @@ if (isset($_POST["submit"])) {//first checking if request commming form submit o
 }
 
 function deployFile() {
-    header("Location:guaranteedSuccess.php");
+    header("Location:guaranteedExporter.php");
 }
 ?>
 <!DOCTYPE html>
@@ -99,7 +94,7 @@ function deployFile() {
         </style>
     </head>
     <body>
-        <a href="index.php">საწყისი გვერდი</a>
+        <a href="index.php">საწყის გვერდზე გადსვლა</a>
         <div class="container">
             <div class="row">
                 <div class="col">

@@ -22,7 +22,7 @@ class GuarantyController {
 //---------
         /*
           $r1 = $guarantyRoutes[2];
-          echo $routeStartTime = $r1->getROuteStartTime();
+          echo $routeStartTime = $r1->getRouteEndTime();
           echo "<hr>";
           $exoduses = $r1->getExoduses();
           $e1 = $exoduses[1];
@@ -308,7 +308,15 @@ class GuarantyController {
                 foreach ($tripPeriods as $tripPeriod) {
                     $tripPeriodType = $tripPeriod->getType();
                     if ($tripPeriodType == "A_baseReturn" || $tripPeriodType == "B_baseReturn") {
-                        //do someting
+                        $tripPeriodStartTime = $tripPeriod->getStartTime();
+                        $routeEndTime = $route->getRouteEndTime();
+                        if ($routeEndTime == "") {
+                            $route->setRouteEndTime($tripPeriodStartTime);
+                        } else {
+                            if ($tripPeriodStartTime > $routeEndTime) {
+                                $route->setRouteEndTime($tripPeriodStartTime);
+                            }
+                        }
                     } else {
                         $tripPeriodStartTime = $tripPeriod->getStartTime();
                         if ($tripPeriodType == "ab") {
@@ -477,12 +485,14 @@ class GuarantyController {
             $busType = $route->getBusType();
             $exoduseNumber = $route->getExodusesNumber();
             $routeStartTime = $route->getRouteStartTime();
+            $routeEndTime = $route->getRouteEndTime();
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
             $spreadsheet->getActiveSheet()->setCellValue("F$row", $busType);
             $spreadsheet->getActiveSheet()->setCellValue("G$row", $exoduseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("K$row", $routeStartTime);
+            $spreadsheet->getActiveSheet()->setCellValue("M$row", $routeEndTime);
             $aa++;
             $row++;
         }

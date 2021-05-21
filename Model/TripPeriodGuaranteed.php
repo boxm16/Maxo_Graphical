@@ -3,37 +3,37 @@
 class TripPeriodGuaranteed {
 
     private $type; //baseLeaving, baseReturn, ab, ba, break
-    private $startTimeScheduled;
-    private $arrivalTimeScheduled;
+    private $startTime;
+    private $arrivalTime;
 
-    function __construct($type, $startTimeScheduled, $arrivalTimeScheduled) {
+    function __construct($type, $startTime, $arrivalTime) {
         $this->type = $type;
-        $this->startTimeScheduled = $startTimeScheduled;
-        $this->arrivalTimeScheduled = $arrivalTimeScheduled;
+        $this->startTime = $startTime;
+        $this->arrivalTime = $arrivalTime;
     }
 
     function getType() {
         return $this->type;
     }
 
-    function getStartTimeScheduled() {
-        return $this->startTimeScheduled;
+    function getStartTime() {
+        return $this->startTime;
     }
 
-    function getArrivalTimeScheduled() {
-        return $this->arrivalTimeScheduled;
+    function getArrivalTime() {
+        return $this->arrivalTime;
     }
 
     function setType($type) {
         $this->type = $type;
     }
 
-    function setStartTimeScheduled($startTimeScheduled) {
-        $this->startTimeScheduled = $startTimeScheduled;
+    function setStartTime($startTime) {
+        $this->startTime = $startTime;
     }
 
-    function setArrivalTimeScheduled($arrivalTimeScheduled) {
-        $this->arrivalTimeScheduled = $arrivalTimeScheduled;
+    function setArrivalTime($arrivalTime) {
+        $this->arrivalTime = $arrivalTime;
     }
 
 }

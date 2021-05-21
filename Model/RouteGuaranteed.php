@@ -12,10 +12,15 @@ class RouteGuaranteed {
     private $aPoint;
     private $bPoint;
     private $exoduses;
+    private $ABTimeTable;
+    private $BATimeTable;
+    private $routeEndTime;
 
     function __construct() {
         $this->dateStamp = null;
         $this->exoduses = array();
+        $this->ABTimeTable = array();
+        $this->BATimeTable = array();
     }
 
     function getNumber() {
@@ -78,13 +83,47 @@ class RouteGuaranteed {
         $this->bPoint = $bPoint;
     }
 
+    function getABTimeTable() {
+        return $this->ABTimeTable;
+    }
+
+    function getBATimeTable() {
+        return $this->BATimeTable;
+    }
+
+    function setABTimeTable($ABTimeTable) {
+        $this->ABTimeTable = $ABTimeTable;
+    }
+
+    function setBATimeTable($BATimeTable) {
+        $this->BATimeTable = $BATimeTable;
+    }
+
     function setExoduses($exoduses) {
         $this->exoduses = $exoduses;
     }
 
-    //
+    function getRouteEndTime() {
+        return $this->routeEndTime;
+    }
+
+    function setRouteEndTime($routeEndTime) {
+        $this->routeEndTime = $routeEndTime;
+    }
+
+    //---//---//---//---//---//---//---//---//---//---//---//---
     public function getExodusesNumber() {
         return count($this->exoduses);
+    }
+
+    public function getRouteStartTime() {
+        if (count($this->BATimeTable) > 0) {
+            $abStartTime = $this->ABTimeTable[0];
+            $baStartTime = $this->BATimeTable[0];
+            return $abStartTime <= $baStartTime ? $abStartTime : $baStartTime;
+        } else {
+            return $this->ABTimeTable[0];
+        }
     }
 
 }

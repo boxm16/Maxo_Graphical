@@ -14,12 +14,30 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class GuarantyController {
 
     public function getGuarantyRoutes() {
+        $s = microtime(true);
         $excelRows = $this->readExcelFile();
         $guarantyRoutes = $this->getGuarantyRoutesFromExcelRows($excelRows); //array of routes
-        $this->exportGuarantyRoutes($guarantyRoutes);
+        $guarantyRoutesCalculated = $this->calculateGuarantyRoutesData($guarantyRoutes);
 
-// echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
-        // exit;
+//---------
+        /*
+          $r1 = $guarantyRoutes[2];
+          echo $routeStartTime = $r1->getROuteStartTime();
+          echo "<hr>";
+          $exoduses = $r1->getExoduses();
+          $e1 = $exoduses[1];
+          $tps = $e1->getTripPeriods();
+          $abTimeTable = $r1->getBATimeTable();
+          foreach ($abTimeTable as $tp) {
+          echo $tp;
+          echo "<br>";
+          }
+          $e = microtime(true);
+          echo "Time:" . ($e - $s);
+          echo "<br>";
+          echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
+         */
+        $this->exportGuarantyRoutes($guarantyRoutes);
         return $guarantyRoutes;
     }
 
@@ -280,6 +298,42 @@ class GuarantyController {
         }
     }
 
+    //Calculation Part
+
+    private function calculateGuarantyRoutesData($guarantyRoutes) {
+        foreach ($guarantyRoutes as $route) {
+            $exoduses = $route->getExoduses();
+            foreach ($exoduses as $exodus) {
+                $tripPeriods = $exodus->getTripPeriods();
+                foreach ($tripPeriods as $tripPeriod) {
+                    $tripPeriodType = $tripPeriod->getType();
+                    if ($tripPeriodType == "A_baseReturn" || $tripPeriodType == "B_baseReturn") {
+                        //do someting
+                    } else {
+                        $tripPeriodStartTime = $tripPeriod->getStartTime();
+                        if ($tripPeriodType == "ab") {
+                            $timeTable = $route->getABTimeTable();
+                            array_push($timeTable, $tripPeriodStartTime);
+                            $route->setABTimeTable($timeTable);
+                        }
+                        if ($tripPeriodType == "ba") {
+                            $timeTable = $route->getBATimeTable();
+                            array_push($timeTable, $tripPeriodStartTime);
+                            $route->setBATimeTable($timeTable);
+                        }
+                    }
+                }
+            }
+            $ABTimeTable = $route->getABTimeTable();
+            sort($ABTimeTable);
+            $route->setABTimeTable($ABTimeTable);
+            $BATimeTable = $route->getBATimeTable();
+            sort($BATimeTable);
+            $route->setBATimeTable($BATimeTable);
+        }
+        return $guarantyRoutes;
+    }
+
     //////////////export part
 
 
@@ -421,12 +475,14 @@ class GuarantyController {
             $routeNumber = $route->getNumber();
             $baseNumber = $route->getBaseNumber();
             $busType = $route->getBusType();
-            $exoduseNumber=$route->getExodusesNumber();
+            $exoduseNumber = $route->getExodusesNumber();
+            $routeStartTime = $route->getRouteStartTime();
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
             $spreadsheet->getActiveSheet()->setCellValue("F$row", $busType);
             $spreadsheet->getActiveSheet()->setCellValue("G$row", $exoduseNumber);
+            $spreadsheet->getActiveSheet()->setCellValue("K$row", $routeStartTime);
             $aa++;
             $row++;
         }

@@ -413,6 +413,25 @@ class GuarantyController {
 
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')->applyFromArray($styleArray);
 
+
+        //here goes rows
+        $aa = 1;
+        $row = 5;
+        foreach ($guarantyRoutes as $route) {
+            $routeNumber = $route->getNumber();
+            $baseNumber = $route->getBaseNumber();
+            $busType = $route->getBusType();
+            $exoduseNumber=$route->getExodusesNumber();
+            $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
+            $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
+            $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
+            $spreadsheet->getActiveSheet()->setCellValue("F$row", $busType);
+            $spreadsheet->getActiveSheet()->setCellValue("G$row", $exoduseNumber);
+            $aa++;
+            $row++;
+        }
+
+
         $this->exportFile($spreadsheet);
     }
 

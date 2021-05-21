@@ -82,4 +82,9 @@ class RouteGuaranteed {
         $this->exoduses = $exoduses;
     }
 
+    //
+    public function getExodusesNumber() {
+        return count($this->exoduses);
+    }
+
 }

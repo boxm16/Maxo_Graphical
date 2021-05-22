@@ -179,10 +179,62 @@ class RouteGuaranteed {
             }
             $mostOccuredIntervals = array_search(max($intervalsTable), $intervalsTable);
 
-            return $this->timeCalculator->getTimeStampFromSecondsShortVersion($mostOccuredIntervals);
+            return $this->timeCalculator->getTimeStampFromSecondsMinutesVersion($mostOccuredIntervals);
         } else {
             return "ჩ.ა.ი";
         }
+    }
+
+    public function getStandartTripPeriodTime() {
+        $abTripPeriodTimes = array();
+        $baTripPeriodTimes = array();
+        $exoduses = $this->exoduses;
+        foreach ($exoduses as $exodus) {
+            $tripPeriods = $exodus->getTripPeriods();
+            foreach ($tripPeriods as $tripPeriod) {
+                $tripPeriodType = $tripPeriod->getType();
+                //----------------------ab-----------------
+                if ($tripPeriodType == "ab") {
+                    $startTime = $tripPeriod->getStartTime();
+                    $arrivalTime = $tripPeriod->getArrivalTime();
+                    $difference = $this->timeCalculator->getTimeStampsDifference($arrivalTime, $startTime);
+                    if (array_key_exists($difference, $abTripPeriodTimes)) {
+                        $count = $abTripPeriodTimes[$difference];
+                        $count = $count + 1;
+                        $abTripPeriodTimes[$difference] = $count;
+                    } else {
+                        $abTripPeriodTimes[$difference] = 1;
+                    }
+                }
+                //------------ba-------------------
+                if ($tripPeriodType == "ba") {
+                    $startTime = $tripPeriod->getStartTime();
+                    $arrivalTime = $tripPeriod->getArrivalTime();
+                    $difference = $this->timeCalculator->getTimeStampsDifference($arrivalTime, $startTime);
+                    if (array_key_exists($difference, $baTripPeriodTimes)) {
+                        $count = $baTripPeriodTimes[$difference];
+                        $count = $count + 1;
+                        $baTripPeriodTimes[$difference] = $count;
+                    } else {
+                        $baTripPeriodTimes[$difference] = 1;
+                    }
+                }
+            }
+        }
+        $mostOccuredABTripPeriods = "00:00:00";
+        $mostOccuredBATripPeriods = "00:00:00";
+        if (count($abTripPeriodTimes) > 0) {
+            $mostOccuredABTripPeriods = array_search(max($abTripPeriodTimes), $abTripPeriodTimes);
+        }
+
+        if (count($baTripPeriodTimes) > 0) {
+            $mostOccuredBATripPeriods = array_search(max($baTripPeriodTimes), $baTripPeriodTimes);
+        }
+        $abStandartTripPeriodInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredABTripPeriods);
+        $baStandartTripPeriodInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredBATripPeriods);
+        $standartTripPeriodTimeInSeconds = (5 * 2 * 60) + $abStandartTripPeriodInSeconds + $baStandartTripPeriodInSeconds;
+//2 halt time for 5 minutes are added to trip time
+        return $this->timeCalculator->getTimeStampSansSecondsFromSeconds($standartTripPeriodTimeInSeconds);
     }
 
 }

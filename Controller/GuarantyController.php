@@ -476,6 +476,7 @@ class GuarantyController {
             $baGuarantyTripPeriodStartTime = $route->getBAGuarantyTripPeriodStartTime();
             $baSubGuarantyTripPeriodStartTime = $route->getBASubGuarantyTripPeriodStartTime();
             $standartIntervalTime = $route->getStandartIntervalTime();
+            $standartTripPeriodTime = $route->getStandartTripPeriodTime();
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
@@ -488,19 +489,19 @@ class GuarantyController {
             $spreadsheet->getActiveSheet()->setCellValue("S$row", $baGuarantyTripPeriodStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("R$row", $baSubGuarantyTripPeriodStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("H$row", $standartIntervalTime);
+            $spreadsheet->getActiveSheet()->setCellValue("I$row", $standartTripPeriodTime);
 
             $aa++;
             $row++;
         }
 
 
-        /*      $e = microtime(true);
-          echo "Time:" . ($e - $this->s);
-          echo "<br>";
-          echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
-         */
-
-
+         /*     
+        $e = microtime(true);
+        echo "Time:" . ($e - $this->s);
+        echo "<br>";
+        echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
+        */
         $this->exportFile($spreadsheet);
     }
 

@@ -33,13 +33,37 @@ class TimeCalculator {
         }
     }
 
-    public function getTimeStampFromSecondsShortVersion($seconds) {
+    public function getTimeStampSansSecondsFromSeconds($seconds) {
         if ($seconds >= 0) {
-            return gmdate("i:s", $seconds);
+            return gmdate("H:i", $seconds);
         } else {
             $seconds = -1 * $seconds;
 
-            return "-" . gmdate("i:s", $seconds);
+            return "-" . gmdate("H:i", $seconds);
+        }
+    }
+
+    public function getTimeStampFromSecondsMinutesVersion($seconds) {
+        if ($seconds >= 0) {
+            $minutes = $seconds / 60;
+            if ($minutes < 9) {
+                $minutes = "0$minutes";
+            }
+            $remainedSeconds = $seconds % 60;
+            if ($remainedSeconds < 9) {
+                $remainedSeconds = "0$remainedSeconds";
+            }
+            return "$minutes:$remainedSeconds";
+        } else {
+            $minutes = $seconds / 60;
+            if ($minutes < 9) {
+                $minutes = "0$minutes";
+            }
+            $remainedSeconds = $seconds % 60;
+            if ($remainedSeconds < 9) {
+                $remainedSeconds = "0$remainedSeconds";
+            }
+            return "-$minutes:$remainedSeconds";
         }
     }
 

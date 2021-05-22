@@ -4,6 +4,7 @@ require_once "SimpleXLSX.php";
 require_once 'Model/RouteXL.php';
 require_once 'Model/TripPeriodDNA_XL.php';
 require_once 'TimeCalculator.php';
+require_once 'Model/RouteGuaranteed.php';
 
 class RouteXLController {
 
@@ -566,6 +567,34 @@ class RouteXLController {
         $excelFormPackage["tripPeriodDifferenceTimePackage"] = $tripPeriodDifferenceTimePackage;
 
         return $excelFormPackage;
+    }
+
+    public function UploadRouteNames() {
+
+        if ($xlsx = SimpleXLSX::parse("uploads/RouteNamesAndSchemes.xlsx")) {
+            $rows = $xlsx->rowsEx();
+            //reading part  
+            $routes = array();
+            for ($x = 1; $x < count($rows) - 1; $x++) {
+                $row = $rows[$x];
+                $routeNumber = $row[2]["value"];
+                $routeScheme = $row[3]["value"];
+                $aPoint = $row[4]["value"];
+                $bPoint = $row[5]["value"];
+                $route = new RouteGuaranteed();
+                $route->setNumber($routeNumber);
+                $route->setScheme($routeScheme);
+                $route->setAPoint($aPoint);
+                $route->setBPoint($bPoint);
+                array_push($routes, $route);
+            }
+            return $routes;
+        } else {
+            header("Location:errorPage.php");
+            echo "ფაილი არ არის ატვირთული ან დაზიანებულია(" . SimpleXLSX::parseError() . ")";
+            echo "<hr>";
+            return;
+        }
     }
 
 }

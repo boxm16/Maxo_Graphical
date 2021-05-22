@@ -19,6 +19,7 @@ class DataBaseTools {
   `suffix` INT(3) NULL,
   `a_point` VARCHAR(100) NULL,
   `b_point` VARCHAR(100) NULL,
+  `scheme` VARCHAR(5000) NULL,
    PRIMARY KEY (`number`))
    ENGINE = InnoDB
    DEFAULT CHARACTER SET = utf8;
@@ -700,7 +701,7 @@ class DataBaseTools {
 ////--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--
 ////--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--
     //------------------------------
-  
+
 
     public function registerNextChunk(int $endRow) {
 
@@ -753,6 +754,111 @@ class DataBaseTools {
         try {
             $statement = $this->connection->prepare($sql);
             $statement->execute();
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function uploadRouteNames($routes) {
+        foreach ($routes as $route) {
+            $routeNumber = $route->getNumber();
+            $aPoint = $route->getAPoint();
+            $bPoint = $route->getBPoint();
+            $this->changeRouteNames($routeNumber, $aPoint, $bPoint);
+        }
+    }
+
+    public function uploadRouteSchemes($routes) {
+        foreach ($routes as $route) {
+            $routeNumber = $route->getNumber();
+            $routeScheme = $route->getScheme();
+            $sql = "UPDATE route SET scheme=? WHERE number=?";
+            try {
+                $statement = $this->connection->prepare($sql);
+                $statement->bindParam(1, $routeScheme);
+                $statement->bindParam(2, $routeNumber);
+                $statement->execute();
+            } catch (\PDOException $e) {
+                echo $e->getMessage() . " Error Code:";
+                echo $e->getCode() . "<br>";
+            }
+        }
+    }
+
+    //table deletions
+
+    public function dropRouteTable() {
+        $sql = "DROP TABLE route;";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'route' deleted successfully" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function dropTripVoucherTable() {
+        $sql = "DROP TABLE trip_voucher;";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'trip_voucher' deleted successfully" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function dropTripPeriodTable() {
+        $sql = "DROP TABLE trip_period;";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'trip_period' deleted successfully" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function dropLastUploadTable() {
+        $sql = "DROP TABLE last_upload;";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'last_upload' deleted successfully" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function dropTechTable() {
+        $sql = "DROP TABLE tech;";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'tech' deleted successfully" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function dropReportTechTable() {
+        $sql = "DROP TABLE report_tech;";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'report_tech' deleted successfully" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    public function dropReportsRoutesDatesTable() {
+        $sql = "DROP TABLE reports_routes_dates;";
+        try {
+            $this->connection->exec($sql);
+            echo "Table 'reports_routes_dates' deleted successfully" . "<br>";
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";

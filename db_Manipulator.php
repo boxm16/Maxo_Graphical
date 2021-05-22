@@ -33,6 +33,25 @@ $clienId = '0';
 
         <hr>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="dropTables">
+            <button type="submit">Drop Tables</button>
+
+        </form>
+        <?php
+        if (isset($_POST["dropTables"])) {
+            //precedence is important, there are primary-foreign keys rstrictions
+            $dataBaseTools->dropTripPeriodTable();
+            $dataBaseTools->dropTripVoucherTable();
+            $dataBaseTools->dropLastUploadTable();
+            $dataBaseTools->dropReportsRoutesDatesTable();
+            $dataBaseTools->dropTechTable();
+            $dataBaseTools->dropReportTechTable();
+            $dataBaseTools->dropRouteTable();
+        }
+        ?>
+
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <input hidden name="insertRoutes">
             <button type="submit">INSERT Routes</button>
 
@@ -263,6 +282,21 @@ $clienId = '0';
                 }
             }
             echo $index;
+        }
+        ?>
+
+        <hr>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="uploadRouteNames">
+            <button type="submit">Upload Route Names</button>
+
+        </form>
+
+        <?php
+        if (isset($_POST["uploadRouteNames"])) {
+            $routes = $routeController->UploadRouteNames();
+            $dataBaseTools->uploadRouteNames($routes);
+            $dataBaseTools->uploadRouteSchemes($routes);
         }
         ?>
 

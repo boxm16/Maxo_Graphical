@@ -33,6 +33,16 @@ class TimeCalculator {
         }
     }
 
+    public function getTimeStampFromSecondsShortVersion($seconds) {
+        if ($seconds >= 0) {
+            return gmdate("i:s", $seconds);
+        } else {
+            $seconds = -1 * $seconds;
+
+            return "-" . gmdate("i:s", $seconds);
+        }
+    }
+
     public function getTimeStampsDifference($timeStamp_1, $timeStamp_2) {
         $seconds_1 = $this->getSecondsFromTimeStamp($timeStamp_1);
         $seconds_2 = $this->getSecondsFromTimeStamp($timeStamp_2);

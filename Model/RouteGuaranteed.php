@@ -1,6 +1,7 @@
 <?php
 
 require_once 'ExodusGuaranteed.php';
+require_once 'Controller/TimeCalculator.php';
 
 class RouteGuaranteed {
 
@@ -15,12 +16,14 @@ class RouteGuaranteed {
     private $ABTimeTable;
     private $BATimeTable;
     private $routeEndTime;
+    private $timeCalculator;
 
     function __construct() {
         $this->dateStamp = null;
         $this->exoduses = array();
         $this->ABTimeTable = array();
         $this->BATimeTable = array();
+        $this->timeCalculator = new TimeCalculator();
     }
 
     function getNumber() {
@@ -123,6 +126,62 @@ class RouteGuaranteed {
             return $abStartTime <= $baStartTime ? $abStartTime : $baStartTime;
         } else {
             return $this->ABTimeTable[0];
+        }
+    }
+
+    public function getABGuarantyTripPeriodStartTime() {
+        if (count($this->ABTimeTable) > 0) {
+            return $this->ABTimeTable[count($this->ABTimeTable) - 1];
+        } else {
+            return "ჩ.ა.ი";
+        }
+    }
+
+    public function getABSubGuarantyTripPeriodStartTime() {
+        if (count($this->ABTimeTable) > 1) {
+            return $this->ABTimeTable[count($this->ABTimeTable) - 2];
+        } else {
+            return "ჩ.ა.ი";
+        }
+    }
+
+    public function getBAGuarantyTripPeriodStartTime() {
+        if (count($this->BATimeTable) > 0) {
+            return $this->BATimeTable[count($this->BATimeTable) - 1];
+        } else {
+            return "ჩ.ა.ი";
+        }
+    }
+
+    public function getBASubGuarantyTripPeriodStartTime() {
+        if (count($this->BATimeTable) > 1) {
+            return $this->BATimeTable[count($this->BATimeTable) - 2];
+        } else {
+            return "ჩ.ა.ი";
+        }
+    }
+
+    public function getStandartIntervalTime() {
+        $timeTable = $this->ABTimeTable;
+        $intervalsTable = array();
+        if (count($timeTable) > 1) {
+            for ($x = 1; $x < count($timeTable) - 1; $x++) {
+                $currentTripPeriodStartTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($timeTable[$x]);
+                $previousTripPeriodStartTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($timeTable[$x - 1]);
+                $intervalInSeconds = $currentTripPeriodStartTimeInSeconds - $previousTripPeriodStartTimeInSeconds;
+                if (array_key_exists($intervalInSeconds, $intervalsTable)) {
+                    $count = $intervalsTable[$intervalInSeconds];
+                    $count = $count + 1;
+                    $intervalsTable[$intervalInSeconds] = $count;
+                } else {
+                    $intervalsTable[$intervalInSeconds] = 1;
+                }
+            }
+            $mostOccuredIntervals = array_search(max($intervalsTable), $intervalsTable);
+
+            return $this->timeCalculator->getTimeStampFromSecondsShortVersion($mostOccuredIntervals);
+        } else {
+            return "ჩ.ა.ი";
         }
     }
 

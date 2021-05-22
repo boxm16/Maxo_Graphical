@@ -13,31 +13,16 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class GuarantyController {
 
+    private $s;
+
     public function getGuarantyRoutes() {
-        $s = microtime(true);
+        $this->s = microtime(true);
+
         $excelRows = $this->readExcelFile();
         $guarantyRoutes = $this->getGuarantyRoutesFromExcelRows($excelRows); //array of routes
         $guarantyRoutesCalculated = $this->calculateGuarantyRoutesData($guarantyRoutes);
+        $this->exportGuarantyRoutes($guarantyRoutesCalculated);
 
-//---------
-        /*
-          $r1 = $guarantyRoutes[2];
-          echo $routeStartTime = $r1->getRouteEndTime();
-          echo "<hr>";
-          $exoduses = $r1->getExoduses();
-          $e1 = $exoduses[1];
-          $tps = $e1->getTripPeriods();
-          $abTimeTable = $r1->getBATimeTable();
-          foreach ($abTimeTable as $tp) {
-          echo $tp;
-          echo "<br>";
-          }
-          $e = microtime(true);
-          echo "Time:" . ($e - $s);
-          echo "<br>";
-          echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
-         */
-        $this->exportGuarantyRoutes($guarantyRoutes);
         return $guarantyRoutes;
     }
 
@@ -56,13 +41,13 @@ class GuarantyController {
     private function getGuarantyRoutesFromExcelRows($excelRows) {
         $routes = array();
         foreach ($excelRows as $row) {
-            // sifting off empty rows and rows that show something else
+// sifting off empty rows and rows that show something else
             if ($row[7]["value"] == "მარშრუტი" || $row[7]["value"] == "კონდუქტორი" || $row[7]["value"] == "") {
 
                 continue;
             }
 
-            //here i put security mechnism, if the file is not the file for guarnatees
+//here i put security mechnism, if the file is not the file for guarnatees
 
             $startTimeActual = $row[13]["value"];
             if ($startTimeActual != "") {
@@ -87,7 +72,7 @@ class GuarantyController {
                 $routes[$routeNumber] = $refilledRoute;
             }
         }
-        // $routes = $this->setTripPeriodDNAs($routes);
+// $routes = $this->setTripPeriodDNAs($routes);
 
         return $routes;
     }
@@ -139,7 +124,7 @@ class GuarantyController {
         }
         if ($tripPeriodType == "baseReturn") {
             $tripPeriod = $this->createBaseReturnPeriod($row);
-            //  $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
+//  $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
             array_push($tripPeriods, $tripPeriod);
         }
         if ($tripPeriodType == "break") {
@@ -154,7 +139,7 @@ class GuarantyController {
         if ($tripPeriodType == "round") {
             $tripPeriodsOfRound = $this->createTripPeridsOfRound($row);
             foreach ($tripPeriodsOfRound as $tripPeriod) {
-                // $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
+// $tripPeriod = $this->addPreviosTripPeriodTimes($tripPeriod, $tripPeriods);
                 array_push($tripPeriods, $tripPeriod);
             }
         }
@@ -238,7 +223,7 @@ class GuarantyController {
     }
 
     private function getTripTypeFromTripStampInRowCell($tripPeriodTypeStampInRowCell) {
-        //baseLeaving, baseReturn, ab, ba, break
+//baseLeaving, baseReturn, ab, ba, break
 
         if (strpos($tripPeriodTypeStampInRowCell, "გასვლა") != null) {
             return "baseLeaving";
@@ -298,7 +283,7 @@ class GuarantyController {
         }
     }
 
-    //Calculation Part
+//Calculation Part
 
     private function calculateGuarantyRoutesData($guarantyRoutes) {
         foreach ($guarantyRoutes as $route) {
@@ -342,7 +327,7 @@ class GuarantyController {
         return $guarantyRoutes;
     }
 
-    //////////////export part
+//////////////export part
 
 
     public function exportGuarantyRoutes($guarantyRoutes) {
@@ -367,7 +352,7 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->setCellValue('H2', "მომუშავე ავტობუსების რაოდენობა");
         $spreadsheet->getActiveSheet()->setCellValue('G2', "მომუშავე ავტობუსების რაოდენობა");
 
-        //THIRD ROW 
+//THIRD ROW 
         $spreadsheet->getActiveSheet()->setCellValue('N3', "პუნქტი \"A\"");
         $spreadsheet->getActiveSheet()->setCellValue('O3', "გასვლები \"A\" პუნქტიდან");
         $spreadsheet->getActiveSheet()->setCellValue('Q3', "პუნქტი \"B\"");
@@ -411,8 +396,8 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->mergeCells("O3:P3");
         $spreadsheet->getActiveSheet()->mergeCells("R3:S3");
         $spreadsheet->getActiveSheet()->mergeCells("T1:T3");
-        //$spreadsheet->getActiveSheet()->mergeCells("E3:S3");
-        //TEXT ROTATION 
+//$spreadsheet->getActiveSheet()->mergeCells("E3:S3");
+//TEXT ROTATION 
         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setTextRotation(90);
         $spreadsheet->getActiveSheet()->getStyle('B1')->getAlignment()->setTextRotation(90);
         $spreadsheet->getActiveSheet()->getStyle('C1')->getAlignment()->setTextRotation(90);
@@ -427,10 +412,10 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->getStyle('L1')->getAlignment()->setTextRotation(90);
         $spreadsheet->getActiveSheet()->getStyle('M1')->getAlignment()->setTextRotation(90);
 
-        // HEADER ROWS HEIGH
+// HEADER ROWS HEIGH
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(15);
         $spreadsheet->getActiveSheet()->getRowDimension('3')->setRowHeight(50);
-        //columns widths
+//columns widths
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(5);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(5);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(8);
@@ -447,16 +432,16 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(20);
         $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
         $spreadsheet->getActiveSheet()->getColumnDimension('T')->setWidth(15);
-        //wrapping header text
+//wrapping header text
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')
                 ->getAlignment()->setWrapText(true);
-        //text alignment 
+//text alignment 
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')
                 ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')
                 ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
-        //HEADER COLOR
+//HEADER COLOR
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('CDC6B4');
@@ -476,7 +461,7 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')->applyFromArray($styleArray);
 
 
-        //here goes rows
+//here goes rows
         $aa = 1;
         $row = 5;
         foreach ($guarantyRoutes as $route) {
@@ -486,6 +471,11 @@ class GuarantyController {
             $exoduseNumber = $route->getExodusesNumber();
             $routeStartTime = $route->getRouteStartTime();
             $routeEndTime = $route->getRouteEndTime();
+            $abGuarantyTripPeriodStartTime = $route->getABGuarantyTripPeriodStartTime();
+            $abSubGuarantyTripPeriodStartTime = $route->getABSubGuarantyTripPeriodStartTime();
+            $baGuarantyTripPeriodStartTime = $route->getBAGuarantyTripPeriodStartTime();
+            $baSubGuarantyTripPeriodStartTime = $route->getBASubGuarantyTripPeriodStartTime();
+            $standartIntervalTime = $route->getStandartIntervalTime();
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
@@ -493,9 +483,22 @@ class GuarantyController {
             $spreadsheet->getActiveSheet()->setCellValue("G$row", $exoduseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("K$row", $routeStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("M$row", $routeEndTime);
+            $spreadsheet->getActiveSheet()->setCellValue("P$row", $abGuarantyTripPeriodStartTime);
+            $spreadsheet->getActiveSheet()->setCellValue("O$row", $abSubGuarantyTripPeriodStartTime);
+            $spreadsheet->getActiveSheet()->setCellValue("S$row", $baGuarantyTripPeriodStartTime);
+            $spreadsheet->getActiveSheet()->setCellValue("R$row", $baSubGuarantyTripPeriodStartTime);
+            $spreadsheet->getActiveSheet()->setCellValue("H$row", $standartIntervalTime);
+
             $aa++;
             $row++;
         }
+
+
+        /*      $e = microtime(true);
+          echo "Time:" . ($e - $this->s);
+          echo "<br>";
+          echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
+         */
 
 
         $this->exportFile($spreadsheet);

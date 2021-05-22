@@ -346,13 +346,17 @@ class GuarantyController {
     public function exportGuarantyRoutes($guarantyRoutes) {
         $spreadsheet = new Spreadsheet();
 
+        //setting fonts/
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Sylfaen');
+
+
         $spreadsheet->getActiveSheet()->setCellValue('A1', "რიგითი №");
         $spreadsheet->getActiveSheet()->setCellValue('B1', "ავტო ბაზა");
         $spreadsheet->getActiveSheet()->setCellValue('C1', "მარშრუტის №");
         $spreadsheet->getActiveSheet()->setCellValue('D1', "ავტობუსების მარშრუტების მოძრაობის სქემა");
         $spreadsheet->getActiveSheet()->setCellValue('E1', "მარშრუტის ბრუნის სიგრძე, კმ");
         $spreadsheet->getActiveSheet()->setCellValue('F1', "ავტობუსის ტიპი");
-        $spreadsheet->getActiveSheet()->setCellValue('G1', "FORMULA HERE '=SUBTOTAL(9;H5:H138)'");
         $spreadsheet->getActiveSheet()->setCellValue('H1', "ინტერვალი, წთ");
         $spreadsheet->getActiveSheet()->setCellValue('I1', "ბრუნის დრო");
         $spreadsheet->getActiveSheet()->setCellValue('J1', "ბრუნების ჯამური რაოდენობა");
@@ -361,16 +365,16 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->setCellValue('M1', "ხაზზე დასრულების დრო");
         $spreadsheet->getActiveSheet()->setCellValue('N1', "საგარანტიო გასვლები");
         $spreadsheet->getActiveSheet()->setCellValue('T1', "შენიშვნა");
-//SECOND ROW
+        //SECOND ROW
         $spreadsheet->getActiveSheet()->setCellValue('H2', "მომუშავე ავტობუსების რაოდენობა");
         $spreadsheet->getActiveSheet()->setCellValue('G2', "მომუშავე ავტობუსების რაოდენობა");
 
-//THIRD ROW 
+        //THIRD ROW
         $spreadsheet->getActiveSheet()->setCellValue('N3', "პუნქტი \"A\"");
         $spreadsheet->getActiveSheet()->setCellValue('O3', "გასვლები \"A\" პუნქტიდან");
         $spreadsheet->getActiveSheet()->setCellValue('Q3', "პუნქტი \"B\"");
         $spreadsheet->getActiveSheet()->setCellValue('R3', "გასვლები \"B\" პუნქტიდან");
-//FOURTH ROW
+        //FOURTH ROW
         $spreadsheet->getActiveSheet()->setCellValue('A4', "1");
         $spreadsheet->getActiveSheet()->setCellValue('B4', "2");
         $spreadsheet->getActiveSheet()->setCellValue('C4', "3");
@@ -391,7 +395,7 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->setCellValue('R4', "19");
         $spreadsheet->getActiveSheet()->setCellValue('S4', "20");
         $spreadsheet->getActiveSheet()->setCellValue('T4', "21");
-//merging cells in header
+        //merging cells in header
         $spreadsheet->getActiveSheet()->mergeCells("A1:A3");
         $spreadsheet->getActiveSheet()->mergeCells("B1:B3");
         $spreadsheet->getActiveSheet()->mergeCells("C1:C3");
@@ -409,72 +413,56 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->mergeCells("O3:P3");
         $spreadsheet->getActiveSheet()->mergeCells("R3:S3");
         $spreadsheet->getActiveSheet()->mergeCells("T1:T3");
-//$spreadsheet->getActiveSheet()->mergeCells("E3:S3");
-//TEXT ROTATION 
-        $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('B1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('C1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('E1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('F1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('G2')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('H1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('I1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('J1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('K1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('L1')->getAlignment()->setTextRotation(90);
-        $spreadsheet->getActiveSheet()->getStyle('M1')->getAlignment()->setTextRotation(90);
 
-// HEADER ROWS HEIGH
-        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(15);
-        $spreadsheet->getActiveSheet()->getRowDimension('3')->setRowHeight(50);
-//columns widths
+        //bold texts
+        $spreadsheet->getActiveSheet()->getStyle('D1')->getFont()->setBold(1);
+        $spreadsheet->getActiveSheet()->getStyle('G1')->getFont()->setBold(1);
+        $spreadsheet->getActiveSheet()->getStyle('N1:T3')->getFont()->setBold(1);
+        //TEXT ROTATION
+        $spreadsheet->getActiveSheet()->getStyle('A1:M1')->getAlignment()->setTextRotation(90);
+        $spreadsheet->getActiveSheet()->getStyle('G2')->getAlignment()->setTextRotation(90);
+        $spreadsheet->getActiveSheet()->getStyle('D1')->getAlignment()->setTextRotation(0);
+        $spreadsheet->getActiveSheet()->getStyle('G1')->getAlignment()->setTextRotation(0);
+
+
+        //columns widths
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(5);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(5);
-        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(7);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(27);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(15);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(18);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(11);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(10);
         $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(10);
-        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(11);
-        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(10);
-        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(8);
         $spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(10);
-        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(20);
-        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(12);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(12);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setWidth(12);
+        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(12);
         $spreadsheet->getActiveSheet()->getColumnDimension('T')->setWidth(15);
-//wrapping header text
+        //wrapping header text
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')
                 ->getAlignment()->setWrapText(true);
-//text alignment 
-        $spreadsheet->getActiveSheet()->getStyle('A1:T3')
-                ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $spreadsheet->getActiveSheet()->getStyle('A1:T3')
-                ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-
-//HEADER COLOR
+        //HEADER COLOR
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('CDC6B4');
+                ->getStartColor()->setARGB('DDD9C3');
         $spreadsheet->getActiveSheet()->getStyle('A4:T4')->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('2AA146');
-//border
-        $styleArray = [
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
-                    'color' => ['argb' => '000000'],
-                ],
-            ],
-        ];
-
-        $spreadsheet->getActiveSheet()->getStyle('A1:T3')->applyFromArray($styleArray);
+                ->getStartColor()->setARGB('92D050');
+        $spreadsheet->getActiveSheet()->getStyle('G1')->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFFF00');
 
 
-//here goes rows
+
+        //here goes rows
         $aa = 1;
         $row = 5;
         foreach ($guarantyRoutes as $route) {
@@ -496,6 +484,8 @@ class GuarantyController {
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
+            $spreadsheet->getActiveSheet()->setCellValue("D$row", $routeScheme);
+            $spreadsheet->getActiveSheet()->setCellValue("E$row", "    ");
             $spreadsheet->getActiveSheet()->setCellValue("F$row", $busType);
             $spreadsheet->getActiveSheet()->setCellValue("G$row", $exoduseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("K$row", $routeStartTime);
@@ -506,22 +496,57 @@ class GuarantyController {
             $spreadsheet->getActiveSheet()->setCellValue("R$row", $baSubGuarantyTripPeriodStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("H$row", $standartIntervalTime);
             $spreadsheet->getActiveSheet()->setCellValue("I$row", $standartTripPeriodTime);
-            $spreadsheet->getActiveSheet()->setCellValue("D$row", $routeScheme);
+
             $spreadsheet->getActiveSheet()->setCellValue("N$row", $aPoint);
             $spreadsheet->getActiveSheet()->setCellValue("Q$row", $bPoint);
 
             $aa++;
             $row++;
         }
+        $row--;
+        //border
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+        ];
 
+        $spreadsheet->getActiveSheet()->getStyle("A1:T$row")->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->setCellValue('G1', "=SUBTOTAL(9,G3:G$row)");
+        //text alignment 
+        $spreadsheet->getActiveSheet()->getStyle("A1:U$row")->getAlignment()->setHorizontal('center');
+        $spreadsheet->getActiveSheet()->getStyle("A1:U$row")->getAlignment()->setVertical('center');
+
+        // HEADER ROWS HEIGH
+        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(25);
+        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(30);
+        $spreadsheet->getActiveSheet()->getRowDimension('3')->setRowHeight(75);
+        //all active rows heigt
+        $y = 5;
+        while ($y <= $row) {
+            $spreadsheet->getActiveSheet()->getRowDimension("$y")->setRowHeight(28);
+            $y++;
+        }
+
+        //row coloring
+        $spreadsheet->getActiveSheet()->getStyle("E5:T$row")->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('EEECE1');
+
+        //scheme column text wraping
+        $spreadsheet->getActiveSheet()->getStyle("D5:D$row")
+                ->getAlignment()->setWrapText(true);
 
         /*
-        $e = microtime(true);
-        echo "Time:" . ($e - $this->s);
-        echo "<br>";
-        echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
+          $e = microtime(true);
+          echo "Time:" . ($e - $this->s);
+          echo "<br>";
+          echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
          */
-         $this->exportFile($spreadsheet);
+        $this->exportFile($spreadsheet);
     }
 
     //---------------//----------------------//-------------------------//-----------------

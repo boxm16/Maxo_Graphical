@@ -221,19 +221,21 @@ class RouteGuaranteed {
                 }
             }
         }
-        $mostOccuredABTripPeriods = "00:00:00";
-        $mostOccuredBATripPeriods = "00:00:00";
+        $abStandartTripPeriodInSeconds = 0;
+        $baStandartTripPeriodInSeconds = 0;
         if (count($abTripPeriodTimes) > 0) {
             $mostOccuredABTripPeriods = array_search(max($abTripPeriodTimes), $abTripPeriodTimes);
+            // 5 minutes (of halt time) are added to trip time
+            $abStandartTripPeriodInSeconds = (5 * 60) + $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredABTripPeriods);
         }
 
         if (count($baTripPeriodTimes) > 0) {
             $mostOccuredBATripPeriods = array_search(max($baTripPeriodTimes), $baTripPeriodTimes);
+            // 5 minutes (of halt time) are added to trip time
+            $baStandartTripPeriodInSeconds = (5 * 60) + $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredBATripPeriods);
         }
-        $abStandartTripPeriodInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredABTripPeriods);
-        $baStandartTripPeriodInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredBATripPeriods);
-        $standartTripPeriodTimeInSeconds = (5 * 2 * 60) + $abStandartTripPeriodInSeconds + $baStandartTripPeriodInSeconds;
-//2 halt time for 5 minutes are added to trip time
+        $standartTripPeriodTimeInSeconds = $abStandartTripPeriodInSeconds + $baStandartTripPeriodInSeconds;
+
         return $this->timeCalculator->getTimeStampSansSecondsFromSeconds($standartTripPeriodTimeInSeconds);
     }
 

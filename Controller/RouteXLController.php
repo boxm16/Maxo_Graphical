@@ -575,12 +575,12 @@ class RouteXLController {
             $rows = $xlsx->rowsEx();
             //reading part  
             $routes = array();
-            for ($x = 1; $x < count($rows) - 1; $x++) {
+            for ($x = 1; $x < count($rows); $x++) {
                 $row = $rows[$x];
                 $routeNumber = $row[2]["value"];
-                $routeScheme = $row[3]["value"];
-                $aPoint = $row[4]["value"];
-                $bPoint = $row[5]["value"];
+                $routeScheme = str_replace('"', '\'', $row[3]["value"]);
+                $aPoint = str_replace('"', '\'', $row[4]["value"]);
+                $bPoint = str_replace('"', '\'', $row[5]["value"]);
                 $route = new RouteGuaranteed();
                 $route->setNumber($routeNumber);
                 $route->setScheme($routeScheme);

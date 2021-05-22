@@ -865,4 +865,28 @@ class DataBaseTools {
         }
     }
 
+    public function getRoutesNamesAndSchemes() {
+        try {
+            $sql = "SELECT * FROM route;";
+            $result = $this->connection->query($sql)->fetchAll();
+            $routes = array();
+            foreach ($result as $row) {
+                $routeNumber = $row["number"];
+                $aPoint = $row["a_point"];
+                $bPoint = $row["b_point"];
+                $scheme = $row["scheme"];
+                $newRoute = new RouteGuaranteed();
+                $newRoute->setNumber($routeNumber);
+                $newRoute->setAPoint($aPoint);
+                $newRoute->setBPoint($bPoint);
+                $newRoute->setScheme($scheme);
+                $routes[$routeNumber] = $newRoute;
+            }
+            return $routes;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
 }

@@ -3,8 +3,8 @@ require_once 'Controller/RouteDBController.php';
 $routeController = new RouteDBController();
 if (isset($_POST["changeRouteName"])) {
     $routeNumber = $_POST["routeNumber"];
-    $aPoint = $_POST["aPoint"];
-    $bPoint = $_POST["bPoint"];
+    $aPoint = str_replace('"', '\'', $_POST["aPoint"]);
+    $bPoint = str_replace('"', '\'', $_POST["bPoint"]);
     $routeController->changeRouteNames($routeNumber, $aPoint, $bPoint);
 }
 

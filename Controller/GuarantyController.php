@@ -14,13 +14,19 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class GuarantyController {
 
     private $s;
+    private $dataBaseTooles;
+
+    function __construct() {
+        $this->dataBaseTooles = new DataBaseTools();
+    }
 
     public function getGuarantyRoutes() {
         $this->s = microtime(true);
 
         $excelRows = $this->readExcelFile();
         $guarantyRoutes = $this->getGuarantyRoutesFromExcelRows($excelRows); //array of routes
-        $guarantyRoutesCalculated = $this->calculateGuarantyRoutesData($guarantyRoutes);
+        $routesFromDB = $this->dataBaseTooles->getRoutesNamesAndSchemes();
+        $guarantyRoutesCalculated = $this->calculateGuarantyRoutesData($guarantyRoutes, $routesFromDB);
         $this->exportGuarantyRoutes($guarantyRoutesCalculated);
 
         return $guarantyRoutes;
@@ -285,8 +291,15 @@ class GuarantyController {
 
 //Calculation Part
 
-    private function calculateGuarantyRoutesData($guarantyRoutes) {
+    private function calculateGuarantyRoutesData($guarantyRoutes, $routesFromDB) {
         foreach ($guarantyRoutes as $route) {
+            $routeNumber = $route->getNumber();
+            if (array_key_exists($routeNumber, $routesFromDB)) {
+                $routeFromDB = $routesFromDB[$routeNumber];
+                $route->setAPoint($routeFromDB->getAPoint());
+                $route->setBPoint($routeFromDB->getBPoint());
+                $route->setScheme($routeFromDB->getScheme());
+            }
             $exoduses = $route->getExoduses();
             foreach ($exoduses as $exodus) {
                 $tripPeriods = $exodus->getTripPeriods();
@@ -477,6 +490,9 @@ class GuarantyController {
             $baSubGuarantyTripPeriodStartTime = $route->getBASubGuarantyTripPeriodStartTime();
             $standartIntervalTime = $route->getStandartIntervalTime();
             $standartTripPeriodTime = $route->getStandartTripPeriodTime();
+            $aPoint = $route->getAPoint();
+            $bPoint = $route->getBPoint();
+            $routeScheme = $route->getScheme();
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
@@ -490,19 +506,22 @@ class GuarantyController {
             $spreadsheet->getActiveSheet()->setCellValue("R$row", $baSubGuarantyTripPeriodStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("H$row", $standartIntervalTime);
             $spreadsheet->getActiveSheet()->setCellValue("I$row", $standartTripPeriodTime);
+            $spreadsheet->getActiveSheet()->setCellValue("D$row", $routeScheme);
+            $spreadsheet->getActiveSheet()->setCellValue("N$row", $aPoint);
+            $spreadsheet->getActiveSheet()->setCellValue("Q$row", $bPoint);
 
             $aa++;
             $row++;
         }
 
 
-         /*     
+        /*
         $e = microtime(true);
         echo "Time:" . ($e - $this->s);
         echo "<br>";
         echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
-        */
-        $this->exportFile($spreadsheet);
+         */
+         $this->exportFile($spreadsheet);
     }
 
     //---------------//----------------------//-------------------------//-----------------

@@ -165,7 +165,7 @@ class RouteGuaranteed {
         $timeTable = $this->ABTimeTable;
         $intervalsTable = array();
         if (count($timeTable) > 1) {
-            for ($x = 1; $x < count($timeTable) - 1; $x++) {
+            for ($x = 1; $x < count($timeTable); $x++) {
                 $currentTripPeriodStartTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($timeTable[$x]);
                 $previousTripPeriodStartTimeInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($timeTable[$x - 1]);
                 $intervalInSeconds = $currentTripPeriodStartTimeInSeconds - $previousTripPeriodStartTimeInSeconds;

@@ -239,4 +239,37 @@ class RouteGuaranteed {
         return $this->timeCalculator->getTimeStampSansSecondsFromSeconds($standartTripPeriodTimeInSeconds);
     }
 
+    public function getTotalRaces() {
+        if (count($this->ABTimeTable) > 0 && count($this->BATimeTable) > 0) {
+            return (count($this->ABTimeTable) + count($this->BATimeTable)) / 2;
+        }
+        if (count($this->ABTimeTable) > 0 && count($this->BATimeTable) == 0) {
+            return count($this->ABTimeTable);
+        }
+        if (count($this->ABTimeTable) == 0 && count($this->BATimeTable) > 0) {
+            return count($this->BATimeTable);
+        }
+        return 0;
+    }
+
+    public function getLastBaseReturnTime() {
+        $lastBaseReturnTime = "";
+        foreach ($this->exoduses as $exodus) {
+            if ($lastBaseReturnTime == "") {
+                $lastBaseReturnTime = "00:00";
+            }
+            $tripPeriods = $exodus->getTripPeriods();
+            $baseReturnTripPeriod = $tripPeriods[count($tripPeriods) - 1];
+            $baseReturnTripPeriodArrialTime = $baseReturnTripPeriod->getArrivalTime();
+            if ($lastBaseReturnTime < $baseReturnTripPeriodArrialTime) {
+                $lastBaseReturnTime = $baseReturnTripPeriodArrialTime;
+            }
+          //  echo "Route Number:" . $this->number;
+           // echo "// Exodus Number:" . $exodus->getNumber();
+            //echo "//BaseReturnTripPeriod Base Arrival Time:" . $baseReturnTripPeriodArrialTime;
+            //echo "<br>";
+        }
+        return $lastBaseReturnTime;
+    }
+
 }

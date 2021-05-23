@@ -482,6 +482,8 @@ class GuarantyController {
             $aPoint = $route->getAPoint();
             $bPoint = $route->getBPoint();
             $routeScheme = $route->getScheme();
+            $totalRaces = $route->getTotalRaces();
+            $lastBaseReturnTime = $route->getLastBaseReturnTime();
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);
@@ -521,6 +523,7 @@ class GuarantyController {
 
             $spreadsheet->getActiveSheet()->setCellValue("G$row", $exoduseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("K$row", $routeStartTime);
+            $spreadsheet->getActiveSheet()->setCellValue("L$row", $lastBaseReturnTime);
             $spreadsheet->getActiveSheet()->setCellValue("M$row", $routeEndTime);
             $spreadsheet->getActiveSheet()->setCellValue("P$row", $abGuarantyTripPeriodStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("O$row", $abSubGuarantyTripPeriodStartTime);
@@ -528,7 +531,7 @@ class GuarantyController {
             $spreadsheet->getActiveSheet()->setCellValue("R$row", $baSubGuarantyTripPeriodStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("H$row", $standartIntervalTime);
             $spreadsheet->getActiveSheet()->setCellValue("I$row", $standartTripPeriodTime);
-
+            $spreadsheet->getActiveSheet()->setCellValue("J$row", $totalRaces);
             $spreadsheet->getActiveSheet()->setCellValue("N$row", $aPoint);
             $spreadsheet->getActiveSheet()->setCellValue("Q$row", $bPoint);
 

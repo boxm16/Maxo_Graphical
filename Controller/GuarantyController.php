@@ -597,7 +597,7 @@ class GuarantyController {
                 ->setFormatCode(
                         \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
         );
-         $spreadsheet->getActiveSheet()->getStyle("I5:I$row")
+        $spreadsheet->getActiveSheet()->getStyle("I5:I$row")
                 ->getNumberFormat()
                 ->setFormatCode(
                         \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
@@ -630,7 +630,8 @@ class GuarantyController {
 
     //---------------//----------------------//-------------------------//-----------------
     private function exportFile($spreadsheet) {
-        $filename = $this->fileName . '.xlsx';
+
+        $filename = 'tmps/' . $this->fileName . '.xlsx';
         $writer = new Xlsx($spreadsheet);
         $writer->save($filename);
 

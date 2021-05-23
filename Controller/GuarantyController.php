@@ -24,6 +24,10 @@ class GuarantyController {
     public function getGuarantyRoutes($fileName) {
         $this->s = microtime(true);
         $this->fileName = $fileName;
+        if ($fileName == "") {
+            echo "ცარიელი სახელი დაუშვებელია, დაბრუნდი უკან და სცადე თავიდან";
+            exit;
+        }
         $excelRows = $this->readExcelFile();
         $guarantyRoutes = $this->getGuarantyRoutesFromExcelRows($excelRows); //array of routes
         $routesFromDB = $this->dataBaseTooles->getRoutesNamesAndSchemes();

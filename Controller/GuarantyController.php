@@ -418,6 +418,7 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->getStyle('D1')->getFont()->setBold(1);
         $spreadsheet->getActiveSheet()->getStyle('G1')->getFont()->setBold(1);
         $spreadsheet->getActiveSheet()->getStyle('N1:T3')->getFont()->setBold(1);
+        //italic text 
         //TEXT ROTATION
         $spreadsheet->getActiveSheet()->getStyle('A1:M1')->getAlignment()->setTextRotation(90);
         $spreadsheet->getActiveSheet()->getStyle('G2')->getAlignment()->setTextRotation(90);
@@ -487,6 +488,37 @@ class GuarantyController {
             $spreadsheet->getActiveSheet()->setCellValue("D$row", $routeScheme);
             $spreadsheet->getActiveSheet()->setCellValue("E$row", "    ");
             $spreadsheet->getActiveSheet()->setCellValue("F$row", $busType);
+            if ($busType == "MAN A-47") {
+                $spreadsheet->getActiveSheet()->getStyle("F$row")->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('ccffcc');
+            }
+            if ($busType == "BMC Procity") {
+                $spreadsheet->getActiveSheet()->getStyle("F$row")->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('00b050');
+            }
+            if ($busType == "Isuzu Novociti Life") {
+                $spreadsheet->getActiveSheet()->getStyle("F$row")->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('92d050');
+            }
+            if ($busType == "MAN A-21") {
+                $spreadsheet->getActiveSheet()->getStyle("F$row")->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('95b3d7');
+            }
+            if ($busType == "ბოგდან А092, A093") {
+                $spreadsheet->getActiveSheet()->getStyle("F$row")->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('ffff00');
+            }
+            if ($busType == "") {
+                $spreadsheet->getActiveSheet()->getStyle("F$row")->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('FF0000');
+            }
+
             $spreadsheet->getActiveSheet()->setCellValue("G$row", $exoduseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("K$row", $routeStartTime);
             $spreadsheet->getActiveSheet()->setCellValue("M$row", $routeEndTime);
@@ -532,13 +564,19 @@ class GuarantyController {
         }
 
         //row coloring
-        $spreadsheet->getActiveSheet()->getStyle("E5:T$row")->getFill()
+        $spreadsheet->getActiveSheet()->getStyle("E5:E$row")->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('EEECE1');
+        $spreadsheet->getActiveSheet()->getStyle("G5:T$row")->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('EEECE1');
 
         //scheme column text wraping
         $spreadsheet->getActiveSheet()->getStyle("D5:D$row")
                 ->getAlignment()->setWrapText(true);
+
+        $spreadsheet->getActiveSheet()->getStyle("A5:A$row")->getFont()->setItalic(1);
+        //italic text 
 
         /*
           $e = microtime(true);

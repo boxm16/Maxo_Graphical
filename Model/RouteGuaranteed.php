@@ -133,7 +133,7 @@ class RouteGuaranteed {
         if (count($this->ABTimeTable) > 0) {
             return $this->ABTimeTable[count($this->ABTimeTable) - 1];
         } else {
-            return "ჩ.ა.ი";
+            return "";
         }
     }
 
@@ -141,7 +141,7 @@ class RouteGuaranteed {
         if (count($this->ABTimeTable) > 1) {
             return $this->ABTimeTable[count($this->ABTimeTable) - 2];
         } else {
-            return "ჩ.ა.ი";
+            return "";
         }
     }
 
@@ -149,7 +149,7 @@ class RouteGuaranteed {
         if (count($this->BATimeTable) > 0) {
             return $this->BATimeTable[count($this->BATimeTable) - 1];
         } else {
-            return "ჩ.ა.ი";
+            return "";
         }
     }
 
@@ -157,7 +157,7 @@ class RouteGuaranteed {
         if (count($this->BATimeTable) > 1) {
             return $this->BATimeTable[count($this->BATimeTable) - 2];
         } else {
-            return "ჩ.ა.ი";
+            return "";
         }
     }
 
@@ -181,7 +181,7 @@ class RouteGuaranteed {
 
             return $this->timeCalculator->getTimeStampFromSecondsMinutesVersion($mostOccuredIntervals);
         } else {
-            return "ჩ.ა.ი";
+            return "";
         }
     }
 

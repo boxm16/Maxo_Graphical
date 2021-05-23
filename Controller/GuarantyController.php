@@ -63,13 +63,17 @@ class GuarantyController {
             }
 
             $routeNumber = $row[7]["value"];
+            $busType = $row[1]["value"];
             if (array_key_exists($routeNumber, $routes)) {
                 $existingRoute = $routes[$routeNumber];
+                if ($existingRoute->getBusType() == "") {
+                    $existingRoute->setBusType($busType);
+                }
                 $refilledRoute = $this->addRowElementsToRoute($existingRoute, $row);
+
                 $routes[$routeNumber] = $refilledRoute;
             } else {
                 $baseNumber = $row[0]["value"];
-                $busType = $row[1]["value"];
                 $newRoute = new RouteGuaranteed();
                 $newRoute->setNumber($routeNumber);
                 $newRoute->setBaseNumber($baseNumber);
@@ -427,12 +431,12 @@ class GuarantyController {
 
 
         //columns widths
-        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(5);
-        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(7);
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(3.5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(3.5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(3.5);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(27);
-        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(18);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(13);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(11);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(10);
         $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(10);
@@ -440,12 +444,12 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(8);
         $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(8);
         $spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(10);
-        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(30);
-        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(12);
-        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(12);
-        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(30);
-        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setWidth(12);
-        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(12);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setWidth(8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(8);
         $spreadsheet->getActiveSheet()->getColumnDimension('T')->setWidth(15);
         //wrapping header text
         $spreadsheet->getActiveSheet()->getStyle('A1:T3')
@@ -577,9 +581,33 @@ class GuarantyController {
         //scheme column text wraping
         $spreadsheet->getActiveSheet()->getStyle("D5:D$row")
                 ->getAlignment()->setWrapText(true);
-
+//italic text 
         $spreadsheet->getActiveSheet()->getStyle("A5:A$row")->getFont()->setItalic(1);
-        //italic text 
+
+        //time format     //-------------------------------//--------------     //-------------------------------//--------------
+        // Set the number format mask so that the excel timestamp 
+// will be displayed as a human-readable date/time
+        $spreadsheet->getActiveSheet()->getStyle("H5:I$row")
+                ->getNumberFormat()
+                ->setFormatCode(
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+        );
+        $spreadsheet->getActiveSheet()->getStyle("K5:M$row")
+                ->getNumberFormat()
+                ->setFormatCode(
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+        );
+        $spreadsheet->getActiveSheet()->getStyle("O5:P$row")
+                ->getNumberFormat()
+                ->setFormatCode(
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+        );
+        $spreadsheet->getActiveSheet()->getStyle("R5:S$row")
+                ->getNumberFormat()
+                ->setFormatCode(
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+        );
+
 
         /*
           $e = microtime(true);

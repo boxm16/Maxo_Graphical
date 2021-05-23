@@ -630,20 +630,20 @@ class GuarantyController {
 
     //---------------//----------------------//-------------------------//-----------------
     private function exportFile($spreadsheet) {
-
-        $filename = 'tmps/' . $this->fileName . '.xlsx';
+        $filename = $this->fileName . '.xlsx';
+        $filepath = "tmps/$filename";
         $writer = new Xlsx($spreadsheet);
-        $writer->save($filename);
+        $writer->save($filepath);
 
         header('Content-Type: application/x-www-form-urlencoded');
 
         header('Content-Transfer-Encoding: Binary');
 
-        header("Content-disposition: attachment; filename=\"" . $filename . "\"");
+        header("Content-disposition: attachment; filename=$filename");
 
-        readfile($filename);
+        readfile($filepath);
 
-        unlink($filename);
+        unlink($filepath);
     }
 
 }

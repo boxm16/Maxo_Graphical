@@ -11,13 +11,19 @@
 
     </head>
     <body>
-        <form  action="guaranteedExport.php" method="POST">
-            <input hidden name="guaranteedClear">
-            <button type="submit" class="btn btn-warning ">ექსელში ექსპორტი</button>
-        </form>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <hr><center><h2>ჩაწერე ფაილის დასახელება და დააჭირე 'ესქესლში ექსპორტი'</h2><br>
+        <h6>დასახელებაში არ გამოიყენო ნიშნები: / , \, "</h6>
+    </center>
+    <hr>
+    <form  action="guaranteedExport.php" method="POST">
+        <center><input type="text" name="fileName" size="70"></center>
+        <hr>
+        <input hidden name="guaranteedClear">
+        <center><button type="submit" class="btn btn-warning ">ექსელში ექსპორტი</button></center>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    </body>
+</body>
 </html>

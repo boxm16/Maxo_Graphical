@@ -15,14 +15,15 @@ class GuarantyController {
 
     private $s;
     private $dataBaseTooles;
+    private $fileName;
 
     function __construct() {
         $this->dataBaseTooles = new DataBaseTools();
     }
 
-    public function getGuarantyRoutes() {
+    public function getGuarantyRoutes($fileName) {
         $this->s = microtime(true);
-
+        $this->fileName = $fileName;
         $excelRows = $this->readExcelFile();
         $guarantyRoutes = $this->getGuarantyRoutesFromExcelRows($excelRows); //array of routes
         $routesFromDB = $this->dataBaseTooles->getRoutesNamesAndSchemes();
@@ -590,22 +591,22 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->getStyle("H5:I$row")
                 ->getNumberFormat()
                 ->setFormatCode(
-                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME3
         );
         $spreadsheet->getActiveSheet()->getStyle("K5:M$row")
                 ->getNumberFormat()
                 ->setFormatCode(
-                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME3
         );
         $spreadsheet->getActiveSheet()->getStyle("O5:P$row")
                 ->getNumberFormat()
                 ->setFormatCode(
-                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME3
         );
         $spreadsheet->getActiveSheet()->getStyle("R5:S$row")
                 ->getNumberFormat()
                 ->setFormatCode(
-                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME3
         );
 
 
@@ -620,7 +621,7 @@ class GuarantyController {
 
     //---------------//----------------------//-------------------------//-----------------
     private function exportFile($spreadsheet) {
-        $filename = 'tmps/' . time() . '.xlsx';
+        $filename = $this->fileName . '.xlsx';
         $writer = new Xlsx($spreadsheet);
         $writer->save($filename);
 

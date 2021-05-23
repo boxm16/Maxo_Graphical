@@ -12,7 +12,7 @@
     </head>
     <body>
     <hr><center><h2>ჩაწერე ფაილის დასახელება და დააჭირე 'ექსელში ექსპორტი'</h2><br>
-        <h6>დასახელებაში არ გამოიყენო ნიშნები: / , \ , "</h6>
+        
     </center>
     <hr>
     <form  action="guaranteedExport.php" method="POST">

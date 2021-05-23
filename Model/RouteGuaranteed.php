@@ -178,8 +178,8 @@ class RouteGuaranteed {
                 }
             }
             $mostOccuredIntervals = array_search(max($intervalsTable), $intervalsTable);
-
-            return $this->timeCalculator->getTimeStampFromSecondsMinutesVersion($mostOccuredIntervals);
+            //return $this->timeCalculator->getTimeStampFromSecondsMinutesVersion($mostOccuredIntervals);
+            return $this->timeCalculator->getTimeStampFromSeconds($mostOccuredIntervals);
         } else {
             return "";
         }
@@ -264,8 +264,8 @@ class RouteGuaranteed {
             if ($lastBaseReturnTime < $baseReturnTripPeriodArrialTime) {
                 $lastBaseReturnTime = $baseReturnTripPeriodArrialTime;
             }
-          //  echo "Route Number:" . $this->number;
-           // echo "// Exodus Number:" . $exodus->getNumber();
+            //  echo "Route Number:" . $this->number;
+            // echo "// Exodus Number:" . $exodus->getNumber();
             //echo "//BaseReturnTripPeriod Base Arrival Time:" . $baseReturnTripPeriodArrialTime;
             //echo "<br>";
         }

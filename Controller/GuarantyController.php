@@ -595,12 +595,12 @@ class GuarantyController {
         $spreadsheet->getActiveSheet()->getStyle("H5:H$row")
                 ->getNumberFormat()
                 ->setFormatCode(
-                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4
         );
         $spreadsheet->getActiveSheet()->getStyle("I5:I$row")
                 ->getNumberFormat()
                 ->setFormatCode(
-                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME5
+                        \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME3
         );
         $spreadsheet->getActiveSheet()->getStyle("K5:M$row")
                 ->getNumberFormat()

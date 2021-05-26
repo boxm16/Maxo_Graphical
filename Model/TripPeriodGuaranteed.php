@@ -5,6 +5,7 @@ class TripPeriodGuaranteed {
     private $type; //baseLeaving, baseReturn, ab, ba, break
     private $startTime;
     private $arrivalTime;
+    private $tripPeriodTime;
 
     function __construct($type, $startTime, $arrivalTime) {
         $this->type = $type;
@@ -34,6 +35,14 @@ class TripPeriodGuaranteed {
 
     function setArrivalTime($arrivalTime) {
         $this->arrivalTime = $arrivalTime;
+    }
+
+    function getTripPeriodTime() {
+        return $this->tripPeriodTime;
+    }
+
+    function setTripPeriodTime($tripPeriodTime) {
+        $this->tripPeriodTime = $tripPeriodTime;
     }
 
 }

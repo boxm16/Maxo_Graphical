@@ -308,6 +308,7 @@ class GuarantyController {
                 $route->setAPoint($routeFromDB->getAPoint());
                 $route->setBPoint($routeFromDB->getBPoint());
                 $route->setScheme($routeFromDB->getScheme());
+                $route->setTripPeriodTimes();
             }
             $exoduses = $route->getExoduses();
             foreach ($exoduses as $exodus) {

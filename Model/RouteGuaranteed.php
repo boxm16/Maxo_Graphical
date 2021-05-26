@@ -195,9 +195,7 @@ class RouteGuaranteed {
                 $tripPeriodType = $tripPeriod->getType();
                 //----------------------ab-----------------
                 if ($tripPeriodType == "ab") {
-                    $startTime = $tripPeriod->getStartTime();
-                    $arrivalTime = $tripPeriod->getArrivalTime();
-                    $difference = $this->timeCalculator->getTimeStampsDifference($arrivalTime, $startTime);
+                    $difference = $tripPeriod->getTripPeriodTime();
                     if (array_key_exists($difference, $abTripPeriodTimes)) {
                         $count = $abTripPeriodTimes[$difference];
                         $count = $count + 1;
@@ -208,9 +206,7 @@ class RouteGuaranteed {
                 }
                 //------------ba-------------------
                 if ($tripPeriodType == "ba") {
-                    $startTime = $tripPeriod->getStartTime();
-                    $arrivalTime = $tripPeriod->getArrivalTime();
-                    $difference = $this->timeCalculator->getTimeStampsDifference($arrivalTime, $startTime);
+                    $difference = $tripPeriod->getTripPeriodTime();
                     if (array_key_exists($difference, $baTripPeriodTimes)) {
                         $count = $baTripPeriodTimes[$difference];
                         $count = $count + 1;
@@ -270,6 +266,21 @@ class RouteGuaranteed {
             //echo "<br>";
         }
         return $lastBaseReturnTime;
+    }
+
+    public function setTripPeriodTimes() {
+        foreach ($this->exoduses as $exodus) {
+
+            $tripPeriods = $exodus->getTripPeriods();
+            for ($x = 0; $x < count($tripPeriods)-1; $x++) {//-1 because last trip period is base return
+                $tripPeriod = $tripPeriods[$x];
+                $tripPeriodStartTime = $tripPeriod->getStartTime();
+                $nextTripPeriod = $tripPeriods[$x + 1];
+                $nextTripPeriodStartTime = $nextTripPeriod->getStartTime();
+                $difference = $this->timeCalculator->getTimeStampsDifference($nextTripPeriodStartTime, $tripPeriodStartTime);
+                $tripPeriod->setTripPeriodTime($difference);
+            }
+        }
     }
 
 }

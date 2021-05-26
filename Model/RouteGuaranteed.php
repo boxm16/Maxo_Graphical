@@ -221,14 +221,12 @@ class RouteGuaranteed {
         $baStandartTripPeriodInSeconds = 0;
         if (count($abTripPeriodTimes) > 0) {
             $mostOccuredABTripPeriods = array_search(max($abTripPeriodTimes), $abTripPeriodTimes);
-            // 5 minutes (of halt time) are added to trip time
-            $abStandartTripPeriodInSeconds = (5 * 60) + $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredABTripPeriods);
+            $abStandartTripPeriodInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredABTripPeriods);
         }
 
         if (count($baTripPeriodTimes) > 0) {
             $mostOccuredBATripPeriods = array_search(max($baTripPeriodTimes), $baTripPeriodTimes);
-            // 5 minutes (of halt time) are added to trip time
-            $baStandartTripPeriodInSeconds = (5 * 60) + $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredBATripPeriods);
+            $baStandartTripPeriodInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($mostOccuredBATripPeriods);
         }
         $standartTripPeriodTimeInSeconds = $abStandartTripPeriodInSeconds + $baStandartTripPeriodInSeconds;
 
@@ -272,7 +270,7 @@ class RouteGuaranteed {
         foreach ($this->exoduses as $exodus) {
 
             $tripPeriods = $exodus->getTripPeriods();
-            for ($x = 0; $x < count($tripPeriods)-1; $x++) {//-1 because last trip period is base return
+            for ($x = 0; $x < count($tripPeriods) - 1; $x++) {//-1 because last trip period is base return
                 $tripPeriod = $tripPeriods[$x];
                 $tripPeriodStartTime = $tripPeriod->getStartTime();
                 $nextTripPeriod = $tripPeriods[$x + 1];

@@ -437,9 +437,9 @@ class GuarantyController {
 
 
         //columns widths
-        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(3.5);
-        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(3.5);
-        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(3.5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(4.5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(4.5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(4.5);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(27);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(10);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(13);
@@ -560,7 +560,7 @@ class GuarantyController {
         ];
 
         $spreadsheet->getActiveSheet()->getStyle("A1:T$row")->applyFromArray($styleArray);
-        $spreadsheet->getActiveSheet()->setCellValue('G1', "=SUBTOTAL(9,G3:G$row)");
+        $spreadsheet->getActiveSheet()->setCellValue('G1', "=SUBTOTAL(9,G5:G$row)");
         //text alignment 
         $spreadsheet->getActiveSheet()->getStyle("A1:U$row")->getAlignment()->setHorizontal('center');
         $spreadsheet->getActiveSheet()->getStyle("A1:U$row")->getAlignment()->setVertical('center');
@@ -620,13 +620,13 @@ class GuarantyController {
         );
 
 
-        /*
-          $e = microtime(true);
-          echo "Time:" . ($e - $this->s);
-          echo "<br>";
-          echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
-         */
-        $this->exportFile($spreadsheet);
+       /*
+        $e = microtime(true);
+        echo "Time:" . ($e - $this->s);
+        echo "<br>";
+        echo 'Peak usage:(' . ( (memory_get_peak_usage() / 1024 ) / 1024) . 'M) <br>';
+       */
+       $this->exportFile($spreadsheet);
     }
 
     //---------------//----------------------//-------------------------//-----------------

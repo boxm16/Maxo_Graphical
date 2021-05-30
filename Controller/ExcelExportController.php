@@ -584,7 +584,7 @@ class ExcelExportController {
         $requestedTripPeriodsDifference = $this->convertDataToArray($requestedData["tripPeriodDifference"]);
 //-------------------------------------------------------------------------
         $spreadsheet = new Spreadsheet();
-
+        $spreadsheet->getActiveSheet()->setTitle('ბრუნების მონაცემები სრულად');
 
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -790,7 +790,7 @@ class ExcelExportController {
         }
         $spreadsheet->createSheet();
         $spreadsheet->setActiveSheetIndex(1);
-        $spreadsheet->getActiveSheet()->setTitle('საშუალოები');
+        $spreadsheet->getActiveSheet()->setTitle('ბრუნების საშუალო დრო');
         $sheet = $spreadsheet->getActiveSheet();
 
 
@@ -910,7 +910,6 @@ class ExcelExportController {
     }
 
     public function exportGuaranteed($routes) {
-        
         
     }
 

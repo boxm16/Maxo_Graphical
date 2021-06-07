@@ -170,8 +170,8 @@ $routes = $routesController->getFullRoutes($clientId);
                                 </li>
                                 <li class="header">სხვა ფუნქციები<br><br>(მომავალში რო დამჭირდება)</li>
                                 <li>
-                                    <a href="#">
-                                        <i class="fa fa-users" aria-hidden="true"></i> -----
+                                    <a href="http://ec2-34-241-241-111.eu-west-1.compute.amazonaws.com:8080/berishvili/guarantyTripsUploadPage.htm" target="_blank">
+                                        <i class="fa fa-tachometer" aria-hidden="true"></i> ავტობუსების მარშრუტების ანალიზი(ამაზონის სერვერზე)
                                     </a>
                                 </li>
                                 <li>

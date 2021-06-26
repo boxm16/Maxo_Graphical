@@ -494,6 +494,7 @@ class GuarantyController {
             $routeScheme = $route->getScheme();
             $totalRaces = $route->getTotalRaces();
             $lastBaseReturnTime = $route->getLastBaseReturnTime();
+            
             $spreadsheet->getActiveSheet()->setCellValue("A$row", $aa);
             $spreadsheet->getActiveSheet()->setCellValue("B$row", $baseNumber);
             $spreadsheet->getActiveSheet()->setCellValue("C$row", $routeNumber);

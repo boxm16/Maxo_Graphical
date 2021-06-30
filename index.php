@@ -170,7 +170,7 @@ $routes = $routesController->getFullRoutes($clientId);
                                 </li>
                                 <li class="header">სხვა ფუნქციები<br><br>(მომავალში რო დამჭირდება)</li>
                                 <li>
-                                    <a href="http://ec2-34-241-241-111.eu-west-1.compute.amazonaws.com:8080/berishvili/index.htm">
+                                    <a href="http://ec2-3-249-64-52.eu-west-1.compute.amazonaws.com:8080/berishvili/index.htm">
                                         <i class="fa fa-tachometer" aria-hidden="true"></i> ამაზონის სერვერზე გადასვლა
                                     </a>
                                 </li>

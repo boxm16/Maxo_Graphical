@@ -64,12 +64,11 @@ class TripPeriodXL {
     function getArrivalTimeDifference() {
         return $this->arrivalTimeDifference;
     }
-    
+
     function setStartTimeActual($startTimeActual) {
         $this->startTimeActual = $startTimeActual;
     }
 
-    
     public function getColor() {
         switch ($this->type) {
             case "baseLeaving" || "baseLeaving_A" || "baseLeaving_B":
@@ -303,7 +302,7 @@ class TripPeriodXL {
         return $this->trifficLightsController->getLightsForStandartTraffic($this->arrivalTimeDifference);
     }
 
-    public function getBlackSpot() {
+    public function showMisconduct() {
         if ($this->scheduledInterval != "" && $this->actualInterval != "" && $this->getLostTime() != "") {
             $standartIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->scheduledInterval);
             $actualIntervalInSeconds = $this->timeCalculator->getSecondsFromTimeStamp($this->actualInterval);

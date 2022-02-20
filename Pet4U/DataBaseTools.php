@@ -14,7 +14,7 @@ class DataBaseTools {
             $this->connection = $dataBaseConnection->getLocalhostConnection();
         } else {
             echo 'out server';
-            $this->connection = $dataBaseConnection->getPDO();
+            $this->connection = $dataBaseConnection->getLocalhostConnectionOnServer();
         }
     }
 

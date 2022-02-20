@@ -1,6 +1,6 @@
 <?php
-require_once 'Pet4U/DataBaseTools.php';
-$dataBaseTools = new DataBaseTools();
+require_once 'Pet4U/DataBaseTools_pet4U.php';
+$dataBaseTools = new DataBaseTools_pet4U();
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,13 +17,25 @@ $dataBaseTools = new DataBaseTools();
         <?php
         if (isset($_POST["createTables"])) {
             //precedence is important, there are primary-foreign keys rstrictions
-            $dataBaseTools->createRouteTable();
-            $dataBaseTools->createTripVoucherTable();
-            $dataBaseTools->createTripPeriodTable();
-            $dataBaseTools->createLastUploadTable();
-            $dataBaseTools->createTechTable();
-            $dataBaseTools->createReportTechTable();
-            $dataBaseTools->createReportsRoutesDatesTable();
+            $dataBaseTools->createItemeTable();
+            $dataBaseTools->createInvoiceTable();
+            $dataBaseTools->createInvoiceItemeTable();
+        }
+        ?>
+
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <input hidden name="deleteTables">
+            <button type="submit">Delete Tables</button>
+
+        </form>
+        <?php
+        if (isset($_POST["deleteTables"])) {
+            //precedence is important, there are primary-foreign keys rstrictions
+
+
+            $dataBaseTools->deleteInvoiceItemTable();
+            $dataBaseTools->deleteInvoiceTable();
+           //    $dataBaseTools->deleteItemTable();
         }
         ?>
     </body>

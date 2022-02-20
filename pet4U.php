@@ -7,6 +7,8 @@
     </head>
     <body>
         <a href="pet4U_ControlPanel.php">Control Panel</a>
+        <hr>
+        <a href="pet4U_AddItem.php">Add Item</a>
         <?php
         // put your code here
         ?>

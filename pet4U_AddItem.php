@@ -14,7 +14,7 @@
 
         <div class="container">
             <center><h1>Add Item</h1></center>
-            <form action="pet4U/Controller.php" method="POST">
+            <form action="Pet4U/Controller.php" method="POST">
                 <input hidden value="addItem">
                 <h2>ID</h2>  <input class="form-control" type="text"  aria-label="default input example">
 

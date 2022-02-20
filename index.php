@@ -189,6 +189,11 @@ $routes = $routesController->getFullRoutes($clientId);
                                         <i class="fa fa-info-circle" aria-hidden="true"></i> მარშრუტების დასახელებები
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="pet4U.php">
+                                        <i class="fa fa-cog" aria-hidden="true"></i>pet4U
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </form>

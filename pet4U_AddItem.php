@@ -27,6 +27,7 @@ if (isset($_POST["addItem"])) {
     <body>
 
         <div class="container">
+            <a href="pet4U.php"> Go Main Page</a>
             <center><h1>Add Item</h1></center>
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>"  method="POST">
                 <input hidden name="addItem">

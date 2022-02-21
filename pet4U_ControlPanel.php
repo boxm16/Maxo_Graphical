@@ -9,6 +9,8 @@ $dataBaseTools = new DataBaseTools_Pet4U();
         <title></title>
     </head>
     <body>
+        <a href="pet4U.php"> Go Main Page</a>
+        <hr>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <input hidden name="createTables">
             <button type="submit">Create Tables</button>
@@ -22,7 +24,7 @@ $dataBaseTools = new DataBaseTools_Pet4U();
             $dataBaseTools->createInvoiceItemeTable();
         }
         ?>
-
+        <hr>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <input hidden name="deleteTables">
             <button type="submit">Delete Tables</button>

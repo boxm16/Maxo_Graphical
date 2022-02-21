@@ -13,7 +13,6 @@ class DataBaseTools_Pet4U {
         if ($_SERVER["SERVER_NAME"] == 'localhost') {
             $this->connection = $dataBaseConnection->getLocalhostConnection();
         } else {
-            echo 'out server';
             $this->connection = $dataBaseConnection->getLocalhostConnectionOnServer();
         }
     }

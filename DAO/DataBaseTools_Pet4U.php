@@ -49,7 +49,11 @@ class DataBaseTools_Pet4U {
     }
 
     function createInvoiceItemeTable() {
-        $sql = "CREATE TABLE `invoice_item` (`invoice_number` VARCHAR(10) NOT NULL,  `item_id` VARCHAR(20) NOT NULL,  `quantity` INT(10) NOT NULL,  `notes` VARCHAR(250) NULL,  INDEX `invoice_number_idx` (`invoice_number` ASC) VISIBLE,  INDEX `item_id_idx` (`item_id` ASC) VISIBLE,  CONSTRAINT `invoice_number`  FOREIGN KEY (`invoice_number`)  REFERENCES `invoice` (`number`)  ON DELETE NO ACTION  ON UPDATE NO ACTION,  CONSTRAINT `item_id`  FOREIGN KEY (`item_id`)  REFERENCES `pet4u_db`.`item` (`id`)  ON DELETE NO ACTION  ON UPDATE NO ACTION)  ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;";
+        $sql = "CREATE TABLE `invoice_item` (
+  `invoice_number` VARCHAR(10) NOT NULL,
+  `item_id` VARCHAR(20) NOT NULL,
+  `quantity` INT(10) NOT NULL,
+  `notes` VARCHAR(250) NULL);";
         try {
             $this->connection->exec($sql);
             echo "Table 'invoice_item' created successfully" . "<br>";

@@ -1,5 +1,5 @@
 <?php
-require_once 'Pet4U/DataBaseTools_pet4U.php';
+require_once 'DAO/DataBaseTools_pet4U.php';
 $dataBaseTools = new DataBaseTools_pet4U();
 ?>
 <!DOCTYPE html>
@@ -35,7 +35,7 @@ $dataBaseTools = new DataBaseTools_pet4U();
 
             $dataBaseTools->deleteInvoiceItemTable();
             $dataBaseTools->deleteInvoiceTable();
-           //    $dataBaseTools->deleteItemTable();
+            $dataBaseTools->deleteItemTable();
         }
         ?>
     </body>

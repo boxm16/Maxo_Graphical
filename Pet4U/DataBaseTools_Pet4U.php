@@ -1,6 +1,7 @@
 <?php
 
-require_once 'DAO/DataBaseConnection.php';
+require_once 'DataBaseConnection.php';
+require_once 'Item.php';
 
 class DataBaseTools_pet4U {
 
@@ -10,15 +11,12 @@ class DataBaseTools_pet4U {
 
         $dataBaseConnection = new DataBaseConnection();
         if ($_SERVER["SERVER_NAME"] == 'localhost') {
-            echo 'localhost';
             $this->connection = $dataBaseConnection->getLocalhostConnection();
         } else {
             echo 'out server';
             $this->connection = $dataBaseConnection->getLocalhostConnectionOnServer();
         }
     }
-
-    
 
     function createInvoiceTable() {
         $sql = "CREATE TABLE `invoice` (`firm_afm` int(10) NOT NULL,  `firm_title` VARCHAR(50) NOT NULL,  `number` VARCHAR(10) NOT NULL,  `date_stamp` DATE NOT NULL,  `notes` VARCHAR(250) NULL,  PRIMARY KEY (`number`))  ENGINE = InnoDB  DEFAULT CHARACTER SET = utf8;";
@@ -90,10 +88,25 @@ class DataBaseTools_pet4U {
 
     function deleteInvoiceItemTable() {
         $sql = "DROP TABLE invoice_item";
-       
+
         try {
             $this->connection->exec($sql);
             echo "Table 'invoice_item' deleted successfully" . "<br>";
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
+    //-----------SAVE PART--------
+
+    function saveItem($item) {
+        $sql = "INSERT INTO item (id, barcode, description, notes) VALUES (?,?,?,?);";
+
+        try {
+            $statement = $this->connection->prepare($sql);
+            $statement->execute([$item->getId(), $item->getBarcode(), $item->getDescription(), $item->getNotes()]);
+            echo "Item inserted successfully" . "<br>";
         } catch (\PDOException $e) {
             echo $e->getMessage() . " Error Code:";
             echo $e->getCode() . "<br>";

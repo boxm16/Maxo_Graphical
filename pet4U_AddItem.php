@@ -1,3 +1,16 @@
+<?php
+require_once 'Pet4U/DataBaseTools_pet4U.php';
+if (isset($_POST["addItem"])) {
+    $item = new Item();
+    $item->setId($_POST["id"]);
+    $item->setBarcode($_POST["barcode"]);
+    $item->setDescription($_POST["description"]);
+    $item->setNotes($_POST["notes"]);
+    $dataBaseTools = new DataBaseTools_pet4U();
+    $result = $dataBaseTools->saveItem($item);
+    echo ";a;a;";
+}
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -15,14 +28,14 @@
         <div class="container">
             <center><h1>Add Item</h1></center>
             <form action="Pet4U/Controller.php" method="POST">
-                <input hidden value="addItem">
-                <h2>ID</h2>  <input class="form-control" type="text"  aria-label="default input example">
+                <input hidden name="addItem">
+                <h2>ID</h2>  <input name="id" class="form-control" type="text"  aria-label="default input example">
 
-                <h2>Barcode</h2>  <input class="form-control" type="text"  aria-label="default input example">
+                <h2>Barcode</h2>  <input name="barcode" class="form-control" type="text"  aria-label="default input example">
 
-                <h2>Description</h2>  <input class="form-control" type="text"  aria-label="default input example">
+                <h2>Description</h2>  <input name="description" class="form-control" type="text"  aria-label="default input example">
 
-                <h2>Notes</h2>  <input class="form-control" type="text"  aria-label="default input example">
+                <h2>Notes</h2>  <input name="notes" class="form-control" type="text"  aria-label="default input example">
                 <hr>
                 <button type="submit" class="btn btn-primary mb-3">Save</button>
             </form>

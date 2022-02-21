@@ -1,6 +1,6 @@
 <?php
-require_once 'DAO/DataBaseTools_pet4U.php';
-$dataBaseTools = new DataBaseTools_pet4U();
+require_once 'DAO/DataBaseTools_Pet4U.php';
+$dataBaseTools = new DataBaseTools_Pet4U();
 ?>
 <!DOCTYPE html>
 <html>

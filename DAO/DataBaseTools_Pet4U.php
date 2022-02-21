@@ -3,7 +3,7 @@
 require_once 'DataBaseConnection.php';
 require_once 'Pet4U/Item.php';
 
-class DataBaseTools_pet4U {
+class DataBaseTools_Pet4U {
 
     private $connection;
 

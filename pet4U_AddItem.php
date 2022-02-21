@@ -1,14 +1,15 @@
 <?php
-require_once 'Pet4U/DataBaseTools_pet4U.php';
+require_once 'Controller/Pet4U_Controller.php';
+require_once 'Pet4U/Item.php';
 if (isset($_POST["addItem"])) {
     $item = new Item();
     $item->setId($_POST["id"]);
     $item->setBarcode($_POST["barcode"]);
     $item->setDescription($_POST["description"]);
     $item->setNotes($_POST["notes"]);
-    $dataBaseTools = new DataBaseTools_pet4U();
-    $result = $dataBaseTools->saveItem($item);
-    echo ";a;a;";
+    $controller = new Pet4U_Controller();
+    $result = $controller->saveItem($item);
+    echo $result;
 }
 ?>
 <!doctype html>
@@ -27,7 +28,7 @@ if (isset($_POST["addItem"])) {
 
         <div class="container">
             <center><h1>Add Item</h1></center>
-            <form action="Pet4U/Controller.php" method="POST">
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>"  method="POST">
                 <input hidden name="addItem">
                 <h2>ID</h2>  <input name="id" class="form-control" type="text"  aria-label="default input example">
 

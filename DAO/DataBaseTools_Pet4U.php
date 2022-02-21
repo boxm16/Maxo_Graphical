@@ -1,7 +1,7 @@
 <?php
 
 require_once 'DataBaseConnection.php';
-require_once 'Item.php';
+require_once 'Pet4U/Item.php';
 
 class DataBaseTools_pet4U {
 
@@ -106,10 +106,9 @@ class DataBaseTools_pet4U {
         try {
             $statement = $this->connection->prepare($sql);
             $statement->execute([$item->getId(), $item->getBarcode(), $item->getDescription(), $item->getNotes()]);
-            echo "Item inserted successfully" . "<br>";
+            return "Item inserted successfully";
         } catch (\PDOException $e) {
-            echo $e->getMessage() . " Error Code:";
-            echo $e->getCode() . "<br>";
+            return $e->getMessage() . " Error Code:" . $e->getCode();
         }
     }
 

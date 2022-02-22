@@ -19,6 +19,7 @@ $items = $controller->getAllItems();
 
         <div class="container">
             <a href="pet4U.php"> Go Main Page</a>
+            <hr>
             <center><h1>All Items</h1></center>
             <table>
                 <tbody>

@@ -14,6 +14,12 @@ $items = $controller->getAllItems();
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
         <title>ALL ITEMS</title>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
     </head>
     <body>
 
@@ -22,6 +28,22 @@ $items = $controller->getAllItems();
             <hr>
             <center><h1>All Items</h1></center>
             <table>
+                <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            BARCODE
+                        </th> 
+                        <th>
+                            DESCRIPTION
+                        </th> 
+                        <th>
+                            NOTES
+                        </th>
+                    </tr>
+                </thead>
                 <tbody>
                     <?php
                     foreach ($items as $item) {

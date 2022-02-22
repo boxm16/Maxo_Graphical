@@ -12,7 +12,7 @@
         <hr>
          <a href="pet4U_AllItems.php">All Item</a>
         <?php
-        // put your code here
+        echo "<hr>";
         ?>
     </body>
 </html>

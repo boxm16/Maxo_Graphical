@@ -115,4 +115,24 @@ class DataBaseTools_Pet4U {
         }
     }
 
+    public function getAllItems() {
+        try {
+            $sql = "SELECT * FROM item;";
+            $result = $this->connection->query($sql)->fetchAll();
+            $items = array();
+            foreach ($result as $row) {
+                $item = new Item();
+                $item->setId($row["id"]);
+                $item->setBarcode($row["barcode"]);
+                $item->setDescription($row["description"]);
+                $item->setNotes($row["notes"]);
+                $items[$row["barcode"]] = $item;
+            }
+            return $items;
+        } catch (\PDOException $e) {
+            echo $e->getMessage() . " Error Code:";
+            echo $e->getCode() . "<br>";
+        }
+    }
+
 }

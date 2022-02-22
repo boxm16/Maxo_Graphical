@@ -9,4 +9,9 @@ class Pet4U_Controller {
         return $dataBaseTools->saveItem($item);
     }
 
+    public function getAllItems() {
+        $dataBaseTools = new DataBaseTools_pet4U();
+        return $dataBaseTools->getAllItems();
+    }
+
 }

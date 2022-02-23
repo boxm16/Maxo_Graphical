@@ -10,7 +10,9 @@
         <hr>
         <a href="pet4U_AddItem.php">Add Item</a>
         <hr>
-         <a href="pet4U_AllItems.php">All Item</a>
+        <a href="pet4U_AllItems.php">All Item</a>
+        <hr>
+        <a href="pet4U_DeliveryReceipt.php">Delivery Receipt</a>
         <?php
         echo "<hr>";
         ?>

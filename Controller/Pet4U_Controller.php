@@ -14,4 +14,15 @@ class Pet4U_Controller {
         return $dataBaseTools->getAllItems();
     }
 
+    public function getAllItemsStringed() {
+        $dataBaseTools = new DataBaseTools_pet4U();
+        $itemsStringed = array();
+        $items = $dataBaseTools->getAllItems();
+        foreach ($items as $item) {
+            $stringedItem = $item->getId() . ":" . $item->getDescription();
+            $itemsStringed[$item->getBarcode()] = $stringedItem;
+        }
+        return $itemsStringed;
+    }
+
 }

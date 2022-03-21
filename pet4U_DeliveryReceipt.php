@@ -120,7 +120,7 @@ $itemsStringed = $controller->getAllItemsStringed();
                             cell1.innerHTML = barcode;
                             cell2.innerHTML = "";
                             cell3.innerHTML = "";
-                            cell4.innerHTML = "0";
+                            cell4.innerHTML = "<input  readonly value='0' style='background-color:red'>";
                             cell5.innerHTML = "<input id='" + barcode + "' type='text' value='1' style='background-color:yellow'>";
                         }
 

@@ -45,14 +45,14 @@ $itemsStringed = $controller->getAllItemsStringed();
                     <td>1111</td>
                     <td>ΞΗΡΗ ΤΡΟΦΗ ΓΑΤΑΣ</td>
                     <td><input id="1t" type="text" value="5" "></td>
-                    <td><input id="1" type="text" value="0" onchange="colorFunction(this)"></td>
+                    <td><input id="1" type="text" value="0" onchange="colorFunction(this)" style="background-color:red"></td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>2222</td>
                     <td>ΞΗΡΗ ΤΡΟΦΗ ΣΚΥΛΟΥ</td>
                     <td><input id="2t" type="text" value="3" "></td>
-                    <td><input id="2" type="text" value="0" onchange="colorFunction(this)"></td>
+                    <td><input id="2" type="text" value="0" onchange="colorFunction(this)" style="background-color:red"></td>
                 </tr>
                 </tbody>
             </table>
@@ -121,7 +121,7 @@ $itemsStringed = $controller->getAllItemsStringed();
                             cell2.innerHTML = "";
                             cell3.innerHTML = "";
                             cell4.innerHTML = "0";
-                            cell5.innerHTML = "<input id='" + barcode + "' type='text' value='1'>";
+                            cell5.innerHTML = "<input id='" + barcode + "' type='text' value='1' style='background-color:yellow'>";
                         }
 
                         function colorFunction(target) {
